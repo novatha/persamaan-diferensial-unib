@@ -1,0 +1,3 @@
+\beamer@sectionintoc {1}{Pemodelan Persamaan Gelombang}{3}{0}{1}
+\beamer@sectionintoc {2}{Solusi D'Alembert}{4}{0}{2}
+\beamer@sectionintoc {3}{Solusi dengan Pemisahan Variabel}{5}{0}{3}

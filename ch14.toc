@@ -1,0 +1,3 @@
+\beamer@sectionintoc {1}{Koordinat Silinder \& Laplacian}{3}{0}{1}
+\beamer@sectionintoc {2}{Persamaan Diferensial Bessel}{4}{0}{2}
+\beamer@sectionintoc {3}{Fungsi Bessel \& Sifatnya}{5}{0}{3}

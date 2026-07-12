@@ -1,0 +1,139 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 1: Klasifikasi PDB/PDP \& Model Fisik}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Pengantar: PDB vs PDP}
+\begin{frame}{Pengantar: Persamaan Diferensial Biasa vs Parsial}
+  \begin{block}{Persamaan Diferensial Biasa (PDB)}
+    Persamaan yang mengandung turunan dari satu atau lebih variabel tak bebas terhadap \textbf{satu} variabel bebas (misal: waktu $t$).
+    \begin{equation}
+        \frac{dy}{dt} + 2y = 0 \quad \text{atau} \quad L\frac{di}{dt} + Ri = V(t)
+    \end{equation}
+  \end{block}
+
+  \begin{exampleblock}{Persamaan Diferensial Parsial (PDP)}
+    Persamaan yang mengandung turunan parsial dari satu atau lebih variabel tak bebas terhadap \textbf{dua atau lebih} variabel bebas (misal: ruang $x, y, z$ dan waktu $t$).
+    \begin{equation}
+        \frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0 \quad \text{(Persamaan Laplace)}
+    \end{equation}
+  \end{exampleblock}
+\end{frame}
+
+\section{Klasifikasi: Orde \& Linieritas}
+\begin{frame}{Klasifikasi: Orde \& Linieritas}
+    \textbf{Orde (Tingkat)}
+    \begin{itemize}
+        \item Orde suatu persamaan diferensial ditentukan oleh turunan tertinggi yang terdapat dalam persamaan tersebut.
+        \item Contoh: $y'' + 3y' + 2y = 0$ (PDB Orde 2).
+        \item Contoh: $\left(\frac{dy}{dt}\right)^3 + y = 0$ (PDB Orde 1).
+    \end{itemize}
+    \vspace{0.5cm}
+    \textbf{Linieritas}
+    \begin{itemize}
+        \item Suatu PD dikatakan linier jika variabel tak bebas (dan turunannya) berpangkat satu dan tidak saling dikalikan.
+        \item Linier: $\frac{d^2x}{dt^2} + 5x = \sin(t)$
+        \item Non-linier: $\frac{dy}{dx} + y^2 = 0$ atau $\sin(y)\frac{dy}{dx} = x$
+    \end{itemize}
+\end{frame}
+
+\section{Solusi Umum, Khusus \& IVP}
+\begin{frame}{Solusi Umum, Khusus \& Initial Value Problem (IVP)}
+  \begin{block}{Solusi Umum}
+    Solusi yang masih mengandung konstanta sembarang ($C_1, C_2, \dots$). Menggambarkan himpunan semua kemungkinan kurva solusi.\\
+    Contoh: $\frac{dy}{dt} = y \implies y(t) = C e^t$
+  \end{block}
+
+  \begin{exampleblock}{Solusi Khusus \& IVP}
+    Jika diberikan kondisi awal (misal $y(0) = 5$), ini disebut \textit{Initial Value Problem} (IVP). Kita dapat mencari konstanta spesifik untuk mendapatkan \textbf{Solusi Khusus}.
+    $$ y(0) = C e^0 \implies 5 = C(1) \implies C = 5 $$
+    Maka solusi khususnya adalah $y(t) = 5e^t$.
+  \end{exampleblock}
+\end{frame}
+
+\section{Pemodelan Fisis: Hukum Kirchhoff}
+\begin{frame}{Pemodelan Fisis: Rangkaian RL \& Hukum Kirchhoff}
+    Dalam Teknik Elektro, fenomena transien dimodelkan menggunakan Hukum Tegangan Kirchhoff (KVL): $\sum V = 0$.
+    \begin{columns}
+        \column{0.4\textwidth}
+        % Rangkaian Seri RL Sederhana
+        \begin{tikzpicture}[scale=0.8, transform shape, thick]
+            \draw (0,0) -- (0,2) -- (1,2);
+            \draw (1,2) node[above]{R} -- (2,2) -- (2,2);
+            % Resistor symbol (zigzag)
+            \draw (1,2) -- (1.1,2.2) -- (1.3,1.8) -- (1.5,2.2) -- (1.7,1.8) -- (1.9,2.2) -- (2,2);
+            \draw (2,2) -- (3,2);
+            % Inductor symbol (coils)
+            \draw (3,2) node[above]{L} arc (180:0:0.25) arc (180:0:0.25) arc (180:0:0.25);
+            \draw (4.5,2) -- (5,2) -- (5,0) -- (0,0);
+            % Voltage Source
+            \draw (0,1) circle (0.3) node {$V$};
+            \draw (0,0) -- (0,0.7);
+            \draw (0,1.3) -- (0,2);
+        \end{tikzpicture}
+
+        \column{0.6\textwidth}
+        \textbf{Model Rangkaian RL Seri:}
+        \begin{equation}
+            V_R + V_L = V(t)
+        \end{equation}
+        Di mana:
+        \begin{itemize}
+            \item $V_R = R \cdot i(t)$ (Hukum Ohm)
+            \item $V_L = L \frac{di(t)}{dt}$ (Karakteristik Induktor)
+        \end{itemize}
+        \textbf{Persamaan Diferensial (PDB):}
+        \begin{alertblock}{}
+        \begin{equation}
+            L\frac{di}{dt} + Ri = V(t)
+        \end{equation}
+        \end{alertblock}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

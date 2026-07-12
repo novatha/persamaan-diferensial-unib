@@ -1,0 +1,99 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 14: Fungsi Khusus 1 (Persamaan Bessel \& Gelombang Silinder)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Koordinat Silinder \& Laplacian}
+\begin{frame}{Koordinat Silinder \& Laplacian}
+  \begin{block}{Sistem Koordinat Silinder}
+    Sistem koordinat silinder $(r, \theta, z)$ sering digunakan pada masalah dengan simetri aksial seperti pandu gelombang bulat atau kabel koaksial. Operator Laplacian dalam koordinat silinder:
+    \begin{equation}
+        \nabla^2 V = \frac{1}{r}\frac{\partial}{\partial r}\left(r \frac{\partial V}{\partial r}\right) + \frac{1}{r^2}\frac{\partial^2 V}{\partial \theta^2} + \frac{\partial^2 V}{\partial z^2} = 0
+    \end{equation}
+  \end{block}
+
+  \begin{exampleblock}{Pemisahan Variabel}
+    Dengan asumsi pemisahan variabel $V(r,\theta,z) = R(r)\Theta(\theta)Z(z)$, komponen radial $R(r)$ sering kali menghasilkan Persamaan Diferensial Bessel.
+  \end{exampleblock}
+\end{frame}
+
+\section{Persamaan Diferensial Bessel}
+\begin{frame}{Persamaan Diferensial Bessel}
+    Persamaan diferensial orde dua linier yang dikenal sebagai Persamaan Bessel orde $\nu$:
+    \begin{equation}
+        x^2 \frac{d^2y}{dx^2} + x \frac{dy}{dx} + (x^2 - \nu^2)y = 0
+    \end{equation}
+    Atau dalam variabel $r$:
+    \begin{equation}
+        r^2 R'' + r R' + (k^2 r^2 - \nu^2)R = 0
+    \end{equation}
+    
+    \textbf{Solusi Umum:}
+    \begin{alertblock}{}
+    \begin{equation}
+        y(x) = C_1 J_\nu(x) + C_2 Y_\nu(x)
+    \end{equation}
+    di mana $J_\nu(x)$ adalah Fungsi Bessel Jenis Pertama dan $Y_\nu(x)$ adalah Fungsi Bessel Jenis Kedua.
+    \end{alertblock}
+\end{frame}
+
+\section{Fungsi Bessel \& Sifatnya}
+\begin{frame}{Fungsi Bessel \& Aplikasi Gelombang Silinder}
+  \begin{block}{Karakteristik Fungsi Bessel}
+    \begin{itemize}
+        \item $J_\nu(x)$: Bernilai berhingga saat $x \to 0$. Berperilaku menyerupai osilasi yang meluruh amplitudonya seiring meningkatnya $x$ ("trigonometri silinder").
+        \item $Y_\nu(x)$: Bernilai singular (menuju $-\infty$) saat $x \to 0$. Oleh karena itu, $Y_\nu(x)$ sering diabaikan jika origin ($r=0$) termasuk dalam domain masalah fisis.
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Aplikasi pada Gelombang Silinder}
+    Pada perambatan gelombang dalam rongga silindris (misal drum bergetar atau pandu gelombang elektromagnetik melingkar), pola medan arah radial secara alami mengikuti bentuk fungsi Bessel $J_m(k_{mn}r)$.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

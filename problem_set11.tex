@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Case Method 3 - Minggu 11: Persamaan Gelombang 1D (Vibrasi/Transmisi Sinyal)}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Case Method 3]
+Analisis studi kasus yang diberikan. Kumpulkan laporan penyelesaian \textit{Case Method} ini secara sistematis. Sajikan perhitungan dan analisis fisis serta relevansinya terhadap Teknik Elektro.
+\end{tcolorbox}
+
+\section*{Daftar Kasus dan Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan persamaan gelombang 1D standar untuk propagasi tegangan listrik $v(x,t)$ pada saluran transmisi tak merugi. Sebutkan pula makna kecepatan merambat gelombang $c$ dalam besaran parameter saluran ($L$ dan $C$).
+    \item \textbf{(C2 - Memahami)} Jelaskan prinsip fisik di balik fungsi solusi D'Alembert $v(x,t) = f(x-ct) + g(x+ct)$ pada transmisi sinyal listrik. Apa makna komponen $f$ dan $g$ secara fisik?
+    \item \textbf{(C3 - Mengaplikasikan)} Diberikan persamaan gelombang $\frac{\partial^2 u}{\partial t^2} = 9 \frac{\partial^2 u}{\partial x^2}$. Tentukan kecepatan rambat gelombang tersebut dan tuliskan bentuk umum solusinya menurut D'Alembert.
+    \item \textbf{(C4 - Menganalisis)} \textbf{[Studi Kasus]} Sebuah kabel transmisi memiliki ujung awal pada $x=0$ dan ujung akhir yang terhubung singkat ke ground pada jarak $x=L$. Ini menciptakan syarat batas tegangan $v(0,t)=0$ (asumsikan sumber tegangan dimatikan setelah pulsa awal) dan $v(L,t)=0$. Analisis syarat batas ini untuk menemukan persamaan fungsi spasial $X(x)$ dengan menggunakan metode pemisahan variabel!
+    \item \textbf{(C5 - Mengevaluasi)} Jika dalam transmisi kabel koaksial (ideal), ternyata dijumpai bahwa kecepatan rambat $c = 1/\sqrt{LC}$ bernilai melebihi kecepatan cahaya di ruang hampa. Evaluasi perhitungan ini; apakah keadaan fisis ini memungkinkan? Apa asumsi pemodelan yang mungkin menyebabkan anomali ini?
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sistem dawai dengan simpangan awal $u(x,0) = \sin(\pi x / L)$ dan kecepatan awal nol. Turunkan dan susunlah solusi lengkap untuk pergerakan vibrasi dawai $u(x,t)$ ini di seluruh waktu $t > 0$! Tunjukkan perhitungan konstanta Deret Fourier-nya secara eksplisit.
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil dalam memecahkan masalah ini!}
+\end{center}
+
+\end{document}

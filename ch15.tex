@@ -1,0 +1,96 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 15: Team-Based Project - Presentasi Kaitan PDP dengan Persamaan Maxwell}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Review: Persamaan Maxwell}
+\begin{frame}{Persamaan Maxwell dalam Bentuk Diferensial}
+  \begin{block}{Empat Persamaan Fundamental}
+    Persamaan Maxwell dalam ruang hampa (tanpa muatan dan arus bebas):
+    \begin{align}
+        \nabla \cdot \mathbf{E} &= 0 \quad \text{(Hukum Gauss untuk Listrik)} \\
+        \nabla \cdot \mathbf{B} &= 0 \quad \text{(Hukum Gauss untuk Magnet)} \\
+        \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \quad \text{(Hukum Faraday)} \\
+        \nabla \times \mathbf{B} &= \mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t} \quad \text{(Hukum Ampere-Maxwell)}
+    \end{align}
+  \end{block}
+  \begin{itemize}
+      \item Keempat persamaan ini merupakan \textbf{Persamaan Diferensial Parsial (PDP)} yang saling terikat (coupled).
+  \end{itemize}
+\end{frame}
+
+\section{Kaitan PDP dan Gelombang EM}
+\begin{frame}{Menurunkan Persamaan Gelombang (Uncoupled PDP)}
+    Dengan menggunakan identitas vektor $\nabla \times (\nabla \times \mathbf{A}) = \nabla(\nabla \cdot \mathbf{A}) - \nabla^2 \mathbf{A}$, kita dapat memisahkan persamaan untuk $\mathbf{E}$:
+    \begin{alertblock}{Penurunan untuk Medan Listrik}
+    \begin{align*}
+        \nabla \times (\nabla \times \mathbf{E}) &= \nabla \times \left(-\frac{\partial \mathbf{B}}{\partial t}\right) \\
+        \nabla(\nabla \cdot \mathbf{E}) - \nabla^2 \mathbf{E} &= -\frac{\partial}{\partial t}(\nabla \times \mathbf{B}) \\
+        0 - \nabla^2 \mathbf{E} &= -\frac{\partial}{\partial t} \left(\mu_0 \epsilon_0 \frac{\partial \mathbf{E}}{\partial t}\right) \\
+        \nabla^2 \mathbf{E} &= \mu_0 \epsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}
+    \end{align*}
+    \end{alertblock}
+    Persamaan terakhir adalah PDP Gelombang 3 Dimensi klasik!
+\end{frame}
+
+\section{Panduan Team-Based Project}
+\begin{frame}{Panduan Team-Based Project (Presentasi)}
+  \begin{exampleblock}{Tugas Kelompok}
+    Setiap kelompok harus mempresentasikan pemahaman matematis dan fisis tentang kaitan PDP dengan Persamaan Maxwell.
+  \end{exampleblock}
+  
+  \textbf{Kriteria Penilaian Presentasi:}
+  \begin{enumerate}
+      \item \textbf{Kedalaman Matematis (40\%):} Ketepatan penurunan operator nabla, curl, div, dan Laplacian menjadi PDP gelombang.
+      \item \textbf{Pemahaman Fisis (30\%):} Penjelasan makna kecepatan gelombang $c = 1/\sqrt{\mu_0 \epsilon_0}$.
+      \item \textbf{Kekompakan Tim (15\%):} Pembagian peran saat presentasi dan sesi tanya jawab.
+      \item \textbf{Kualitas Visual (15\%):} Kerapian slide presentasi dan penggunaan ilustrasi.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih \& Selamat Berdiskusi}}\\
+    \vspace{0.5cm}
+    {\large Persiapkan Presentasi Terbaik Anda}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

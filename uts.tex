@@ -1,0 +1,66 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Ujian Tengah Semester (UTS)\\Persamaan Diferensial}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi UTS]
+Ujian bersifat \textit{Closed Book}. Jawablah semua pertanyaan berikut dengan tulisan yang rapi dan langkah-langkah yang jelas. Ujian ini menguji kompetensi Anda dari pertemuan Minggu 1 hingga Minggu 7. (Waktu: 90 Menit)
+\end{tcolorbox}
+
+\section*{Soal Essay (C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C2 - Memahami) (Bobot: 15\%)} 
+    Jelaskan perbedaan konsep dari Persamaan Diferensial Biasa (PDB) dan Persamaan Diferensial Parsial (PDP). Berikan pula penjelasan rinci mengapa kita sangat mengandalkan Transformasi Laplace untuk menyelesaikan persoalan pada sistem kelistrikan transien dibandingkan metode solusi konvensional.
+
+    \item \textbf{(C3 - Mengaplikasikan) (Bobot: 20\%)}
+    Tentukan solusi umum dan solusi khusus untuk Persamaan Diferensial Biasa Orde 1 berikut:
+    $$ \frac{dy}{dt} - 3y = e^{2t} $$
+    dengan nilai kondisi awal (Initial Value) adalah $y(0) = 4$.
+
+    \item \textbf{(C4 - Menganalisis) (Bobot: 20\%)}
+    Sebuah rangkaian listrik RLC seri memiliki resistansi $R = 4 \Omega$, induktansi $L = 1 \text{ H}$, dan kapasitansi $C = 0.5 \text{ F}$. Rangkaian tidak diberi tegangan masukan (sumber tegangan dimatikan) sehingga sistem bebas (autonomous).
+    Berdasarkan Hukum Tegangan Kirchhoff, persamaan dinamis sistem adalah:
+    $$ \frac{d^2 i}{dt^2} + 4\frac{di}{dt} + 2i = 0 $$
+    Asumsikan arus awal $i(0) = 1$ A dan laju perubahan arus awal $\frac{di}{dt}(0) = 0$. Analisislah dan selesaikan solusi arus $i(t)$ untuk $t > 0$ dengan metode Transformasi Laplace.
+
+    \item \textbf{(C5 - Mengevaluasi) (Bobot: 20\%)}
+    Diberikan fungsi di domain s (frekuensi kompleks):
+    $$ V(s) = \frac{5s^2 + 20s + 15}{(s^2+4)(s+1)} $$
+    Seorang asisten laboratorium menyatakan bahwa tegangan di domain waktu $v(t)$ akan berosilasi secara murni (tanpa adanya redaman eksponensial) saat waktu menuju tak hingga ($t \to \infty$). Buktikan kebenaran penyataan ini dengan melakukan invers Transformasi Laplace dan mengevaluasi perilaku fungsinya.
+
+    \item \textbf{(C6 - Mencipta) (Bobot: 25\%)}
+    Rancanglah suatu pemodelan sistem dinamik sistem kendali kelistrikan orde dua milik Anda sendiri! 
+    \begin{itemize}
+        \item Buatlah persamaan diferensialnya (dengan variabel, misalnya $y(t)$)
+        \item Tentukan fungsi gaya pemaksanya (forcing function), misalnya berupa sumber tegangan tangga (step) atau impuls.
+        \item Tentukan kondisi awal yang Anda inginkan.
+        \item Temukan solusi akhir menggunakan metode apa saja yang telah dipelajari di kelas. Pastikan seluruh prosedur yang Anda buat bernilai valid (memiliki konsistensi fisis dan matematis yang logis).
+    \end{itemize}
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Selamat Mengerjakan \& Junjung Tinggi Kejujuran!}
+\end{center}
+
+\end{document}

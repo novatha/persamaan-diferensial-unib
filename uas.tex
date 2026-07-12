@@ -1,0 +1,64 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Ujian Akhir Semester (UAS)\\Persamaan Diferensial - Evaluasi Komprehensif (Minggu 9-15)}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Ujian Akhir Semester]
+Kerjakan soal-soal berikut secara mandiri, jujur, dan sistematis. Ujian ini bersifat \textit{Closed Book}. Bobot nilai setiap soal setara. Soal mencakup materi dari minggu ke-9 hingga minggu ke-15 yang dievaluasi dengan tingkatan kognitif tinggi (C2-C6).
+\end{tcolorbox}
+
+\section*{Soal Ujian}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C2 - Memahami) Konsep Deret Fourier}\\
+    Jelaskan secara komprehensif apa yang dimaksud dengan ekspansi Deret Fourier untuk sebuah fungsi periodik. Mengapa fungsi sembarang yang periodik dapat direpresentasikan sebagai jumlahan tak hingga dari fungsi sinus dan kosinus? Berikan contoh aplikasinya dalam bidang teknik elektro.
+
+    \vspace{4.5cm}
+    
+    \item \textbf{(C3 - Mengaplikasikan) Transformasi Laplace}\\
+    Gunakan metode Transformasi Laplace untuk mencari solusi khusus dari Persamaan Diferensial Biasa (PDB) orde dua berikut ini:
+    $$ \frac{d^2y}{dt^2} + 4y = e^{-t} $$
+    dengan nilai awal $y(0) = 1$ dan $y'(0) = 0$. Tunjukkan setiap tahapan mulai dari transformasi ke domain-$s$ hingga \textit{Inverse Laplace} ke domain-$t$.
+
+    \vspace{6.5cm}
+    
+    \item \textbf{(C4 - Menganalisis) Metode Pemisahan Variabel pada PDP}\\
+    Diberikan Persamaan Konduksi Panas (Heat Equation) 1-Dimensi $u_t = \alpha^2 u_{xx}$. Terapkan metode pemisahan variabel $u(x,t) = X(x)T(t)$ untuk menganalisis dan memisahkan Persamaan Diferensial Parsial tersebut menjadi dua buah Persamaan Diferensial Biasa dengan konstanta pemisah $-\lambda$.
+
+    \vspace{6.5cm}
+    
+    \item \textbf{(C5 - Mengevaluasi) Syarat Batas pada Persamaan Gelombang}\\
+    Sebuah senar gitar dengan panjang $L$ dimodelkan dengan persamaan gelombang $u_{tt} = c^2 u_{xx}$. Evaluasilah pengaruh syarat batas ujung terikat $u(0,t)=0$ dan $u(L,t)=0$ terhadap kemungkinan nilai spektrum frekuensi yang dapat dihasilkan (frekuensi natural). Apakah sembarang nilai frekuensi diperbolehkan? Buktikan argumen Anda.
+
+    \vspace{6.5cm}
+
+    \item \textbf{(C6 - Mencipta/Mensintesis) Persamaan Maxwell ke PDP Gelombang}\\
+    Mensintesis kembali materi presentasi proyek kelompok Anda, buktikan dan turunkan bentuk Persamaan Diferensial Parsial (PDP) Gelombang untuk medan listrik $\mathbf{E}$ di ruang hampa, dengan titik tolak awal dari hukum Faraday ($\nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$) dan Hukum Ampere-Maxwell. Gunakan identitas vektor rotasi dari rotasi (curl of curl).
+    
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Selamat Mengerjakan - Kejujuran adalah Kehormatan!}
+\end{center}
+
+\end{document}

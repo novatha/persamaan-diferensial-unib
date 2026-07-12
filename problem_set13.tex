@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 13: Persamaan Laplace 2D}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis fisis, dan penurunan matematis Anda secara sistematis dan terstruktur.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan persamaan Laplace 2D dalam sistem koordinat kartesian.
+    \item \textbf{(C2 - Memahami)} Jelaskan arti fisis dari persamaan Laplace $\nabla^2 V = 0$ dalam konteks elektrostatika. Mengapa ruas kanan bernilai nol?
+    \item \textbf{(C3 - Mengaplikasikan)} Terapkan metode pemisahan variabel $V(x,y) = X(x)Y(y)$ pada persamaan Laplace 2D. Turunkan langkah demi langkah hingga mendapatkan dua Persamaan Diferensial Biasa (PDB) orde 2.
+    \item \textbf{(C4 - Menganalisis)} Diberikan sebuah daerah persegi panjang $0 \le x \le a$ dan $0 \le y \le b$. Jika syarat batas adalah $V(0,y) = 0$, $V(a,y) = 0$, dan $V(x,0) = 0$, analisislah bagaimana pemilihan konstanta pemisahan (misalnya $-k^2$) akan memengaruhi bentuk solusi, dan jelaskan mengapa fungsi trigonometri dipilih untuk arah-$x$.
+    \item \textbf{(C5 - Mengevaluasi)} Seseorang mengklaim bahwa solusi untuk $V(x,y)$ pada persegi panjang dengan tiga sisi di-ground ($V=0$) dan satu sisi ($y=b$) memiliki potensial $V_0$ berbentuk $V(x,y) = \sum_{n=1}^{\infty} C_n \sin\left(\frac{n\pi x}{a}\right) \sinh\left(\frac{n\pi y}{a}\right)$. Evaluasi dan buktikan kebenaran bentuk solusi ini menggunakan syarat batas yang diberikan!
+    \item \textbf{(C6 - Mencipta)} Formulasikan sebuah masalah nilai batas (Boundary Value Problem) baru untuk distribusi potensial 2D dalam sebuah penampang pelat logam, berikan spesifikasi dimensi dan syarat batas Anda sendiri, lalu rumuskan ekspresi integral untuk mencari koefisien deret Fourier-nya.
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

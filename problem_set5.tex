@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Case Method 2\\Persamaan Diferensial - Minggu 5: PDB Orde 2 Non-Homogen \& Aplikasi RLC}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Case Method ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis rangkaian, dan penyelesaian matematis Anda secara detil dan sistematis.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Sebutkan bentuk tebakan solusi partikular $y_p(x)$ menggunakan Metode Koefisien Tak Tentu apabila fungsi $f(x) = 5e^{3x} + 2x^2$.
+    \item \textbf{(C2 - Memahami)} Jelaskan mengapa solusi umum persamaan diferensial non-homogen merupakan penjumlahan dari solusi homogen dan solusi partikular. Apa arti fisis dari masing-masing komponen solusi tersebut dalam konteks sistem dinamik (misalnya rangkaian RLC)?
+    \item \textbf{(C3 - Mengaplikasikan)} Tentukan solusi partikular dari persamaan diferensial berikut menggunakan metode koefisien tak tentu: $y'' + 3y' + 2y = 4e^{-3x}$.
+    \item \textbf{(C4 - Menganalisis)} Diberikan persamaan diferensial $y'' - y' - 2y = 3e^{-x}$. Analisislah mengapa tebakan awal $y_p = A e^{-x}$ tidak akan berhasil, dan tentukan bentuk tebakan yang benar serta solusi partikularnya!
+    \item \textbf{(C5 - Mengevaluasi)} Sebuah rangkaian seri RLC dihubungkan dengan sumber tegangan AC $E(t) = 100 \sin(377t)$. Diketahui $R = 10 \, \Omega$, $L = 0.1$ H, dan $C = 10^{-3}$ F. Evaluasi respons tunak (steady-state response) dari arus pada rangkaian tersebut menggunakan PDB non-homogen! Apakah resonansi dapat terjadi?
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sistem elektromekanis atau rangkaian kelistrikan yang dapat dimodelkan oleh persamaan diferensial non-homogen $x'' + 2x' + 5x = 10\cos(2t)$. Tentukan parameter fisis sistem Anda dan temukan respons total sistem jika pada saat awal sistem berada dalam keadaan diam ($x(0)=0, x'(0)=0$).
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

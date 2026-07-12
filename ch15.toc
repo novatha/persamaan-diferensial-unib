@@ -1,0 +1,3 @@
+\beamer@sectionintoc {1}{Review: Persamaan Maxwell}{3}{0}{1}
+\beamer@sectionintoc {2}{Kaitan PDP dan Gelombang EM}{4}{0}{2}
+\beamer@sectionintoc {3}{Panduan Team-Based Project}{5}{0}{3}

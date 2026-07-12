@@ -1,0 +1,100 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definisi}[section]
+\newtheorem{example}{Contoh}[section]
+
+\title{Catatan Kuliah Persamaan Diferensial\\Minggu 12: Persamaan Panas 1D (Difusi Termal pada Kabel)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Pendahuluan}
+Dalam rekayasa teknik elektro, analisis distribusi panas sangat penting terutama pada perancangan saluran transmisi dan kabel listrik. Arus listrik yang mengalir pada kabel akan menghasilkan panas akibat resistansi material konduktor (efek Joule). Panas yang dihasilkan harus dapat didisipasikan ke lingkungan untuk mencegah pelelehan atau kerusakan pada insulasi kabel.
+
+Modul ini membahas Persamaan Panas (Heat Equation) satu dimensi, yaitu model matematika dari fenomena difusi termal. Kita akan memodelkan bagaimana suhu berubah seiring berjalannya waktu dan posisi di sepanjang kabel penghantar.
+
+\section{Materi Utama}
+\subsection{Persamaan Panas 1 Dimensi}
+Persamaan panas satu dimensi merupakan persamaan diferensial parsial (PDP) parabolik yang menggambarkan distribusi panas pada suatu batang atau kabel seiring waktu. Persamaan ini dirumuskan sebagai:
+\begin{equation}
+\frac{\partial u}{\partial t} = \alpha^2 \frac{\partial^2 u}{\partial x^2}
+\end{equation}
+dimana:
+\begin{itemize}
+    \item $u(x,t)$ adalah temperatur pada posisi $x$ dan waktu $t$.
+    \item $\alpha^2 = \frac{k}{c \rho}$ adalah difusivitas termal material, dengan $k$ konduktivitas termal, $c$ kalor jenis, dan $\rho$ massa jenis.
+\end{itemize}
+
+\subsection{Metode Pemisahan Variabel}
+Untuk menyelesaikan persamaan panas, kita menggunakan metode pemisahan variabel. Asumsikan solusi berbentuk:
+\begin{equation}
+u(x,t) = X(x)T(t)
+\end{equation}
+Substitusikan ke dalam persamaan panas:
+\begin{equation}
+X(x)T'(t) = \alpha^2 X''(x)T(t) \implies \frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda^2
+\end{equation}
+Hal ini menghasilkan dua persamaan diferensial biasa (PDB):
+\begin{align}
+X''(x) + \lambda^2 X(x) &= 0 \\
+T'(t) + \alpha^2 \lambda^2 T(t) &= 0
+\end{align}
+
+\subsection{Kondisi Batas dan Awal}
+Misalkan kita memiliki kabel dengan panjang $L$.
+\textbf{Kondisi Batas (Dirichlet):} Kabel dijaga pada suhu 0 di kedua ujungnya:
+$u(0,t) = 0$ dan $u(L,t) = 0$ untuk $t > 0$.
+
+\textbf{Kondisi Awal:} Suhu awal kabel pada $t=0$ adalah $f(x)$:
+$u(x,0) = f(x)$.
+
+Dari kondisi batas pada $X(x)$:
+$X(0) = 0 \implies C_1 = 0$, di mana $X(x) = C_1 \cos(\lambda x) + C_2 \sin(\lambda x)$.\\
+$X(L) = 0 \implies C_2 \sin(\lambda L) = 0 \implies \lambda L = n\pi \implies \lambda_n = \frac{n\pi}{L}$.
+
+Sehingga, $X_n(x) = \sin\left(\frac{n\pi x}{L}\right)$.
+Solusi untuk $T(t)$ adalah $T_n(t) = e^{-\alpha^2 \lambda_n^2 t}$.
+
+Solusi umum merupakan superposisi:
+\begin{equation}
+u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi x}{L}\right) e^{-\alpha^2 \left(\frac{n\pi}{L}\right)^2 t}
+\end{equation}
+Koefisien $B_n$ dicari menggunakan deret sinus Fourier dari kondisi awal $f(x)$:
+\begin{equation}
+B_n = \frac{2}{L} \int_{0}^{L} f(x) \sin\left(\frac{n\pi x}{L}\right) dx
+\end{equation}
+
+\section{Ringkasan}
+Persamaan panas 1D adalah model penting untuk fenomena difusi. Dalam sistem elektro, persamaan ini digunakan untuk memprediksi perubahan suhu pada penghantar akibat aliran arus. Melalui metode pemisahan variabel dan deret Fourier, kita dapat menemukan solusi analitik dari persamaan panas dengan nilai awal dan batas tertentu. Solusi yang didapat menunjukkan peluruhan suhu secara eksponensial seiring waktu hingga mencapai keseimbangan (steady-state).
+
+\section{Referensi}
+\begin{enumerate}
+    \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics} (10th ed.). John Wiley \& Sons.
+    \item Zill, D. G., \& Wright, W. S. (2012). \textit{Advanced Engineering Mathematics} (5th ed.). Jones \& Bartlett Learning.
+\end{enumerate}
+
+\end{document}

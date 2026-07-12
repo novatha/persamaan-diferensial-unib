@@ -1,0 +1,88 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definisi}[section]
+\newtheorem{example}{Contoh}[section]
+
+\title{Catatan Kuliah Persamaan Diferensial\\Minggu 15: Kaitan PDP dengan Persamaan Maxwell}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Pendahuluan}
+Puncak pemahaman tentang persamaan diferensial parsial (PDP) di bidang kelistrikan adalah penggunaannya untuk merumuskan hukum-hukum fundamental elektromagnetisme, yaitu Persamaan Maxwell. Persamaan-persoalan dari fenomena listrik statis, magnet statis, hingga radiasi gelombang elektromagnetik dan optika berakar dari serangkaian PDP yang dikemukakan oleh James Clerk Maxwell.
+
+Modul penutup ini merangkum keterkaitan erat antara konsep dasar persamaan diferensial parsial yang dipelajari dan perumusan matematis Persamaan Maxwell.
+
+\section{Materi Utama}
+\subsection{Persamaan Maxwell Bentuk Diferensial}
+Persamaan Maxwell dalam wujud matematis lokal (bentuk diferensial parsial) di ruang vakum terdiri dari empat hukum utama:
+\begin{align}
+\nabla \cdot \mathbf{E} &= \frac{\rho_v}{\varepsilon_0} \quad &\text{(Hukum Gauss untuk Listrik)} \\
+\nabla \cdot \mathbf{B} &= 0 \quad &\text{(Hukum Gauss untuk Magnet)} \\
+\nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \quad &\text{(Hukum Faraday)} \\
+\nabla \times \mathbf{B} &= \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t} \quad &\text{(Hukum Ampere-Maxwell)}
+\end{align}
+di mana $\mathbf{E}$ adalah medan listrik, $\mathbf{B}$ induksi magnetik, $\rho_v$ rapat muatan, $\mathbf{J}$ rapat arus, serta $\varepsilon_0$ dan $\mu_0$ berturut-turut merupakan permitivitas dan permeabilitas vakum. Operator nabla ($\nabla$) memuat turunan parsial terhadap variabel ruang ($x, y, z$).
+
+\subsection{Menurunkan Persamaan Gelombang dari Maxwell}
+Salah satu pencapaian terbesar teori Maxwell adalah memprediksi keberadaan gelombang elektromagnetik yang bergerak pada kecepatan cahaya. Hal ini dibuktikan melalui manipulasi persamaan-persoalannya.
+
+Pertimbangkan daerah bebas muatan dan arus ($\rho_v = 0, \mathbf{J} = \mathbf{0}$).
+Ambil \textit{curl} ($\nabla \times$) pada Hukum Faraday:
+\begin{equation}
+\nabla \times (\nabla \times \mathbf{E}) = -\frac{\partial}{\partial t}(\nabla \times \mathbf{B})
+\end{equation}
+Gunakan identitas vektor $\nabla \times (\nabla \times \mathbf{E}) = \nabla(\nabla \cdot \mathbf{E}) - \nabla^2 \mathbf{E}$.
+Karena $\nabla \cdot \mathbf{E} = 0$, ruas kiri menjadi $-\nabla^2 \mathbf{E}$.
+Substitusi Hukum Ampere pada ruas kanan:
+\begin{equation}
+-\nabla^2 \mathbf{E} = -\frac{\partial}{\partial t}\left(\mu_0 \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t}\right) = -\mu_0 \varepsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}
+\end{equation}
+Sehingga didapatkan \textbf{Persamaan Gelombang Tiga Dimensi}:
+\begin{equation}
+\nabla^2 \mathbf{E} = \mu_0 \varepsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}
+\end{equation}
+Bentuk ini adalah klasifikasi PDP hiperbolik. Kecepatan rambat gelombangnya didefinisikan sebagai $v = \frac{1}{\sqrt{\mu_0 \varepsilon_0}} \approx c$ (kecepatan cahaya).
+
+\subsection{Kaitan dengan Persamaan Laplace dan Poisson}
+Pada kondisi elektrostatis, yakni bidang tidak berubah terhadap waktu ($\frac{\partial}{\partial t} = 0$), Hukum Faraday berbunyi $\nabla \times \mathbf{E} = 0$. Hal ini memungkinkan pendefinisian medan listrik dari sebuah potensial skalar $V$, $\mathbf{E} = -\nabla V$.
+Bila disubstitusikan ke Hukum Gauss untuk Listrik, dihasilkan:
+\begin{equation}
+\nabla \cdot (-\nabla V) = \frac{\rho_v}{\varepsilon_0} \implies \nabla^2 V = -\frac{\rho_v}{\varepsilon_0}
+\end{equation}
+Persamaan tersebut dinamakan \textbf{Persamaan Poisson}. Apabila pada ruang tersebut tidak ada muatan ($\rho_v = 0$), persamaan bereduksi menjadi \textbf{Persamaan Laplace} ($\nabla^2 V = 0$), yang telah kita bedah panjang lebar di bab-bab sebelumnya.
+
+\section{Ringkasan}
+Matakuliah Persamaan Diferensial memberikan piranti matematika berupa PDB maupun PDP untuk menafsirkan perilaku alam. Keterkaitan antara PDP dengan Persamaan Maxwell merepresentasikan inti sari ilmu teknik elektro: di mana perambatan gelombang, sinyal nirkabel, hingga rancangan sirkuit dapat direpresentasikan ke dalam bentuk persamaan matematis yang presisi (hiperbolik, parabolik, maupun eliptik).
+
+\section{Referensi}
+\begin{enumerate}
+    \item Griffiths, D. J. (2017). \textit{Introduction to Electrodynamics} (4th ed.). Cambridge University Press.
+    \item Hayt, W. H., \& Buck, J. A. (2018). \textit{Engineering Electromagnetics} (9th ed.). McGraw-Hill Education.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,122 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 9: Pengantar PDP \& Deret Fourier (Fungsi Genap/Ganjil)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Pengantar Persamaan Diferensial Parsial}
+\begin{frame}{Pengantar Persamaan Diferensial Parsial (PDP)}
+  \begin{block}{Definisi PDP}
+    Persamaan diferensial parsial (PDP) memuat turunan parsial terhadap dua atau lebih variabel bebas (contoh: ruang $x, y, z$ dan waktu $t$).
+  \end{block}
+  \vspace{0.3cm}
+  Contoh bentuk umum klasik dalam rekayasa:
+  \begin{itemize}
+      \item \textbf{Persamaan Gelombang (Wave Equation):} $\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}$ (Perambatan gelombang tegangan/arus di saluran transmisi)
+      \item \textbf{Persamaan Panas (Heat Equation):} $\frac{\partial u}{\partial t} = \alpha^2 \frac{\partial^2 u}{\partial x^2}$ (Distribusi suhu pada konduktor)
+      \item \textbf{Persamaan Laplace:} $\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0$ (Potensial listrik tunak)
+  \end{itemize}
+\end{frame}
+
+\section{Deret Fourier Dasar}
+\begin{frame}{Deret Fourier Dasar}
+  \begin{exampleblock}{Konsep Dasar Deret Fourier}
+    Setiap fungsi periodik $f(t)$ dengan periode $T = 2L$ dapat dinyatakan sebagai jumlahan fungsi sinus dan kosinus berfrekuensi harmonik (kelipatan).
+  \end{exampleblock}
+  Bentuk Umum:
+  \begin{equation}
+      f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{n\pi t}{L}\right) + b_n \sin\left(\frac{n\pi t}{L}\right) \right)
+  \end{equation}
+  Di mana koefisien Fourier diberikan oleh:
+  \begin{itemize}
+      \item $a_0 = \frac{1}{L} \int_{-L}^{L} f(t) dt$
+      \item $a_n = \frac{1}{L} \int_{-L}^{L} f(t) \cos\left(\frac{n\pi t}{L}\right) dt$
+      \item $b_n = \frac{1}{L} \int_{-L}^{L} f(t) \sin\left(\frac{n\pi t}{L}\right) dt$
+  \end{itemize}
+\end{frame}
+
+\section{Fungsi Genap dan Ganjil}
+\begin{frame}{Sifat Simetri: Fungsi Genap dan Ganjil}
+    Memahami sifat fungsi akan sangat memudahkan penghitungan koefisien Fourier.\\
+    \vspace{0.3cm}
+    \textbf{1. Fungsi Genap (Even Functions):}
+    \begin{itemize}
+        \item Syarat: $f(-t) = f(t)$
+        \item Simetris terhadap sumbu $y$.
+        \item Sifat integral: $\int_{-L}^{L} f(t) dt = 2 \int_{0}^{L} f(t) dt$
+        \item Contoh: $t^2, \cos(t), |t|$.
+    \end{itemize}
+    \vspace{0.3cm}
+    \textbf{2. Fungsi Ganjil (Odd Functions):}
+    \begin{itemize}
+        \item Syarat: $f(-t) = -f(t)$
+        \item Simetris terhadap titik asal $(0,0)$.
+        \item Sifat integral: $\int_{-L}^{L} f(t) dt = 0$
+        \item Contoh: $t, \sin(t), t^3$.
+    \end{itemize}
+\end{frame}
+
+\section{Ekspansi Deret Fourier Genap/Ganjil}
+\begin{frame}{Penyederhanaan Deret Fourier}
+    \begin{alertblock}{Deret Kosinus Fourier (Untuk Fungsi Genap)}
+        Jika $f(t)$ adalah fungsi genap, maka koefisien $b_n = 0$.
+        Deret Fourier hanya terdiri dari komponen $a_0$ dan kosinus $a_n$.
+        \begin{equation}
+            f(t) = \frac{a_0}{2} + \sum_{n=1}^{\infty} a_n \cos\left(\frac{n\pi t}{L}\right)
+        \end{equation}
+    \end{alertblock}
+    
+    \begin{exampleblock}{Deret Sinus Fourier (Untuk Fungsi Ganjil)}
+        Jika $f(t)$ adalah fungsi ganjil, maka koefisien $a_0 = 0$ dan $a_n = 0$.
+        Deret Fourier hanya terdiri dari komponen sinus $b_n$.
+        \begin{equation}
+            f(t) = \sum_{n=1}^{\infty} b_n \sin\left(\frac{n\pi t}{L}\right)
+        \end{equation}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

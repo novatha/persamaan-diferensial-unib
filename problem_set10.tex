@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 10: Solusi PDP Metode Pemisahan Variabel}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis matematis Anda secara sistematis dan terstruktur.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Jelaskan asumsi dasar yang digunakan pada metode pemisahan variabel saat memecahkan Persamaan Diferensial Parsial (PDP) $u(x,t)$. 
+    \item \textbf{(C2 - Memahami)} Mengapa saat menggunakan metode pemisahan variabel, jika kedua sisi persamaan bergantung pada variabel yang berbeda (misal satu sisi hanya $x$, sisi lain hanya $t$), maka kedua sisi harus disamakan dengan sebuah konstanta?
+    \item \textbf{(C3 - Mengaplikasikan)} Gunakan metode pemisahan variabel untuk mencari dua persamaan diferensial biasa (PDB) dari PDP: $x \frac{\partial u}{\partial x} = \frac{\partial u}{\partial y}$, dengan asumsi $u(x,y) = X(x)Y(y)$.
+    \item \textbf{(C4 - Menganalisis)} Diberikan persamaan difusi panas: $\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}$. Dengan substitusi $u(x,t) = X(x)T(t)$, turunkan persamaan untuk PDB $X(x)$ dan $T(t)$, dan tunjukkan peran konstanta pemisahan.
+    \item \textbf{(C5 - Mengevaluasi)} Seseorang memisahkan persamaan diferensial gelombang $\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}$ menggunakan konstanta pemisahan bernilai positif, yaitu $k^2$. Evaluasilah akibatnya secara fisik; apakah solusi yang dihasilkan merepresentasikan fenomena gelombang yang realistis? Berikan alasannya!
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah PDP buatan Anda sendiri (orde 1) yang dapat diselesaikan dengan pemisahan variabel. Tentukan konstanta pemisahan sendiri dan tunjukkan langkah-langkah detail hingga mendapatkan solusi umum untuk persamaan yang telah Anda buat.
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

@@ -1,0 +1,110 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 13: Persamaan Laplace 2D (Distribusi Potensial Elektrostatik)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Persamaan Laplace 2D}
+\begin{frame}{Persamaan Laplace 2D}
+  \begin{block}{Definisi Persamaan Laplace}
+    Persamaan Laplace adalah PDP orde dua yang menggambarkan keadaan tunak (steady-state) tanpa sumber. Dalam elektrostatik (tanpa muatan bebas), potensial $V$ memenuhi:
+    \begin{equation}
+        \nabla^2 V = 0
+    \end{equation}
+  \end{block}
+
+  \begin{exampleblock}{Koordinat Kartesian 2D}
+    Jika potensial hanya bergantung pada koordinat $x$ dan $y$, maka:
+    \begin{equation}
+        \frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0
+    \end{equation}
+    Persamaan ini sangat penting untuk mencari distribusi potensial di antara elektroda pada penampang dua dimensi.
+  \end{exampleblock}
+\end{frame}
+
+\section{Metode Pemisahan Variabel}
+\begin{frame}{Metode Pemisahan Variabel}
+    Kita asumsikan solusi berbentuk perkalian fungsi $x$ dan $y$:
+    \begin{equation}
+        V(x,y) = X(x) Y(y)
+    \end{equation}
+    Substitusi ke Persamaan Laplace menghasilkan:
+    \begin{equation}
+        Y \frac{d^2X}{dx^2} + X \frac{d^2Y}{dy^2} = 0 \implies \frac{1}{X} \frac{d^2X}{dx^2} = -\frac{1}{Y} \frac{d^2Y}{dy^2} = k^2
+    \end{equation}
+    
+    \textbf{Dua Persamaan Diferensial Biasa (PDB):}
+    \begin{alertblock}{}
+    \begin{itemize}
+        \item $\frac{d^2X}{dx^2} - k^2 X = 0$
+        \item $\frac{d^2Y}{dy^2} + k^2 Y = 0$
+    \end{itemize}
+    \end{alertblock}
+    Konstanta pemisahan $k^2$ ditentukan oleh syarat batas fisik dari sistem.
+\end{frame}
+
+\section{Aplikasi Elektrostatik}
+\begin{frame}{Aplikasi Distribusi Potensial Elektrostatik}
+  \begin{block}{Solusi Umum Berdasarkan $k$}
+    Tergantung tanda konstanta, kita mendapatkan kombinasi fungsi sinus/kosinus dan fungsi hiperbolik eksponensial:
+    \begin{itemize}
+        \item Jika $k^2 > 0$: $X(x) = A e^{kx} + B e^{-kx}$, $Y(y) = C \sin(ky) + D \cos(ky)$ (atau sebaliknya)
+        \item Jika $k^2 = 0$: $X(x) = Ax + B$, $Y(y) = Cy + D$
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Syarat Batas (Boundary Conditions)}
+    Syarat batas sangat penting untuk menentukan koefisien $A, B, C, D$ dan konstanta pemisahan $k$. 
+    \begin{itemize}
+        \item Syarat Dirichlet: Nilai potensial $V$ diketahui pada batas.
+        \item Syarat Neumann: Turunan potensial (medan listrik) diketahui pada batas.
+    \end{itemize}
+    Solusi akhirnya merupakan superposisi (Deret Fourier) dari solusi-solusi fundamental.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

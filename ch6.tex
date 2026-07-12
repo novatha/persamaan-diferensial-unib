@@ -1,0 +1,109 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 6: Transformasi Laplace Dasar}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Definisi Transformasi Laplace}
+\begin{frame}{Definisi Transformasi Laplace}
+  \begin{block}{Definisi Formal}
+    Transformasi Laplace dari suatu fungsi $f(t)$ yang didefinisikan untuk $t \geq 0$ adalah fungsi $F(s)$ dari variabel kompleks $s$, yang diberikan oleh integral:
+    \begin{equation}
+        \mathcal{L}\{f(t)\} = F(s) = \int_{0}^{\infty} e^{-st} f(t) \, dt
+    \end{equation}
+  \end{block}
+
+  \begin{exampleblock}{Transformasi Fungsi Dasar}
+    \begin{itemize}
+        \item $\mathcal{L}\{1\} = \frac{1}{s}$
+        \item $\mathcal{L}\{e^{at}\} = \frac{1}{s-a}$
+        \item $\mathcal{L}\{\sin(\omega t)\} = \frac{\omega}{s^2 + \omega^2}$
+        \item $\mathcal{L}\{\cos(\omega t)\} = \frac{s}{s^2 + \omega^2}$
+        \item $\mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}$
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\section{Sifat Linieritas}
+\begin{frame}{Sifat Linieritas}
+    Transformasi Laplace merupakan operasi linier. Ini berarti bahwa untuk konstanta $c_1$ dan $c_2$, serta fungsi $f(t)$ dan $g(t)$:
+    
+    \begin{alertblock}{Teorema Linieritas}
+    \begin{equation}
+        \mathcal{L}\{c_1 f(t) + c_2 g(t)\} = c_1 \mathcal{L}\{f(t)\} + c_2 \mathcal{L}\{g(t)\}
+    \end{equation}
+    \end{alertblock}
+    
+    \textbf{Contoh Penggunaan:}
+    Mencari transformasi dari $f(t) = 3e^{2t} - 5\sin(4t)$.
+    \begin{align*}
+        \mathcal{L}\{3e^{2t} - 5\sin(4t)\} &= 3\mathcal{L}\{e^{2t}\} - 5\mathcal{L}\{\sin(4t)\} \\
+        &= 3 \left( \frac{1}{s-2} \right) - 5 \left( \frac{4}{s^2 + 16} \right)
+    \end{align*}
+\end{frame}
+
+\section{Sifat Pergeseran (Translasi)}
+\begin{frame}{Sifat Pergeseran (Translasi)}
+    Sifat pergeseran (First Shifting Theorem) memudahkan pencarian transformasi ketika suatu fungsi dikalikan dengan eksponensial $e^{at}$.
+    
+    \begin{block}{Teorema Pergeseran Pertama}
+    Jika $\mathcal{L}\{f(t)\} = F(s)$, maka:
+    \begin{equation}
+        \mathcal{L}\{e^{at} f(t)\} = F(s-a)
+    \end{equation}
+    \end{block}
+    
+    \textbf{Contoh Penggunaan:}
+    Mencari $\mathcal{L}\{e^{3t} \cos(2t)\}$.
+    \begin{itemize}
+        \item Diketahui $f(t) = \cos(2t) \implies F(s) = \frac{s}{s^2+4}$
+        \item Kalikan dengan $e^{3t}$, kita geser $s$ menjadi $s-3$.
+        \item Hasilnya: $F(s-3) = \frac{s-3}{(s-3)^2+4}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

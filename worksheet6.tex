@@ -1,0 +1,59 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 6: Latihan Transformasi Laplace}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
+Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi. Fokuskan pada kemampuan Anda dalam menghitung integral Laplace secara manual (C1-C3) dan memanfaatkan sifat operasional transformasi (C4-C6). Waktu: 45--60 menit.
+\end{tcolorbox}
+
+\section*{Soal-Soal Latihan}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan kembali Teorema Linieritas dari Transformasi Laplace!
+    \vspace{2.5cm}
+
+    \item \textbf{(C2 - Memahami)} Buktikan dengan menggunakan definisi integral Laplace bahwa $\mathcal{L}\{e^{at}\} = \frac{1}{s-a}$, dan jelaskan batasan nilai $s$ agar integral tersebut konvergen!
+    \vspace{4.0cm}
+
+    \item \textbf{(C3 - Mengaplikasikan)} Hitung transformasi Laplace dari fungsi trigonometri campuran berikut: 
+    $$ f(t) = \sin(2t) \cos(2t) $$
+    (Petunjuk: Gunakan identitas trigonometri terlebih dahulu).
+    \vspace{4.0cm}
+
+    \item \textbf{(C4 - Menganalisis)} Temukan fungsi asal $f(t)$ jika diketahui transformasi Laplacenya adalah:
+    $$ F(s) = \frac{5}{s-3} - \frac{2s}{s^2+25} $$
+    \vspace{4.5cm}
+
+    \item \textbf{(C5 - Mengevaluasi)} Diberikan $F(s) = \frac{3s+2}{s^2+6s+25}$. Evaluasi cara penyelesaiannya dengan teknik melengkapkan kuadrat sempurna pada penyebut, lalu gunakan sifat pergeseran invers untuk menemukan $f(t)$!
+    \vspace{5.5cm}
+
+    \item \textbf{(C6 - Mencipta)} Buatlah suatu sinyal yang dibangun dari fungsi eksponensial yang dimodulasi oleh fungsi kuadrat dan fungsi step (H(t)), sehingga Anda harus menggunakan definisi integral langsung untuk menemukan Transformasi Laplacenya. Tulis dan pecahkan!
+    \vspace{6cm}
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

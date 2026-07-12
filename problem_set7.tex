@@ -1,0 +1,51 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 7: Invers Laplace \& Solusi PDB}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis fisis, dan penurunan matematis Anda secara sistematis dan terstruktur.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan definisi Invers Transformasi Laplace dan berikan tiga contoh pasangan fungsi kawasan-$s$ beserta kawasan waktu ($t$) yang umum digunakan.
+    \item \textbf{(C2 - Memahami)} Jelaskan mengapa menggunakan metode ekspansi pecahan parsial (\textit{partial fraction expansion}) sangat penting dalam proses Invers Transformasi Laplace.
+    \item \textbf{(C3 - Mengaplikasikan)} Tentukan Invers Transformasi Laplace dari fungsi $F(s)$ berikut:
+    \begin{enumerate}[label=\alph*.]
+        \item $F(s) = \frac{4}{s(s+2)}$
+        \item $F(s) = \frac{2s + 5}{s^2 + 6s + 25}$
+    \end{enumerate}
+    \item \textbf{(C4 - Menganalisis)} Analisislah sebuah PDB yang merepresentasikan tegangan pada sebuah simpul rangkaian listrik:
+    $$ \frac{dv}{dt} + 4v = 12e^{-2t} $$
+    dengan kondisi awal $v(0) = 2$. Gunakan Transformasi Laplace untuk menganalisis dan mendapatkan solusi tegangan $v(t)$. 
+    \item \textbf{(C5 - Mengevaluasi)} Diberikan fungsi transfer $H(s) = \frac{10}{(s+1)(s+3)^2}$. Seorang mahasiswa menyatakan bahwa komponen penyebut $s+3$ berulang tidak memengaruhi orde polinom pembilang saat dilakukan ekspansi pecahan parsial. Evaluasi pernyataan ini dan hitunglah $h(t) = \mathcal{L}^{-1}\{H(s)\}$ untuk membuktikan argumen Anda!
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah permasalahan respon tegangan transien $v_C(t)$ dari rangkaian RLC seri yang menghasilkan Persamaan Diferensial Biasa Orde 2. Tentukan nilai R, L, dan C sedemikian sehingga sistem tersebut menghasilkan respon kritis redaman (\textit{critically damped}). Susun persamaannya, tentukan nilai kondisi awalnya sendiri, lalu selesaikan menggunakan metode Transformasi Laplace!
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

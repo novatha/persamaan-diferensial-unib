@@ -1,0 +1,52 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 1: Klasifikasi \& Pemodelan}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis fisis, dan penurunan matematis Anda secara sistematis dan terstruktur.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan definisi lengkap dari Persamaan Diferensial Biasa (PDB) linier orde 2. Berikan satu contoh persamaan yang memenuhi kriteria tersebut di bidang kelistrikan.
+    \item \textbf{(C2 - Memahami)} Jelaskan dengan bahasa Anda sendiri perbedaan mendasar antara "Solusi Umum" dan "Solusi Khusus" pada penyelesaian suatu \textit{Initial Value Problem} (IVP). Mengapa kita membutuhkan kondisi awal?
+    \item \textbf{(C3 - Mengaplikasikan)} Tentukan apakah persamaan-persamaan diferensial berikut merupakan persamaan linier atau non-linier, serta sebutkan ordenya:
+    \begin{enumerate}[label=\alph*.]
+        \item $\frac{d^2y}{dt^2} + 3t\frac{dy}{dt} + y = \sin(t)$
+        \item $\left(\frac{dx}{dt}\right)^2 + 4x = 0$
+        \item $\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = \rho(x,y)$
+    \end{enumerate}
+    \item \textbf{(C4 - Menganalisis)} Analisislah sebuah rangkaian seri RC (Resistor-Kapasitor) yang dihubungkan dengan sumber tegangan DC sebesar $V_0$. Dengan menggunakan Hukum Tegangan Kirchhoff (KVL), jabarkan dan turunkan pemodelan fisis rangkaian tersebut hingga membentuk Persamaan Diferensial Biasa orde 1 terhadap variabel muatan kapasitor $q(t)$.
+    \item \textbf{(C5 - Mengevaluasi)} Diberikan sebuah model persamaan diferensial untuk suatu rangkaian listrik: 
+    $$ \frac{di}{dt} + 5i = 10 $$
+    dengan kondisi awal $i(0)=0$. Seorang praktikan mengklaim bahwa solusi khusus untuk arus rangkaian tersebut adalah $i(t) = 2 - 2e^{-5t}$. Evaluasi dan buktikan apakah klaim solusi praktikan tersebut benar atau salah!
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sistem elektromekanik atau sirkuit listrik imajiner sederhana sedemikian rupa sehingga dinamika responsnya dapat direpresentasikan oleh persamaan diferensial $\frac{dx}{dt} + kx = F_0$. Jelaskan secara detil komponen-komponen sistem Anda, variabel $x$, serta makna fisis dari parameter $k$ dan $F_0$.
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

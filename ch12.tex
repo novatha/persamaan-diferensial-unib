@@ -1,0 +1,92 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 12: Persamaan Panas 1D (Difusi Termal pada Kabel)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Persamaan Diferensial Panas (Difusi)}
+\begin{frame}{Persamaan Panas 1D}
+  \begin{block}{Bentuk Dasar}
+    Persamaan panas (heat equation) atau persamaan difusi memodelkan bagaimana distribusi suhu dalam medium (seperti konduktor kabel listrik) berubah seiring waktu. 
+    \begin{equation}
+        \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}
+    \end{equation}
+    di mana $u(x,t)$ adalah suhu pada posisi $x$ dan waktu $t$, dan $\alpha$ adalah difusivitas termal material konduktor.
+  \end{block}
+
+  \begin{exampleblock}{Fenomena Fisis}
+    Berbeda dengan persamaan gelombang, persamaan panas mendeskripsikan proses ireversibel di mana suhu akan cenderung mencapai titik setimbang (steady-state). Kalor merambat dari daerah bersuhu tinggi ke daerah bersuhu rendah.
+  \end{exampleblock}
+\end{frame}
+
+\section{Penyelesaian dengan Pemisahan Variabel}
+\begin{frame}{Penyelesaian dengan Metode Pemisahan Variabel}
+    Misalkan konduktor kabel memiliki panjang $L$, dengan kedua ujungnya dipertahankan pada suhu $0^\circ$.
+    Kondisi batas: $u(0,t) = 0$ dan $u(L,t) = 0$.
+    \vspace{0.3cm}
+    Dengan substitusi $u(x,t) = X(x)T(t)$:
+    $$ \frac{T'}{\alpha T} = \frac{X''}{X} = -\lambda^2 $$
+    Didapatkan dua persamaan diferensial biasa:
+    \begin{itemize}
+        \item Spasial: $X'' + \lambda^2 X = 0 \implies X(x) = \sin\left(\frac{n\pi}{L}x\right)$
+        \item Temporal: $T' + \alpha\lambda^2 T = 0 \implies T(t) = e^{-\alpha\left(\frac{n\pi}{L}\right)^2 t}$
+    \end{itemize}
+\end{frame}
+
+\section{Solusi Umum}
+\begin{frame}{Solusi Umum Distribusi Suhu}
+  \begin{block}{Solusi Bentuk Deret Fourier}
+    Menggunakan superposisi, solusi umum suhu di sepanjang kabel adalah:
+    \begin{equation}
+        u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi}{L}x\right) e^{-\alpha\left(\frac{n\pi}{L}\right)^2 t}
+    \end{equation}
+  \end{block}
+  \textbf{Penting:}
+  Bentuk $e^{-\text{konstanta}\cdot t}$ menunjukkan peluruhan temporal. Hal ini mengindikasikan bahwa untuk waktu $t \to \infty$, suhu konduktor pada akhirnya akan turun menjadi $0$ di setiap titik jika tidak ada sumber panas konstan.
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

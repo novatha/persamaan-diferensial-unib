@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 6: Transformasi Laplace Dasar}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Selesaikan masalah transformasi Laplace dengan detil. Tunjukkan penggunaan sifat linieritas dan pergeseran yang Anda terapkan.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan rumus integral definisi transformasi Laplace dan tuliskan tabel pasangan transformasi Laplace untuk fungsi dasar: $1, t, t^n, e^{at}, \sin(bt), \cos(bt)$.
+    \item \textbf{(C2 - Memahami)} Jelaskan dengan kata-kata sendiri apa yang dimaksud dengan sifat pergeseran pertama (First Shifting Theorem) dalam transformasi Laplace dan berikan satu contoh penerapannya!
+    \item \textbf{(C3 - Mengaplikasikan)} Tentukan transformasi Laplace dari fungsi berikut menggunakan sifat linieritas: $f(t) = 4t^3 - 2e^{-5t} + 7\cos(3t)$.
+    \item \textbf{(C4 - Menganalisis)} Analisislah dan tentukan transformasi Laplace dari fungsi $f(t) = e^{-2t} \sin(4t)$. Langkah apa yang digunakan dan mengapa sifat pergeseran sangat berguna di sini?
+    \item \textbf{(C5 - Mengevaluasi)} Seseorang melakukan transformasi Laplace Invers dari $F(s) = \frac{3s}{(s^2+4)^2}$ dengan menganggapnya sebagai $3 \cdot \mathcal{L}^{-1}\left\{\frac{s}{s^2+4}\right\} \cdot \mathcal{L}^{-1}\left\{\frac{1}{s^2+4}\right\}$. Evaluasi kebenaran asumsi ini! Apakah transformasi Laplace invers bersifat perkalian distributif? (Petunjuk: Hubungkan dengan Teorema Konvolusi).
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah fungsi $f(t)$ di kawasan waktu yang mewakili respons gelombang teredam gabungan dengan osilasi ganda, sedemikian rupa sehingga transformasi Laplacenya menjadi $F(s) = \frac{2s + 5}{s^2 + 4s + 13} + \frac{10}{s(s^2+9)}$. Buktikan bahwa $F(s)$ tersebut benar merupakan hasil transformasi fungsi $f(t)$ yang Anda buat!
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

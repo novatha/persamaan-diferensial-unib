@@ -1,0 +1,119 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 7: Invers Laplace \& Solusi PDB dengan Laplace}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Invers Transformasi Laplace}
+\begin{frame}{Invers Transformasi Laplace}
+  \begin{block}{Definisi}
+    Jika $\mathcal{L}\{f(t)\} = F(s)$, maka invers transformasi Laplace ditotasikan dengan $\mathcal{L}^{-1}\{F(s)\} = f(t)$.
+  \end{block}
+  \vspace{0.5cm}
+  Pasangan umum Transformasi Laplace dan Inversnya:
+  \begin{itemize}
+      \item $\mathcal{L}^{-1}\left\{\frac{1}{s}\right\} = 1$
+      \item $\mathcal{L}^{-1}\left\{\frac{1}{s^n}\right\} = \frac{t^{n-1}}{(n-1)!}, \quad n=1,2,3,\dots$
+      \item $\mathcal{L}^{-1}\left\{\frac{1}{s-a}\right\} = e^{at}$
+      \item $\mathcal{L}^{-1}\left\{\frac{\omega}{s^2+\omega^2}\right\} = \sin(\omega t)$
+      \item $\mathcal{L}^{-1}\left\{\frac{s}{s^2+\omega^2}\right\} = \cos(\omega t)$
+  \end{itemize}
+\end{frame}
+
+\section{Pecahan Parsial (Partial Fraction)}
+\begin{frame}{Ekspansi Pecahan Parsial}
+  \begin{exampleblock}{Pecahan Parsial}
+    Seringkali bentuk $F(s)$ merupakan fungsi rasional yang kompleks. Kita perlu mengurainya menjadi bentuk yang lebih sederhana (pecahan parsial) untuk mencari inversnya.
+    $$ F(s) = \frac{P(s)}{Q(s)} $$
+  \end{exampleblock}
+  Bentuk faktor penyebut $Q(s)$:
+  \begin{itemize}
+      \item \textbf{Akar real berbeda}: $\frac{A}{s-a} + \frac{B}{s-b}$
+      \item \textbf{Akar berulang}: $\frac{A}{(s-a)^2} + \frac{B}{s-a}$
+      \item \textbf{Akar kompleks konjugat}: $\frac{As+B}{s^2+as+b}$
+  \end{itemize}
+\end{frame}
+
+\section{Menyelesaikan PDB dengan Laplace}
+\begin{frame}{Menyelesaikan PDB dengan Transformasi Laplace}
+  \textbf{Langkah-langkah Penyelesaian PDB:}
+  \begin{enumerate}
+      \item Terapkan Transformasi Laplace pada kedua sisi persamaan diferensial.
+      \item Gunakan kondisi awal (Initial Conditions):
+      \begin{itemize}
+          \item $\mathcal{L}\{y'(t)\} = sY(s) - y(0)$
+          \item $\mathcal{L}\{y''(t)\} = s^2Y(s) - sy(0) - y'(0)$
+      \end{itemize}
+      \item Susun persamaan aljabar untuk mendapatkan persamaan $Y(s)$.
+      \item Terapkan Invers Transformasi Laplace pada $Y(s)$ untuk mendapatkan $y(t)$.
+  \end{enumerate}
+  \begin{alertblock}{Keuntungan}
+    Transformasi Laplace mengubah persamaan diferensial menjadi persamaan aljabar, dan kondisi awal (initial conditions) langsung dilibatkan dalam proses komputasi.
+  \end{alertblock}
+\end{frame}
+
+\section{Contoh Kasus Rangkaian Listrik}
+\begin{frame}{Aplikasi pada Rangkaian RLC}
+    Diberikan suatu persamaan diferensial dari rangkaian listrik seri:
+    $$ \frac{d^2i}{dt^2} + 3\frac{di}{dt} + 2i = 0 $$
+    dengan $i(0)=0$ dan $i'(0)=2$.
+    \vspace{0.3cm}\\
+    \textbf{Penyelesaian Laplace:}
+    \begin{equation}
+        [s^2 I(s) - s(0) - 2] + 3[s I(s) - 0] + 2 I(s) = 0
+    \end{equation}
+    \begin{equation}
+        (s^2 + 3s + 2)I(s) = 2 \implies I(s) = \frac{2}{(s+1)(s+2)}
+    \end{equation}
+    Gunakan pecahan parsial:
+    \begin{equation}
+        I(s) = \frac{2}{s+1} - \frac{2}{s+2}
+    \end{equation}
+    Invers Laplace: $i(t) = 2e^{-t} - 2e^{-2t}$.
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

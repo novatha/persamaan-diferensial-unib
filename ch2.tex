@@ -1,0 +1,103 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amsmath,amssymb}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 2: PDB Orde 1 (Separabel, Eksak, Faktor Integrasi)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Bentuk Umum PDB Orde 1}
+\begin{frame}{Bentuk Umum PDB Orde 1}
+  Secara umum, Persamaan Diferensial Biasa (PDB) Orde 1 dapat dituliskan dalam bentuk:
+  \begin{equation}
+      \frac{dy}{dx} = f(x,y) \quad \text{atau} \quad M(x,y)dx + N(x,y)dy = 0
+  \end{equation}
+  
+  Metode penyelesaiannya bergantung pada karakteristik fungsi penyusunnya. Hari ini kita akan membahas tiga metode utama:
+  \begin{itemize}
+      \item Persamaan Separabel (Dapat Dipisahkan)
+      \item Persamaan Eksak
+      \item Persamaan Non-Eksak dengan Faktor Integrasi
+  \end{itemize}
+\end{frame}
+
+\section{Persamaan Separabel}
+\begin{frame}{Persamaan Separabel (Dapat Dipisahkan)}
+  \begin{block}{Definisi}
+    PDB disebut separabel jika fungsi $f(x,y)$ dapat difaktorkan menjadi fungsi yang murni bergantung pada $x$ dan fungsi yang murni bergantung pada $y$.
+    $$ \frac{dy}{dx} = g(x)h(y) $$
+  \end{block}
+  \textbf{Langkah Penyelesaian:}
+  \begin{enumerate}
+      \item Kumpulkan semua suku ber-variabel $y$ ke ruas yang bersandingan dengan $dy$.
+      \item Kumpulkan semua suku ber-variabel $x$ ke ruas yang bersandingan dengan $dx$.
+      \item Integrasikan kedua ruas secara independen.
+  \end{enumerate}
+  \begin{alertblock}{Bentuk Integrasi}
+    $$ \int \frac{1}{h(y)} dy = \int g(x) dx + C $$
+  \end{alertblock}
+\end{frame}
+
+\section{Persamaan Eksak}
+\begin{frame}{Persamaan Eksak}
+  Bentuk $M(x,y)dx + N(x,y)dy = 0$ dikatakan \textbf{Eksak} jika memenuhi syarat turunan parsial silang:
+  \begin{equation}
+      \frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}
+  \end{equation}
+  
+  \textbf{Konsep Fisis (Medan Konservatif):}\\
+  Persamaan eksak ekuivalen dengan total diferensial dari suatu fungsi skalar $F(x,y) = C$, di mana:
+  $$ dF = \frac{\partial F}{\partial x}dx + \frac{\partial F}{\partial y}dy = 0 $$
+  Artinya $M = \frac{\partial F}{\partial x}$ dan $N = \frac{\partial F}{\partial y}$.
+\end{frame}
+
+\section{Faktor Integrasi}
+\begin{frame}{Faktor Integrasi}
+  Bagaimana jika $\frac{\partial M}{\partial y} \neq \frac{\partial N}{\partial x}$?\\
+  Persamaan tersebut \textbf{Non-Eksak}. Namun, kita bisa menjadikannya eksak dengan mengalikannya dengan suatu \textit{Faktor Integrasi} $\mu(x,y)$.
+  
+  \begin{block}{Kasus Sederhana}
+    \begin{itemize}
+        \item Jika $\frac{M_y - N_x}{N}$ hanya fungsi dari $x$ (sebut $p(x)$), maka $\mu(x) = e^{\int p(x) dx}$.
+        \item Jika $\frac{N_x - M_y}{M}$ hanya fungsi dari $y$ (sebut $q(y)$), maka $\mu(y) = e^{\int q(y) dy}$.
+    \end{itemize}
+  \end{block}
+  Setelah dikalikan $\mu$, persamaan $\mu M dx + \mu N dy = 0$ akan menjadi eksak dan dapat diselesaikan dengan cara sebelumnya.
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Latihan Soal \& Sesi Diskusi}}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro
+  \end{center}
+\end{frame}
+
+\end{document}

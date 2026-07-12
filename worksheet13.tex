@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 13: Laplace 2D \& Syarat Batas}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
+Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih ketajaman pemodelan fisis Anda. Alokasikan waktu sekitar 45--60 menit untuk berdiskusi.
+\end{tcolorbox}
+
+\section*{Soal-Soal Latihan}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Apa yang dimaksud dengan syarat batas Dirichlet dan Neumann pada penyelesaian persamaan Laplace? Berikan penjelasan singkat.
+    \vspace{2.5cm}
+
+    \item \textbf{(C2 - Memahami)} Jelaskan prinsip superposisi linier saat menyelesaikan persamaan Laplace jika terdapat lebih dari satu batas yang memiliki potensial tidak nol.
+    \vspace{3.5cm}
+
+    \item \textbf{(C3 - Mengaplikasikan)} Jika PDB hasil pemisahan variabel adalah $X'' + k^2 X = 0$, tuliskan solusi umum untuk $X(x)$.
+    \vspace{3.5cm}
+
+    \item \textbf{(C4 - Menganalisis)} Analisislah mengapa fungsi sinh dan cosh lebih sering digunakan daripada eksponensial $e^{kx}$ dan $e^{-kx}$ dalam menuliskan solusi potensial di koordinat kartesian ketika terdapat syarat batas nol di salah satu ujung.
+    \vspace{5cm}
+
+    \item \textbf{(C5 - Mengevaluasi)} Diberikan fungsi potensial $V(x,y) = V_0 \frac{y}{d}$. Evaluasi apakah persamaan ini memenuhi Persamaan Laplace 2D dan sebutkan kondisi batas fisik apa yang sesuai dengan solusi ini (misalnya kapasitor pelat sejajar).
+    \vspace{5.5cm}
+
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah skema dua dimensi sederhana berupa saluran berongga dengan empat dinding. Tentukan potensial pada keempat dinding tersebut sedemikian rupa sehingga simetri sistem dapat menyederhanakan perhitungan koefisien solusinya.
+    \vspace{6cm}
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

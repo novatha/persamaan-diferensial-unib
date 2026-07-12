@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 9: Latihan PDP \& Deret Fourier}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
+Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih pemahaman Anda terkait Pengantar PDP dan Deret Fourier. Alokasikan waktu sekitar 45--60 menit untuk berdiskusi.
+\end{tcolorbox}
+
+\section*{Soal-Soal Latihan}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan persamaan matematis umum untuk menemukan koefisien $a_0$, $a_n$, dan $b_n$ dalam deret Fourier.
+    \vspace{2.5cm}
+
+    \item \textbf{(C2 - Memahami)} Diberikan sebuah string kawat listrik yang memiliki persamaan perambatan gelombang: $\frac{\partial^2 u}{\partial t^2} = 9 \frac{\partial^2 u}{\partial x^2}$. Tentukan berapakah nilai kecepatan perambatan gelombang ($c$) tersebut dan jelaskan satuan fisisnya.
+    \vspace{3cm}
+
+    \item \textbf{(C3 - Mengaplikasikan)} Tentukan nilai konstanta $a_0$ (komponen DC rata-rata) dari fungsi: $f(t) = |t|$ untuk selang interval $-2 < t < 2$.
+    \vspace{4.5cm}
+
+    \item \textbf{(C4 - Menganalisis)} Buktikan menggunakan definisi $f(-t) = -f(t)$ atau $f(-t) = f(t)$ bahwa perkalian antara sebuah fungsi genap dan fungsi ganjil akan selalu menghasilkan sebuah fungsi ganjil yang baru. (Petunjuk: misalkan $g(t)$ ganjil dan $h(t)$ genap, maka $y(t) = g(t)h(t)$).
+    \vspace{4.5cm}
+
+    \item \textbf{(C5 - Mengevaluasi)} Seorang desainer merancang representasi Deret Fourier untuk sinyal sinusoidal murni $f(t) = 3\sin(2\pi t)$. Karena dia menganggap sinyal itu periodik, ia mencoba menghitung ulang nilai integral untuk semua harmonik ke-$n$. Evaluasi pemborosan langkah kerjanya; berapakah nilai langsung (tanpa menghitung integral panjang) untuk $b_1$, dan $b_n$ untuk $n \neq 1$? Mengapa demikian?
+    \vspace{5cm}
+
+    \item \textbf{(C6 - Mencipta)} Ciptakan sebuah sketsa gambar fungsi ganjil sembarang yang periode gelombangnya adalah $T = 4$ dan bernilai konstanta di tiap segmen waktunya. Lalu tunjukkan kerangka integrasi untuk mencari $b_n$ dari gambar ciptaan Anda (tanpa perlu dihitung hasil akhirnya).
+    \vspace{5cm}
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

@@ -1,0 +1,283 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage[landscape, margin=1.5cm]{geometry} 
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+
+\definecolor{unibblue}{RGB}{0, 51, 153}
+\definecolor{rowcolor}{RGB}{242, 246, 250}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\titleformat{\section}{\large\bfseries\color{unibblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+\begin{center}
+    {\Large\bfseries\color{unibblue} FORMAT RENCANA PEMBELAJARAN SEMESTER (RPS)}\\
+    \vspace{0.2cm}
+    {\Large\bfseries UNIVERSITAS BENGKULU}\\
+\end{center}
+\vspace{0.5cm}
+
+% --- I. Halaman Muka ---
+\section*{I. Halaman Muka (Identitas Mata Kuliah)}
+
+\noindent
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{UNIVERSITAS BENGKULU} & \textbf{FAKULTAS: Teknik} \vspace{0.3cm} \newline \textbf{PROGRAM STUDI: Teknik Elektro} \\ \hline
+\textbf{RENCANA PEMBELAJARAN SEMESTER (RPS)} & \\ \hline
+\end{tabularx}
+\vspace{0.3cm}
+
+\begin{itemize}[leftmargin=*, label=$\bullet$]
+    \item \textbf{Nama Mata Kuliah:} Persamaan Diferensial
+    \item \textbf{Kode Mata Kuliah:} TEE30X
+    \item \textbf{Bobot SKS:} 3 SKS (3-0)
+    \item \textbf{Rumpun Mata Kuliah:} MK Keahlian Inti
+    \item \textbf{Semester / Kelas:} III / A
+    \item \textbf{Tanggal Penyusunan:} \today
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Otorisasi / Pengesahan:}
+\begin{table}[h]
+\centering
+\begin{tabularx}{0.9\textwidth}{C{0.3\textwidth} C{0.3\textwidth} C{0.3\textwidth}}
+\textbf{Dosen Pengembang RPS} & \textbf{Koordinator Rumpun MK} & \textbf{Ketua Program Studi} \\
+& & \\
+& & \\
+& & \\
+(Novalio Daratha, M.T.) & (..........................................) & (..........................................)\\
+& & NIP: .......................................
+\end{tabularx}
+\end{table}
+\vspace{0.5cm}
+
+% --- II. Capaian Pembelajaran ---
+\section*{II. Capaian Pembelajaran (CP)}
+
+\begin{itemize}[leftmargin=*, label=$\bullet$]
+    \item \textbf{CPL-PRODI (Capaian Pembelajaran Lulusan yang Dibebankan pada MK):}
+    \begin{itemize}[leftmargin=*, label=$\circ$]
+        \item \textbf{CPL-1 (Sikap):} Menunjukkan sikap bertanggungjawab atas pekerjaan di bidang keahliannya secara mandiri.
+        \item \textbf{CPL-2 (Keterampilan Umum 1):} Mampu menerapkan pemikiran logis, kritis, sistematis, dan inovatif dalam konteks pengembangan atau implementasi ilmu pengetahuan.
+        \item \textbf{CPL-3 (Keterampilan Umum 2):} Mampu berkomunikasi secara efektif dan bekerja sama dalam tim untuk menyelesaikan masalah rekayasa yang kompleks.
+        \item \textbf{CPL-4 (Pengetahuan):} Menguasai konsep teoretis matematika rekayasa (PDB dan PDP) secara mendalam untuk diaplikasikan ke pemodelan elektromagnetika.
+        \item \textbf{CPL-5 (Keterampilan Khusus):} Mampu menyelesaikan permasalahan analitis rangkaian kelistrikan dan distribusi medan berbasis perumusan persamaan diferensial.
+    \end{itemize}
+    \vspace{0.2cm}
+
+    \item \textbf{CPMK (Capaian Pembelajaran Mata Kuliah):}
+    \begin{itemize}[leftmargin=*, label=$\circ$]
+        \item \textbf{CPMK-1:} Mampu mengidentifikasi, memodelkan, dan menyelesaikan Persamaan Diferensial Biasa (PDB).
+        \item \textbf{CPMK-2:} Mampu menganalisis respons transien sistem kelistrikan dasar (RC, RL, RLC).
+        \item \textbf{CPMK-3:} Mampu menyelesaikan Persamaan Diferensial Parsial (PDP) dengan metode pemisahan variabel dan deret Fourier.
+        \item \textbf{CPMK-4:} Mampu menyelesaikan PDP utama elektromagnetika (Gelombang, Laplace, Poisson, Difusi).
+        \item \textbf{CPMK-5:} Mampu menerapkan PDP pada sistem koordinat silinder dan bola (pengantar untuk antena/waveguide).
+    \end{itemize}
+    \vspace{0.2cm}
+
+    \item \textbf{Sub-CPMK (Kemampuan Akhir tiap Tahap Belajar):}
+    \begin{itemize}[leftmargin=*, label=$\circ$]
+        \item \textbf{Sub-CPMK 1:} Mampu klasifikasi PDB/PDP \& merumuskan model fisik.
+        \item \textbf{Sub-CPMK 2:} Mampu menyelesaikan PDB orde satu analitik.
+        \item \textbf{Sub-CPMK 3:} Memodelkan \& mencari respons sirkuit RC/RL.
+        \item \textbf{Sub-CPMK 4:} Menyelesaikan PDB linier orde 2.
+        \item \textbf{Sub-CPMK 5:} Analisis osilasi pada rangkaian RLC.
+        \item \textbf{Sub-CPMK 6:} Transformasi Laplace untuk IVP.
+        \item \textbf{Sub-CPMK 7:} Sistem PDB linier.
+        \item \textbf{Sub-CPMK 8:} Merumuskan Deret Fourier untuk syarat batas.
+        \item \textbf{Sub-CPMK 9:} Pemisahan Variabel pada PDP.
+        \item \textbf{Sub-CPMK 10:} Menyelesaikan Persamaan Gelombang 1D.
+        \item \textbf{Sub-CPMK 11:} Pers. Laplace \& Poisson 2D.
+        \item \textbf{Sub-CPMK 12:} Laplacian di koordinat Silinder \& Bola.
+        \item \textbf{Sub-CPMK 13:} Persamaan Difusi \& Konduksi.
+        \item \textbf{Sub-CPMK 14:} Mengintegrasikan PDP ke Persamaan Maxwell.
+    \end{itemize}
+\end{itemize}
+
+\newpage
+% --- III. Deskripsi Singkat ---
+\section*{III. Deskripsi Singkat \& Bahan Kajian}
+\begin{itemize}[leftmargin=*, label=$\bullet$]
+    \item \textbf{Deskripsi Singkat MK:} Mata kuliah ini membahas PDB dan PDP dengan penekanan pada pemodelan fenomena fisis Teknik Elektro. RPS difokuskan sebagai persiapan matematis yang vital sebelum mengambil mata kuliah \textbf{Medan Elektromagnetika}.
+    \item \textbf{Bahan Kajian / Materi Pembelajaran:}
+    \begin{enumerate}[label=\arabic*., noitemsep]
+        \item PDB Orde 1 \& 2, Transformasi Laplace.
+        \item Analisis transien \& osilasi rangkaian (RC, RL, RLC).
+        \item Deret Fourier, Pemisahan Variabel pada PDP.
+        \item Pers. Gelombang, Laplace, Poisson, Difusi, serta koordinat orthogonal (Silinder, Bola) ke arah Persamaan Maxwell.
+    \end{enumerate}
+    \item \textbf{Pustaka (Referensi):}
+    \begin{itemize}[leftmargin=*, label=$\circ$]
+        \item \textbf{Utama:} [1] Erwin Kreyszig, \textit{Advanced Engineering Mathematics}, 10th Ed., Wiley.
+        \item \textbf{Pendukung:} [2] D.G. Zill, \textit{A First Course in Differential Equations}; [3] W.H. Hayt, \textit{Engineering Electromagnetics}.
+    \end{itemize}
+    \item \textbf{Media Pembelajaran:}
+    \begin{itemize}[leftmargin=*, label=$\circ$]
+        \item \textbf{Software:} LMS \textbf{elearning.unib.ac.id}, Python dan Julia (simulasi numerik/plot transien), Zoom.
+        \item \textbf{Hardware:} Laptop, LCD Proyektor, Papan Tulis.
+    \end{itemize}
+    \item \textbf{Dosen Pengampu:} Novalio Daratha, M.T. (dan Tim Dosen)
+    \item \textbf{Mata Kuliah Prasyarat:} Kalkulus I, Kalkulus II, Aljabar Linear.
+\end{itemize}
+
+\vspace{0.5cm}
+% --- IV. Matriks ---
+\section*{IV. Matriks Kegiatan Pembelajaran (Mingguan)}
+
+\noindent\textit{\textbf{Catatan Beban Belajar (Mengacu pada Permendikbudristek No. 53 Tahun 2023):} Mata kuliah ini berbobot 3 SKS, yang bermakna total beban belajar adalah setara dengan $3 \times 45 = 135$ jam per semester. Estimasi waktu mingguan (Tatap Muka/TM, Penugasan Terstruktur/BT, dan Belajar Mandiri/BM) pada matriks di bawah ini adalah acuan distribusi fleksibel yang disesuaikan dengan metode pembelajaran tiap pekannya.}
+\vspace{0.3cm}
+
+\noindent
+\begin{longtable}{|C{0.6cm}|L{4.2cm}|L{4.5cm}|L{4.5cm}|L{3.5cm}|C{1.1cm}|}
+\hline
+\rowcolor{unibblue} 
+\textcolor{white}{\textbf{Mg}} & \textcolor{white}{\textbf{Sub-CPMK}} & \textcolor{white}{\textbf{Bahan Kajian}} & \textcolor{white}{\textbf{Bentuk, Metode \& Penugasan}} & \textcolor{white}{\textbf{Penilaian}} & \textcolor{white}{\textbf{Bobot}} \\
+\rowcolor{unibblue} 
+\textcolor{white}{\textbf{ke-}} & \textcolor{white}{\textbf{(Kemampuan Akhir)}} & \textcolor{white}{\textbf{(Materi Pembelajaran)}} & \textcolor{white}{\textbf{[Estimasi Waktu]}} & \textcolor{white}{\textbf{(Indik., Kriteria, Btk)}} & \textcolor{white}{\textbf{(\%)}} \\ \hline
+\endfirsthead
+
+\hline
+\rowcolor{unibblue} 
+\textcolor{white}{\textbf{Mg}} & \textcolor{white}{\textbf{Sub-CPMK}} & \textcolor{white}{\textbf{Bahan Kajian}} & \textcolor{white}{\textbf{Bentuk, Metode \& Penugasan}} & \textcolor{white}{\textbf{Penilaian}} & \textcolor{white}{\textbf{Bobot}} \\ \hline
+\endhead
+
+\hline \multicolumn{6}{r}{\textit{Bersambung ke halaman berikutnya...}} \\
+\endfoot
+
+\hline
+\endlastfoot
+
+\multicolumn{6}{|c|}{\cellcolor{rowcolor}\textbf{BAGIAN 1: PDB \& PEMODELAN SISTEM FISIS (RANGKAIAN LISTRIK)}} \\ \hline
+
+\textbf{1} & \textbf{Sub-CPMK 1:} Mampu klasifikasi PDB/PDP \& merumuskan model fisik. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Klasifikasi PDB/PDP \item Solusi umum/khusus \item IVP \& Hk. Kirchhoff \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah \item \textbf{Metode:} Ceramah, Diskusi \item \textbf{[TM: 3x50"]} \item Tugas 1: Formulasi fisika \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Ketepatan orde \item \textbf{Krit.:} Rubrik \item \textbf{Btk.:} Tugas (elearning.unib.ac.id) \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{2} & \textbf{Sub-CPMK 2:} Mampu menyelesaikan PDB orde satu analitik. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item PDB Separabel \item Eksak \& Faktor Int. \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah Luring \item \textbf{Metode:} \textit{Problem Based} \item \textbf{[TM: 3x50"]} \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Solusi fungsi \item \textbf{Krit.:} Ketepatan \item \textbf{Btk.:} Kuis 1 \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{3} & \textbf{Sub-CPMK 3:} Memodelkan \& mencari respons sirkuit RC/RL. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Model RC \& RL \item Respons transien \item Konstanta waktu \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah/Lab \item \textbf{Metode:} \textit{Case Method} \item \textbf{[TM: 3x50"]} \item Tugas 2: Plot Python/Julia \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Akurasi plot \item \textbf{Krit.:} Rubrik Kasus \item \textbf{Btk.:} Laporan Kasus \end{itemize} \vspace{-4mm} & \textbf{10\%} \\ \hline
+
+\textbf{4} & \textbf{Sub-CPMK 4:} Menyelesaikan PDB linier orde 2. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Akar karakteristik \item PDB Non-Homogen \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah Luring \item \textbf{Metode:} Ceramah, Diskusi \item \textbf{[TM: 3x50"]} \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Akar kompleks/riil \item \textbf{Krit.:} Ketepatan \item \textbf{Btk.:} Kuis 2 \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{5} & \textbf{Sub-CPMK 5:} Analisis osilasi pada rangkaian RLC. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item RLC (Over/Under-damped) \item Resonansi harmonik \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah \item \textbf{Metode:} \textit{Case Method} \item \textbf{[TM: 3x50"]} \item Tugas 3: \textit{Project} RLC \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Prediksi osilasi \item \textbf{Krit.:} Rubrik Kasus \item \textbf{Btk.:} Laporan Proyek \end{itemize} \vspace{-4mm} & \textbf{10\%} \\ \hline
+
+\textbf{6} & \textbf{Sub-CPMK 6:} Transformasi Laplace untuk IVP. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Sifat \& Invers Laplace \item Fungsi Step/Impuls \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} \textit{Blended} (elearning) \item \textbf{Metode:} \textit{Flipped Class} \item \textbf{[TM: 3x50"]} \item Tugas 4: Masalah Laplace \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Konversi s ke t \item \textbf{Krit.:} Ketepatan \item \textbf{Btk.:} Tugas \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{7} & \textbf{Sub-CPMK 7:} Sistem PDB linier. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Metode Matriks \item \textit{Coupled circuits} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah \item \textbf{Metode:} Diskusi kelompok \item \textbf{[TM: 3x50"]} \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Solusi Matriks \item \textbf{Krit.:} Partisipasi \item \textbf{Btk.:} Evaluasi lisan \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\rowcolor{gray!30} \textbf{8} & \multicolumn{4}{c|}{\textbf{UJIAN TENGAH SEMESTER (UTS) -- Evaluasi Capaian Pembelajaran Bagian 1}} & \textbf{20\%} \\ \hline
+
+\multicolumn{6}{|c|}{\cellcolor{rowcolor}\textbf{BAGIAN 2: PDP \& FONDASI ANALISIS ELEKTROMAGNETIK}} \\ \hline
+
+\textbf{9} & \textbf{Sub-CPMK 8:} Merumuskan Deret Fourier untuk syarat batas. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Klasifikasi PDP 2D \item Deret Fourier \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah \item \textbf{Metode:} Ceramah \item \textbf{[TM: 3x50"]} \item Tugas 5 (Fourier) \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Koefisien Fourier \item \textbf{Krit.:} Ketepatan \item \textbf{Btk.:} Tugas Tulis \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{10} & \textbf{Sub-CPMK 9:} Pemisahan Variabel pada PDP. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textit{Separation of Variables} \item BVP Linier \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah Luring \item \textbf{Metode:} Latihan Terbimbing \item \textbf{[TM: 3x50"]} \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Pemecahan PDP \item \textbf{Krit.:} Ketepatan \item \textbf{Btk.:} Kuis 3 \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{11} & \textbf{Sub-CPMK 10:} Menyelesaikan Persamaan Gelombang 1D. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Solusi d'Alembert \item Gelombang transmisi \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah/Simulasi \item \textbf{Metode:} \textit{Case Method} \item \textbf{[TM: 3x50"]} \item Tugas 6: Simulasi Python/Julia \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Animasi gelombang \item \textbf{Krit.:} Rubrik Simulasi \item \textbf{Btk.:} Laporan Kasus \end{itemize} \vspace{-4mm} & \textbf{15\%} \\ \hline
+
+\textbf{12} & \textbf{Sub-CPMK 11:} Pers. Laplace \& Poisson 2D. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item $\nabla^2 V=0$ (Laplace) \item Distribusi potensial \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah Luring \item \textbf{Metode:} Ceramah interaktif \item \textbf{[TM: 3x50"]} \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Hitung E dari V \item \textbf{Krit.:} Ketepatan \item \textbf{Btk.:} Kuis 4 \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{13} & \textbf{Sub-CPMK 12:} Laplacian di koordinat Silinder \& Bola. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Silinder \& Bola \item Fungsi Bessel/Legendre \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} \textit{Blended} (elearning) \item \textbf{Metode:} Studi Mandiri \item \textbf{[TM: 3x50"]} \item Tugas 7: Ringkasan \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Sintesis Bessel \item \textbf{Krit.:} Rubrik \item \textbf{Btk.:} Tugas \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{14} & \textbf{Sub-CPMK 13:} Persamaan Difusi \& Konduksi. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Pers. Difusi 1D \item \textit{Skin effect} konduktor \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah Luring \item \textbf{Metode:} Diskusi Kasus \item \textbf{[TM: 3x50"]} \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Konsep penetrasi \item \textbf{Krit.:} Observasi \item \textbf{Btk.:} Partisipasi \end{itemize} \vspace{-4mm} & \textbf{1\%} \\ \hline
+
+\textbf{15} & \textbf{Sub-CPMK 14:} Mengintegrasikan PDP ke Persamaan Maxwell. & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item Curl \& Divergensi \item Turunan Pers. Maxwell \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Bentuk:} Kuliah/Presentasi \item \textbf{Metode:} \textit{Team-Based Proj.} \item \textbf{[TM: 3x50"]} \item Tugas 8: Presentasi EM \item \textbf{[BT+BM: (3+3)x60"]} \end{itemize} \vspace{-4mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*, noitemsep] \item \textbf{Ind.:} Makna fisik Maxwell \item \textbf{Krit.:} Rubrik Proyek \item \textbf{Btk.:} Presentasi \end{itemize} \vspace{-4mm} & \textbf{15\%} \\ \hline
+
+\rowcolor{gray!30} \textbf{16} & \multicolumn{4}{c|}{\textbf{UJIAN AKHIR SEMESTER (UAS) -- Evaluasi Capaian Pembelajaran Keseluruhan}} & \textbf{20\%} \\ \hline
+
+\end{longtable}
+
+\newpage
+% --- V. Rancangan Evaluasi ---
+\section*{V. Rancangan Evaluasi \& Penilaian}
+Bagian ini menjelaskan rancangan nilai akhir mahasiswa yang dihitung berbasis \textit{Case Method} dan \textit{Team-Based Project} untuk memenuhi standar IKU 7 (Indikator Kinerja Utama 7) Kemendikbud, di mana evaluasi partisipatif dan proyek harus berbobot minimal 50\%:
+
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+    \item \textbf{Aktivitas Partisipatif \& Hasil Proyek (\textit{Case Method / Team-Based Project}):} \textbf{50\%} 
+    \\(Evaluasi pemecahan kasus dan proyek pada pertemuan ke-3, 5, 11, dan 15).
+    \item \textbf{Tugas-tugas Mandiri \& Kuis:} \textbf{10\%} 
+    \\(Tugas terstruktur via elearning.unib.ac.id pada pertemuan-pertemuan lainnya).
+    \item \textbf{Ujian Tengah Semester (UTS):} \textbf{20\%} 
+    \item \textbf{Ujian Akhir Semester (UAS):} \textbf{20\%} 
+\end{enumerate}
+
+\noindent\textbf{Total: 100\%}
+
+\vspace{0.3cm}
+\subsection*{Peta Pemenuhan CPL melalui Evaluasi Pembelajaran (OBE)}
+Penilaian ketercapaian Capaian Pembelajaran Lulusan (CPL) pada mata kuliah ini mengadopsi kerangka \textit{Outcome-Based Education} (OBE), di mana skor CPL diukur langsung dari instrumen evaluasi berikut:
+\begin{itemize}[leftmargin=*, label=$\bullet$, noitemsep]
+    \item \textbf{CPL-1 (Sikap) \& CPL-3 (Kerja Sama/Komunikasi):} Diukur utamanya melalui instrumen Rubrik Analitik pada \textit{Team-Based Project} (fokus pada partisipasi kelompok dan presentasi lisan) serta kedisiplinan penyelesaian \textit{Case Method}.
+    \item \textbf{CPL-2, CPL-4, \& CPL-5 (Pengetahuan \& Keterampilan Khusus/Analitis):} Diukur melalui metrik kuantitatif (akurasi pemodelan PDB/PDP, ketepatan solusi analitik, kebenaran \textit{syntax}/plot simulasi) yang diujikan pada UTS (20\%), UAS (20\%), Kuis/Tugas (10\%), serta laporan teknis pemecahan kasus.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textbf{Matriks Peta Keterkaitan CPL, CPMK, dan Metode Evaluasi:}
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|c|C{1.5cm}|C{1.5cm}|C{1.5cm}|C{1.5cm}|C{1.5cm}|X|}
+\hline
+\rowcolor{unibblue}
+\textcolor{white}{\textbf{CPMK}} & \textcolor{white}{\textbf{CPL-1 (Sikap)}} & \textcolor{white}{\textbf{CPL-2 (KU-1)}} & \textcolor{white}{\textbf{CPL-3 (KU-2)}} & \textcolor{white}{\textbf{CPL-4 (Peng.)}} & \textcolor{white}{\textbf{CPL-5 (KK)}} & \textcolor{white}{\textbf{Instrumen Evaluasi Utama}} \\ \hline
+\textbf{CPMK-1} & & $\checkmark$ & & $\checkmark$ & $\checkmark$ & Tugas 1, Kuis 1, UTS \\ \hline
+\textbf{CPMK-2} & $\checkmark$ & $\checkmark$ & & $\checkmark$ & $\checkmark$ & \textit{Case Method} (RC/RLC), UTS \\ \hline
+\textbf{CPMK-3} & & $\checkmark$ & & $\checkmark$ & $\checkmark$ & Tugas Tulis/Kuis, UAS \\ \hline
+\textbf{CPMK-4} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & \textit{Team-Based Project} (Maxwell), \textit{Case Method} Gelombang, Presentasi, UAS \\ \hline
+\textbf{CPMK-5} & & $\checkmark$ & & $\checkmark$ & $\checkmark$ & Tugas Ringkasan (Bessel/Legendre), UAS \\ \hline
+\end{tabularx}
+\end{table}
+
+\newpage
+% --- VI. Lampiran ---
+\section*{VI. Lampiran: Rubrik Penilaian}
+
+Berdasarkan tuntutan IKU 7, penilaian \textit{Case Method} dan \textit{Team-Based Project} menggunakan rubrik analitik berikut:
+
+\subsection*{1. Rubrik Penilaian Pemecahan Kasus (\textit{Case Method}) -- (Pertemuan 3, 5, 11)}
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|c|X|X|X|X|}
+\hline
+\rowcolor{unibblue}
+\textcolor{white}{\textbf{Aspek}} & \textcolor{white}{\textbf{Sangat Baik (85-100)}} & \textcolor{white}{\textbf{Baik (70-84)}} & \textcolor{white}{\textbf{Cukup (55-69)}} & \textcolor{white}{\textbf{Kurang (<55)}} \\ \hline
+\textbf{Analisis Masalah} & Mampu memodelkan kasus fisis ke dalam PDB/PDP secara presisi dan logis. & Pemodelan matematis tepat, namun terdapat sedikit kesalahan asumsi fisis. & Pemodelan matematis kurang tepat, banyak parameter fisis terlewat. & Gagal merumuskan kasus ke bentuk persamaan diferensial. \\ \hline
+\textbf{Penyelesaian Matematis} & Langkah matematis sangat terstruktur, solusi akhir tepat 100\%. & Langkah matematis dapat diikuti, solusi akhir ada sedikit eror kalkulasi. & Langkah penyelesaian melompat-lompat, hasil akhir salah. & Tidak ada langkah penyelesaian yang bermakna. \\ \hline
+\textbf{Simulasi \& Validasi} & Plot/simulasi (Python/Julia) sangat informatif, memvalidasi model teoretis secara sempurna. & Hasil simulasi valid, namun visualisasi kurang informatif/kurang rapi. & Kode simulasi berjalan, namun hasilnya menyimpang dari solusi analitik. & Tidak menyertakan simulasi numerik atau kode sama sekali gagal. \\ \hline
+\end{tabularx}
+\end{table}
+\vspace{0.3cm}
+
+\subsection*{2. Rubrik Penilaian Proyek Tim (\textit{Team-Based Project}) -- (Pertemuan 15)}
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|c|X|X|X|X|}
+\hline
+\rowcolor{unibblue}
+\textcolor{white}{\textbf{Aspek}} & \textcolor{white}{\textbf{Sangat Baik (85-100)}} & \textcolor{white}{\textbf{Baik (70-84)}} & \textcolor{white}{\textbf{Cukup (55-69)}} & \textcolor{white}{\textbf{Kurang (<55)}} \\ \hline
+\textbf{Sintesis Konsep (Maxwell)} & Sangat baik mensintesis konsep PDP 3D menjadi Persamaan Maxwell secara tajam dan komprehensif. & Sintesis konsep dapat dijabarkan dengan baik, walau ada penjabaran fisis yang kurang dalam. & Konsep dasar terlihat, namun tim kesulitan merangkai kesatuan teori Elektromagnetika secara utuh. & Tidak memahami hubungan fundamental antara PDP spasial-waktu dan Medan Elektromagnetik. \\ \hline
+\textbf{Kerja Sama \& Partisipasi} & Pembagian peran anggota tim sangat berimbang dan saling melengkapi saat tanya-jawab. & Pembagian tugas ada, namun 1-2 anggota terlihat mendominasi pengerjaan/diskusi. & Koordinasi tim lemah, beban kerja terlihat hanya dikerjakan oleh sebagian kecil anggota. & Tidak terlihat adanya kerja tim, hasil hanya berupa kompilasi tugas individu yang tidak koheren. \\ \hline
+\textbf{Presentasi \& Komunikasi} & Komunikasi lisan sangat meyakinkan, materi presentasi/visual (PPT) sangat sistematis dan memikat. & Pemaparan materi cukup lancar, slide presentasi cukup mendukung isi penyampaian. & Presentasi monoton (hanya membaca slide), visualisasi materi padat tulisan dan tidak menarik. & Presentasi tersendat-sendat, tidak mampu menjawab pertanyaan audiens sama sekali. \\ \hline
+\end{tabularx}
+\end{table}
+
+\vspace{0.5cm}
+\subsection*{3. Skenario Penugasan IKU 7}
+Untuk menunjang pemahaman mahasiswa secara praktis, skenario pelaksanaannya dirancang sebagai berikut:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Skenario \textit{Case Method} (Pertemuan 3, 5, 11):} Mahasiswa dihadapkan pada studi kasus anomali sistem kelistrikan (misal: tegangan lebih/transien akibat sambaran petir pada gardu, atau resonansi harmonik pada filter daya). Mahasiswa ditugaskan memformulasikan Persamaan Diferensial (PDB/PDP) dari fenomena tersebut, mencari solusi transiennya, serta membuat plot/simulasi komputasional menggunakan Python atau Julia untuk memvalidasi performa.
+    \item \textbf{Skenario \textit{Team-Based Project} (Pertemuan 15):} Mahasiswa dibagi ke dalam kelompok diskusi (3-4 orang). Setiap tim menganalisis masalah distribusi medan atau gelombang yang merambat pada medium tertentu. Tim wajib menyintesis penurunan matematis dari Persamaan Diferensial Parsial (PDP) menuju Persamaan Maxwell (Curl \& Divergensi), lalu menyusun presentasi lisan yang atraktif untuk memaparkan makna fisis di balik model persamaan tersebut.
+\end{itemize}
+
+\end{document}

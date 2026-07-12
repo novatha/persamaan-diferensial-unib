@@ -1,0 +1,94 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 10: Solusi PDP Metode Pemisahan Variabel}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Pengantar Metode Pemisahan Variabel}
+\begin{frame}{Pengantar Metode Pemisahan Variabel (Separation of Variables)}
+  \begin{block}{Konsep Dasar}
+    Metode Pemisahan Variabel adalah teknik fundamental untuk menyelesaikan Persamaan Diferensial Parsial (PDP) linier dan homogen.
+    Ide utamanya adalah mengasumsikan solusi sebagai perkalian fungsi-fungsi yang masing-masing hanya bergantung pada satu variabel independen.
+  \end{block}
+
+  \begin{exampleblock}{Asumsi Solusi}
+    Misalkan kita memiliki PDP untuk fungsi $u(x,t)$ dengan variabel independen $x$ dan $t$. 
+    Kita mengasumsikan solusi dapat ditulis sebagai:
+    \begin{equation}
+        u(x,t) = X(x) \cdot T(t)
+    \end{equation}
+    di mana $X$ hanya fungsi dari $x$ dan $T$ hanya fungsi dari $t$.
+  \end{exampleblock}
+\end{frame}
+
+\section{Langkah-langkah Penyelesaian}
+\begin{frame}{Langkah-langkah Penyelesaian dengan Pemisahan Variabel}
+    \begin{itemize}
+        \item \textbf{Langkah 1:} Substitusikan $u(x,t) = X(x)T(t)$ ke dalam PDP.
+        \item \textbf{Langkah 2:} Pisahkan variabel sedemikian rupa sehingga satu sisi persamaan hanya bergantung pada $x$ dan sisi lainnya hanya bergantung pada $t$.
+        \item \textbf{Langkah 3:} Karena kedua sisi independen terhadap satu sama lain, maka keduanya harus sama dengan sebuah konstanta (disebut konstanta pemisahan, misalnya $-\lambda$).
+        \item \textbf{Langkah 4:} Selesaikan dua Persamaan Diferensial Biasa (PDB) yang dihasilkan untuk $X(x)$ dan $T(t)$.
+        \item \textbf{Langkah 5:} Gunakan prinsip superposisi dan syarat batas/awal untuk mendapatkan solusi khusus.
+    \end{itemize}
+\end{frame}
+
+\section{Contoh Aplikasi Sederhana}
+\begin{frame}{Contoh Aplikasi: Persamaan Diferensial Parsial Orde 1}
+  \begin{block}{Contoh Soal}
+    Selesaikan PDP orde 1 berikut: $\frac{\partial u}{\partial x} = 2 \frac{\partial u}{\partial t} + u$ menggunakan metode pemisahan variabel.
+  \end{block}
+  \textbf{Penyelesaian:}
+  Misalkan $u(x,t) = X(x)T(t)$.
+  Maka $u_x = X'T$ dan $u_t = XT'$. Substitusikan:
+  $$ X'T = 2XT' + XT $$
+  Bagi dengan $XT$:
+  $$ \frac{X'}{X} = 2\frac{T'}{T} + 1 = k \quad \text{(konstanta)} $$
+  Maka kita peroleh 2 PDB: $\frac{X'}{X} = k \implies X(x) = C_1 e^{kx}$ dan $2\frac{T'}{T} + 1 = k \implies T(t) = C_2 e^{(k-1)t/2}$.
+  Solusi: $u(x,t) = C e^{kx + (k-1)t/2}$.
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

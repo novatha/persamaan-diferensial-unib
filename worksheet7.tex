@@ -1,0 +1,59 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 7: Latihan Invers Laplace \& Solusi PDB}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
+Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih ketajaman matematis Anda. Alokasikan waktu sekitar 45--60 menit untuk berdiskusi.
+\end{tcolorbox}
+
+\section*{Soal-Soal Latihan}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan dua sifat linieritas dari Invers Transformasi Laplace!
+    \vspace{2cm}
+
+    \item \textbf{(C2 - Memahami)} Diberikan dua fungsi Laplace $F_1(s)$ dan $F_2(s)$. Jelaskan mengapa $\mathcal{L}^{-1}\{F_1(s) \cdot F_2(s)\}$ tidak sama dengan $f_1(t) \cdot f_2(t)$. Konsep matematika apa yang sebenarnya mewakili perkalian di domain $s$?
+    \vspace{3cm}
+
+    \item \textbf{(C3 - Mengaplikasikan)} Carilah solusi Invers Laplace untuk:
+    $$ F(s) = \frac{3s+1}{s^2-4} $$
+    \vspace{4.5cm}
+
+    \item \textbf{(C4 - Menganalisis)} Gunakan Transformasi Laplace untuk menyelesaikan sistem PDB Orde 1 berikut, yang memodelkan arus di sebuah induktor:
+    $$ \frac{di}{dt} + 2i = u(t), \quad i(0) = 0 $$
+    (Catatan: $u(t)$ adalah fungsi step satuan, di mana $U(s) = 1/s$).
+    \vspace{5cm}
+
+    \item \textbf{(C5 - Mengevaluasi)} Diberikan PDB orde 2: $y'' + 4y = \delta(t)$ dengan $y(0)=0$ dan $y'(0)=0$. Fungsi $\delta(t)$ adalah impuls Dirac. Tentukan penyelesaian $y(t)$ dan evaluasi apakah masuk akal bahwa impuls sesaat menghasilkan respon yang berkelanjutan?
+    \vspace{5cm}
+
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sistem elektromekanis dengan menggunakan Hukum Newton dan Transformasi Laplace yang respon waktu penyelesaiannya memuat fungsi eksponensial dan sinus secara bersamaan, misal $x(t) = e^{-t} \sin(2t)$.
+    \vspace{5cm}
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

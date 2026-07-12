@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Panduan Team-Based Project)\\Persamaan Diferensial - Minggu 15: Kaitan PDP dengan Persamaan Maxwell}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Final Project]
+Ini adalah panduan untuk Team-Based Project (Proyek Akhir) Anda. Susunlah laporan dan slide presentasi yang mencakup penyelesaian dari langkah-langkah di bawah ini. Tunjukkan pemahaman Anda dari tahapan dasar hingga sintesis tingkat tinggi.
+\end{tcolorbox}
+
+\section*{Tahapan Penyelesaian Proyek (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan keempat Persamaan Maxwell dalam bentuk diferensial parsial untuk ruang hampa (tanpa muatan bebas dan tanpa arus konduksi). Tuliskan juga konstanta permeabilitas ($\mu_0$) dan permitivitas ($\epsilon_0$) ruang hampa.
+    \item \textbf{(C2 - Memahami)} Berikan interpretasi fisis untuk masing-masing persamaan dari jawaban nomor 1. Jelaskan secara khusus apa arti fisis dari persamaan $\nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$ (Hukum Faraday).
+    \item \textbf{(C3 - Mengaplikasikan)} Aplikasikan operator rotasi (\textit{curl}) pada persamaan Hukum Faraday dan gunakan identitas vektor $\nabla \times (\nabla \times \mathbf{A}) = \nabla(\nabla \cdot \mathbf{A}) - \nabla^2 \mathbf{A}$ untuk memulai proses \textit{uncoupling} (pemisahan) persamaan medan listrik dan magnet.
+    \item \textbf{(C4 - Menganalisis)} Analisislah hasil dari langkah sebelumnya untuk memformulasikan Persamaan Diferensial Parsial (PDP) linier orde dua murni untuk medan listrik $\mathbf{E}$ (Persamaan Gelombang Elektromagnetik). Tunjukkan letak persamaan kecepatan perambatannya.
+    \item \textbf{(C5 - Mengevaluasi)} Bandingkan PDP gelombang elektromagnetik yang Anda dapatkan dengan PDP gelombang mekanik pada dawai ($u_{tt} = c^2 u_{xx}$). Evaluasi kesamaan struktur matematisnya dan jelaskan perbedaan mendasar sifat fisik gelombangnya.
+    \item \textbf{(C6 - Mencipta)} Sintesiskan seluruh temuan kelompok Anda menjadi sebuah bahan tayang (slide presentasi) yang estetis dan interaktif. Rancang urutan presentasi sehingga audiens dapat memahami bagaimana Persamaan Maxwell berevolusi menjadi fenomena gelombang elektromagnetik berkat ilmu Persamaan Diferensial Parsial.
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Selamat Berkolaborasi!}
+\end{center}
+
+\end{document}

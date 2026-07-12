@@ -1,0 +1,105 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 4: PDB Orde 2 Linier Homogen (Koefisien Konstan)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{PDB Orde 2 Linier}
+\begin{frame}{Bentuk Umum PDB Orde 2 Linier}
+  \begin{block}{Persamaan Diferensial Biasa Orde 2 Linier}
+    Bentuk umum dari persamaan diferensial linier orde dua adalah:
+    \begin{equation}
+        a_2(x) \frac{d^2y}{dx^2} + a_1(x) \frac{dy}{dx} + a_0(x) y = f(x)
+    \end{equation}
+  \end{block}
+
+  \begin{exampleblock}{Homogen vs Non-Homogen}
+    \begin{itemize}
+        \item Jika $f(x) = 0$, persamaan disebut \textbf{homogen}.
+        \item Jika $f(x) \neq 0$, persamaan disebut \textbf{non-homogen}.
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\section{PDB Orde 2 Homogen Koefisien Konstan}
+\begin{frame}{Persamaan Karakteristik}
+    Untuk PDB homogen dengan koefisien konstan $a, b, c$:
+    \begin{equation}
+        a y'' + b y' + c y = 0
+    \end{equation}
+    
+    Kita asumsikan solusi berbentuk $y = e^{rx}$, sehingga $y' = r e^{rx}$ dan $y'' = r^2 e^{rx}$. Substitusi ini menghasilkan \textbf{Persamaan Karakteristik}:
+    \begin{alertblock}{Persamaan Karakteristik}
+    \begin{equation}
+        a r^2 + b r + c = 0
+    \end{equation}
+    \end{alertblock}
+    Akar-akar persamaan ini ($r_1, r_2$) menentukan bentuk solusi umum persamaan diferensial.
+\end{frame}
+
+\section{Kasus Akar Persamaan Karakteristik}
+\begin{frame}{Kasus Akar Persamaan Karakteristik}
+    Akar-akar $r_1, r_2$ dicari menggunakan rumus abc: $r_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$
+    
+    Terdapat 3 kasus:
+    \begin{itemize}
+        \item \textbf{Kasus 1: Akar Real dan Berbeda ($r_1 \neq r_2$)}
+        \begin{equation*}
+            y(x) = C_1 e^{r_1 x} + C_2 e^{r_2 x}
+        \end{equation*}
+        \item \textbf{Kasus 2: Akar Real Sama ($r_1 = r_2 = r$)}
+        \begin{equation*}
+            y(x) = C_1 e^{rx} + C_2 x e^{rx} = (C_1 + C_2 x) e^{rx}
+        \end{equation*}
+        \item \textbf{Kasus 3: Akar Kompleks Konjugat ($r_{1,2} = \alpha \pm i\beta$)}
+        \begin{equation*}
+            y(x) = e^{\alpha x} (C_1 \cos(\beta x) + C_2 \sin(\beta x))
+        \end{equation*}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

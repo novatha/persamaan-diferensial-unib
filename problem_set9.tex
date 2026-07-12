@@ -1,0 +1,65 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 9: PDP \& Deret Fourier}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis matematis Anda secara sistematis dan terstruktur, terutama dalam menentukan batas integral Deret Fourier.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Sebutkan tiga persamaan diferensial parsial (PDP) klasik yang sering digunakan dalam analisis teknik kelistrikan, beserta bentuk matematisnya masing-masing.
+    
+    \item \textbf{(C2 - Memahami)} Jelaskan apa keuntungan mengidentifikasi sebuah sinyal atau fungsi sebagai fungsi Genap atau fungsi Ganjil sebelum menghitung koefisien Deret Fouriernya. Bagaimana sifat ini mengurangi beban komputasi integrasi?
+    
+    \item \textbf{(C3 - Mengaplikasikan)} Klasifikasikan fungsi-fungsi periodik berikut ini apakah termasuk fungsi genap, fungsi ganjil, atau tidak keduanya:
+    \begin{enumerate}[label=\alph*.]
+        \item $f(t) = t^2 \sin(t)$
+        \item $f(t) = e^{-|t|}$
+        \item $f(t) = \cos(t) + \sin(t)$
+    \end{enumerate}
+    
+    \item \textbf{(C4 - Menganalisis)} Diberikan sebuah fungsi gelombang kotak yang didefinisikan pada selang $-\pi < t < \pi$:
+    $$ 
+    f(t) = \begin{cases} 
+      -1, & -\pi < t < 0 \\
+      1, & 0 < t < \pi 
+    \end{cases}
+    $$
+    Tunjukkan dengan analisis matematis yang mendalam bahwa fungsi ini merupakan fungsi ganjil, dan uraikanlah fungsi gelombang kotak tersebut ke dalam bentuk Deret Fourier!
+    
+    \item \textbf{(C5 - Mengevaluasi)} Saat menganalisis distorsi harmonik (THD) dari inverter sumber tegangan pada sebuah jurnal, seorang praktikan mendapatkan bahwa arus keluarannya hanya memiliki komponen harmonisa ganjil ($n=1,3,5,\dots$). Evaluasilah secara matematis, sifat kesimetrian bentuk gelombang (waveform) seperti apa (misal: simetri setengah gelombang, dll.) yang menyebabkan komponen harmonisa genap ($a_n, b_n$ untuk $n$ genap) selalu bernilai nol pada sinyal kelistrikan ini.
+    
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah fungsi sinyal buatan secara matematis (piece-wise function) pada selang $-2 < t < 2$ sedemikian rupa sehingga: 
+    1) Merupakan fungsi genap murni, 
+    2) Memiliki nilai rata-rata sinyal (komponen $a_0$) tepat bernilai nol. 
+    Lalu, temukan ekspresi Deret Fourier kosinus untuk fungsi desain Anda tersebut.
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

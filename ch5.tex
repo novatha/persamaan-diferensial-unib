@@ -1,0 +1,124 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 5: PDB Orde 2 Non-Homogen \& Aplikasi RLC}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{PDB Orde 2 Non-Homogen}
+\begin{frame}{PDB Orde 2 Non-Homogen}
+  \begin{block}{Definisi}
+    PDB orde 2 non-homogen memiliki bentuk:
+    \begin{equation}
+        a y'' + b y' + c y = f(x)
+    \end{equation}
+    di mana $f(x) \neq 0$.
+  \end{block}
+
+  \begin{exampleblock}{Struktur Solusi Umum}
+    Solusi umum $y(x)$ terdiri dari penjumlahan dua bagian:
+    \begin{equation}
+        y(x) = y_h(x) + y_p(x)
+    \end{equation}
+    \begin{itemize}
+        \item $y_h(x)$: Solusi homogen dari persamaan $a y'' + b y' + c y = 0$.
+        \item $y_p(x)$: Solusi partikular yang memenuhi persamaan non-homogen.
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\section{Metode Koefisien Tak Tentu}
+\begin{frame}{Metode Koefisien Tak Tentu}
+    Metode koefisien tak tentu digunakan untuk mencari solusi partikular $y_p(x)$ dengan menebak bentuk solusi berdasarkan fungsi $f(x)$.
+    
+    \begin{alertblock}{Bentuk Tebakan $y_p(x)$}
+    \begin{itemize}
+        \item Jika $f(x) = k$ (konstan), maka $y_p(x) = A$
+        \item Jika $f(x)$ polinomial derajat $n$, maka $y_p(x) = A_n x^n + \dots + A_1 x + A_0$
+        \item Jika $f(x) = k e^{\alpha x}$, maka $y_p(x) = A e^{\alpha x}$
+        \item Jika $f(x) = k \sin(\beta x)$ atau $k \cos(\beta x)$, maka $y_p(x) = A \cos(\beta x) + B \sin(\beta x)$
+    \end{itemize}
+    \end{alertblock}
+    \textit{Catatan:} Jika tebakan $y_p(x)$ mengandung suku yang sama dengan $y_h(x)$, maka tebakan harus dikalikan dengan $x$ atau $x^2$.
+\end{frame}
+
+\section{Aplikasi: Rangkaian RLC Seri}
+\begin{frame}{Aplikasi Rangkaian RLC Seri}
+    \begin{columns}
+        \column{0.4\textwidth}
+        \begin{center}
+        \begin{tikzpicture}[scale=0.7, transform shape, thick]
+            \draw (0,0) -- (0,2) -- (1,2);
+            % Resistor
+            \draw (1,2) node[above]{R} -- (1.1,2.2) -- (1.3,1.8) -- (1.5,2.2) -- (1.7,1.8) -- (1.9,2.2) -- (2,2);
+            \draw (2,2) -- (2.5,2);
+            % Inductor
+            \draw (2.5,2) node[above]{L} arc (180:0:0.25) arc (180:0:0.25) arc (180:0:0.25);
+            \draw (4,2) -- (4.5,2);
+            % Capacitor
+            \draw (4.5,2) node[above]{C} -- (4.5,2.3);
+            \draw (4.7,2) -- (4.7,2.3);
+            \draw (4.7,2) -- (5.5,2) -- (5.5,0) -- (0,0);
+            % Source
+            \draw (0,1) circle (0.3) node {$E$};
+            \draw (0,0) -- (0,0.7);
+            \draw (0,1.3) -- (0,2);
+        \end{tikzpicture}
+        \end{center}
+        \column{0.6\textwidth}
+        Dengan KVL, persamaan rangkaian RLC seri adalah:
+        \begin{equation*}
+            L \frac{di}{dt} + R i + \frac{1}{C} \int i \, dt = E(t)
+        \end{equation*}
+        Diferensiasikan terhadap waktu $t$:
+        \begin{equation}
+            L \frac{d^2i}{dt^2} + R \frac{di}{dt} + \frac{1}{C} i = E'(t)
+        \end{equation}
+        Ini adalah PDB Orde 2 Non-Homogen!
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

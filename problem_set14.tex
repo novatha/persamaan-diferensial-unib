@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 14: Fungsi Bessel \& Gelombang Silinder}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis fisis, dan penurunan matematis Anda secara sistematis dan terstruktur.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan Persamaan Diferensial Bessel standar berorde $\nu$, beserta definisi dari masing-masing suku dalam persamaan tersebut.
+    \item \textbf{(C2 - Memahami)} Jelaskan karakteristik asimtotik dari fungsi Bessel jenis pertama $J_\nu(x)$ dan jenis kedua $Y_\nu(x)$ saat $x$ mendekati nol. Mengapa karakteristik ini penting dalam masalah silinder pejal?
+    \item \textbf{(C3 - Mengaplikasikan)} Menggunakan relasi rekursif $J_{\nu-1}(x) + J_{\nu+1}(x) = \frac{2\nu}{x}J_\nu(x)$, buktikan dan jabarkan $J_2(x)$ dalam bentuk fungsi $J_0(x)$ dan $J_1(x)$.
+    \item \textbf{(C4 - Menganalisis)} Saat menggunakan pemisahan variabel pada koordinat silinder untuk menyelesaikan potensial elektrostatis tabung tak berhingga tanpa kebergantungan terhadap $z$, persamaan radialnya adalah $r^2 R'' + r R' - m^2 R = 0$. Analisislah mengapa solusi persamaan ini menggunakan potensial bentuk $r^m$ dan $r^{-m}$ alih-alih Fungsi Bessel, sedangkan fungsi Bessel baru muncul bila ada kebergantungan terhadap $z$ atau waktu.
+    \item \textbf{(C5 - Mengevaluasi)} Diberikan sebuah pandu gelombang melingkar dengan jari-jari $a$. Medan listrik pada dinding konduktor ($r=a$) harus nol. Evaluasi bagaimana syarat batas $J_0(ka) = 0$ menentukan mode perambatan gelombang, dan jelaskan konsep akar-akar fungsi Bessel dalam hal ini.
+    \item \textbf{(C6 - Mencipta)} Formulasi sebuah penyelesaian matematis untuk distribusi suhu pada kawat berbentuk silinder yang tidak bergantung pada koordinat sumbu, namun memiliki osilasi radial berdasarkan fungsi Bessel. Tentukan parameter kondisi awal buatan Anda sendiri untuk memperoleh deret Fourier-Bessel.
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

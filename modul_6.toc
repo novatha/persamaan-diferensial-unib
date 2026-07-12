@@ -1,0 +1,7 @@
+\contentsline {section}{\numberline {1}Pendahuluan}{2}{section.1}%
+\contentsline {section}{\numberline {2}Materi Utama}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Definisi Transformasi Laplace}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Sifat Linieritas}{2}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Teorema Pergeseran (Translasi) Pertama}{3}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Ringkasan}{3}{section.3}%
+\contentsline {section}{\numberline {4}Referensi}{3}{section.4}%

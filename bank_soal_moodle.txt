@@ -1,0 +1,307 @@
+// Soal Minggu 1: Konsep Dasar dan Klasifikasi Persamaan Diferensial
+Orde dari persamaan diferensial $y''' + 2(y'')^4 + y = \sin(x)$ adalah... {
+=3
+~4
+~1
+~2
+}
+
+Persamaan diferensial berikut ini yang merupakan persamaan diferensial linier adalah... {
+=$y'' + 3y' + 2y = e^x$
+~$y'' + 3y y' = 0$
+~$(y')^2 + y = x$
+~$y'' + \sin(y) = 0$
+}
+
+Derajat (degree) dari persamaan diferensial $(y'')^3 + (y')^4 + y = 0$ adalah... {
+=3
+~4
+~2
+~1
+}
+
+// Soal Minggu 2: Persamaan Diferensial Orde Satu - Variabel Terpisah
+Persamaan diferensial $\frac{dy}{dx} = \frac{x}{y}$ merupakan jenis persamaan diferensial... {
+=Variabel terpisah
+~Eksak
+~Linier orde dua
+~Parsial
+}
+
+Solusi umum dari persamaan diferensial $\frac{dy}{dx} = 2x$ adalah... {
+=$y = x^2 + C$
+~$y = 2x^2 + C$
+~$y = x + C$
+~$y = \frac{1}{2}x^2 + C$
+}
+
+Bentuk umum dari persamaan diferensial homogen orde satu adalah $\frac{dy}{dx} = f(x,y)$, di mana $f(x,y)$ dapat dinyatakan sebagai fungsi dari... {
+=$\frac{y}{x}$
+~$x+y$
+~$xy$
+~$x-y$
+}
+
+// Soal Minggu 3: Persamaan Diferensial Eksak dan Faktor Integrasi
+Suatu persamaan diferensial $M(x,y)dx + N(x,y)dy = 0$ dikatakan eksak jika memenuhi syarat... {
+=$\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}$
+~$\frac{\partial M}{\partial x} = \frac{\partial N}{\partial y}$
+~$\frac{\partial M}{\partial y} = -\frac{\partial N}{\partial x}$
+~$\frac{\partial M}{\partial x} = -\frac{\partial N}{\partial y}$
+}
+
+Faktor integrasi digunakan untuk mengubah persamaan diferensial tak eksak menjadi eksak. Jika $\frac{1}{N}(\frac{\partial M}{\partial y} - \frac{\partial N}{\partial x})$ hanya fungsi dari $x$ saja, sebut saja $f(x)$, maka faktor integrasinya adalah... {
+=$e^{\int f(x) dx}$
+~$e^{\int f(x) dy}$
+~$\int f(x) dx$
+~$\ln(f(x))$
+}
+
+Persamaan diferensial $(2xy)dx + (x^2)dy = 0$ adalah persamaan diferensial... {
+=Eksak
+~Tak eksak
+~Linier non-homogen
+~Bernoulli
+}
+
+// Soal Minggu 4: Persamaan Diferensial Linier Orde Satu dan Bernoulli
+Bentuk umum persamaan diferensial linier orde satu adalah... {
+=$\frac{dy}{dx} + P(x)y = Q(x)$
+~$\frac{dy}{dx} + P(x)y^n = Q(x)$
+~$\frac{dy}{dx} = P(x)Q(y)$
+~$M(x,y)dx + N(x,y)dy = 0$
+}
+
+Persamaan diferensial Bernoulli memiliki bentuk $\frac{dy}{dx} + P(x)y = Q(x)y^n$. Untuk menyelesaikannya, digunakan substitusi... {
+=$u = y^{1-n}$
+~$u = y^n$
+~$u = \frac{y}{x}$
+~$u = xy$
+}
+
+Faktor integrasi untuk persamaan diferensial linier orde satu $\frac{dy}{dx} + P(x)y = Q(x)$ adalah... {
+=$e^{\int P(x) dx}$
+~$e^{\int Q(x) dx}$
+~$\int P(x) dx$
+~$e^{P(x)}$
+}
+
+// Soal Minggu 5: Aplikasi Persamaan Diferensial Orde Satu
+Dalam model peluruhan radioaktif $\frac{dN}{dt} = -kN$, konstanta $k$ bernilai... {
+=Positif
+~Negatif
+~Nol
+~Imajiner
+}
+
+Hukum Pendinginan Newton memodelkan laju perubahan suhu suatu benda sebanding dengan selisih suhu benda tersebut dengan suhu... {
+=Lingkungannya
+~Awalnya
+~Maksimumnya
+~Minimumnya
+}
+
+Pada rangkaian RL seri dengan sumber tegangan $V(t)$, persamaan diferensial yang memodelkan arus $I(t)$ adalah... {
+=$L\frac{dI}{dt} + RI = V(t)$
+~$R\frac{dI}{dt} + LI = V(t)$
+~$\frac{dI}{dt} + RLI = V(t)$
+~$L\frac{dI}{dt} + \frac{1}{C}I = V(t)$
+}
+
+// Soal Minggu 6: PD Linier Orde Dua Homogen
+Persamaan karakteristik dari persamaan diferensial $y'' - 5y' + 6y = 0$ adalah... {
+=$r^2 - 5r + 6 = 0$
+~$r^2 + 5r - 6 = 0$
+~$r^2 - 5r - 6 = 0$
+~$r^2 + 5r + 6 = 0$
+}
+
+Jika akar-akar persamaan karakteristik adalah real dan berbeda, yaitu $r_1$ dan $r_2$, maka solusi umumnya adalah... {
+=$y = C_1 e^{r_1 x} + C_2 e^{r_2 x}$
+~$y = (C_1 + C_2 x) e^{r_1 x}$
+~$y = e^{\alpha x} (C_1 \cos \beta x + C_2 \sin \beta x)$
+~$y = C_1 \cos(r_1 x) + C_2 \sin(r_2 x)$
+}
+
+Jika akar-akar persamaan karakteristik adalah bilangan kompleks konjugat $\alpha \pm \beta i$, maka solusi umumnya melibatkan fungsi... {
+=Eksponensial dan Trigonometri (Sinus, Cosinus)
+~Hanya Polinomial
+~Hanya Eksponensial
+~Logaritma
+}
+
+// Soal Minggu 7: PD Linier Orde Dua Non-Homogen (Koefisien Tak Tentu)
+Untuk persamaan diferensial non-homogen $y'' + p y' + q y = g(x)$, solusi umumnya adalah penjumlahan dari solusi homogen $y_h$ dan... {
+=Solusi partikular $y_p$
+~Solusi singular
+~Solusi eksak
+~Solusi trivial
+}
+
+Jika $g(x) = e^{kx}$ dan $k$ bukan merupakan akar persamaan karakteristik, maka tebakan bentuk solusi partikular $y_p$ pada metode koefisien tak tentu adalah... {
+=$A e^{kx}$
+~$A x e^{kx}$
+~$A \sin(kx)$
+~$A x^2 e^{kx}$
+}
+
+Metode koefisien tak tentu paling cocok digunakan jika fungsi $g(x)$ berbentuk polinomial, eksponensial, atau kombinasi linier dari fungsi... {
+=Sinus dan Cosinus
+~Logaritma natural
+~Tangen dan Secan
+~Fungsi rasional
+}
+
+// Soal Minggu 9: PD Linier Orde Dua Non-Homogen (Variasi Parameter)
+Metode variasi parameter digunakan untuk mencari solusi partikular $y_p$ dari PD non-homogen. Metode ini mengasumsikan $y_p$ berbentuk... {
+=$u_1(x)y_1(x) + u_2(x)y_2(x)$
+~$C_1 y_1(x) + C_2 y_2(x)$
+~$A(x) e^{rx}$
+~$x^m$
+}
+
+Dalam metode variasi parameter, determinan dari matriks Wronskian $W(y_1, y_2)$ tidak boleh... {
+=Sama dengan nol
+~Kurang dari nol
+~Lebih dari nol
+~Sama dengan satu
+}
+
+Kelebihan metode variasi parameter dibandingkan metode koefisien tak tentu adalah... {
+=Dapat diterapkan untuk sembarang fungsi $g(x)$ asalkan integralnya dapat dievaluasi
+~Proses perhitungannya selalu lebih singkat
+~Tidak memerlukan pencarian solusi homogen terlebih dahulu
+~Hanya berlaku untuk PD orde satu
+}
+
+// Soal Minggu 10: Transformasi Laplace: Konsep Dasar
+Transformasi Laplace dari fungsi $f(t)$ didefinisikan sebagai integral... {
+=$\int_0^\infty e^{-st} f(t) dt$
+=$\int_{-\infty}^\infty e^{-st} f(t) dt$
+=$\int_0^\infty e^{st} f(t) dt$
+=$\int_0^1 e^{-st} f(t) dt$
+}
+
+Transformasi Laplace dari $f(t) = 1$ untuk $s > 0$ adalah... {
+=$\frac{1}{s}$
+~$s$
+~$\frac{1}{s^2}$
+~$1$
+}
+
+Sifat linearitas dari Transformasi Laplace menyatakan bahwa $\mathcal{L}\{af(t) + bg(t)\}$ sama dengan... {
+=$a\mathcal{L}\{f(t)\} + b\mathcal{L}\{g(t)\}$
+~$\mathcal{L}\{f(t)\} \cdot \mathcal{L}\{g(t)\}$
+~$a b \mathcal{L}\{f(t)g(t)\}$
+~$\frac{\mathcal{L}\{f(t)\}}{\mathcal{L}\{g(t)\}}$
+}
+
+// Soal Minggu 11: Invers Transformasi Laplace dan Aplikasi
+Invers Transformasi Laplace disimbolkan dengan... {
+=$\mathcal{L}^{-1}$
+~$\mathcal{L}^*$
+~$\mathcal{I}$
+~$\mathcal{F}^{-1}$
+}
+
+Transformasi Laplace sangat berguna untuk menyelesaikan persamaan diferensial linier dengan kondisi... {
+=Awal (Initial Value Problem)
+~Batas (Boundary Value Problem)
+~Tak terhingga
+~Berkala (Periodik)
+}
+
+Untuk menentukan invers Transformasi Laplace dari fungsi rasional yang kompleks, teknik aljabar yang sering digunakan adalah dekomposisi... {
+=Pecahan parsial (Partial fractions)
+~Deret Taylor
+~Nilai eigen
+~Faktor integrasi
+}
+
+// Soal Minggu 12: Penyelesaian PD dengan Deret Pangkat
+Untuk menyelesaikan PD dengan metode deret kuasa (pangkat) di sekitar titik $x_0$, kita mengasumsikan solusinya berbentuk... {
+=$y = \sum_{n=0}^{\infty} c_n (x-x_0)^n$
+~$y = \sum_{n=0}^{\infty} c_n e^{nx}$
+~$y = \sum_{n=1}^{\infty} c_n \sin(nx)$
+~$y = c_1 x + c_2 x^2$
+}
+
+Titik $x_0$ disebut titik singular biasa jika koefisien tak berhingga namun dapat diatasi dengan metode... {
+=Frobenius
+~Koefisien tak tentu
+~Variasi parameter
+~Euler
+}
+
+Jika titik ekpansi $x = 0$ merupakan titik biasa bagi PD linier orde dua, maka metode solusi deret kuasa akan menghasilkan relasi berulang (recurrence relation) untuk menentukan nilai dari... {
+=Koefisien deret $c_n$
+~Akar-akar karakteristik
+~Matriks Wronskian
+~Variabel bebas
+}
+
+// Soal Minggu 13: Sistem Persamaan Diferensial Linier
+Sistem persamaan diferensial linier orde satu dapat direpresentasikan dalam bentuk persamaan matriks... {
+=$\mathbf{X}' = \mathbf{A}\mathbf{X} + \mathbf{F}(t)$
+=$\mathbf{X} = \mathbf{A}\mathbf{X}' + \mathbf{F}(t)$
+=$\mathbf{X}'' = \mathbf{A}\mathbf{X}' + \mathbf{B}\mathbf{X}$
+=$\mathbf{A}\mathbf{X}' = \mathbf{X} + \mathbf{F}(t)$
+}
+
+Untuk sistem linier homogen $\mathbf{X}' = \mathbf{A}\mathbf{X}$, solusi dasarnya sangat bergantung pada... {
+=Nilai eigen dan vektor eigen dari matriks $\mathbf{A}$
+~Determinan matriks $\mathbf{A}$ saja
+~Invers dari matriks $\mathbf{A}$
+~Matriks identitas
+}
+
+Metode penyelesaian sistem persamaan diferensial juga dapat dilakukan menggunakan... {
+=Transformasi Laplace
+~Metode Euler
+~Faktor integrasi skalar
+~Substitusi variabel polar
+}
+
+// Soal Minggu 14: Pengantar Persamaan Diferensial Parsial (PDP)
+Persamaan diferensial parsial (PDP) melibatkan fungsi yang tidak diketahui yang bergantung pada... {
+=Dua atau lebih variabel bebas
+~Hanya satu variabel bebas
+~Variabel acak
+~Konstanta tak tentu
+}
+
+Metode klasik untuk memecahkan banyak PDP linier, seperti persamaan panas atau gelombang, adalah metode... {
+=Pemisahan variabel (Separation of variables)
+~Transformasi Euler
+~Koefisien tak tentu
+~Faktor integrasi parsial
+}
+
+Orde dari persamaan diferensial parsial ditentukan oleh turunan parsial... {
+=Tertinggi yang ada dalam persamaan
+~Terendah yang ada dalam persamaan
+~Pertama saja
+~Totalnya
+}
+
+// Soal Minggu 15: Aplikasi Persamaan Diferensial Parsial
+Persamaan diferensial parsial $\alpha^2 \frac{\partial^2 u}{\partial x^2} = \frac{\partial u}{\partial t}$ dikenal sebagai persamaan... {
+=Panas (Suhu) satu dimensi
+~Gelombang satu dimensi
+~Laplace dua dimensi
+~Poisson
+}
+
+Persamaan diferensial parsial $a^2 \frac{\partial^2 u}{\partial x^2} = \frac{\partial^2 u}{\partial t^2}$ memodelkan fenomena... {
+=Getaran pada dawai (Gelombang)
+~Distribusi potensial elektrostatik (Laplace)
+~Perambatan panas pada batang
+~Aliran fluida stasioner
+}
+
+Persamaan Laplace dalam dua dimensi dinyatakan dengan $\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0$. Persamaan ini merupakan contoh dari PDP jenis... {
+=Eliptik
+~Parabolik
+~Hiperbolik
+~Aljabar linier
+}

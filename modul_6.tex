@@ -1,0 +1,101 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definisi}[section]
+\newtheorem{example}{Contoh}[section]
+
+\title{Catatan Kuliah Persamaan Diferensial\\Minggu 6: Transformasi Laplace Dasar}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Pendahuluan}
+Transformasi Laplace adalah alat matematis yang sangat berharga untuk menyelesaikan persamaan diferensial, khususnya pada sistem yang melibatkan gaya yang berupa fungsi diskontinyu, sinyal impuls, atau untuk mencari respon sistem. Metode ini mentransformasikan persamaan diferensial (domain waktu) menjadi persamaan aljabar (domain kompleks atau frekuensi $s$). Hal ini mempermudah penyelesaian, layaknya kita mengubah operasi perkalian rumit dengan logaritma.
+
+\section{Materi Utama}
+\subsection{Definisi Transformasi Laplace}
+\begin{definition}
+Misalkan $f(t)$ adalah fungsi yang didefinisikan untuk $t \ge 0$. Transformasi Laplace dari $f(t)$, dinotasikan dengan $\mathcal{L}\{f(t)\}$ atau $F(s)$, didefinisikan sebagai integral tak wajar:
+\begin{equation}
+\mathcal{L}\{f(t)\} = F(s) = \int_{0}^{\infty} e^{-st} f(t) dt
+\end{equation}
+asalkan integral tersebut konvergen (memiliki nilai batas berhingga). Variabel $s$ merupakan parameter riil atau kompleks.
+\end{definition}
+
+\textbf{Contoh Pencarian Transformasi Laplace dari Definisi:}
+Mari kita cari $\mathcal{L}\{1\}$.
+$$ \mathcal{L}\{1\} = \int_{0}^{\infty} e^{-st} (1) dt = \lim_{b \to \infty} \int_{0}^{b} e^{-st} dt = \lim_{b \to \infty} \left[ -\frac{1}{s} e^{-st} \right]_0^b = \lim_{b \to \infty} \left( -\frac{1}{s} e^{-sb} + \frac{1}{s} e^0 \right) = \frac{1}{s} $$
+Integral konvergen jika $s > 0$.
+
+\textbf{Tabel Transformasi Laplace Dasar:}
+Beberapa transformasi fungsi dasar yang umum dijumpai:
+\begin{itemize}
+    \item $\mathcal{L}\{1\} = \frac{1}{s}, \quad s > 0$
+    \item $\mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}, \quad s > 0$
+    \item $\mathcal{L}\{e^{at}\} = \frac{1}{s-a}, \quad s > a$
+    \item $\mathcal{L}\{\sin(\omega t)\} = \frac{\omega}{s^2 + \omega^2}, \quad s > 0$
+    \item $\mathcal{L}\{\cos(\omega t)\} = \frac{s}{s^2 + \omega^2}, \quad s > 0$
+\end{itemize}
+
+\subsection{Sifat Linieritas}
+Transformasi Laplace bersifat linier. Artinya, untuk dua fungsi sembarang $f(t)$ dan $g(t)$ serta konstanta $c_1, c_2$:
+\begin{equation}
+\mathcal{L}\{c_1 f(t) + c_2 g(t)\} = c_1 \mathcal{L}\{f(t)\} + c_2 \mathcal{L}\{g(t)\}
+\end{equation}
+\begin{example}
+Tentukan $\mathcal{L}\{3e^{2t} - 5\cos(4t)\}$.\\
+\textbf{Solusi:}
+$\mathcal{L}\{3e^{2t} - 5\cos(4t)\} = 3\mathcal{L}\{e^{2t}\} - 5\mathcal{L}\{\cos(4t)\} = 3\left(\frac{1}{s-2}\right) - 5\left(\frac{s}{s^2 + 16}\right)$.
+\end{example}
+
+\subsection{Teorema Pergeseran (Translasi) Pertama}
+Teorema ini berguna ketika mencari transformasi Laplace dari fungsi yang dikalikan eksponensial.
+\begin{definition}[Teorema Pergeseran pada Sumbu-$s$]
+Jika $\mathcal{L}\{f(t)\} = F(s)$ ada untuk $s>c$, maka untuk konstanta riil $a$:
+\begin{equation}
+\mathcal{L}\{e^{at} f(t)\} = F(s-a)
+\end{equation}
+\end{definition}
+
+\begin{example}
+Tentukan $\mathcal{L}\{e^{3t} t^2\}$.\\
+\textbf{Solusi:}
+Kita tahu $\mathcal{L}\{t^2\} = \frac{2}{s^3} = F(s)$.
+Menurut Teorema Pergeseran, $\mathcal{L}\{e^{3t} t^2\} = F(s-3) = \frac{2}{(s-3)^3}$.
+\end{example}
+
+Teorema Pergeseran Pertama merepresentasikan perkalian domain waktu oleh $e^{at}$ menyebabkan pergeseran $a$ unit pada variabel $s$ di domain frekuensi (Laplace). Ini banyak dijumpai dalam bentuk redaman (damping) pada sistem dinamis elektro dan mekanik (misalnya faktor redaman $e^{-\alpha t}$).
+
+\section{Ringkasan}
+Transformasi Laplace memetakan fungsi-fungsi waktu $f(t)$ menjadi fungsi aljabar $F(s)$. Transformasi ini membantu dalam mengubah masalah PDB yang rumit menjadi manipulasi aljabar pecahan. Kita telah mempelajari definisi dasar dari transformasi Laplace, tabel standar, serta sifat-sifat utamanya: linieritas dan Teorema Pergeseran.
+
+\section{Referensi}
+\begin{itemize}
+    \item Zill, D. G. (2018). \textit{A First Course in Differential Equations with Modeling Applications}. Cengage Learning.
+    \item Lathi, B. P. (2005). \textit{Linear Systems and Signals}. Oxford University Press.
+\end{itemize}
+
+\end{document}

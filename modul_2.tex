@@ -1,0 +1,95 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definisi}[section]
+\newtheorem{example}{Contoh}[section]
+
+\title{Catatan Kuliah Persamaan Diferensial\\Minggu 2: Persamaan Diferensial Biasa Orde 1}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Pendahuluan}
+Persamaan Diferensial Biasa (PDB) Orde 1 merupakan fondasi dalam mempelajari persamaan diferensial. Banyak sistem dasar dalam keteknikan yang dapat dimodelkan menggunakan persamaan ini. Pada minggu ini, kita akan membahas berbagai teknik analitik untuk menyelesaikan PDB Orde 1, yang meliputi metode persamaan separabel (terpisahkan), persamaan eksak, dan penggunaan faktor integrasi. Penguasaan metode ini sangat krusial sebelum melangkah pada penyelesaian PDB tingkat lanjut atau aplikasinya dalam rangkaian listrik transien.
+
+\section{Materi Utama}
+
+\subsection{Persamaan Diferensial Separabel}
+Sebuah PDB orde 1 dikatakan \textit{separabel} (dapat dipisahkan) jika persamaan tersebut dapat ditulis dalam bentuk:
+$$ \frac{dy}{dx} = g(x)h(y) $$
+atau
+$$ M(x)dx + N(y)dy = 0 $$
+\textbf{Metode Penyelesaian:}
+Pisahkan variabel $x$ dengan $dx$ dan variabel $y$ dengan $dy$, kemudian integralkan kedua ruas:
+$$ \int \frac{1}{h(y)} dy = \int g(x) dx + C $$
+
+\begin{example}
+Selesaikan PDB: $\frac{dy}{dx} = \frac{x}{y}$.\\
+\textbf{Penyelesaian:}\\
+Pisahkan variabel: $y \, dy = x \, dx$.\\
+Integrasi kedua ruas: $\int y \, dy = \int x \, dx \implies \frac{1}{2}y^2 = \frac{1}{2}x^2 + C_1$.\\
+Solusi umumnya adalah $y^2 - x^2 = C$ (dengan $C = 2C_1$).
+\end{example}
+
+\subsection{Persamaan Diferensial Eksak}
+Tinjau PDB bentuk: $M(x,y)dx + N(x,y)dy = 0$.
+Persamaan ini disebut \textbf{eksak} jika terdapat suatu fungsi $F(x,y)$ sedemikian sehingga diferensial totalnya adalah:
+$$ dF = \frac{\partial F}{\partial x} dx + \frac{\partial F}{\partial y} dy = M(x,y)dx + N(x,y)dy $$
+\textbf{Syarat Eksak:}
+Berdasarkan Teorema Clairaut, syarat perlu dan cukup agar persamaan tersebut eksak adalah:
+$$ \frac{\partial M}{\partial y} = \frac{\partial N}{\partial x} $$
+
+\textbf{Metode Penyelesaian:}
+1. Pastikan persamaan tersebut eksak.\\
+2. Cari $F(x,y)$ dengan mengintegralkan $M(x,y)$ terhadap $x$ (anggap $y$ konstan): $F(x,y) = \int M(x,y) dx + g(y)$.\\
+3. Turunkan hasil langkah 2 terhadap $y$ dan samakan dengan $N(x,y)$ untuk mencari $g'(y)$.\\
+4. Integralkan $g'(y)$ untuk mendapatkan $g(y)$.\\
+5. Solusi umumnya adalah $F(x,y) = C$.
+
+\subsection{Persamaan Linear dan Faktor Integrasi}
+Bentuk umum PDB linear orde 1 adalah:
+$$ \frac{dy}{dx} + P(x)y = Q(x) $$
+Jika PDB tidak eksak, kita bisa mengubahnya menjadi eksak dengan mengalikannya dengan suatu \textbf{Faktor Integrasi}, yang disimbolkan dengan $\mu(x)$.
+Untuk persamaan linear, faktor integrasinya selalu:
+$$ \mu(x) = e^{\int P(x) dx} $$
+
+\textbf{Metode Penyelesaian:}
+Kalikan seluruh persamaan dengan $\mu(x)$:
+$$ e^{\int P(x) dx} \frac{dy}{dx} + e^{\int P(x) dx} P(x)y = e^{\int P(x) dx} Q(x) $$
+Ruas kiri dapat ditulis sebagai turunan dari perkalian $(\mu(x) \cdot y)$:
+$$ \frac{d}{dx} \left( y \cdot e^{\int P(x) dx} \right) = e^{\int P(x) dx} Q(x) $$
+Kemudian integralkan kedua ruas terhadap $x$ untuk mendapatkan $y(x)$.
+
+\section{Ringkasan}
+Metode penyelesaian PDB Orde 1 bergantung pada bentuk persamaannya. Persamaan separabel diselesaikan dengan mengelompokkan dan mengintegrasi langsung. Persamaan eksak mensyaratkan turunan silang yang sama dan diselesaikan menggunakan fungsi potensial $F(x,y)$. Sementara itu, persamaan linear non-eksak dapat diselesaikan dengan mencari faktor integrasi $\mu(x) = e^{\int P(x) dx}$, yang menyederhanakan persamaan sehingga dapat diintegrasi.
+
+\section{Referensi}
+\begin{itemize}
+    \item Erwin Kreyszig, \textit{Advanced Engineering Mathematics}, John Wiley \& Sons.
+    \item William E. Boyce \& Richard C. DiPrima, \textit{Elementary Differential Equations and Boundary Value Problems}.
+\end{itemize}
+
+\end{document}

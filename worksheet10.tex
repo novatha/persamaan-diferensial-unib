@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 10: Latihan Solusi PDP Pemisahan Variabel}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
+Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih pemahaman Anda pada metode pemisahan variabel. Alokasikan waktu sekitar 45--60 menit untuk berdiskusi.
+\end{tcolorbox}
+
+\section*{Soal-Soal Latihan}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Apa langkah pertama yang harus dilakukan saat menerapkan metode pemisahan variabel pada suatu persamaan diferensial parsial linier?
+    \vspace{2.5cm}
+
+    \item \textbf{(C2 - Memahami)} Jika hasil pemisahan variabel memberikan PDB $\frac{X''}{X} = -\lambda$, jelaskan perbedaan bentuk solusi untuk $\lambda > 0$, $\lambda = 0$, dan $\lambda < 0$.
+    \vspace{3.5cm}
+
+    \item \textbf{(C3 - Mengaplikasikan)} Diberikan PDP $\frac{\partial u}{\partial x} + \frac{\partial u}{\partial y} = 0$. Substitusikan $u(x,y) = X(x)Y(y)$ dan pisahkan variabelnya sehingga menghasilkan dua PDB terpisah.
+    \vspace{3.5cm}
+
+    \item \textbf{(C4 - Menganalisis)} Analisislah proses mendapatkan konstanta pemisahan. Pada PDP $\frac{\partial u}{\partial t} = k \frac{\partial^2 u}{\partial x^2}$, mengapa kita secara konvensi lebih sering memilih konstanta bernilai negatif ($-p^2$) jika dikaitkan dengan stabilitas fisik solusi terhadap waktu?
+    \vspace{5cm}
+
+    \item \textbf{(C5 - Mengevaluasi)} Sebuah solusi diklaim memenuhi PDP $\frac{\partial^2 u}{\partial x^2} - \frac{\partial u}{\partial y} = 0$. Diketahui solusinya adalah $u(x,y) = A\cos(\lambda x) e^{-\lambda^2 y}$. Evaluasi dengan memasukkan fungsi $u(x,y)$ kembali ke dalam PDP awal, apakah solusi ini terbukti valid?
+    \vspace{5.5cm}
+
+    \item \textbf{(C6 - Mencipta)} Bentuklah sebuah kondisi batas hipotetis $u(0,t)=0$ dan $u(L,t)=0$ untuk fungsi $u(x,t) = X(x)T(t)$. Rangkai sedemikian rupa konsekuensi yang harus dipenuhi oleh fungsi $X(x)$ terhadap konstanta pemisahan $\lambda$.
+    \vspace{6cm}
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

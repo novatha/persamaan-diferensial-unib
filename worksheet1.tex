@@ -1,0 +1,59 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 1: Latihan Klasifikasi \& IVP}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
+Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih ketajaman pemodelan fisis Anda. Alokasikan waktu sekitar 45--60 menit untuk berdiskusi.
+\end{tcolorbox}
+
+\section*{Soal-Soal Latihan}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan definisi dari Persamaan Diferensial Parsial (PDP) beserta satu contoh persamaan klasik (seperti Gelombang atau Laplace). 
+    \vspace{2.5cm}
+
+    \item \textbf{(C2 - Memahami)} Diberikan fungsi solusi $y(x) = C_1 e^{2x} + C_2 e^{-2x}$. Jelaskan mengapa fungsi ini disebut sebagai "solusi umum" dan bukan "solusi khusus". 
+    \vspace{3.5cm}
+
+    \item \textbf{(C3 - Mengaplikasikan)} Tentukan parameter klasifikasi (orde dan linieritas) dari persamaan diferensial berikut: 
+    $$ \left(\frac{d^3y}{dx^3}\right)^2 + x\frac{dy}{dx} = 0 $$
+    \vspace{3.5cm}
+
+    \item \textbf{(C4 - Menganalisis)} Sebuah induktor ideal dengan induktansi $L$ dihubungkan seri dengan sumber arus sinusoidal $i(t) = I_m \sin(\omega t)$. Analisis hubungan komponen tersebut dan turunkan persamaan tegangan $v(t)$ yang melintasi induktor!
+    \vspace{5cm}
+
+    \item \textbf{(C5 - Mengevaluasi)} Suatu model rangkaian LC seri tanpa sumber tegangan eksternal menghasilkan persamaan diferensial orde 2 murni: 
+    $$ L\frac{d^2i}{dt^2} + \frac{1}{C}i = 0 $$
+    Evaluasi bentuk solusi umum dari persamaan di atas secara analitik, lalu buktikan bahwa sistem ini akan berosilasi dengan frekuensi sudut tak teredam $\omega = \frac{1}{\sqrt{LC}}$.
+    \vspace{5.5cm}
+
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sirkuit kelistrikan DC tertutup (terdiri atas Resistor dan Kapasitor saja) sedemikian rupa sehingga persamaan diferensial pelepasan tegangan kapasitornya memenuhi bentuk persis $\frac{dV_C}{dt} = -0.5 V_C$. Tentukan nilai-nilai parameter komponen $R$ dan $C$ yang memungkinkan agar persamaan ini terwujud.
+    \vspace{6cm}
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

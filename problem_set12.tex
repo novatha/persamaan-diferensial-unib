@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 12: Persamaan Panas 1D (Difusi Termal pada Kabel)}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran dan analisis matematis Anda secara sistematis dan terstruktur.
+\end{tcolorbox}
+
+\section*{Daftar Soal (Level Kognitif C1 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C1 - Mengingat)} Tuliskan bentuk matematis dari persamaan panas (difusi) 1 dimensi. Sebutkan makna variabel $u$, variabel bebas $x, t$, serta koefisien difusivitas termal $\alpha$.
+    \item \textbf{(C2 - Memahami)} Jelaskan karakteristik fungsi eksponensial $e^{-k^2 t}$ yang muncul dalam penyelesaian persamaan panas terhadap waktu $t$. Mengapa suhu cenderung meluruh ke keadaan setimbang?
+    \item \textbf{(C3 - Mengaplikasikan)} Sebuah kabel transmisi memiliki panjang $10$ meter. Suhu pada kedua ujung dijaga konstan $0^\circ C$. Tuliskan fungsi eigen (eigenfunction) keruangan $X_n(x)$ untuk model difusi panas pada kabel tersebut.
+    \item \textbf{(C4 - Menganalisis)} Analisislah persamaan $T'(t) + \alpha \lambda^2 T(t) = 0$. Tunjukkan langkah integrasinya hingga mendapatkan solusi $T(t) = C e^{-\alpha \lambda^2 t}$. Apa peran difusivitas $\alpha$ terhadap laju pendinginan kabel?
+    \item \textbf{(C5 - Mengevaluasi)} Dua buah kabel dari bahan berbeda, tembaga ($\alpha_1$) dan aluminium ($\alpha_2$), dipanaskan ke distribusi suhu awal yang sama. Diketahui $\alpha_1 > \alpha_2$. Evaluasi kabel mana yang akan lebih cepat mencapai keseimbangan termal saat kedua ujungnya dihubungkan pada pendingin $0^\circ C$. Berikan argumen berdasar solusi matematis!
+    \item \textbf{(C6 - Mencipta)} Rancanglah skenario untuk kabel beraliran listrik konstan yang memunculkan faktor sumber panas di dalam (internal heat generation). Formulasikan modifikasi pada persamaan difusi $1D$ standar (yang asalnya homogen) menjadi persamaan difusi tak homogen, dengan menambahkan suku representatif efek pemanasan Joule!
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

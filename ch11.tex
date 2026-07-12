@@ -1,0 +1,99 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 11: Persamaan Gelombang 1D (Vibrasi/Transmisi Sinyal)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Pemodelan Persamaan Gelombang}
+\begin{frame}{Persamaan Gelombang 1D}
+  \begin{block}{Definisi}
+    Persamaan gelombang satu dimensi memodelkan propagasi gelombang, seperti vibrasi pada dawai atau transmisi sinyal elektromagnetik pada saluran transmisi tak merugi (lossless).
+    Bentuk persamaannya adalah:
+    \begin{equation}
+        \frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}
+    \end{equation}
+    di mana $c$ adalah kecepatan rambat gelombang.
+  \end{block}
+
+  \begin{exampleblock}{Aplikasi pada Saluran Transmisi (Teknik Elektro)}
+    Dalam konteks saluran transmisi panjang, persamaan gelombang dapat digunakan untuk mendeskripsikan variasi tegangan $v(x,t)$ atau arus $i(x,t)$:
+    $$ \frac{\partial^2 v}{\partial x^2} = LC \frac{\partial^2 v}{\partial t^2} $$
+    dengan $c = 1/\sqrt{LC}$.
+  \end{exampleblock}
+\end{frame}
+
+\section{Solusi D'Alembert}
+\begin{frame}{Solusi D'Alembert}
+    D'Alembert menunjukkan bahwa solusi umum dari persamaan gelombang 1D dapat dinyatakan sebagai penjumlahan dua gelombang yang merambat dalam arah berlawanan:
+    \begin{equation}
+        u(x,t) = f(x - ct) + g(x + ct)
+    \end{equation}
+    \begin{itemize}
+        \item $f(x - ct)$: Gelombang merambat ke arah kanan (sumbu $x$ positif) dengan kecepatan $c$.
+        \item $g(x + ct)$: Gelombang merambat ke arah kiri (sumbu $x$ negatif) dengan kecepatan $c$.
+    \end{itemize}
+    Solusi ini sangat elegan untuk domain yang membentang tak hingga ($-\infty < x < \infty$).
+\end{frame}
+
+\section{Solusi dengan Pemisahan Variabel}
+\begin{frame}{Solusi dengan Metode Pemisahan Variabel (Kondisi Batas)}
+  \begin{block}{Kasus Vibrasi Dawai Ujung Tetap}
+    Jika ujung terikat pada $x=0$ dan $x=L$, syarat batasnya adalah $u(0,t)=0$ dan $u(L,t)=0$.
+    Dengan substitusi $u(x,t)=X(x)T(t)$, didapatkan fungsi Eigen:
+    \begin{equation}
+        X_n(x) = \sin\left(\frac{n\pi}{L}x\right) \quad \text{untuk } n=1, 2, 3, \dots
+    \end{equation}
+  \end{block}
+  \textbf{Solusi Deret Fourier:}
+  Menggabungkan dengan solusi fungsi waktu dan prinsip superposisi, solusi umumnya menjadi:
+  \begin{equation}
+      u(x,t) = \sum_{n=1}^{\infty} \sin\left(\frac{n\pi}{L}x\right) \left[ A_n \cos\left(\frac{cn\pi}{L}t\right) + B_n \sin\left(\frac{cn\pi}{L}t\right) \right]
+  \end{equation}
+  Koefisien $A_n$ dan $B_n$ ditentukan dari syarat awal (kondisi t=0).
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Sesi Tanya Jawab}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
+  \end{center}
+\end{frame}
+
+\end{document}

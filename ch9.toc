@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Pengantar Persamaan Diferensial Parsial}{3}{0}{1}
+\beamer@sectionintoc {2}{Deret Fourier Dasar}{4}{0}{2}
+\beamer@sectionintoc {3}{Fungsi Genap dan Ganjil}{5}{0}{3}
+\beamer@sectionintoc {4}{Ekspansi Deret Fourier Genap/Ganjil}{6}{0}{4}

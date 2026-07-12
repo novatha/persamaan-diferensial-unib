@@ -1,0 +1,55 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Case Method 1 (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 3: Aplikasi PDB Orde 1}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Case Method]
+Tugas ini bertindak sebagai \textbf{Case Method 1}. Kumpulkan dalam bentuk laporan singkat yang memuat: (1) Penurunan model matematis, (2) Penyelesaian PDB, dan (3) Kode \textit{script} visualisasi (Python/Julia) beserta hasil \textit{plot}-nya.
+\end{tcolorbox}
+
+\section*{Daftar Kasus (Level Kognitif C4 - C6)}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C4 - Menganalisis) Kasus Transien Gardu Induk:} Sebuah saklar pada sirkuit ekuivalen gardu induk (bisa dimodelkan sebagai rangkaian RL seri) tiba-tiba ditutup akibat gangguan petir. Tegangannya konstan di $220\text{ kV}$, Resistansi $R = 10 \, \Omega$, dan Induktansi $L = 5\text{ H}$. 
+    \begin{enumerate}
+        \item Rumuskan PDB-nya.
+        \item Selesaikan untuk mencari persamaan arus transien $i(t)$.
+        \item Hitung waktu yang dibutuhkan hingga arus mencapai $95\%$ dari arus stabilnya (arus \textit{steady-state}).
+    \end{enumerate}
+    
+    \item \textbf{(C5 - Mengevaluasi) Kasus Pendinginan Komponen Elektronik:} Sebuah IC (\textit{Integrated Circuit}) \textit{microprocessor} dimatikan saat suhunya $90^\circ\text{C}$. Suhu ruangan (pendingin) dijaga konstan di $25^\circ\text{C}$. Setelah 5 menit, suhu IC turun menjadi $60^\circ\text{C}$.
+    \begin{enumerate}
+        \item Gunakan Hukum Pendinginan Newton untuk memformulasikan persamaan diferensial suhu $T(t)$.
+        \item Evaluasi dan tentukan besarnya konstanta pendinginan $k$ komponen tersebut.
+        \item Prediksikan pada menit ke berapa suhu IC akan aman disentuh ($35^\circ\text{C}$).
+    \end{enumerate}
+
+    \item \textbf{(C6 - Mencipta) Simulasi \textit{Software}:} 
+    Berdasarkan Kasus No. 1 (Rangkaian RL), rancanglah sebuah \textit{script} komputasi menggunakan \textbf{Python (matplotlib)} atau \textbf{Julia (Plots.jl)} untuk memvisualisasikan kurva arus $i(t)$ dari $t=0$ hingga $t=3$ detik. Lampirkan tangkapan layar (\textit{screenshot}) kode dan grafiknya!
+\end{enumerate}
+
+\vfill
+\begin{center}
+\textbf{Semoga berhasil!}
+\end{center}
+
+\end{document}

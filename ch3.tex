@@ -1,0 +1,87 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amsmath,amssymb}
+
+% --- Custom Colors ---
+\definecolor{unibblue}{RGB}{0,51,102}
+\definecolor{unibgold}{RGB}{212,175,55}
+\definecolor{unibgreen}{RGB}{0,128,0}
+
+\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{block body}{bg=unibblue!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+
+\title{Persamaan Diferensial}
+\subtitle{Minggu 3: Aplikasi PDB Orde 1 (Transien Listrik \& Pendinginan Newton)}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Transien Rangkaian RL}
+\begin{frame}{Transien Rangkaian RL (Resistor-Induktor)}
+  Berdasarkan KVL pada rangkaian seri RL dengan sumber tegangan DC ($V_0$):
+  \begin{equation}
+      L\frac{di}{dt} + Ri = V_0
+  \end{equation}
+  Persamaan ini adalah PDB Linier Orde 1. Kita dapat menyelesaikannya dengan metode separasi variabel atau faktor integrasi.
+  \begin{block}{Solusi Arus Transien}
+      Jika pada $t=0$ saklar ditutup (kondisi awal $i(0) = 0$), solusinya:
+      $$ i(t) = \frac{V_0}{R} \left(1 - e^{-\frac{R}{L}t}\right) $$
+  \end{block}
+  \textit{Time constant} (konstanta waktu) rangkaian ini adalah $\tau = \frac{L}{R}$.
+\end{frame}
+
+\section{Transien Rangkaian RC}
+\begin{frame}{Transien Rangkaian RC (Resistor-Kapasitor)}
+  Sama halnya dengan rangkaian RL, KVL untuk rangkaian RC menghasilkan:
+  \begin{equation}
+      R\frac{dq}{dt} + \frac{q}{C} = V_0 \implies RC\frac{dV_c}{dt} + V_c = V_0
+  \end{equation}
+  \begin{alertblock}{Pengisian Kapasitor (Charging)}
+      Dengan $V_c(0) = 0$, tegangannya naik secara eksponensial:
+      $$ V_c(t) = V_0 \left(1 - e^{-\frac{t}{RC}}\right) $$
+  \end{alertblock}
+  \begin{alertblock}{Pengosongan Kapasitor (Discharging)}
+      Jika sumber dilepas (dihubung singkat) pada saat tegangan $V_0$:
+      $$ V_c(t) = V_0 e^{-\frac{t}{RC}} $$
+  \end{alertblock}
+\end{frame}
+
+\section{Hukum Pendinginan Newton}
+\begin{frame}{Hukum Pendinginan Newton}
+  Aplikasi lain dari PDB Orde 1 di luar kelistrikan adalah Hukum Pendinginan Newton (termodinamika dasar).
+  \begin{block}{Prinsip}
+      Laju perubahan suhu suatu benda sebanding dengan selisih suhu benda tersebut ($T$) dengan suhu lingkungan ($T_m$).
+      \begin{equation}
+          \frac{dT}{dt} = -k(T - T_m)
+      \end{equation}
+  \end{block}
+  Di mana $k$ adalah konstanta proporsionalitas materi ($k > 0$).
+  Penyelesaian analitiknya menghasilkan kurva suhu eksponensial yang meluruh menuju suhu lingkungan.
+\end{frame}
+
+\begin{frame}{Terima Kasih}
+  \begin{center}
+    \vspace{1cm}
+    {\Large \textbf{Saatnya \textit{Case Method} (Kasus Kelistrikan)}}\\
+    \vspace{1.5cm}
+    Novalio Daratha\\
+    Program Studi Teknik Elektro
+  \end{center}
+\end{frame}
+
+\end{document}

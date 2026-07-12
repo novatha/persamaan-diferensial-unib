@@ -1,0 +1,53 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 2: PDB Orde 1}}
+\author{Novalio Daratha\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
+Diskusikan dengan teman Anda untuk membedah karakteristik Persamaan Diferensial Biasa (PDB) Orde 1. Manfaatkan ruang kosong untuk menuliskan corat-coret matematis Anda.
+\end{tcolorbox}
+
+\section*{Soal-Soal Latihan}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{(C2 - Memahami)} Identifikasi mana di antara persamaan berikut yang tergolong separabel dan mana yang eksak (namun tidak separabel).
+    \begin{enumerate}[label=\alph*.]
+        \item $\frac{dy}{dx} = \frac{x^2}{y}$ 
+        \item $(2x + y)dx + (x - 2y)dy = 0$
+    \end{enumerate}
+    \vspace{4cm}
+
+    \item \textbf{(C3 - Mengaplikasikan)} Carilah solusi umum untuk persamaan diferensial separabel berikut: 
+    $$ y' = e^{x-y} $$
+    \vspace{6cm}
+
+    \item \textbf{(C4 - Menganalisis)} Diberikan persamaan diferensial:
+    $$ (y \cos x + 2xe^y) + (\sin x + x^2 e^y - 1)y' = 0 $$
+    Analisis dengan menguji syarat eksak. Jika persamaan tersebut eksak, turunkan penyelesaiannya selangkah demi selangkah.
+    \vspace{7cm}
+
+    \item \textbf{(C5 - Mengevaluasi)} Tinjau persamaan diferensial linier orde pertama dalam bentuk standar: $\frac{dy}{dx} + P(x)y = Q(x)$. Formula faktor integrasi matematisnya adalah $\mu(x) = e^{\int P(x)dx}$. Coba Anda buktikan bahwa pengalian kedua ruas persamaan standar tersebut dengan faktor integrasi $\mu(x)$ akan menjadikannya sebuah persamaan diferensial yang turunan total ruas kirinya menjadi $\frac{d}{dx}[\mu(x)y]$.
+    \vspace{6cm}
+
+\end{enumerate}
+
+\end{document}
