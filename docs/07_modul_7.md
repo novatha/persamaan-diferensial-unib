@@ -21,7 +21,7 @@ Seringkali $F(s)$ tidak berada dalam bentuk di tabel secara langsung. Teknik Eks
 
 **Contoh:**
 
-Tentukan $\mathcal{L}^{-1} \left\lbrace  \frac{s+1}{s^2-4s+3} \right\rbrace $.
+Tentukan $\mathcal{L}^{-1} \left\lbrace  \frac{s+1}{s^2-4s+3} \right\rbrace$.
 
 **Solusi:**
 Faktorkan penyebut: $s^2-4s+3 = (s-1)(s-3)$. Pecahan parsial:

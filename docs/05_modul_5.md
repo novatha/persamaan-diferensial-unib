@@ -50,10 +50,10 @@ $$
 $$
 
 $$
-    (9 - 9 + 2)A = 4 \implies 2A = 4 \implies A = 2
+(9 - 9 + 2)A = 4 \implies 2A = 4 \implies A = 2
 $$
 
-    Jadi $y_p(x) = 2e^{3x}$.
+Jadi $y_p(x) = 2e^{3x}$.
 - **Solusi Umum:** $y(x) = y_h(x) + y_p(x) = C_1 e^x + C_2 e^{2x} + 2e^{3x}$.
 
 ## Aplikasi Rangkaian RLC Seri
