@@ -8,9 +8,13 @@ Transformasi Laplace adalah alat matematis yang sangat berharga untuk menyelesai
 **Definisi:**
 
 Misalkan $f(t)$ adalah fungsi yang didefinisikan untuk $t \ge 0$. Transformasi Laplace dari $f(t)$, dinotasikan dengan $\mathcal{L}\{f(t)\}$ atau $F(s)$, didefinisikan sebagai integral tak wajar:
+
 $$
+
 \mathcal{L}\{f(t)\} = F(s) = \int_{0}^{\infty} e^{-st} f(t) dt
+
 $$
+
 asalkan integral tersebut konvergen (memiliki nilai batas berhingga). Variabel $s$ merupakan parameter riil atau kompleks.
 
 
@@ -30,9 +34,13 @@ Beberapa transformasi fungsi dasar yang umum dijumpai:
 
 ## Sifat Linieritas
 Transformasi Laplace bersifat linier. Artinya, untuk dua fungsi sembarang $f(t)$ dan $g(t)$ serta konstanta $c_1, c_2$:
+
 $$
+
 \mathcal{L}\{c_1 f(t) + c_2 g(t)\} = c_1 \mathcal{L}\{f(t)\} + c_2 \mathcal{L}\{g(t)\}
+
 $$
+
 **Contoh:**
 
 Tentukan $\mathcal{L}\{3e^{2t} - 5\cos(4t)\}$.\\
@@ -45,8 +53,11 @@ Teorema ini berguna ketika mencari transformasi Laplace dari fungsi yang dikalik
 **Definisi: Teorema Pergeseran pada Sumbu-$s$**
 
 Jika $\mathcal{L}\{f(t)\} = F(s)$ ada untuk $s>c$, maka untuk konstanta riil $a$:
+
 $$
+
 \mathcal{L}\{e^{at} f(t)\} = F(s-a)
+
 $$
 
 

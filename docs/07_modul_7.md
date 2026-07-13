@@ -6,8 +6,11 @@ Setelah memahami bagaimana mengubah domain waktu menjadi frekuensi kompleks (dom
 ## Materi Utama
 ## Invers Transformasi Laplace
 Jika $F(s)$ melambangkan transformasi Laplace dari $f(t)$, yaitu $\mathcal{L}\{f(t)\} = F(s)$, maka $f(t)$ disebut transformasi invers Laplace dari $F(s)$ dan dituliskan:
+
 $$
+
 f(t) = \mathcal{L}^{-1}\{F(s)\}
+
 $$
 
 Sama seperti transformasi Laplace, transformasi Laplace Invers juga memiliki sifat linieritas:

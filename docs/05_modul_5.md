@@ -6,15 +6,23 @@ Pada minggu kelima ini, kita akan mempelajari Persamaan Diferensial Biasa (PDB) 
 ## Materi Utama
 ## Bentuk Umum PDB Orde 2 Non-Homogen
 Bentuk umum dari PDB linier orde 2 dengan koefisien konstan non-homogen adalah:
+
 $$
+
 a y'' + b y' + c y = f(x)
+
 $$
+
 dimana $a$, $b$, dan $c$ adalah konstanta riil ($a \neq 0$), dan fungsi di ruas kanan $f(x) \neq 0$ dikenal sebagai fungsi paksa (forcing function) atau fungsi input.
 
 Solusi umum dari persamaan ini terdiri dari penjumlahan antara solusi umum PDB homogennya (sering disebut fungsi komplementer) dan solusi partikular PDB non-homogen tersebut:
+
 $$
+
 y(x) = y_h(x) + y_p(x)
+
 $$
+
 dimana:
 
     - $y_h(x)$ adalah solusi dari persamaan homogen $ay'' + by' + cy = 0$.
@@ -47,17 +55,29 @@ Selesaikan PDB: $y'' - 3y' + 2y = 4e^{3x}$.
 
 ## Aplikasi Rangkaian RLC Seri
 Pada rangkaian listrik yang terdiri dari resistor ($R$), induktor ($L$), dan kapasitor ($C$) yang dihubungkan seri dengan sumber tegangan $E(t)$, Hukum Tegangan Kirchhoff (KVL) menyatakan:
+
 $$
+
 V_L + V_R + V_C = E(t)
+
 $$
+
 Substitusi relasi tegangan-arus: $V_L = L \frac{di}{dt}$, $V_R = R i$, $V_C = \frac{q}{C}$, dimana arus $i = \frac{dq}{dt}$. Kita peroleh PDB orde 2 untuk muatan listrik $q(t)$:
+
 $$
+
 L \frac{d^2q}{dt^2} + R \frac{dq}{dt} + \frac{1}{C} q = E(t)
+
 $$
+
 Jika kita diferensialkan terhadap waktu, kita juga bisa mendapatkan PDB untuk arus $i(t)$:
+
 $$
+
 L \frac{d^2i}{dt^2} + R \frac{di}{dt} + \frac{1}{C} i = \frac{dE}{dt}
+
 $$
+
 Persamaan ini ekuivalen secara matematis dengan sistem pegas-massa mekanik yang teredam secara gaya paksa.
 Fungsi paksa $E(t)$ sering berbentuk sinusoidal (AC), misalnya $E(t) = E_0 \cos(\omega t)$. Metode Koefisien Tak Tentu dapat digunakan untuk menemukan respon keadaan mantap (steady-state) arus pada rangkaian tersebut (solusi partikular $i_p(t)$).
 
