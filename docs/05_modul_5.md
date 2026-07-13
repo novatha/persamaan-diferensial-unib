@@ -48,8 +48,6 @@ Selesaikan PDB: $y'' - 3y' + 2y = 4e^{3x}$.
 $$
     9A e^{3x} - 3(3A e^{3x}) + 2(A e^{3x}) = 4e^{3x}
 $$
-
-$$
 (9 - 9 + 2)A = 4 \implies 2A = 4 \implies A = 2
 $$
 
