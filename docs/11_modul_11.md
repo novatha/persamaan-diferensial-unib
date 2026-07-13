@@ -9,7 +9,11 @@ Pemahaman tentang perambatan gelombang sangat krusial dalam rekayasa telekomunik
 
 ## Bentuk Persamaan Gelombang 1-Dimensi
 Persamaan gelombang 1-dimensi adalah sebuah Persamaan Diferensial Parsial orde dua linear homogen yang dituliskan sebagai:
-$$ \frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2} $$
+
+$$
+\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}
+$$
+
 dimana:
 
     - $u(x,t)$ dapat berupa perpindahan senar dari posisi kesetimbangan atau amplitudo tegangan/arus $V(x,t)$ atau $I(x,t)$ sepanjang kabel transmisi.
@@ -19,13 +23,24 @@ dimana:
 
 ## Solusi Pemisahan Variabel (Gelombang Berdiri)
 Dengan memisalkan $u(x,t) = X(x)T(t)$, persamaan gelombang di atas menghasilkan dua PDB:
-$$ X''(x) + \lambda^2 X(x) = 0 $$
-$$ T''(t) + c^2 \lambda^2 T(t) = 0 $$
+
+$$
+X''(x) + \lambda^2 X(x) = 0
+$$
+
+$$
+T''(t) + c^2 \lambda^2 T(t) = 0
+$$
+
 Penyelesaian sistem ini menghasilkan frekuensi alami (frekuensi fundamental dan harmoniknya) serta fungsi bentuk gelombang berdiri.
 
 ## Solusi D'Alembert (Gelombang Berjalan)
 Pendekatan lain untuk menyelesaikan persamaan gelombang (tanpa syarat batas yang tetap) adalah menggunakan metode D'Alembert. Persamaan ini memiliki solusi umum yang mencerminkan fisik gelombang berjalan:
-$$ u(x,t) = f(x - ct) + g(x + ct) $$
+
+$$
+u(x,t) = f(x - ct) + g(x + ct)
+$$
+
 Penjelasan fisik:
 
     - $f(x - ct)$ merepresentasikan bentuk gelombang asal yang merambat ke arah sumbu $x$ positif (ke kanan) dengan kecepatan $c$.

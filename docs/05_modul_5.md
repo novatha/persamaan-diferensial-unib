@@ -44,8 +44,15 @@ Selesaikan PDB: $y'' - 3y' + 2y = 4e^{3x}$.
 
     - **Solusi Homogen ($y_h$):** Persamaan karakteristik: $r^2 - 3r + 2 = 0 \implies (r-1)(r-2) = 0 \implies r_1=1, r_2=2$. Solusi: $y_h(x) = C_1 e^x + C_2 e^{2x}$.
     - **Solusi Partikular ($y_p$):** Karena $f(x) = 4e^{3x}$ dan $e^{3x}$ bukan bagian dari $y_h$, kita tebak $y_p(x) = A e^{3x}$. Turunkan: $y_p' = 3A e^{3x}$, $y_p'' = 9A e^{3x}$. Substitusi ke PDB:
-    $$ 9A e^{3x} - 3(3A e^{3x}) + 2(A e^{3x}) = 4e^{3x} $$
-    $$ (9 - 9 + 2)A = 4 \implies 2A = 4 \implies A = 2 $$
+
+    $$
+    9A e^{3x} - 3(3A e^{3x}) + 2(A e^{3x}) = 4e^{3x}
+    $$
+
+    $$
+    (9 - 9 + 2)A = 4 \implies 2A = 4 \implies A = 2
+    $$
+
     Jadi $y_p(x) = 2e^{3x}$.
     - **Solusi Umum:** $y(x) = y_h(x) + y_p(x) = C_1 e^x + C_2 e^{2x} + 2e^{3x}$.
 

@@ -12,15 +12,17 @@ Persamaan Diferensial dibagi menjadi dua kategori utama berdasarkan jumlah varia
 
 Persamaan Diferensial Biasa (PDB) adalah persamaan diferensial yang hanya mengandung turunan terhadap **satu** variabel bebas.
 
-
 Bentuk umum PDB:
-$$ F\left(x, y, \frac{dy}{dx}, \frac{d^2y}{dx^2}, \dots, \frac{d^ny}{dx^n}\right) = 0 $$
+
+$$
+F\left(x, y, \frac{dy}{dx}, \frac{d^2y}{dx^2}, \dots, \frac{d^ny}{dx^n}\right) = 0
+$$
+
 dengan $x$ adalah variabel bebas dan $y$ adalah variabel terikat.
 
 **Definisi: Persamaan Diferensial Parsial (PDP)**
 
 Persamaan Diferensial Parsial (PDP) adalah persamaan diferensial yang mengandung turunan parsial terhadap **dua atau lebih** variabel bebas.
-
 
 Contoh PDP dalam Teknik Elektro adalah Persamaan Gelombang Elektromagnetik dan Persamaan Panas (Heat Equation).
 
@@ -30,7 +32,11 @@ Contoh PDP dalam Teknik Elektro adalah Persamaan Gelombang Elektromagnetik dan P
     - **Derajat (Degree):** Pangkat dari turunan tertinggi dalam persamaan, asalkan persamaan tersebut dalam bentuk polinomial dari turunan-turunannya.
 
 Contoh: 
-$$ \left( \frac{d^2y}{dx^2} \right)^3 + 4\frac{dy}{dx} - y = e^x $$
+
+$$
+\left( \frac{d^2y}{dx^2} \right)^3 + 4\frac{dy}{dx} - y = e^x
+$$
+
 Persamaan di atas merupakan PDB orde 2 berderajat 3.
 
 ## Solusi Umum dan Solusi Khusus
@@ -49,11 +55,18 @@ Dalam Teknik Elektro, Hukum Tegangan Kirchhoff (KVL) dan Hukum Arus Kirchhoff (K
 **Contoh: Rangkaian RL Seri**
 
 Tinjau sebuah rangkaian yang terdiri dari resistor $R$ dan induktor $L$ yang dihubungkan secara seri dengan sumber tegangan $V(t)$. Berdasarkan Hukum Tegangan Kirchhoff (KVL):
-$$ V_R + V_L = V(t) $$
-Kita mengetahui bahwa $V_R = R \cdot i(t)$ dan $V_L = L \frac{di(t)}{dt}$. Dengan demikian, persamaan rangkaiannya adalah:
-$$ L \frac{di}{dt} + R i = V(t) $$
-Persamaan ini merupakan Persamaan Diferensial Biasa (PDB) orde 1 linear.
 
+$$
+V_R + V_L = V(t)
+$$
+
+Kita mengetahui bahwa $V_R = R \cdot i(t)$ dan $V_L = L \frac{di(t)}{dt}$. Dengan demikian, persamaan rangkaiannya adalah:
+
+$$
+L \frac{di}{dt} + R i = V(t)
+$$
+
+Persamaan ini merupakan Persamaan Diferensial Biasa (PDB) orde 1 linear.
 
 ## Ringkasan
 Minggu ini kita telah mempelajari konsep dasar Persamaan Diferensial. Klasifikasi PD menjadi PDB dan PDP sangat bergantung pada jumlah variabel bebas. Orde menunjukkan turunan tertinggi, sedangkan solusi umum memuat konstanta yang dapat ditentukan melalui Masalah Nilai Awal (IVP) sehingga menjadi solusi khusus. Pemodelan rangkaian seri sederhana dengan Hukum Kirchhoff merupakan contoh fundamental tentang bagaimana PDB diterapkan dalam analisis rangkaian di Teknik Elektro.

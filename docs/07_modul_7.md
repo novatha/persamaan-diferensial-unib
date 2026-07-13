@@ -12,7 +12,10 @@ f(t) = \mathcal{L}^{-1}\{F(s)\}
 $$
 
 Sama seperti transformasi Laplace, transformasi Laplace Invers juga memiliki sifat linieritas:
-$$ \mathcal{L}^{-1}\{c_1 F(s) + c_2 G(s)\} = c_1 \mathcal{L}^{-1}\{F(s)\} + c_2 \mathcal{L}^{-1}\{G(s)\} $$
+
+$$
+\mathcal{L}^{-1}\{c_1 F(s) + c_2 G(s)\} = c_1 \mathcal{L}^{-1}\{F(s)\} + c_2 \mathcal{L}^{-1}\{G(s)\}
+$$
 
 Seringkali $F(s)$ tidak berada dalam bentuk di tabel secara langsung. Teknik Ekspansi Pecahan Parsial (Partial Fraction Expansion) digunakan untuk memecah $F(s)$ ke bentuk pecahan-pecahan sederhana.
 
@@ -22,7 +25,11 @@ Tentukan $\mathcal{L}^{-1} \left\lbrace  \frac{s+1}{s^2-4s+3} \right\rbrace $.
 
 **Solusi:**
 Faktorkan penyebut: $s^2-4s+3 = (s-1)(s-3)$. Pecahan parsial:
-$$ \frac{s+1}{(s-1)(s-3)} = \frac{A}{s-1} + \frac{B}{s-3} $$
+
+$$
+\frac{s+1}{(s-1)(s-3)} = \frac{A}{s-1} + \frac{B}{s-3}
+$$
+
 $s+1 = A(s-3) + B(s-1)$
 Untuk $s=1 \implies 2 = -2A \implies A = -1$
 Untuk $s=3 \implies 4 = 2B \implies B = 2$
@@ -50,15 +57,32 @@ Selesaikan PDB nilai awal berikut: $y'' - y' - 2y = 0$; dengan nilai awal $y(0)=
 
 **Solusi:**
 1. Ambil Laplace kedua sisi:
-$$ [s^2Y(s) - sy(0) - y'(0)] - [sY(s) - y(0)] - 2Y(s) = 0 $$
-$$ [s^2Y(s) - s(1) - 0] - [sY(s) - 1] - 2Y(s) = 0 $$
+
+$$
+[s^2Y(s) - sy(0) - y'(0)] - [sY(s) - y(0)] - 2Y(s) = 0
+$$
+
+$$
+[s^2Y(s) - s(1) - 0] - [sY(s) - 1] - 2Y(s) = 0
+$$
+
 2. Kumpulkan $Y(s)$:
-$$ (s^2 - s - 2)Y(s) - s + 1 = 0 \implies (s^2 - s - 2)Y(s) = s - 1 $$
-$$ Y(s) = \frac{s-1}{s^2-s-2} = \frac{s-1}{(s-2)(s+1)} $$
+
+$$
+(s^2 - s - 2)Y(s) - s + 1 = 0 \implies (s^2 - s - 2)Y(s) = s - 1
+$$
+
+$$
+Y(s) = \frac{s-1}{s^2-s-2} = \frac{s-1}{(s-2)(s+1)}
+$$
+
 Lakukan pecahan parsial: $\frac{s-1}{(s-2)(s+1)} = \frac{A}{s-2} + \frac{B}{s+1}$.
 Didapat $A=1/3, B=2/3$. Jadi $Y(s) = \frac{1/3}{s-2} + \frac{2/3}{s+1}$.
 3. Invers Laplace:
-$$ y(t) = \mathcal{L}^{-1} \left\lbrace  \frac{1}{3} \frac{1}{s-2} + \frac{2}{3} \frac{1}{s+1} \right\rbrace  = \frac{1}{3}e^{2t} + \frac{2}{3}e^{-t} $$
+
+$$
+y(t) = \mathcal{L}^{-1} \left\lbrace  \frac{1}{3} \frac{1}{s-2} + \frac{2}{3} \frac{1}{s+1} \right\rbrace  = \frac{1}{3}e^{2t} + \frac{2}{3}e^{-t}
+$$
 
 ## Ringkasan
 Metode Transformasi Laplace untuk PDB menggabungkan pemecahan PDB sekaligus syarat awalnya tanpa tahap mencari solusi umum. Proses utamanya mencakup transformasi domain waktu (PDB) ke ranah s (Aljabar), penyederhanaan aljabar menggunakan teknik Ekspansi Pecahan Parsial, dan diakhiri dengan Transformasi Laplace Invers. Metode ini menjadi senjata andalan mahasiswa kelistrikan dalam analisis sistem redaman sirkuit atau sistem kontrol dan respon transien.

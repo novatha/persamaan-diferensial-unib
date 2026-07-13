@@ -15,10 +15,13 @@ $$
 
 asalkan integral tersebut konvergen (memiliki nilai batas berhingga). Variabel $s$ merupakan parameter riil atau kompleks.
 
-
 **Contoh Pencarian Transformasi Laplace dari Definisi:**
 Mari kita cari $\mathcal{L}\{1\}$.
-$$ \mathcal{L}\{1\} = \int_{0}^{\infty} e^{-st} (1) dt = \lim_{b \to \infty} \int_{0}^{b} e^{-st} dt = \lim_{b \to \infty} \left[ -\frac{1}{s} e^{-st} \right]_0^b = \lim_{b \to \infty} \left( -\frac{1}{s} e^{-sb} + \frac{1}{s} e^0 \right) = \frac{1}{s} $$
+
+$$
+\mathcal{L}\{1\} = \int_{0}^{\infty} e^{-st} (1) dt = \lim_{b \to \infty} \int_{0}^{b} e^{-st} dt = \lim_{b \to \infty} \left[ -\frac{1}{s} e^{-st} \right]_0^b = \lim_{b \to \infty} \left( -\frac{1}{s} e^{-sb} + \frac{1}{s} e^0 \right) = \frac{1}{s}
+$$
+
 Integral konvergen jika $s > 0$.
 
 **Tabel Transformasi Laplace Dasar:**
@@ -43,7 +46,6 @@ Tentukan $\mathcal{L}\{3e^{2t} - 5\cos(4t)\}$.<br>
 **Solusi:**
 $\mathcal{L}\{3e^{2t} - 5\cos(4t)\} = 3\mathcal{L}\{e^{2t}\} - 5\mathcal{L}\{\cos(4t)\} = 3\left(\frac{1}{s-2}\right) - 5\left(\frac{s}{s^2 + 16}\right)$.
 
-
 ## Teorema Pergeseran (Translasi) Pertama
 Teorema ini berguna ketika mencari transformasi Laplace dari fungsi yang dikalikan eksponensial.
 **Definisi: Teorema Pergeseran pada Sumbu-$s$**
@@ -54,14 +56,12 @@ $$
 \mathcal{L}\{e^{at} f(t)\} = F(s-a)
 $$
 
-
 **Contoh:**
 
 Tentukan $\mathcal{L}\{e^{3t} t^2\}$.<br>
 **Solusi:**
 Kita tahu $\mathcal{L}\{t^2\} = \frac{2}{s^3} = F(s)$.
 Menurut Teorema Pergeseran, $\mathcal{L}\{e^{3t} t^2\} = F(s-3) = \frac{2}{(s-3)^3}$.
-
 
 Teorema Pergeseran Pertama merepresentasikan perkalian domain waktu oleh $e^{at}$ menyebabkan pergeseran $a$ unit pada variabel $s$ di domain frekuensi (Laplace). Ini banyak dijumpai dalam bentuk redaman (damping) pada sistem dinamis elektro dan mekanik (misalnya faktor redaman $e^{-\alpha t}$).
 

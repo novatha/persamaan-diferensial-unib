@@ -7,12 +7,23 @@ Persamaan Diferensial Biasa (PDB) Orde 1 merupakan fondasi dalam mempelajari per
 
 ## Persamaan Diferensial Separabel
 Sebuah PDB orde 1 dikatakan *separabel* (dapat dipisahkan) jika persamaan tersebut dapat ditulis dalam bentuk:
-$$ \frac{dy}{dx} = g(x)h(y) $$
+
+$$
+\frac{dy}{dx} = g(x)h(y)
+$$
+
 atau
-$$ M(x)dx + N(y)dy = 0 $$
+
+$$
+M(x)dx + N(y)dy = 0
+$$
+
 **Metode Penyelesaian:**
 Pisahkan variabel $x$ dengan $dx$ dan variabel $y$ dengan $dy$, kemudian integralkan kedua ruas:
-$$ \int \frac{1}{h(y)} dy = \int g(x) dx + C $$
+
+$$
+\int \frac{1}{h(y)} dy = \int g(x) dx + C
+$$
 
 **Contoh:**
 
@@ -22,14 +33,20 @@ Pisahkan variabel: $y \, dy = x \, dx$.<br>
 Integrasi kedua ruas: $\int y \, dy = \int x \, dx \implies \frac{1}{2}y^2 = \frac{1}{2}x^2 + C_1$.<br>
 Solusi umumnya adalah $y^2 - x^2 = C$ (dengan $C = 2C_1$).
 
-
 ## Persamaan Diferensial Eksak
 Tinjau PDB bentuk: $M(x,y)dx + N(x,y)dy = 0$.
 Persamaan ini disebut **eksak** jika terdapat suatu fungsi $F(x,y)$ sedemikian sehingga diferensial totalnya adalah:
-$$ dF = \frac{\partial F}{\partial x} dx + \frac{\partial F}{\partial y} dy = M(x,y)dx + N(x,y)dy $$
+
+$$
+dF = \frac{\partial F}{\partial x} dx + \frac{\partial F}{\partial y} dy = M(x,y)dx + N(x,y)dy
+$$
+
 **Syarat Eksak:**
 Berdasarkan Teorema Clairaut, syarat perlu dan cukup agar persamaan tersebut eksak adalah:
-$$ \frac{\partial M}{\partial y} = \frac{\partial N}{\partial x} $$
+
+$$
+\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}
+$$
 
 **Metode Penyelesaian:**
 1. Pastikan persamaan tersebut eksak.<br>
@@ -40,16 +57,31 @@ $$ \frac{\partial M}{\partial y} = \frac{\partial N}{\partial x} $$
 
 ## Persamaan Linear dan Faktor Integrasi
 Bentuk umum PDB linear orde 1 adalah:
-$$ \frac{dy}{dx} + P(x)y = Q(x) $$
+
+$$
+\frac{dy}{dx} + P(x)y = Q(x)
+$$
+
 Jika PDB tidak eksak, kita bisa mengubahnya menjadi eksak dengan mengalikannya dengan suatu **Faktor Integrasi**, yang disimbolkan dengan $\mu(x)$.
 Untuk persamaan linear, faktor integrasinya selalu:
-$$ \mu(x) = e^{\int P(x) dx} $$
+
+$$
+\mu(x) = e^{\int P(x) dx}
+$$
 
 **Metode Penyelesaian:**
 Kalikan seluruh persamaan dengan $\mu(x)$:
-$$ e^{\int P(x) dx} \frac{dy}{dx} + e^{\int P(x) dx} P(x)y = e^{\int P(x) dx} Q(x) $$
+
+$$
+e^{\int P(x) dx} \frac{dy}{dx} + e^{\int P(x) dx} P(x)y = e^{\int P(x) dx} Q(x)
+$$
+
 Ruas kiri dapat ditulis sebagai turunan dari perkalian $(\mu(x) \cdot y)$:
-$$ \frac{d}{dx} \left( y \cdot e^{\int P(x) dx} \right) = e^{\int P(x) dx} Q(x) $$
+
+$$
+\frac{d}{dx} \left( y \cdot e^{\int P(x) dx} \right) = e^{\int P(x) dx} Q(x)
+$$
+
 Kemudian integralkan kedua ruas terhadap $x$ untuk mendapatkan $y(x)$.
 
 ## Ringkasan

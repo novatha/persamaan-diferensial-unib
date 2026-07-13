@@ -9,15 +9,25 @@ Ide dasar dari metode ini sangat elegan: kita mengasumsikan solusi fungsi multiv
 
 ## Prinsip Dasar Metode Pemisahan Variabel
 Misalkan kita mencari solusi $u(x, t)$ untuk sebuah persamaan diferensial parsial linear homogen (contohnya persamaan panas 1-dimensi). Kita asumsikan bentuk solusi sebagai hasil kali dua fungsi independen:
-$$ u(x,t) = X(x) \cdot T(t) $$
+
+$$
+u(x,t) = X(x) \cdot T(t)
+$$
+
 di mana:
 
     - $X(x)$ adalah fungsi yang hanya bergantung pada variabel posisi $x$.
     - $T(t)$ adalah fungsi yang hanya bergantung pada variabel waktu $t$.
 
 Turunan parsial dari solusi usulan ini adalah:
-$$ \frac{\partial u}{\partial x} = X'(x)T(t), \quad \frac{\partial^2 u}{\partial x^2} = X''(x)T(t) $$
-$$ \frac{\partial u}{\partial t} = X(x)T'(t), \quad \frac{\partial^2 u}{\partial t^2} = X(x)T''(t) $$
+
+$$
+\frac{\partial u}{\partial x} = X'(x)T(t), \quad \frac{\partial^2 u}{\partial x^2} = X''(x)T(t)
+$$
+
+$$
+\frac{\partial u}{\partial t} = X(x)T'(t), \quad \frac{\partial^2 u}{\partial t^2} = X(x)T''(t)
+$$
 
 ## Langkah-langkah Pemecahan
 Secara umum, terdapat tiga langkah utama dalam pemisahan variabel:
@@ -28,11 +38,23 @@ Secara umum, terdapat tiga langkah utama dalam pemisahan variabel:
 
 ## Contoh: Persamaan Panas 1D
 Persamaan konduksi panas (misal pada konduktor kawat):
-$$ \frac{\partial u}{\partial t} = \alpha^2 \frac{\partial^2 u}{\partial x^2} $$
+
+$$
+\frac{\partial u}{\partial t} = \alpha^2 \frac{\partial^2 u}{\partial x^2}
+$$
+
 Substitusi $u(x,t) = X(x)T(t)$:
-$$ X(x)T'(t) = \alpha^2 X''(x)T(t) $$
+
+$$
+X(x)T'(t) = \alpha^2 X''(x)T(t)
+$$
+
 Bagi dengan $\alpha^2 X(x)T(t)$:
-$$ \frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda^2 $$
+
+$$
+\frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda^2
+$$
+
 Kita gunakan $-\lambda^2$ untuk memastikan solusi tidak tumbuh tak terhingga seiring waktu (karena fisik panas yang terdisipasi).
 Dari situ didapat dua PDB:
 1. $X''(x) + \lambda^2 X(x) = 0$
