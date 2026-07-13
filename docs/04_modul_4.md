@@ -23,19 +23,19 @@ Persamaan kuadrat ini disebut **Persamaan Karakteristik** (atau Persamaan Pemban
 ## Tiga Kasus Solusi Umum
 Diskriminan dari persamaan karakteristik adalah $D = b^2 - 4ac$. Terdapat tiga kasus solusi tergantung nilai $D$:
 
-**Kasus I: Dua Akar Real dan Berbeda ($D > 0$)**\\
+**Kasus I: Dua Akar Real dan Berbeda ($D > 0$)**<br>
 Jika $r_1 \neq r_2$ dan keduanya adalah bilangan real, maka basis solusinya adalah $y_1 = e^{r_1x}$ dan $y_2 = e^{r_2x}$.
 Solusi umum:
 $$ y(x) = C_1 e^{r_1x} + C_2 e^{r_2x} $$
 (Dalam analisis rangkaian RLC, kondisi ini bersesuaian dengan sistem *overdamped*).
 
-**Kasus II: Akar Kembar / Real Sama ($D = 0$)**\\
+**Kasus II: Akar Kembar / Real Sama ($D = 0$)**<br>
 Jika $r_1 = r_2 = r$, maka solusi basisnya adalah $y_1 = e^{rx}$ dan agar linier independen, solusi kedua dikalikan $x$, menjadi $y_2 = x e^{rx}$.
 Solusi umum:
 $$ y(x) = C_1 e^{rx} + C_2 x e^{rx} = (C_1 + C_2 x) e^{rx} $$
 (Kondisi ini bersesuaian dengan sistem *critically damped*).
 
-**Kasus III: Akar Kompleks Konjugat ($D < 0$)**\\
+**Kasus III: Akar Kompleks Konjugat ($D < 0$)**<br>
 Jika akar-akar tersebut kompleks berbentuk $r_1 = \alpha + i\beta$ dan $r_2 = \alpha - i\beta$ dengan $\alpha = -\frac{b}{2a}$ dan $\beta = \frac{\sqrt{4ac - b^2}}{2a}$.
 Menggunakan identitas Euler ($e^{i\theta} = \cos\theta + i\sin\theta$), solusi umumnya dapat ditulis dalam bentuk sinus dan kosinus beramplitudo eksponensial.
 Solusi umum:
@@ -44,10 +44,10 @@ $$ y(x) = e^{\alpha x} (C_1 \cos \beta x + C_2 \sin \beta x) $$
 
 **Contoh:**
 
-Tentukan solusi umum PDB: $y'' + 5y' + 6y = 0$\\
-**Penyelesaian:**\\
-Persamaan karakteristik: $r^2 + 5r + 6 = 0$\\
-Faktorisasi: $(r+2)(r+3) = 0 \implies r_1 = -2, r_2 = -3$\\
+Tentukan solusi umum PDB: $y'' + 5y' + 6y = 0$<br>
+**Penyelesaian:**<br>
+Persamaan karakteristik: $r^2 + 5r + 6 = 0$<br>
+Faktorisasi: $(r+2)(r+3) = 0 \implies r_1 = -2, r_2 = -3$<br>
 Karena $r_1 \neq r_2$ real (Kasus I), maka solusi umumnya adalah:
 $$ y(x) = C_1 e^{-2x} + C_2 e^{-3x} $$
 

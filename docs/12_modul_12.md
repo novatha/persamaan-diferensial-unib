@@ -49,7 +49,7 @@ $u(0,t) = 0$ dan $u(L,t) = 0$ untuk $t > 0$.
 $u(x,0) = f(x)$.
 
 Dari kondisi batas pada $X(x)$:
-$X(0) = 0 \implies C_1 = 0$, di mana $X(x) = C_1 \cos(\lambda x) + C_2 \sin(\lambda x)$.\\
+$X(0) = 0 \implies C_1 = 0$, di mana $X(x) = C_1 \cos(\lambda x) + C_2 \sin(\lambda x)$.<br>
 $X(L) = 0 \implies C_2 \sin(\lambda L) = 0 \implies \lambda L = n\pi \implies \lambda_n = \frac{n\pi}{L}$.
 
 Sehingga, $X_n(x) = \sin\left(\frac{n\pi x}{L}\right)$.

@@ -16,10 +16,10 @@ $$ \int \frac{1}{h(y)} dy = \int g(x) dx + C $$
 
 **Contoh:**
 
-Selesaikan PDB: $\frac{dy}{dx} = \frac{x}{y}$.\\
-**Penyelesaian:**\\
-Pisahkan variabel: $y \, dy = x \, dx$.\\
-Integrasi kedua ruas: $\int y \, dy = \int x \, dx \implies \frac{1}{2}y^2 = \frac{1}{2}x^2 + C_1$.\\
+Selesaikan PDB: $\frac{dy}{dx} = \frac{x}{y}$.<br>
+**Penyelesaian:**<br>
+Pisahkan variabel: $y \, dy = x \, dx$.<br>
+Integrasi kedua ruas: $\int y \, dy = \int x \, dx \implies \frac{1}{2}y^2 = \frac{1}{2}x^2 + C_1$.<br>
 Solusi umumnya adalah $y^2 - x^2 = C$ (dengan $C = 2C_1$).
 
 
@@ -32,10 +32,10 @@ Berdasarkan Teorema Clairaut, syarat perlu dan cukup agar persamaan tersebut eks
 $$ \frac{\partial M}{\partial y} = \frac{\partial N}{\partial x} $$
 
 **Metode Penyelesaian:**
-1. Pastikan persamaan tersebut eksak.\\
-2. Cari $F(x,y)$ dengan mengintegralkan $M(x,y)$ terhadap $x$ (anggap $y$ konstan): $F(x,y) = \int M(x,y) dx + g(y)$.\\
-3. Turunkan hasil langkah 2 terhadap $y$ dan samakan dengan $N(x,y)$ untuk mencari $g'(y)$.\\
-4. Integralkan $g'(y)$ untuk mendapatkan $g(y)$.\\
+1. Pastikan persamaan tersebut eksak.<br>
+2. Cari $F(x,y)$ dengan mengintegralkan $M(x,y)$ terhadap $x$ (anggap $y$ konstan): $F(x,y) = \int M(x,y) dx + g(y)$.<br>
+3. Turunkan hasil langkah 2 terhadap $y$ dan samakan dengan $N(x,y)$ untuk mencari $g'(y)$.<br>
+4. Integralkan $g'(y)$ untuk mendapatkan $g(y)$.<br>
 5. Solusi umumnya adalah $F(x,y) = C$.
 
 ## Persamaan Linear dan Faktor Integrasi

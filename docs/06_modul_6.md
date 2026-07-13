@@ -39,7 +39,7 @@ $$
 
 **Contoh:**
 
-Tentukan $\mathcal{L}\{3e^{2t} - 5\cos(4t)\}$.\\
+Tentukan $\mathcal{L}\{3e^{2t} - 5\cos(4t)\}$.<br>
 **Solusi:**
 $\mathcal{L}\{3e^{2t} - 5\cos(4t)\} = 3\mathcal{L}\{e^{2t}\} - 5\mathcal{L}\{\cos(4t)\} = 3\left(\frac{1}{s-2}\right) - 5\left(\frac{s}{s^2 + 16}\right)$.
 
@@ -57,7 +57,7 @@ $$
 
 **Contoh:**
 
-Tentukan $\mathcal{L}\{e^{3t} t^2\}$.\\
+Tentukan $\mathcal{L}\{e^{3t} t^2\}$.<br>
 **Solusi:**
 Kita tahu $\mathcal{L}\{t^2\} = \frac{2}{s^3} = F(s)$.
 Menurut Teorema Pergeseran, $\mathcal{L}\{e^{3t} t^2\} = F(s-3) = \frac{2}{(s-3)^3}$.
