@@ -27,11 +27,11 @@ Integral konvergen jika $s > 0$.
 **Tabel Transformasi Laplace Dasar:**
 Beberapa transformasi fungsi dasar yang umum dijumpai:
 
-    - $\mathcal{L}\{1\} = \frac{1}{s}, \quad s > 0$
-    - $\mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}, \quad s > 0$
-    - $\mathcal{L}\{e^{at}\} = \frac{1}{s-a}, \quad s > a$
-    - $\mathcal{L}\{\sin(\omega t)\} = \frac{\omega}{s^2 + \omega^2}, \quad s > 0$
-    - $\mathcal{L}\{\cos(\omega t)\} = \frac{s}{s^2 + \omega^2}, \quad s > 0$
+- $\mathcal{L}\{1\} = \frac{1}{s}, \quad s > 0$
+- $\mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}, \quad s > 0$
+- $\mathcal{L}\{e^{at}\} = \frac{1}{s-a}, \quad s > a$
+- $\mathcal{L}\{\sin(\omega t)\} = \frac{\omega}{s^2 + \omega^2}, \quad s > 0$
+- $\mathcal{L}\{\cos(\omega t)\} = \frac{s}{s^2 + \omega^2}, \quad s > 0$
 
 ## Sifat Linieritas
 Transformasi Laplace bersifat linier. Artinya, untuk dua fungsi sembarang $f(t)$ dan $g(t)$ serta konstanta $c_1, c_2$:
@@ -70,5 +70,5 @@ Transformasi Laplace memetakan fungsi-fungsi waktu $f(t)$ menjadi fungsi aljabar
 
 ## Referensi
 
-    - Zill, D. G. (2018). *A First Course in Differential Equations with Modeling Applications*. Cengage Learning.
-    - Lathi, B. P. (2005). *Linear Systems and Signals*. Oxford University Press.
+- Zill, D. G. (2018). *A First Course in Differential Equations with Modeling Applications*. Cengage Learning.
+- Lathi, B. P. (2005). *Linear Systems and Signals*. Oxford University Press.

@@ -90,5 +90,5 @@ Penyelesaian PDB Orde 2 Linier Homogen dengan Koefisien Konstan didasarkan pada 
 
 ## Referensi
 
-    - Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.
-    - Dennis G. Zill, *A First Course in Differential Equations with Modeling Applications*, Cengage Learning.
+- Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.
+- Dennis G. Zill, *A First Course in Differential Equations with Modeling Applications*, Cengage Learning.

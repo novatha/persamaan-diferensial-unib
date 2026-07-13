@@ -89,5 +89,5 @@ Metode penyelesaian PDB Orde 1 bergantung pada bentuk persamaannya. Persamaan se
 
 ## Referensi
 
-    - Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.
-    - William E. Boyce & Richard C. DiPrima, *Elementary Differential Equations and Boundary Value Problems*.
+- Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.
+- William E. Boyce & Richard C. DiPrima, *Elementary Differential Equations and Boundary Value Problems*.

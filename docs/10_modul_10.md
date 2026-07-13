@@ -16,8 +16,8 @@ $$
 
 di mana:
 
-    - $X(x)$ adalah fungsi yang hanya bergantung pada variabel posisi $x$.
-    - $T(t)$ adalah fungsi yang hanya bergantung pada variabel waktu $t$.
+- $X(x)$ adalah fungsi yang hanya bergantung pada variabel posisi $x$.
+- $T(t)$ adalah fungsi yang hanya bergantung pada variabel waktu $t$.
 
 Turunan parsial dari solusi usulan ini adalah:
 
@@ -32,9 +32,9 @@ $$
 ## Langkah-langkah Pemecahan
 Secara umum, terdapat tiga langkah utama dalam pemisahan variabel:
 
-    - **Pemisahan Variabel:** Substitusikan asumsi $u(x,t) = X(x)T(t)$ ke dalam PDP asal dan pisahkan variabel-variabelnya sehingga fungsi yang memuat $x$ berada di satu sisi dan fungsi yang memuat $t$ berada di sisi lain. Keduanya harus disamakan dengan konstanta pemisahan yang sama, misal $k$ atau $-\lambda^2$.
-    - **Penyelesaian PDB:** Selesaikan dua (atau lebih) Persamaan Diferensial Biasa (PDB) yang dihasilkan dengan menggunakan syarat batas homogen untuk menemukan nilai eigen ($\lambda$) dan fungsi eigen.
-    - **Deret Fourier (Kondisi Awal):** Gunakan prinsip superposisi dan selesaikan syarat awal menggunakan Deret Fourier untuk mencari koefisien pada deret tak hingga yang menyusun solusi akhir.
+- **Pemisahan Variabel:** Substitusikan asumsi $u(x,t) = X(x)T(t)$ ke dalam PDP asal dan pisahkan variabel-variabelnya sehingga fungsi yang memuat $x$ berada di satu sisi dan fungsi yang memuat $t$ berada di sisi lain. Keduanya harus disamakan dengan konstanta pemisahan yang sama, misal $k$ atau $-\lambda^2$.
+- **Penyelesaian PDB:** Selesaikan dua (atau lebih) Persamaan Diferensial Biasa (PDB) yang dihasilkan dengan menggunakan syarat batas homogen untuk menemukan nilai eigen ($\lambda$) dan fungsi eigen.
+- **Deret Fourier (Kondisi Awal):** Gunakan prinsip superposisi dan selesaikan syarat awal menggunakan Deret Fourier untuk mencari koefisien pada deret tak hingga yang menyusun solusi akhir.
 
 ## Contoh: Persamaan Panas 1D
 Persamaan konduksi panas (misal pada konduktor kawat):
@@ -67,5 +67,5 @@ Metode pemisahan variabel adalah teknik yang ampuh untuk memecahkan PDP dengan m
 
 ## Referensi
 
-    - Erwin Kreyszig, *Advanced Engineering Mathematics*, 10th Edition, John Wiley & Sons.
-    - William E. Boyce, Richard C. DiPrima, *Elementary Differential Equations and Boundary Value Problems*.
+- Erwin Kreyszig, *Advanced Engineering Mathematics*, 10th Edition, John Wiley & Sons.
+- William E. Boyce, Richard C. DiPrima, *Elementary Differential Equations and Boundary Value Problems*.

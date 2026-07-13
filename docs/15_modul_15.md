@@ -61,5 +61,5 @@ Matakuliah Persamaan Diferensial memberikan piranti matematika berupa PDB maupun
 
 ## Referensi
 
-    - Griffiths, D. J. (2017). *Introduction to Electrodynamics* (4th ed.). Cambridge University Press.
-    - Hayt, W. H., & Buck, J. A. (2018). *Engineering Electromagnetics* (9th ed.). McGraw-Hill Education.
+- Griffiths, D. J. (2017). *Introduction to Electrodynamics* (4th ed.). Cambridge University Press.
+- Hayt, W. H., & Buck, J. A. (2018). *Engineering Electromagnetics* (9th ed.). McGraw-Hill Education.

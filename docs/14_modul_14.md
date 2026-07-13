@@ -61,5 +61,5 @@ Fungsi Bessel muncul secara alamiah ketika menyelesaikan masalah fisika dan tekn
 
 ## Referensi
 
-    - Balanis, C. A. (2012). *Advanced Engineering Electromagnetics* (2nd ed.). Wiley.
-    - Pozar, D. M. (2011). *Microwave Engineering* (4th ed.). Wiley.
+- Balanis, C. A. (2012). *Advanced Engineering Electromagnetics* (2nd ed.). Wiley.
+- Pozar, D. M. (2011). *Microwave Engineering* (4th ed.). Wiley.

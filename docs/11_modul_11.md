@@ -16,10 +16,10 @@ $$
 
 dimana:
 
-    - $u(x,t)$ dapat berupa perpindahan senar dari posisi kesetimbangan atau amplitudo tegangan/arus $V(x,t)$ atau $I(x,t)$ sepanjang kabel transmisi.
-    - $t$ adalah waktu.
-    - $x$ adalah posisi.
-    - $c$ adalah kecepatan rambat gelombang. Pada elektromagnetik bebas, $c \approx 3 \times 10^8$ m/s, sedangkan pada kabel transmisi dipengaruhi oleh induktansi ($L$) dan kapasitansi ($C$) per satuan panjang, $c = 1/\sqrt{LC}$.
+- $u(x,t)$ dapat berupa perpindahan senar dari posisi kesetimbangan atau amplitudo tegangan/arus $V(x,t)$ atau $I(x,t)$ sepanjang kabel transmisi.
+- $t$ adalah waktu.
+- $x$ adalah posisi.
+- $c$ adalah kecepatan rambat gelombang. Pada elektromagnetik bebas, $c \approx 3 \times 10^8$ m/s, sedangkan pada kabel transmisi dipengaruhi oleh induktansi ($L$) dan kapasitansi ($C$) per satuan panjang, $c = 1/\sqrt{LC}$.
 
 ## Solusi Pemisahan Variabel (Gelombang Berdiri)
 Dengan memisalkan $u(x,t) = X(x)T(t)$, persamaan gelombang di atas menghasilkan dua PDB:
@@ -43,8 +43,8 @@ $$
 
 Penjelasan fisik:
 
-    - $f(x - ct)$ merepresentasikan bentuk gelombang asal yang merambat ke arah sumbu $x$ positif (ke kanan) dengan kecepatan $c$.
-    - $g(x + ct)$ merepresentasikan gelombang pantul atau gelombang berjalan yang merambat ke arah sumbu $x$ negatif (ke kiri) dengan kecepatan $c$.
+- $f(x - ct)$ merepresentasikan bentuk gelombang asal yang merambat ke arah sumbu $x$ positif (ke kanan) dengan kecepatan $c$.
+- $g(x + ct)$ merepresentasikan gelombang pantul atau gelombang berjalan yang merambat ke arah sumbu $x$ negatif (ke kiri) dengan kecepatan $c$.
 
 Konsep ini sangat relevan pada Telegrapher's Equations di saluran transmisi, dimana impedansi karakteristik menentukan besarnya gelombang datang dan pantul.
 
@@ -53,5 +53,5 @@ Persamaan gelombang 1D memodelkan dinamika transmisi energi mekanik atau elektro
 
 ## Referensi
 
-    - Erwin Kreyszig, *Advanced Engineering Mathematics*, 10th Edition, John Wiley & Sons.
-    - William H. Hayt, John A. Buck, *Engineering Electromagnetics*, McGraw-Hill Education.
+- Erwin Kreyszig, *Advanced Engineering Mathematics*, 10th Edition, John Wiley & Sons.
+- William H. Hayt, John A. Buck, *Engineering Electromagnetics*, McGraw-Hill Education.

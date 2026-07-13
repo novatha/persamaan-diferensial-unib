@@ -15,8 +15,8 @@ $$
 
 dimana:
 
-    - $u(x,t)$ adalah temperatur pada posisi $x$ dan waktu $t$.
-    - $\alpha^2 = \frac{k}{c \rho}$ adalah difusivitas termal material, dengan $k$ konduktivitas termal, $c$ kalor jenis, dan $\rho$ massa jenis.
+- $u(x,t)$ adalah temperatur pada posisi $x$ dan waktu $t$.
+- $\alpha^2 = \frac{k}{c \rho}$ adalah difusivitas termal material, dengan $k$ konduktivitas termal, $c$ kalor jenis, dan $\rho$ massa jenis.
 
 ## Metode Pemisahan Variabel
 Untuk menyelesaikan persamaan panas, kita menggunakan metode pemisahan variabel. Asumsikan solusi berbentuk:
@@ -72,5 +72,5 @@ Persamaan panas 1D adalah model penting untuk fenomena difusi. Dalam sistem elek
 
 ## Referensi
 
-    - Kreyszig, E. (2011). *Advanced Engineering Mathematics* (10th ed.). John Wiley & Sons.
-    - Zill, D. G., & Wright, W. S. (2012). *Advanced Engineering Mathematics* (5th ed.). Jones & Bartlett Learning.
+- Kreyszig, E. (2011). *Advanced Engineering Mathematics* (10th ed.). John Wiley & Sons.
+- Zill, D. G., & Wright, W. S. (2012). *Advanced Engineering Mathematics* (5th ed.). Jones & Bartlett Learning.

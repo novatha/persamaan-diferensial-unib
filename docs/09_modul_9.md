@@ -63,5 +63,5 @@ Persamaan Diferensial Parsial (PDP) digunakan untuk memodelkan sistem dengan leb
 
 ## Referensi
 
-    - Erwin Kreyszig, *Advanced Engineering Mathematics*, 10th Edition, John Wiley & Sons.
-    - Dennis G. Zill, *Differential Equations with Boundary-Value Problems*, Cengage Learning.
+- Erwin Kreyszig, *Advanced Engineering Mathematics*, 10th Edition, John Wiley & Sons.
+- Dennis G. Zill, *Differential Equations with Boundary-Value Problems*, Cengage Learning.

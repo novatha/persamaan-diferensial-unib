@@ -21,17 +21,17 @@ $$
 
 dimana:
 
-    - $y_h(x)$ adalah solusi dari persamaan homogen $ay'' + by' + cy = 0$.
-    - $y_p(x)$ adalah sembarang solusi partikular yang memenuhi $ay_p'' + by_p' + cy_p = f(x)$.
+- $y_h(x)$ adalah solusi dari persamaan homogen $ay'' + by' + cy = 0$.
+- $y_p(x)$ adalah sembarang solusi partikular yang memenuhi $ay_p'' + by_p' + cy_p = f(x)$.
 
 ## Metode Koefisien Tak Tentu
 Metode Koefisien Tak Tentu adalah metode untuk menebak bentuk solusi partikular $y_p(x)$ berdasarkan bentuk dari fungsi ruas kanan $f(x)$. Metode ini efektif hanya jika fungsi $f(x)$ berbentuk polinomial, eksponensial, sinus, kosinus, atau perkalian dan penjumlahan dari bentuk-bentuk tersebut.
 
 **Aturan Dasar Tebakan $y_p(x)$:**
 
-    - Jika $f(x) = P_n(x)$ (Polinomial derajat $n$), tebak $y_p(x) = A_n x^n + \dots + A_1 x + A_0$.
-    - Jika $f(x) = k e^{\alpha x}$, tebak $y_p(x) = A e^{\alpha x}$.
-    - Jika $f(x) = k \sin(\beta x)$ atau $k \cos(\beta x)$, tebak $y_p(x) = A \cos(\beta x) + B \sin(\beta x)$.
+- Jika $f(x) = P_n(x)$ (Polinomial derajat $n$), tebak $y_p(x) = A_n x^n + \dots + A_1 x + A_0$.
+- Jika $f(x) = k e^{\alpha x}$, tebak $y_p(x) = A e^{\alpha x}$.
+- Jika $f(x) = k \sin(\beta x)$ atau $k \cos(\beta x)$, tebak $y_p(x) = A \cos(\beta x) + B \sin(\beta x)$.
 
 **Aturan Modifikasi:**
 Jika ada suku pada tebakan $y_p(x)$ yang merupakan bagian dari solusi homogen $y_h(x)$, maka kita kalikan tebakan $y_p(x)$ dengan $x^s$, di mana $s$ adalah bilangan bulat positif terkecil ($s=1$ atau $s=2$) sedemikian sehingga tidak ada suku pada $y_p(x)$ yang merupakan bagian dari $y_h(x)$.
@@ -42,19 +42,19 @@ Selesaikan PDB: $y'' - 3y' + 2y = 4e^{3x}$.
 
 **Penyelesaian:**
 
-    - **Solusi Homogen ($y_h$):** Persamaan karakteristik: $r^2 - 3r + 2 = 0 \implies (r-1)(r-2) = 0 \implies r_1=1, r_2=2$. Solusi: $y_h(x) = C_1 e^x + C_2 e^{2x}$.
-    - **Solusi Partikular ($y_p$):** Karena $f(x) = 4e^{3x}$ dan $e^{3x}$ bukan bagian dari $y_h$, kita tebak $y_p(x) = A e^{3x}$. Turunkan: $y_p' = 3A e^{3x}$, $y_p'' = 9A e^{3x}$. Substitusi ke PDB:
+- **Solusi Homogen ($y_h$):** Persamaan karakteristik: $r^2 - 3r + 2 = 0 \implies (r-1)(r-2) = 0 \implies r_1=1, r_2=2$. Solusi: $y_h(x) = C_1 e^x + C_2 e^{2x}$.
+- **Solusi Partikular ($y_p$):** Karena $f(x) = 4e^{3x}$ dan $e^{3x}$ bukan bagian dari $y_h$, kita tebak $y_p(x) = A e^{3x}$. Turunkan: $y_p' = 3A e^{3x}$, $y_p'' = 9A e^{3x}$. Substitusi ke PDB:
 
-    $$
+$$
     9A e^{3x} - 3(3A e^{3x}) + 2(A e^{3x}) = 4e^{3x}
-    $$
+$$
 
-    $$
+$$
     (9 - 9 + 2)A = 4 \implies 2A = 4 \implies A = 2
-    $$
+$$
 
     Jadi $y_p(x) = 2e^{3x}$.
-    - **Solusi Umum:** $y(x) = y_h(x) + y_p(x) = C_1 e^x + C_2 e^{2x} + 2e^{3x}$.
+- **Solusi Umum:** $y(x) = y_h(x) + y_p(x) = C_1 e^x + C_2 e^{2x} + 2e^{3x}$.
 
 ## Aplikasi Rangkaian RLC Seri
 Pada rangkaian listrik yang terdiri dari resistor ($R$), induktor ($L$), dan kapasitor ($C$) yang dihubungkan seri dengan sumber tegangan $E(t)$, Hukum Tegangan Kirchhoff (KVL) menyatakan:
@@ -83,5 +83,5 @@ Metode Koefisien Tak Tentu memberikan algoritma praktis untuk mencari solusi par
 
 ## Referensi
 
-    - Zill, D. G. (2018). *A First Course in Differential Equations with Modeling Applications*. Cengage Learning.
-    - Kreyszig, E. (2011). *Advanced Engineering Mathematics*. John Wiley & Sons.
+- Zill, D. G. (2018). *A First Course in Differential Equations with Modeling Applications*. Cengage Learning.
+- Kreyszig, E. (2011). *Advanced Engineering Mathematics*. John Wiley & Sons.

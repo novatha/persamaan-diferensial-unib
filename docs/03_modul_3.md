@@ -88,5 +88,5 @@ Aplikasi PDB Orde 1 sangat nyata dalam menganalisis kondisi transien rangkaian l
 
 ## Referensi
 
-    - Charles K. Alexander & Matthew N.O. Sadiku, *Fundamentals of Electric Circuits*, McGraw-Hill.
-    - Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.
+- Charles K. Alexander & Matthew N.O. Sadiku, *Fundamentals of Electric Circuits*, McGraw-Hill.
+- Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.

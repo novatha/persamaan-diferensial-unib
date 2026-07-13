@@ -38,18 +38,18 @@ Maka: $\mathcal{L}^{-1} \left\lbrace  \frac{-1}{s-1} + \frac{2}{s-3} \right\rbra
 ## Transformasi Laplace dari Turunan
 Salah satu kemampuan luar biasa Laplace Transform adalah mereduksi operasi diferensial kalkulus menjadi perkalian aljabar di domain $s$.
 
-    - Transformasi Laplace turunan pertama: $\mathcal{L}\{y'(t)\} = sY(s) - y(0)$
-    - Transformasi Laplace turunan kedua: $\mathcal{L}\{y''(t)\} = s^2Y(s) - s y(0) - y'(0)$
-    - Secara umum: $\mathcal{L}\{y^{(n)}(t)\} = s^n Y(s) - s^{n-1}y(0) - s^{n-2}y'(0) - \dots - y^{(n-1)}(0)$
+- Transformasi Laplace turunan pertama: $\mathcal{L}\{y'(t)\} = sY(s) - y(0)$
+- Transformasi Laplace turunan kedua: $\mathcal{L}\{y''(t)\} = s^2Y(s) - s y(0) - y'(0)$
+- Secara umum: $\mathcal{L}\{y^{(n)}(t)\} = s^n Y(s) - s^{n-1}y(0) - s^{n-2}y'(0) - \dots - y^{(n-1)}(0)$
 
 dimana $Y(s) = \mathcal{L}\{y(t)\}$. Syarat nilai awal secara eksplisit diikutsertakan di dalam persamaan.
 
 ## Menyelesaikan PDB Menggunakan Laplace
 Prosedur umum:
 
-    - Terapkan Transformasi Laplace di kedua ruas PDB (serta aplikasikan syarat nilai awal).
-    - Pecahkan persamaan aljabar yang terbentuk untuk mencari $Y(s)$.
-    - Terapkan Transformasi Laplace Invers $\mathcal{L}^{-1}$ pada $Y(s)$ untuk mendapatkan $y(t)$.
+- Terapkan Transformasi Laplace di kedua ruas PDB (serta aplikasikan syarat nilai awal).
+- Pecahkan persamaan aljabar yang terbentuk untuk mencari $Y(s)$.
+- Terapkan Transformasi Laplace Invers $\mathcal{L}^{-1}$ pada $Y(s)$ untuk mendapatkan $y(t)$.
 
 **Contoh:**
 
@@ -89,5 +89,5 @@ Metode Transformasi Laplace untuk PDB menggabungkan pemecahan PDB sekaligus syar
 
 ## Referensi
 
-    - Zill, D. G. (2018). *A First Course in Differential Equations with Modeling Applications*. Cengage Learning.
-    - Ogata, K. (2010). *Modern Control Engineering*. Prentice Hall.
+- Zill, D. G. (2018). *A First Course in Differential Equations with Modeling Applications*. Cengage Learning.
+- Ogata, K. (2010). *Modern Control Engineering*. Prentice Hall.

@@ -28,8 +28,8 @@ Contoh PDP dalam Teknik Elektro adalah Persamaan Gelombang Elektromagnetik dan P
 
 ## Orde dan Derajat Persamaan Diferensial
 
-    - **Orde:** Tingkat turunan tertinggi yang terdapat dalam persamaan diferensial.
-    - **Derajat (Degree):** Pangkat dari turunan tertinggi dalam persamaan, asalkan persamaan tersebut dalam bentuk polinomial dari turunan-turunannya.
+- **Orde:** Tingkat turunan tertinggi yang terdapat dalam persamaan diferensial.
+- **Derajat (Degree):** Pangkat dari turunan tertinggi dalam persamaan, asalkan persamaan tersebut dalam bentuk polinomial dari turunan-turunannya.
 
 Contoh: 
 
@@ -42,8 +42,8 @@ Persamaan di atas merupakan PDB orde 2 berderajat 3.
 ## Solusi Umum dan Solusi Khusus
 Solusi dari persamaan diferensial adalah suatu fungsi yang, ketika disubstitusikan ke dalam persamaan beserta turunannya, menghasilkan identitas yang benar.
 
-    - **Solusi Umum:** Solusi yang memuat konstanta sembarang ($C$). Solusi umum untuk PDB orde $n$ akan memuat $n$ buah konstanta sembarang yang saling bebas.
-    - **Solusi Khusus:** Solusi yang diperoleh dari solusi umum dengan memberikan nilai tertentu pada konstanta sembarang. Nilai konstanta ini biasanya ditentukan melalui syarat awal (Initial Conditions) atau syarat batas (Boundary Conditions).
+- **Solusi Umum:** Solusi yang memuat konstanta sembarang ($C$). Solusi umum untuk PDB orde $n$ akan memuat $n$ buah konstanta sembarang yang saling bebas.
+- **Solusi Khusus:** Solusi yang diperoleh dari solusi umum dengan memberikan nilai tertentu pada konstanta sembarang. Nilai konstanta ini biasanya ditentukan melalui syarat awal (Initial Conditions) atau syarat batas (Boundary Conditions).
 
 ## Masalah Nilai Awal (Initial Value Problem - IVP)
 Masalah Nilai Awal (IVP) adalah persamaan diferensial yang disertai dengan syarat awal sedemikian rupa sehingga kita dapat menentukan solusi khusus yang unik. 
@@ -73,5 +73,5 @@ Minggu ini kita telah mempelajari konsep dasar Persamaan Diferensial. Klasifikas
 
 ## Referensi
 
-    - Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.
-    - Dennis G. Zill, *A First Course in Differential Equations with Modeling Applications*, Cengage Learning.
+- Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.
+- Dennis G. Zill, *A First Course in Differential Equations with Modeling Applications*, Cengage Learning.

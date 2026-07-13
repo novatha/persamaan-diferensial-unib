@@ -79,5 +79,5 @@ Persamaan Laplace digunakan secara luas dalam persoalan keseimbangan statik (ste
 
 ## Referensi
 
-    - Cheng, D. K. (1989). *Field and Wave Electromagnetics* (2nd ed.). Addison-Wesley.
-    - Sadiku, M. N. O. (2014). *Elements of Electromagnetics* (6th ed.). Oxford University Press.
+- Cheng, D. K. (1989). *Field and Wave Electromagnetics* (2nd ed.). Addison-Wesley.
+- Sadiku, M. N. O. (2014). *Elements of Electromagnetics* (6th ed.). Oxford University Press.
