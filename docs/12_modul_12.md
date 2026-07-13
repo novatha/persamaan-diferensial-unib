@@ -10,9 +10,7 @@ Modul ini membahas Persamaan Panas (Heat Equation) satu dimensi, yaitu model mat
 Persamaan panas satu dimensi merupakan persamaan diferensial parsial (PDP) parabolik yang menggambarkan distribusi panas pada suatu batang atau kabel seiring waktu. Persamaan ini dirumuskan sebagai:
 
 $$
-
 \frac{\partial u}{\partial t} = \alpha^2 \frac{\partial^2 u}{\partial x^2}
-
 $$
 
 dimana:
@@ -24,28 +22,22 @@ dimana:
 Untuk menyelesaikan persamaan panas, kita menggunakan metode pemisahan variabel. Asumsikan solusi berbentuk:
 
 $$
-
 u(x,t) = X(x)T(t)
-
 $$
 
 Substitusikan ke dalam persamaan panas:
 
 $$
-
 X(x)T'(t) = \alpha^2 X''(x)T(t) \implies \frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda^2
-
 $$
 
 Hal ini menghasilkan dua persamaan diferensial biasa (PDB):
 
 $$
-
 \begin{align}
 X''(x) + \lambda^2 X(x) &= 0 \\
 T'(t) + \alpha^2 \lambda^2 T(t) &= 0
 \end{align}
-
 $$
 
 ## Kondisi Batas dan Awal
@@ -66,17 +58,13 @@ Solusi untuk $T(t)$ adalah $T_n(t) = e^{-\alpha^2 \lambda_n^2 t}$.
 Solusi umum merupakan superposisi:
 
 $$
-
 u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi x}{L}\right) e^{-\alpha^2 \left(\frac{n\pi}{L}\right)^2 t}
-
 $$
 
 Koefisien $B_n$ dicari menggunakan deret sinus Fourier dari kondisi awal $f(x)$:
 
 $$
-
 B_n = \frac{2}{L} \int_{0}^{L} f(x) \sin\left(\frac{n\pi x}{L}\right) dx
-
 $$
 
 ## Ringkasan
