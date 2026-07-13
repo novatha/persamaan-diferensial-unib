@@ -34,10 +34,10 @@ $$
 Hal ini menghasilkan dua persamaan diferensial biasa (PDB):
 
 $$
-\begin{align}
+\begin{aligned}
 X''(x) + \lambda^2 X(x) &= 0 \\
 T'(t) + \alpha^2 \lambda^2 T(t) &= 0
-\end{align}
+\end{aligned}
 $$
 
 ## Kondisi Batas dan Awal

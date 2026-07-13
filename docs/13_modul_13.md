@@ -32,20 +32,20 @@ Konstanta pemisahan $-\lambda^2$ dipilih negatif agar fungsi pada salah satu ara
 Hal ini memberikan dua PDB:
 
 $$
-\begin{align}
+\begin{aligned}
 X''(x) + \lambda^2 X(x) &= 0 \\
 Y''(y) - \lambda^2 Y(y) &= 0
-\end{align}
+\end{aligned}
 $$
 
 ## Solusi pada Pelat Persegi Panjang
 Misalkan kita memiliki sebuah pelat dielektrik persegi panjang pada daerah $0 \le x \le a$ dan $0 \le y \le b$. Kondisi batas elektrostatiknya adalah:
 
 $$
-\begin{align*}
+\begin{aligned}
 u(0,y) &= 0, \quad u(a,y) = 0 \\
 u(x,0) &= 0, \quad u(x,b) = f(x)
-\end{align*}
+\end{aligned}
 $$
 
 (Ini merepresentasikan tiga sisi yang di-ground-kan dan satu sisi atas diberikan potensial $f(x)$).

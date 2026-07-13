@@ -30,11 +30,11 @@ $$
 Koefisien Fourier dihitung dengan rumus:
 
 $$
-\begin{align*}
+\begin{aligned}
 a_0 &= \frac{1}{2L} \int_{-L}^{L} f(t) \,dt \\
 a_n &= \frac{1}{L} \int_{-L}^{L} f(t) \cos\left(\frac{n\pi t}{L}\right) \,dt, \quad n=1,2,3,\dots \\
 b_n &= \frac{1}{L} \int_{-L}^{L} f(t) \sin\left(\frac{n\pi t}{L}\right) \,dt, \quad n=1,2,3,\dots
-\end{align*}
+\end{aligned}
 $$
 
 ## Fungsi Genap dan Ganjil (Simetri)

@@ -10,12 +10,12 @@ Modul penutup ini merangkum keterkaitan erat antara konsep dasar persamaan difer
 Persamaan Maxwell dalam wujud matematis lokal (bentuk diferensial parsial) di ruang vakum terdiri dari empat hukum utama:
 
 $$
-\begin{align}
+\begin{aligned}
 \nabla \cdot \mathbf{E} &= \frac{\rho_v}{\varepsilon_0} \quad &\text{(Hukum Gauss untuk Listrik)} \\
 \nabla \cdot \mathbf{B} &= 0 \quad &\text{(Hukum Gauss untuk Magnet)} \\
 \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \quad &\text{(Hukum Faraday)} \\
 \nabla \times \mathbf{B} &= \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t} \quad &\text{(Hukum Ampere-Maxwell)}
-\end{align}
+\end{aligned}
 $$
 
 di mana $\mathbf{E}$ adalah medan listrik, $\mathbf{B}$ induksi magnetik, $\rho_v$ rapat muatan, $\mathbf{J}$ rapat arus, serta $\varepsilon_0$ dan $\mu_0$ berturut-turut merupakan permitivitas dan permeabilitas vakum. Operator nabla ($\nabla$) memuat turunan parsial terhadap variabel ruang ($x, y, z$).
