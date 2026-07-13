@@ -24,17 +24,21 @@ X''(x)Y(y) + X(x)Y''(y) = 0 \implies \frac{X''(x)}{X(x)} = -\frac{Y''(y)}{Y(y)} 
 $$
 Konstanta pemisahan $-\lambda^2$ dipilih negatif agar fungsi pada salah satu arah (misalnya $X(x)$) bersifat osilatorik untuk memenuhi kondisi batas bernilai nol, sedangkan arah lainnya ($Y(y)$) eksponensial atau hiperbolik.
 Hal ini memberikan dua PDB:
+$$
 \begin{align}
 X''(x) + \lambda^2 X(x) &= 0 \\
 Y''(y) - \lambda^2 Y(y) &= 0
 \end{align}
+$$
 
 ## Solusi pada Pelat Persegi Panjang
 Misalkan kita memiliki sebuah pelat dielektrik persegi panjang pada daerah $0 \le x \le a$ dan $0 \le y \le b$. Kondisi batas elektrostatiknya adalah:
+$$
 \begin{align*}
 u(0,y) &= 0, \quad u(a,y) = 0 \\
 u(x,0) &= 0, \quad u(x,b) = f(x)
 \end{align*}
+$$
 (Ini merepresentasikan tiga sisi yang di-ground-kan dan satu sisi atas diberikan potensial $f(x)$).
 
 Dari batas pada sumbu-$x$, kita dapatkan $X(0)=0$ dan $X(a)=0$, sehingga solusinya:

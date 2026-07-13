@@ -26,10 +26,12 @@ $$
 X(x)T'(t) = \alpha^2 X''(x)T(t) \implies \frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda^2
 $$
 Hal ini menghasilkan dua persamaan diferensial biasa (PDB):
+$$
 \begin{align}
 X''(x) + \lambda^2 X(x) &= 0 \\
 T'(t) + \alpha^2 \lambda^2 T(t) &= 0
 \end{align}
+$$
 
 ## Kondisi Batas dan Awal
 Misalkan kita memiliki kabel dengan panjang $L$.

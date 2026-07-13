@@ -14,30 +14,32 @@ Suatu persamaan diferensial parsial (PDP) adalah persamaan yang mengandung turun
 
 
 Bentuk umum orde kedua untuk fungsi $u(x,y)$:
-\[ A \frac{\partial^2 u}{\partial x^2} + B \frac{\partial^2 u}{\partial x \partial y} + C \frac{\partial^2 u}{\partial y^2} + D \frac{\partial u}{\partial x} + E \frac{\partial u}{\partial y} + F u = G \]
+$$ A \frac{\partial^2 u}{\partial x^2} + B \frac{\partial^2 u}{\partial x \partial y} + C \frac{\partial^2 u}{\partial y^2} + D \frac{\partial u}{\partial x} + E \frac{\partial u}{\partial y} + F u = G $$
 dimana $A, B, C, D, E, F, G$ dapat berupa konstanta atau fungsi dari $x$ dan $y$.
 
 ## Deret Fourier
 Suatu fungsi periodik $f(t)$ dengan periode $T = 2L$ dapat dinyatakan dalam Deret Fourier sebagai berikut:
-\[ f(t) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{n\pi t}{L}\right) + b_n \sin\left(\frac{n\pi t}{L}\right) \right) \]
+$$ f(t) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{n\pi t}{L}\right) + b_n \sin\left(\frac{n\pi t}{L}\right) \right) $$
 
 Koefisien Fourier dihitung dengan rumus:
+$$
 \begin{align*}
 a_0 &= \frac{1}{2L} \int_{-L}^{L} f(t) \,dt \\
 a_n &= \frac{1}{L} \int_{-L}^{L} f(t) \cos\left(\frac{n\pi t}{L}\right) \,dt, \quad n=1,2,3,\dots \\
 b_n &= \frac{1}{L} \int_{-L}^{L} f(t) \sin\left(\frac{n\pi t}{L}\right) \,dt, \quad n=1,2,3,\dots
 \end{align*}
+$$
 
 ## Fungsi Genap dan Ganjil (Simetri)
 Dalam kasus-kasus tertentu di teknik elektro, sinyal periodik memiliki sifat simetri yang memudahkan perhitungan Deret Fourier:
 
 **1. Fungsi Genap ($f(-t) = f(t)$):**
 Sinyal yang simetris terhadap sumbu $y$. Untuk fungsi genap, $b_n = 0$ untuk semua $n$. Deret Fourier hanya mengandung suku kosinus dan konstanta:
-\[ a_0 = \frac{1}{L} \int_{0}^{L} f(t) \,dt, \quad a_n = \frac{2}{L} \int_{0}^{L} f(t) \cos\left(\frac{n\pi t}{L}\right) \,dt \]
+$$ a_0 = \frac{1}{L} \int_{0}^{L} f(t) \,dt, \quad a_n = \frac{2}{L} \int_{0}^{L} f(t) \cos\left(\frac{n\pi t}{L}\right) \,dt $$
 
 **2. Fungsi Ganjil ($f(-t) = -f(t)$):**
 Sinyal yang antisimetris (simetris terhadap titik asal). Untuk fungsi ganjil, $a_0 = 0$ dan $a_n = 0$ untuk semua $n$. Deret Fourier hanya mengandung suku sinus:
-\[ b_n = \frac{2}{L} \int_{0}^{L} f(t) \sin\left(\frac{n\pi t}{L}\right) \,dt \]
+$$ b_n = \frac{2}{L} \int_{0}^{L} f(t) \sin\left(\frac{n\pi t}{L}\right) \,dt $$
 
 **Contoh:**
 
