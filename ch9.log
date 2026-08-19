@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  12 JUL 2026 20:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  19 AUG 2026 20:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -503,7 +503,6 @@ Package hyperref Info: Backreferencing OFF on input line 4221.
 Package hyperref Info: Implicit mode OFF; no redefinition of LaTeX internals.
 Package hyperref Info: Bookmarks ON on input line 4468.
 \c@Hy@tempcnt=\count326
-
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
@@ -531,7 +530,6 @@ Package hyperref Info: Link coloring OFF on input line 6104.
 Package hyperref Info: Link coloring with OCG OFF on input line 6109.
 Package hyperref Info: PDF/A mode OFF on input line 6114.
 \Hy@abspage=\count328
-
 
 Package hyperref Message: Stopped early.
 
@@ -705,7 +703,6 @@ basetheorems.sty
 th.sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
 \@mathmargin=\skip61
-
 For additional information on amsmath, use the `?' option.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsmath/amste
@@ -1017,7 +1014,6 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 28.
 LaTeX Font Info:    ... okay on input line 28.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 28.
 LaTeX Font Info:    ... okay on input line 28.
-
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1080,7 +1076,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package hyperref Info: Link coloring OFF on input line 28.
- (./ch9.out) (./ch9.out)
+(./ch9.out) (./ch9.out)
 \@outlinefile=\write5
 \openout5 = `ch9.out'.
 
@@ -1160,13 +1156,41 @@ Dictionary: translator-numbers-dictionary, Language: English
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/translator/tr
 anslator-theorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
-) (./ch9.nav) [1
+) (./ch9.nav)
+Overfull \hbox (45.5673pt too wide) in paragraph at lines 28--28
+ [][]  
+ []
+
+
+Overfull \hbox (45.5673pt too wide) in paragraph at lines 32--32
+ [][]  
+ []
+
+
+Overfull \hbox (45.5673pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+[1
 
 {/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/map/pdftex/updmap
 /pdftex.map}]
-(./ch9.toc) [2
+Overfull \hbox (45.5673pt too wide) in paragraph at lines 36--36
+ [][]  
+ []
+
+(./ch9.toc)
+Overfull \hbox (45.5673pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+[2
 
 ]
+Overfull \hbox (45.5673pt too wide) in paragraph at lines 50--50
+ [][]  
+ []
+
 LaTeX Font Info:    Trying to load font information for U+msa on input line 50.
 
 
@@ -1188,15 +1212,60 @@ ut line 50.
 t/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
-) [3
+)
+Overfull \hbox (45.5673pt too wide) has occurred while \output is active
+ [][]  
+ []
 
-] [4
+[3
 
-] [5
+]
+Overfull \hbox (45.5673pt too wide) in paragraph at lines 67--67
+ [][]  
+ []
 
-] [6
 
-] [7
+Overfull \hbox (45.5673pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+[4
+
+]
+Overfull \hbox (45.5673pt too wide) in paragraph at lines 88--88
+ [][]  
+ []
+
+
+Overfull \hbox (45.5673pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+[5
+
+]
+Overfull \hbox (45.5673pt too wide) in paragraph at lines 107--107
+ [][]  
+ []
+
+
+Overfull \hbox (45.5673pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+[6
+
+]
+Overfull \hbox (45.5673pt too wide) in paragraph at lines 120--120
+ [][]  
+ []
+
+
+Overfull \hbox (45.5673pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+[7
 
 ]
 \tf@nav=\write6
@@ -1208,7 +1277,7 @@ thkerncmss.
 \tf@snm=\write8
 \openout8 = `ch9.snm'.
 
- (./ch9.aux)
+(./ch9.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -1219,7 +1288,7 @@ Package rerunfilecheck Info: File `ch9.out' has not changed.
 Here is how much of TeX's memory you used:
  27498 strings out of 467525
  582151 string characters out of 5408440
- 977670 words of memory out of 5000000
+ 977818 words of memory out of 5000000
  55847 multiletter control sequences out of 15000+600000
  633017 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1238,7 +1307,7 @@ pt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmssi8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20260301/share
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on ch9.pdf (7 pages, 140698 bytes).
+Output written on ch9.pdf (7 pages, 141453 bytes).
 PDF statistics:
  362 PDF objects out of 1000 (max. 8388607)
  279 compressed objects within 3 object streams

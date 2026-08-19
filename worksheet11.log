@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  12 JUL 2026 20:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  19 AUG 2026 20:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -37,7 +37,6 @@ Package: inputenc 2024/02/08 v1.3d Input encoding file
 th.sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
 \@mathmargin=\skip51
-
 For additional information on amsmath, use the `?' option.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsmath/amste
@@ -245,7 +244,6 @@ Package hyperref Info: Backreferencing OFF on input line 4221.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4468.
 \c@Hy@tempcnt=\count303
-
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
@@ -795,7 +793,6 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
-
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -889,7 +886,7 @@ Package rerunfilecheck Info: File `worksheet11.out' has not changed.
 Here is how much of TeX's memory you used:
  25563 strings out of 467525
  521277 string characters out of 5408440
- 931249 words of memory out of 5000000
+ 931266 words of memory out of 5000000
  54088 multiletter control sequences out of 15000+600000
  635433 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -904,7 +901,7 @@ nts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmr12.pfb></opt/homebrew/Cellar/texlive/20260301/share
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texli
 ve/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on worksheet11.pdf (2 pages, 101305 bytes).
+Output written on worksheet11.pdf (2 pages, 102310 bytes).
 PDF statistics:
  69 PDF objects out of 1000 (max. 8388607)
  48 compressed objects within 1 object stream

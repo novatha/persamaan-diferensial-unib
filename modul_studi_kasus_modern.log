@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  12 JUL 2026 22:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  19 AUG 2026 20:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -37,7 +37,6 @@ Package: inputenc 2024/02/08 v1.3d Input encoding file
 th.sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
 \@mathmargin=\skip51
-
 For additional information on amsmath, use the `?' option.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsmath/amste
@@ -258,7 +257,6 @@ Package hyperref Info: Backreferencing OFF on input line 4221.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4468.
 \c@Hy@tempcnt=\count303
-
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
@@ -415,8 +413,7 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 ackend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count318
-)
-No file modul_studi_kasus_modern.aux.
+) (./modul_studi_kasus_modern.aux)
 \openout1 = `modul_studi_kasus_modern.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
@@ -472,6 +469,7 @@ LaTeX Font Info:    ... okay on input line 27.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring OFF on input line 27.
+(./modul_studi_kasus_modern.out) (./modul_studi_kasus_modern.out)
 \@outlinefile=\write3
 \openout3 = `modul_studi_kasus_modern.out'.
 
@@ -515,8 +513,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 30.
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/umsb
 .fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-No file modul_studi_kasus_modern.toc.
+) (./modul_studi_kasus_modern.toc)
 \tf@toc=\write4
 \openout4 = `modul_studi_kasus_modern.toc'.
 
@@ -539,23 +536,16 @@ Overfull \hbox (3.6619pt too wide) in paragraph at lines 93--93
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-
-
-Package rerunfilecheck Warning: File `modul_studi_kasus_modern.out' has changed
-.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `modul_studi_kasus_modern.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  749634464564F14C08B8E06B260DF90F;3306.
+Package rerunfilecheck Info: File `modul_studi_kasus_modern.out' has not change
+d.
+(rerunfilecheck)             Checksum: 749634464564F14C08B8E06B260DF90F;3306.
  ) 
 Here is how much of TeX's memory you used:
- 11474 strings out of 467525
- 177790 string characters out of 5408440
- 602729 words of memory out of 5000000
- 40227 multiletter control sequences out of 15000+600000
- 637527 words of font info for 77 fonts, out of 8000000 for 9000
+ 11501 strings out of 467525
+ 178362 string characters out of 5408440
+ 602904 words of memory out of 5000000
+ 40246 multiletter control sequences out of 15000+600000
+ 637886 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,643b,458s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -572,10 +562,10 @@ omebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmsy10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1
 /public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20260301/share/tex
 mf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on modul_studi_kasus_modern.pdf (5 pages, 141281 bytes).
+Output written on modul_studi_kasus_modern.pdf (5 pages, 144116 bytes).
 PDF statistics:
- 113 PDF objects out of 1000 (max. 8388607)
- 83 compressed objects within 1 object stream
+ 174 PDF objects out of 1000 (max. 8388607)
+ 143 compressed objects within 2 object streams
  29 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 113 words of extra memory for PDF output out of 10000 (max. 10000000)
 
