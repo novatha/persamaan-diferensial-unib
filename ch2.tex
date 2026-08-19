@@ -15,6 +15,8 @@
 \setbeamercolor{block body}{bg=unibblue!10,fg=black}
 \setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
 \setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
 
 \title{Persamaan Diferensial}
 \subtitle{Minggu 2: PDB Orde 1 (Separabel, Eksak, Faktor Integrasi)}
@@ -27,7 +29,7 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Outline Pembelajaran}
   \tableofcontents
 \end{frame}
 
@@ -37,12 +39,13 @@
   \begin{equation}
       \frac{dy}{dx} = f(x,y) \quad \text{atau} \quad M(x,y)dx + N(x,y)dy = 0
   \end{equation}
+  \vspace{0.3cm}
   
   Metode penyelesaiannya bergantung pada karakteristik fungsi penyusunnya. Hari ini kita akan membahas tiga metode utama:
   \begin{itemize}
-      \item Persamaan Separabel (Dapat Dipisahkan)
-      \item Persamaan Eksak
-      \item Persamaan Non-Eksak dengan Faktor Integrasi
+      \item \textbf{Persamaan Separabel} (Dapat Dipisahkan)
+      \item \textbf{Persamaan Eksak}
+      \item \textbf{Persamaan Non-Eksak dengan Faktor Integrasi}
   \end{itemize}
 \end{frame}
 
@@ -63,6 +66,24 @@
   \end{alertblock}
 \end{frame}
 
+\begin{frame}{Contoh Soal: Persamaan Separabel}
+    \textbf{Selesaikan PDB berikut:} $\frac{dy}{dx} = -2x y^2$
+    \vspace{0.3cm}
+    
+    \textbf{Penyelesaian Langkah-demi-Langkah:}
+    \begin{enumerate}
+        \item \textbf{Pisahkan Variabel:} \pause
+        $$ \frac{dy}{y^2} = -2x dx $$ \pause
+        \item \textbf{Integrasikan Kedua Ruas:} \pause
+        $$ \int y^{-2} dy = \int -2x dx $$ \pause
+        \item \textbf{Hasil Integrasi:} \pause
+        $$ -y^{-1} = -x^2 + C $$ \pause
+        \item \textbf{Bentuk Solusi Umum Eksplisit (y):} \pause
+        $$ \frac{1}{y} = x^2 - C \implies \color{unibblue} \mathbf{y(x) = \frac{1}{x^2 + K}} $$ 
+        \textit{(di mana $K = -C$ adalah konstanta integrasi baru)}
+    \end{enumerate}
+\end{frame}
+
 \section{Persamaan Eksak}
 \begin{frame}{Persamaan Eksak}
   Bentuk $M(x,y)dx + N(x,y)dy = 0$ dikatakan \textbf{Eksak} jika memenuhi syarat turunan parsial silang:
@@ -71,9 +92,31 @@
   \end{equation}
   
   \textbf{Konsep Fisis (Medan Konservatif):}\\
-  Persamaan eksak ekuivalen dengan total diferensial dari suatu fungsi skalar $F(x,y) = C$, di mana:
+  Persamaan eksak ekuivalen dengan total diferensial dari suatu fungsi skalar (seperti fungsi potensial tegangan) $F(x,y) = C$, di mana:
   $$ dF = \frac{\partial F}{\partial x}dx + \frac{\partial F}{\partial y}dy = 0 $$
   Artinya $M = \frac{\partial F}{\partial x}$ dan $N = \frac{\partial F}{\partial y}$.
+\end{frame}
+
+\begin{frame}{Contoh Soal: Persamaan Eksak}
+    \textbf{Selesaikan:} $(2xy)dx + (x^2 - 1)dy = 0$
+    \vspace{0.2cm}
+    
+    \begin{enumerate}
+        \item \textbf{Uji Ke-Eksak-an:} \pause \\
+        $M = 2xy \implies \frac{\partial M}{\partial y} = 2x$ \pause \\
+        $N = x^2 - 1 \implies \frac{\partial N}{\partial x} = 2x$ \pause \\
+        \textcolor{unibgreen}{$\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x} \implies \text{\textbf{EKSAK!}}$} \pause
+        \vspace{0.2cm}
+        \item \textbf{Cari Fungsi $F(x,y)$ dari $\int M dx$:} \pause \\
+        $F(x,y) = \int 2xy dx = x^2 y + g(y)$ \pause
+        \vspace{0.2cm}
+        \item \textbf{Turunkan $F$ terhadap $y$ dan samakan dengan $N$:} \pause \\
+        $\frac{\partial F}{\partial y} = x^2 + g'(y)$ \pause \\
+        $x^2 + g'(y) = x^2 - 1 \implies g'(y) = -1 \implies g(y) = -y$ \pause
+        \vspace{0.2cm}
+        \item \textbf{Solusi Umum $F(x,y) = C$:} \pause \\
+        \textcolor{unibblue}{$\mathbf{x^2 y - y = C}$}
+    \end{enumerate}
 \end{frame}
 
 \section{Faktor Integrasi}
@@ -81,22 +124,47 @@
   Bagaimana jika $\frac{\partial M}{\partial y} \neq \frac{\partial N}{\partial x}$?\\
   Persamaan tersebut \textbf{Non-Eksak}. Namun, kita bisa menjadikannya eksak dengan mengalikannya dengan suatu \textit{Faktor Integrasi} $\mu(x,y)$.
   
-  \begin{block}{Kasus Sederhana}
+  \begin{block}{Kasus Sederhana (Hanya Fungsi 1 Variabel)}
     \begin{itemize}
-        \item Jika $\frac{M_y - N_x}{N}$ hanya fungsi dari $x$ (sebut $p(x)$), maka $\mu(x) = e^{\int p(x) dx}$.
-        \item Jika $\frac{N_x - M_y}{M}$ hanya fungsi dari $y$ (sebut $q(y)$), maka $\mu(y) = e^{\int q(y) dy}$.
+        \item Jika $\frac{M_y - N_x}{N}$ hanya fungsi dari $x$ (sebut $p(x)$), maka \textbf{$\mu(x) = e^{\int p(x) dx}$}.
+        \item Jika $\frac{N_x - M_y}{M}$ hanya fungsi dari $y$ (sebut $q(y)$), maka \textbf{$\mu(y) = e^{\int q(y) dy}$}.
     \end{itemize}
   \end{block}
-  Setelah dikalikan $\mu$, persamaan $\mu M dx + \mu N dy = 0$ akan menjadi eksak dan dapat diselesaikan dengan cara sebelumnya.
+  \pause
+  \vspace{0.2cm}
+  Setelah dikalikan dengan faktor ini, persamaan $\mu M dx + \mu N dy = 0$ akan \textbf{dijamin menjadi eksak} dan dapat diselesaikan dengan cara sebelumnya.
+\end{frame}
+
+\begin{frame}{Kuis Interaktif: Pencarian Faktor Integrasi}
+    \textbf{Tinjau persamaan:} $(3xy + y^2)dx + (x^2 + xy)dy = 0$
+    
+    1. Cek Eksak: \\
+    $M_y = 3x + 2y$ \\
+    $N_x = 2x + y$ \\
+    Tidak sama, jadi \textbf{Non-Eksak}.
+    \vspace{0.3cm}
+    
+    \pause
+    2. Mari kita coba cari $p(x)$:
+    $$ \frac{M_y - N_x}{N} = \frac{(3x + 2y) - (2x + y)}{x^2 + xy} = \frac{x + y}{x(x+y)} = \frac{1}{x} $$
+    \pause
+    3. Apa Faktor Integrasinya $\mu(x)$? \\
+    \pause
+    \textcolor{unibblue}{\textbf{Jawaban:}}
+    $$ \mu(x) = e^{\int \frac{1}{x} dx} = e^{\ln x} = \mathbf{x} $$
+    \textit{Jika seluruh persamaan dikali x, maka persamaan tersebut akan menjadi eksak!}
 \end{frame}
 
 \begin{frame}{Terima Kasih}
   \begin{center}
     \vspace{1cm}
-    {\Large \textbf{Latihan Soal \& Sesi Diskusi}}\\
+    {\Large \textbf{Terima Kasih}}\\
+    \vspace{0.5cm}
+    {\large Latihan Soal \& Sesi Diskusi}\\
     \vspace{1.5cm}
-    Novalio Daratha\\
-    Program Studi Teknik Elektro
+    Novalio Daratha \& Muhammad Arfan\\
+    Program Studi Teknik Elektro\\
+    Universitas Bengkulu
   \end{center}
 \end{frame}
 

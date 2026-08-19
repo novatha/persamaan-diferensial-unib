@@ -1,4 +1,4 @@
 \beamer@sectionintoc {1}{Bentuk Umum PDB Orde 1}{3}{0}{1}
 \beamer@sectionintoc {2}{Persamaan Separabel}{4}{0}{2}
-\beamer@sectionintoc {3}{Persamaan Eksak}{5}{0}{3}
-\beamer@sectionintoc {4}{Faktor Integrasi}{6}{0}{4}
+\beamer@sectionintoc {3}{Persamaan Eksak}{13}{0}{3}
+\beamer@sectionintoc {4}{Faktor Integrasi}{25}{0}{4}

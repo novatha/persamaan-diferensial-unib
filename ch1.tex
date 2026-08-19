@@ -4,7 +4,7 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning,decorations.markings}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 
@@ -21,7 +21,7 @@
 \setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
 
 \title{Persamaan Diferensial}
-\subtitle{Minggu 1: Klasifikasi PDB/PDP \& Model Fisik}
+\subtitle{Minggu 1: Klasifikasi PDB/PDP, IVP, \& Pemodelan Fisik}
 \author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
 \date{2026}
 
@@ -31,93 +31,165 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Outline Pembelajaran}
   \tableofcontents
 \end{frame}
 
 \section{Pengantar: PDB vs PDP}
-\begin{frame}{Pengantar: Persamaan Diferensial Biasa vs Parsial}
-  \begin{block}{Persamaan Diferensial Biasa (PDB)}
-    Persamaan yang mengandung turunan dari satu atau lebih variabel tak bebas terhadap \textbf{satu} variabel bebas (misal: waktu $t$).
-    \begin{equation}
-        \frac{dy}{dt} + 2y = 0 \quad \text{atau} \quad L\frac{di}{dt} + Ri = V(t)
-    \end{equation}
+\begin{frame}{Persamaan Diferensial Biasa (PDB)}
+  \begin{block}{Definisi}
+    Persamaan yang mengandung turunan dari satu atau lebih variabel tak bebas terhadap \textbf{satu variabel bebas tunggal} (misalnya: waktu $t$).
   \end{block}
+  \vspace{0.3cm}
+  Dalam Teknik Elektro, PDB sering muncul pada sistem terpusat (\textit{lumped systems}).
+  \vspace{0.2cm}
+  \begin{itemize}
+      \item Pengosongan kapasitor: $R\frac{dq}{dt} + \frac{1}{C}q = 0$
+      \item Sistem osilasi RLC: $L\frac{d^2i}{dt^2} + R\frac{di}{dt} + \frac{1}{C}i = 0$
+  \end{itemize}
+\end{frame}
 
-  \begin{exampleblock}{Persamaan Diferensial Parsial (PDP)}
-    Persamaan yang mengandung turunan parsial dari satu atau lebih variabel tak bebas terhadap \textbf{dua atau lebih} variabel bebas (misal: ruang $x, y, z$ dan waktu $t$).
-    \begin{equation}
-        \frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0 \quad \text{(Persamaan Laplace)}
-    \end{equation}
+\begin{frame}{Persamaan Diferensial Parsial (PDP)}
+  \begin{exampleblock}{Definisi}
+    Persamaan yang mengandung turunan parsial terhadap \textbf{dua atau lebih variabel bebas} (misalnya: koordinat ruang $x, y, z$ dan waktu $t$).
   \end{exampleblock}
+  \vspace{0.3cm}
+  Dalam Teknik Elektro, PDP muncul pada sistem terdistribusi (\textit{distributed systems}).
+  \vspace{0.2cm}
+  \begin{itemize}
+      \item Persamaan Laplace (Elektrostatik 2D): $\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0$
+      \item Persamaan Gelombang (Transmisi Sinyal): $\frac{\partial^2 E}{\partial x^2} = \mu \epsilon \frac{\partial^2 E}{\partial t^2}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Kuis Interaktif: PDB atau PDP?}
+    \textbf{Tebak Persamaan Berikut:}
+    \vspace{0.5cm}
+    \begin{enumerate}
+        \item $\frac{d^3y}{dx^3} - 4x\frac{dy}{dx} = e^x$ \pause \textcolor{unibblue}{\textbf{\quad $\rightarrow$ PDB (Hanya satu variabel bebas: x)}} \pause
+        \vspace{0.4cm}
+        \item $\frac{\partial u}{\partial t} = \alpha^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right)$ \pause \textcolor{unibgreen}{\textbf{\quad $\rightarrow$ PDP (Variabel bebas: t, x, y)}} \pause
+        \vspace{0.4cm}
+        \item $L \frac{di}{dt} + R i = V_0 \sin(\omega t)$ \pause \textcolor{unibblue}{\textbf{\quad $\rightarrow$ PDB (Hanya variabel bebas: t)}}
+    \end{enumerate}
 \end{frame}
 
 \section{Klasifikasi: Orde \& Linieritas}
-\begin{frame}{Klasifikasi: Orde \& Linieritas}
-    \textbf{Orde (Tingkat)}
-    \begin{itemize}
-        \item Orde suatu persamaan diferensial ditentukan oleh turunan tertinggi yang terdapat dalam persamaan tersebut.
-        \item Contoh: $y'' + 3y' + 2y = 0$ (PDB Orde 2).
-        \item Contoh: $\left(\frac{dy}{dt}\right)^3 + y = 0$ (PDB Orde 1).
-    \end{itemize}
+\begin{frame}{Klasifikasi: Orde}
+    \begin{block}{Konsep Orde (Tingkat)}
+        Orde suatu persamaan diferensial ditentukan oleh \textbf{turunan tertinggi} yang terdapat dalam persamaan tersebut.
+    \end{block}
+    \pause
     \vspace{0.5cm}
-    \textbf{Linieritas}
+    \textbf{Contoh Analisis:}
     \begin{itemize}
-        \item Suatu PD dikatakan linier jika variabel tak bebas (dan turunannya) berpangkat satu dan tidak saling dikalikan.
-        \item Linier: $\frac{d^2x}{dt^2} + 5x = \sin(t)$
-        \item Non-linier: $\frac{dy}{dx} + y^2 = 0$ atau $\sin(y)\frac{dy}{dx} = x$
+        \item $y'' + 3y' + 2y = 0$ \pause \textcolor{red}{$\rightarrow$ Orde 2} (karena ada turunan kedua $y''$) \pause
+        \item $\left(\frac{dy}{dt}\right)^{\alert{3}} + y = 0$ \pause \textcolor{red}{$\rightarrow$ Orde 1} (turunan tertingginya hanya turunan pertama, sedangkan pangkat 3 adalah "derajat", bukan orde!)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Klasifikasi: Linieritas}
+    \begin{block}{Syarat Linieritas}
+        Suatu PDB disebut linier jika:
+        \begin{enumerate}
+            \item Variabel terikat $y$ dan semua turunannya hanya berpangkat 1.
+            \item Tidak ada perkalian antara $y$ dengan turunannya (misal $y \frac{dy}{dx}$).
+            \item Tidak ada fungsi transendental yang memuat $y$ (misal $\sin(y)$ atau $e^y$).
+        \end{enumerate}
+    \end{block}
+    \pause
+    \vspace{0.3cm}
+    \textbf{Identifikasi:}
+    \begin{itemize}
+        \item $\frac{d^2x}{dt^2} + 5x = \sin(t)$ \pause \textcolor{unibgreen}{\textbf{$\rightarrow$ Linier}} ($\sin(t)$ fungsi dari variabel bebas $t$, bukan $x$). \pause
+        \item $\frac{dy}{dx} + y^2 = 0$ \pause \textcolor{red}{\textbf{$\rightarrow$ Non-Linier}} (karena ada suku $y^2$). \pause
+        \item $\cos(x)\frac{dy}{dx} = y$ \pause \textcolor{unibgreen}{\textbf{$\rightarrow$ Linier}}.
     \end{itemize}
 \end{frame}
 
 \section{Solusi Umum, Khusus \& IVP}
-\begin{frame}{Solusi Umum, Khusus \& Initial Value Problem (IVP)}
+\begin{frame}{Konsep Solusi Umum vs Khusus}
+  \begin{columns}
+  \column{0.5\textwidth}
   \begin{block}{Solusi Umum}
-    Solusi yang masih mengandung konstanta sembarang ($C_1, C_2, \dots$). Menggambarkan himpunan semua kemungkinan kurva solusi.\\
-    Contoh: $\frac{dy}{dt} = y \implies y(t) = C e^t$
+    Solusi yang masih memuat konstanta integrasi sembarang ($C$). Merepresentasikan himpunan/keluarga kurva. \\
+    Misal PDB: $y' = y \implies y(t) = C e^t$.
   \end{block}
-
-  \begin{exampleblock}{Solusi Khusus \& IVP}
-    Jika diberikan kondisi awal (misal $y(0) = 5$), ini disebut \textit{Initial Value Problem} (IVP). Kita dapat mencari konstanta spesifik untuk mendapatkan \textbf{Solusi Khusus}.
-    $$ y(0) = C e^0 \implies 5 = C(1) \implies C = 5 $$
-    Maka solusi khususnya adalah $y(t) = 5e^t$.
+  \pause
+  \begin{exampleblock}{Solusi Khusus}
+    Jika diberikan satu kondisi awal (\textit{Initial Condition}), kita bisa mencari kurva unik yang melewati titik tersebut.
   \end{exampleblock}
+
+  \column{0.5\textwidth}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.8]
+      % Draw axes
+      \draw[->] (-0.5,0) -- (3,0) node[right] {$t$};
+      \draw[->] (0,-0.5) -- (0,4) node[above] {$y(t)$};
+      % Curves
+      \draw[domain=0:2, smooth, variable=\t, blue] plot ({\t}, {0.5*exp(\t)});
+      \draw[domain=0:1.3, smooth, variable=\t, blue] plot ({\t}, {1.0*exp(\t)});
+      \draw[domain=0:0.8, smooth, variable=\t, red, thick] plot ({\t}, {2.0*exp(\t)});
+      \draw[domain=0:0.5, smooth, variable=\t, blue] plot ({\t}, {3.0*exp(\t)});
+      
+      \fill[black] (0,2) circle (2pt) node[left] {$(0,2)$};
+      \node[red] at (2, 3) {$C=2$ (Sol. Khusus)};
+    \end{tikzpicture}
+  \end{center}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Initial Value Problem (IVP): Contoh Hitungan}
+    Diberikan suatu PDB: $\frac{dy}{dt} = -3y$
+    \vspace{0.2cm}
+    \begin{enumerate}
+        \item \textbf{Cari Solusi Umum (Diketahui dari modul sebelumnya):} \pause \\
+        $y(t) = C e^{-3t}$ \pause
+        \vspace{0.2cm}
+        \item \textbf{Terapkan Syarat Awal (IVP):} \\
+        Diketahui pada saat $t=0$, nilai $y = 10$ atau $y(0) = 10$. \pause
+        \vspace{0.2cm}
+        \item \textbf{Substitusi ke Solusi Umum:} \\
+        $10 = C e^{-3(0)}$ \pause \\
+        $10 = C e^0 \implies 10 = C (1) \implies C = 10$ \pause
+        \vspace{0.2cm}
+        \item \textbf{Tuliskan Solusi Khusus Akhir:} \\
+        \textcolor{unibblue}{\textbf{$y(t) = 10 e^{-3t}$}}
+    \end{enumerate}
 \end{frame}
 
 \section{Pemodelan Fisis: Hukum Kirchhoff}
-\begin{frame}{Pemodelan Fisis: Rangkaian RL \& Hukum Kirchhoff}
-    Dalam Teknik Elektro, fenomena transien dimodelkan menggunakan Hukum Tegangan Kirchhoff (KVL): $\sum V = 0$.
+\begin{frame}{Pemodelan Fisis: Rangkaian RL}
+    Dalam Teknik Elektro, dinamika rangkaian dimodelkan dengan \textbf{Hukum Tegangan Kirchhoff (KVL)}: $\sum V = 0$.
     \begin{columns}
         \column{0.4\textwidth}
-        % Rangkaian Seri RL Sederhana
         \begin{tikzpicture}[scale=0.8, transform shape, thick]
             \draw (0,0) -- (0,2) -- (1,2);
             \draw (1,2) node[above]{R} -- (2,2) -- (2,2);
-            % Resistor symbol (zigzag)
             \draw (1,2) -- (1.1,2.2) -- (1.3,1.8) -- (1.5,2.2) -- (1.7,1.8) -- (1.9,2.2) -- (2,2);
             \draw (2,2) -- (3,2);
-            % Inductor symbol (coils)
             \draw (3,2) node[above]{L} arc (180:0:0.25) arc (180:0:0.25) arc (180:0:0.25);
             \draw (4.5,2) -- (5,2) -- (5,0) -- (0,0);
-            % Voltage Source
             \draw (0,1) circle (0.3) node {$V$};
             \draw (0,0) -- (0,0.7);
             \draw (0,1.3) -- (0,2);
         \end{tikzpicture}
 
         \column{0.6\textwidth}
-        \textbf{Model Rangkaian RL Seri:}
+        Hukum KVL untuk \textit{loop} tertutup di samping:
         \begin{equation}
             V_R + V_L = V(t)
         \end{equation}
-        Di mana:
+        \pause
+        Substitusi persamaan karakteristik komponen:
         \begin{itemize}
-            \item $V_R = R \cdot i(t)$ (Hukum Ohm)
-            \item $V_L = L \frac{di(t)}{dt}$ (Karakteristik Induktor)
+            \item $V_R = i(t) R$ (Hukum Ohm)
+            \item $V_L = L \frac{di(t)}{dt}$ (Hukum Faraday/Induksi)
         \end{itemize}
-        \textbf{Persamaan Diferensial (PDB):}
-        \begin{alertblock}{}
+        \pause
+        \begin{alertblock}{Model Matematika Akhir (PDB Orde 1)}
         \begin{equation}
-            L\frac{di}{dt} + Ri = V(t)
+            L\frac{di}{dt} + R i = V(t)
         \end{equation}
         \end{alertblock}
     \end{columns}
@@ -128,9 +200,9 @@
     \vspace{1cm}
     {\Large \textbf{Terima Kasih}}\\
     \vspace{0.5cm}
-    {\large Sesi Tanya Jawab}\\
+    {\large Sesi Latihan Mandiri \& Diskusi Tanya Jawab}\\
     \vspace{1.5cm}
-    Novalio Daratha\\
+    Novalio Daratha \& Muhammad Arfan\\
     Program Studi Teknik Elektro\\
     Universitas Bengkulu
   \end{center}

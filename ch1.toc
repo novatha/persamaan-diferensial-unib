@@ -1,4 +1,4 @@
 \beamer@sectionintoc {1}{Pengantar: PDB vs PDP}{3}{0}{1}
-\beamer@sectionintoc {2}{Klasifikasi: Orde \& Linieritas}{4}{0}{2}
-\beamer@sectionintoc {3}{Solusi Umum, Khusus \& IVP}{5}{0}{3}
-\beamer@sectionintoc {4}{Pemodelan Fisis: Hukum Kirchhoff}{6}{0}{4}
+\beamer@sectionintoc {2}{Klasifikasi: Orde \& Linieritas}{11}{0}{2}
+\beamer@sectionintoc {3}{Solusi Umum, Khusus \& IVP}{23}{0}{3}
+\beamer@sectionintoc {4}{Pemodelan Fisis: Hukum Kirchhoff}{31}{0}{4}
