@@ -23,37 +23,35 @@
 \maketitle
 
 \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
-Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih ketajaman pemodelan fisis Anda. Alokasikan waktu sekitar 45--60 menit untuk berdiskusi.
+Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih ketajaman pemodelan fisis Anda. Gunakan simulasi Python di Jupyter Notebook untuk memvalidasi hasil rancangan Anda.
 \end{tcolorbox}
 
 \section*{Soal-Soal Latihan}
 
 \begin{enumerate}[label=\textbf{\arabic*.}]
-    \item \textbf{(C1 - Mengingat)} Tuliskan definisi dari Persamaan Diferensial Parsial (PDP) beserta satu contoh persamaan klasik (seperti Gelombang atau Laplace). 
-    \vspace{2.5cm}
+    \item \textbf{(C1 - Mengingat)} Tuliskan definisi dari Persamaan Diferensial Parsial (PDP) beserta satu contoh persamaan klasik. 
+    \vspace{2cm}
 
     \item \textbf{(C2 - Memahami)} Diberikan fungsi solusi $y(x) = C_1 e^{2x} + C_2 e^{-2x}$. Jelaskan mengapa fungsi ini disebut sebagai "solusi umum" dan bukan "solusi khusus". 
-    \vspace{3.5cm}
+    \vspace{2.5cm}
 
     \item \textbf{(C3 - Mengaplikasikan)} Tentukan parameter klasifikasi (orde dan linieritas) dari persamaan diferensial berikut: 
     $$ \left(\frac{d^3y}{dx^3}\right)^2 + x\frac{dy}{dx} = 0 $$
-    \vspace{3.5cm}
+    \vspace{2cm}
 
-    \item \textbf{(C4 - Menganalisis)} Sebuah induktor ideal dengan induktansi $L$ dihubungkan seri dengan sumber arus sinusoidal $i(t) = I_m \sin(\omega t)$. Analisis hubungan komponen tersebut dan turunkan persamaan tegangan $v(t)$ yang melintasi induktor!
-    \vspace{5cm}
+    \item \textbf{(C4 - Menganalisis)} Sebuah induktor ideal dengan induktansi $L$ dihubungkan seri dengan sumber arus sinusoidal $i(t) = I_m \sin(\omega t)$. Analisis dan turunkan persamaan tegangan $v(t)$ yang melintasi induktor!
+    \vspace{3cm}
 
-    \item \textbf{(C5 - Mengevaluasi)} Suatu model rangkaian LC seri tanpa sumber tegangan eksternal menghasilkan persamaan diferensial orde 2 murni: 
-    $$ L\frac{d^2i}{dt^2} + \frac{1}{C}i = 0 $$
-    Evaluasi bentuk solusi umum dari persamaan di atas secara analitik, lalu buktikan bahwa sistem ini akan berosilasi dengan frekuensi sudut tak teredam $\omega = \frac{1}{\sqrt{LC}}$.
-    \vspace{5.5cm}
+    \item \textbf{(C5 - Mengevaluasi)} Suatu model rangkaian LC seri tanpa sumber menghasilkan: $L\frac{d^2i}{dt^2} + \frac{1}{C}i = 0$. Evaluasi bentuk solusi umum analitiknya, lalu buktikan bahwa sistem ini akan berosilasi dengan frekuensi sudut $\omega = \frac{1}{\sqrt{LC}}$.
+    \vspace{3cm}
 
-    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sirkuit kelistrikan DC tertutup (terdiri atas Resistor dan Kapasitor saja) sedemikian rupa sehingga persamaan diferensial pelepasan tegangan kapasitornya memenuhi bentuk persis $\frac{dV_C}{dt} = -0.5 V_C$. Tentukan nilai-nilai parameter komponen $R$ dan $C$ yang memungkinkan agar persamaan ini terwujud.
-    \vspace{6cm}
+    \item \textbf{(C6 - Mencipta / Mendesain)} Anda ditugaskan merancang subsistem \textit{delay timer} elektronik untuk \textit{relay} proteksi. Rangkaian ini berbasis kapasitor dan resistor seri. Relay akan "trip" (mati) ketika tegangan kapasitor mencapai tepat $37\%$ dari tegangan awalnya pada detik ke-5 ($t=5$ s). 
+    \begin{enumerate}
+        \item Susun model Persamaan Diferensial Biasa untuk sistem ini.
+        \item Rancang spesifikasi desain (Tentukan kombinasi nilai $R$ dan $C$ riil yang tersedia di pasaran yang memenuhi kriteria $t=5$ detik).
+        \item \textbf{Verifikasi Komputasi:} Buktikan rancangan Anda secara visual dengan memodifikasi \texttt{Simulasi\_Transien\_RC\_RL.ipynb}. Apakah kurva benar-benar memotong $0.37V_0$ saat $t=5$? Cetak dan lampirkan grafiknya!
+    \end{enumerate}
+    \vspace{4.5cm}
 \end{enumerate}
-
-\vfill
-\begin{center}
-\textbf{Semoga berhasil!}
-\end{center}
 
 \end{document}

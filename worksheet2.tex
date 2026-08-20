@@ -31,22 +31,24 @@ Diskusikan dengan teman Anda untuk membedah karakteristik Persamaan Diferensial 
 \begin{enumerate}[label=\textbf{\arabic*.}]
     \item \textbf{(C2 - Memahami)} Identifikasi mana di antara persamaan berikut yang tergolong separabel dan mana yang eksak (namun tidak separabel).
     \begin{enumerate}[label=\alph*.]
-        \item $\frac{dy}{dx} = \frac{x^2}{y}$ 
-        \item $(2x + y)dx + (x - 2y)dy = 0$
+        \item $\frac{di}{dt} = \frac{t^2}{i}$ 
+        \item $(2v + i)dv + (v - 2i)di = 0$
     \end{enumerate}
+    \vspace{3cm}
+
+    \item \textbf{(C3 - Mengaplikasikan)} Carilah solusi umum untuk persamaan diferensial arus pengisian kapasitor (separabel) berikut: $i' = e^{t-i}$.
     \vspace{4cm}
 
-    \item \textbf{(C3 - Mengaplikasikan)} Carilah solusi umum untuk persamaan diferensial separabel berikut: 
-    $$ y' = e^{x-y} $$
-    \vspace{6cm}
+    \item \textbf{(C4 - Menganalisis)} Diberikan persamaan diferensial yang memodelkan distribusi medan magnetik 1D:
+    $$ (B \cos x + 2xe^B) + (\sin x + x^2 e^B - 1)B' = 0 $$
+    Analisis dengan menguji syarat eksak. Jika eksak, turunkan penyelesaian untuk $B(x)$ selangkah demi selangkah.
+    \vspace{5cm}
 
-    \item \textbf{(C4 - Menganalisis)} Diberikan persamaan diferensial:
-    $$ (y \cos x + 2xe^y) + (\sin x + x^2 e^y - 1)y' = 0 $$
-    Analisis dengan menguji syarat eksak. Jika persamaan tersebut eksak, turunkan penyelesaiannya selangkah demi selangkah.
-    \vspace{7cm}
-
-    \item \textbf{(C5 - Mengevaluasi)} Tinjau persamaan diferensial linier orde pertama dalam bentuk standar: $\frac{dy}{dx} + P(x)y = Q(x)$. Formula faktor integrasi matematisnya adalah $\mu(x) = e^{\int P(x)dx}$. Coba Anda buktikan bahwa pengalian kedua ruas persamaan standar tersebut dengan faktor integrasi $\mu(x)$ akan menjadikannya sebuah persamaan diferensial yang turunan total ruas kirinya menjadi $\frac{d}{dx}[\mu(x)y]$.
-    \vspace{6cm}
+    \item \textbf{(C5 - Mengevaluasi)} Tinjau persamaan linier standar: $\frac{dy}{dx} + P(x)y = Q(x)$. Evaluasi dan buktikan secara matematis mengapa faktor integrasi harus bernilai $\mu(x) = e^{\int P(x)dx}$. Apa implikasi fisiknya jika $P(x)$ merepresentasikan redaman resistif dalam sirkuit RLC?
+    \vspace{4cm}
+    
+    \item \textbf{(C6 - Mencipta)} Anda ditantang membuat skrip Python numerik sederhana (tanpa widget) menggunakan metode Euler untuk menyelesaikan PDB non-eksak: $\frac{di}{dt} + 2ti = 5$. Tulis algoritma \textit{pseudo-code} atau \textit{snippet} Python-nya di bawah ini, dan jelaskan bagaimana \textit{loop} komputasinya bekerja!
+    \vspace{4cm}
 
 \end{enumerate}
 
