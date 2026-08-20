@@ -1,5 +1,11 @@
 {
   "buildCommand": "pip install -r requirements.txt --break-system-packages && mkdir -p docs/files && cp *.pdf *.ipynb docs/files/ || true && mkdocs build",
   "outputDirectory": "site",
-  "framework": null
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/persamaan-diferensial/files/:match*",
+      "destination": "/files/:match*"
+    }
+  ]
 }
