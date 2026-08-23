@@ -4,25 +4,26 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
 \usepackage{amsmath,amssymb}
-\usepackage{graphicx}
 
 % --- Custom Colors ---
 \definecolor{unibblue}{RGB}{0,51,102}
 \definecolor{unibgold}{RGB}{212,175,55}
 \definecolor{unibgreen}{RGB}{0,128,0}
 
-\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{palette primary}{bg=unibblue,fg=white}
+\setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
+\setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
+\setbeamercolor{structure}{fg=unibblue}
+\setbeamercolor{block title}{bg=unibblue!85,fg=white}
 \setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
-\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
-\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
-\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
 
 \title{Persamaan Diferensial}
-\subtitle{Minggu 10: Solusi PDP Metode Pemisahan Variabel}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\subtitle{Minggu 10: Metode Pemisahan Variabel (*Separation of Variables*) pada PDP}
+\author{Novalio Daratha \& Muhammad Arfan}
+\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
 \date{2026}
 
 \begin{document}
@@ -31,64 +32,94 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Capaian Pembelajaran (CPMK 4)}
+  \begin{itemize}
+    \item \textbf{CPMK 4.1:} Memahami prinsip dasar pemisahan variabel: memecah PDP multi-variabel menjadi 2 atau lebih PDB independen.
+    \item \textbf{CPMK 4.2:} Memahami peran konstanta pemisahan (*separation constant* $k$ atau $-\lambda^2$) dan justifikasi fisiknya.
+    \item \textbf{CPMK 4.3:} Menerapkan syarat batas (*Boundary Conditions*) Dirichlet dan Neumann pada PDB spasial (Masalah Nilai Eigen).
+    \item \textbf{CPMK 4.4:} Menggabungkan solusi eigen menggunakan prinsip superposisi dan koefisien Fourier.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Daftar Isi}
   \tableofcontents
 \end{frame}
 
-\section{Pengantar Metode Pemisahan Variabel}
-\begin{frame}{Pengantar Metode Pemisahan Variabel (Separation of Variables)}
-  \begin{block}{Konsep Dasar}
-    Metode Pemisahan Variabel adalah teknik fundamental untuk menyelesaikan Persamaan Diferensial Parsial (PDP) linier dan homogen.
-    Ide utamanya adalah mengasumsikan solusi sebagai perkalian fungsi-fungsi yang masing-masing hanya bergantung pada satu variabel independen.
+\section{Prinsip Dasar Pemisahan Variabel}
+\begin{frame}{Konsep Pemisahan Produk Fungsi}
+  Misalkan kita ingin mencari solusi $u(x,t)$ dari PDP linear:
+  \begin{block}{Asumsi Pemisahan Produk}
+    $$ {\color{unibblue} u(x,t) = X(x) \cdot T(t)} $$
+    Fungsi multi-variabel $u(x,t)$ diasumsikan merupakan perkalian antara fungsi murni spasial $X(x)$ dan fungsi murni temporal $T(t)$.
   \end{block}
-
-  \begin{exampleblock}{Asumsi Solusi}
-    Misalkan kita memiliki PDP untuk fungsi $u(x,t)$ dengan variabel independen $x$ dan $t$. 
-    Kita mengasumsikan solusi dapat ditulis sebagai:
-    \begin{equation}
-        u(x,t) = X(x) \cdot T(t)
-    \end{equation}
-    di mana $X$ hanya fungsi dari $x$ dan $T$ hanya fungsi dari $t$.
-  \end{exampleblock}
+  \pause
+  Turunan parsial menjadi turunan total biasa:
+  $$ \frac{\partial u}{\partial t} = X(x) \frac{dT}{dt} = X T', \quad \frac{\partial^2 u}{\partial x^2} = \frac{d^2X}{dx^2} T(t) = X'' T $$
 \end{frame}
 
-\section{Langkah-langkah Penyelesaian}
-\begin{frame}{Langkah-langkah Penyelesaian dengan Pemisahan Variabel}
-    \begin{itemize}
-        \item \textbf{Langkah 1:} Substitusikan $u(x,t) = X(x)T(t)$ ke dalam PDP.
-        \item \textbf{Langkah 2:} Pisahkan variabel sedemikian rupa sehingga satu sisi persamaan hanya bergantung pada $x$ dan sisi lainnya hanya bergantung pada $t$.
-        \item \textbf{Langkah 3:} Karena kedua sisi independen terhadap satu sama lain, maka keduanya harus sama dengan sebuah konstanta (disebut konstanta pemisahan, misalnya $-\lambda$).
-        \item \textbf{Langkah 4:} Selesaikan dua Persamaan Diferensial Biasa (PDB) yang dihasilkan untuk $X(x)$ dan $T(t)$.
-        \item \textbf{Langkah 5:} Gunakan prinsip superposisi dan syarat batas/awal untuk mendapatkan solusi khusus.
-    \end{itemize}
+\section{Studi Kasus: Pemisahan pada Persamaan Panas 1D}
+\begin{frame}{Penurunan Dua PDB Terpisah}
+  Tinjau: $\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}$.
+  \pause
+  Substitusi $u(x,t) = X(x)T(t)$:
+  $$ X T' = \alpha X'' T \implies \frac{T'}{\alpha T} = \frac{X''}{X} $$
+  \pause
+  \begin{alertblock}{Argumen Konstanta Pemisahan}
+    Ruas kiri hanya bergantung pada $t$, ruas kanan hanya bergantung pada $x$. Agar persamaan ini bernilai sama untuk setiap $x$ dan $t$ sembarang, kedua ruas harus bernilai konstan yang sama ($-\lambda^2$):
+    $$ \frac{X''}{X} = -\lambda^2 \implies {\color{unibblue} X'' + \lambda^2 X = 0} \quad \text{(PDB Spasial)} $$
+    $$ \frac{T'}{\alpha T} = -\lambda^2 \implies {\color{unibblue} T' + \alpha\lambda^2 T = 0} \quad \text{(PDB Waktu)} $$
+  \end{alertblock}
 \end{frame}
 
-\section{Contoh Aplikasi Sederhana}
-\begin{frame}{Contoh Aplikasi: Persamaan Diferensial Parsial Orde 1}
-  \begin{block}{Contoh Soal}
-    Selesaikan PDP orde 1 berikut: $\frac{\partial u}{\partial x} = 2 \frac{\partial u}{\partial t} + u$ menggunakan metode pemisahan variabel.
+\begin{frame}{Penyelesaian Masalah Nilai Eigen Spasial ($X(x)$)}
+  Untuk konduktor panjang $L$ dengan ujung digroundkan $u(0,t) = 0$ dan $u(L,t) = 0$:
+  $$ X(0) = 0, \quad X(L) = 0 $$
+  \pause
+  Solusi umum PDB spasial $X'' + \lambda^2 X = 0$:
+  $$ X(x) = C_1 \cos(\lambda x) + C_2 \sin(\lambda x) $$
+  \pause
+  \begin{itemize}
+    \item $X(0) = 0 \implies C_1 \cos(0) + C_2 \sin(0) = 0 \implies C_1 = 0$. \pause
+    \item $X(L) = 0 \implies C_2 \sin(\lambda L) = 0$. Agar solusi non-trivial ($C_2 \neq 0$):
+    $$ \sin(\lambda L) = 0 \implies \lambda L = n\pi \implies {\color{unibblue} \lambda_n = \frac{n\pi}{L}}, \quad n = 1, 2, 3, \dots $$
+  \end{itemize}
+  \pause
+  \begin{block}{Fungsi Eigen (*Eigenfunctions*)}
+    $$ X_n(x) = \sin\left(\frac{n\pi x}{L}\right) $$
   \end{block}
-  \textbf{Penyelesaian:}
-  Misalkan $u(x,t) = X(x)T(t)$.
-  Maka $u_x = X'T$ dan $u_t = XT'$. Substitusikan:
-  $$ X'T = 2XT' + XT $$
-  Bagi dengan $XT$:
-  $$ \frac{X'}{X} = 2\frac{T'}{T} + 1 = k \quad \text{(konstanta)} $$
-  Maka kita peroleh 2 PDB: $\frac{X'}{X} = k \implies X(x) = C_1 e^{kx}$ dan $2\frac{T'}{T} + 1 = k \implies T(t) = C_2 e^{(k-1)t/2}$.
-  Solusi: $u(x,t) = C e^{kx + (k-1)t/2}$.
 \end{frame}
 
-\begin{frame}{Terima Kasih}
-  \begin{center}
-    \vspace{1cm}
-    {\Large \textbf{Terima Kasih}}\\
-    \vspace{0.5cm}
-    {\large Sesi Tanya Jawab}\\
-    \vspace{1.5cm}
-    Novalio Daratha\\
-    Program Studi Teknik Elektro\\
-    Universitas Bengkulu
-  \end{center}
+\begin{frame}{Penyelesaian Bagian Waktu ($T_n(t)$) \& Superposisi}
+  PDB Waktu: $T_n' + \alpha \left(\frac{n\pi}{L}\right)^2 T_n = 0$.
+  \pause
+  Solusi eksponensial meluruh:
+  $$ T_n(t) = B_n e^{-\alpha \left(\frac{n\pi}{L}\right)^2 t} $$
+  \pause
+  \begin{alertblock}{Solusi Total Superposisi}
+    $$ {\color{unibblue} u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi x}{L}\right) e^{-\alpha \left(\frac{n\pi}{L}\right)^2 t}} $$
+    dengan $B_n = \frac{2}{L} \int_{0}^{L} f(x) \sin\left(\frac{n\pi x}{L}\right) dx$ diperoleh dari syarat awal $u(x,0) = f(x)$.
+  \end{alertblock}
+\end{frame}
+
+\section{Kuis \& Rangkuman}
+\begin{frame}{Kuis Interaktif 10}
+  \textbf{Pertanyaan:} Mengapa konstanta pemisahan harus dipilih bernilai negatif ($-\lambda^2$) dan bukan positif ($+\lambda^2$)?
+  \pause
+  \begin{block}{Jawaban:}
+    Secara fisik:
+    \begin{enumerate}
+      \item Jika konstanta positif ($+\lambda^2$), solusi spasial menjadi fungsi hiperbolik $\sinh(\lambda x), \cosh(\lambda x)$ yang tidak dapat memenuhi syarat batas nol di kedua ujung.
+      \item Solusi waktu akan menjadi $T(t) \propto e^{+\lambda^2 \alpha t}$, yang berarti suhu atau energi membesar tanpa batas menuju tak terhingga (tidak stabil dan melanggar hukum termodinamika/konservasi energi).
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Rangkuman Materi Minggu 10}
+  \begin{enumerate}
+    \item Pemisahan variabel mentransformasikan 1 PDP menjadi kumpulan PDB yang dapat diselesaikan secara independen.
+    \item Syarat batas menghasilkan nilai eigen diskrit ($\lambda_n$) dan fungsi harmonik eigen ($X_n(x)$).
+    \item Superposisi tak hingga menyatukan seluruh modus gelombang untuk mencocokkan kondisi awal sembarang.
+  \end{enumerate}
 \end{frame}
 
 \end{document}

@@ -4,25 +4,26 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
 \usepackage{amsmath,amssymb}
-\usepackage{graphicx}
 
 % --- Custom Colors ---
 \definecolor{unibblue}{RGB}{0,51,102}
 \definecolor{unibgold}{RGB}{212,175,55}
 \definecolor{unibgreen}{RGB}{0,128,0}
 
-\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{palette primary}{bg=unibblue,fg=white}
+\setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
+\setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
+\setbeamercolor{structure}{fg=unibblue}
+\setbeamercolor{block title}{bg=unibblue!85,fg=white}
 \setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
-\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
-\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
-\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
 
 \title{Persamaan Diferensial}
-\subtitle{Minggu 12: Persamaan Panas 1D (Difusi Termal pada Kabel)}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\subtitle{Minggu 12: Persamaan Panas 1D \& Manajemen Termal Konduktor Daya}
+\author{Novalio Daratha \& Muhammad Arfan}
+\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
 \date{2026}
 
 \begin{document}
@@ -31,62 +32,85 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Capaian Pembelajaran (CPMK 4)}
+  \begin{itemize}
+    \item \textbf{CPMK 4.1:} Memahami penurunan Hukum Konduksi Fourier pada konduktor kabel berarus.
+    \item \textbf{CPMK 4.2:} Menyelesaikan PDP Panas 1D untuk kondisi batas homogen (*Dirichlet cooling*) dan terisolasi (*Neumann*).
+    \item \textbf{CPMK 4.3:} Menganalisis dekomposisi suhu transien dan distribusi suhu keadaan mantap (*steady-state*).
+    \item \textbf{CPMK 4.4:} Menerapkan skema beda hingga FTCS pada simulasi Julia (Simulasi Persamaan Panas 1D).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Daftar Isi}
   \tableofcontents
 \end{frame}
 
-\section{Persamaan Diferensial Panas (Difusi)}
-\begin{frame}{Persamaan Panas 1D}
-  \begin{block}{Bentuk Dasar}
-    Persamaan panas (heat equation) atau persamaan difusi memodelkan bagaimana distribusi suhu dalam medium (seperti konduktor kabel listrik) berubah seiring waktu. 
-    \begin{equation}
-        \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}
-    \end{equation}
-    di mana $u(x,t)$ adalah suhu pada posisi $x$ dan waktu $t$, dan $\alpha$ adalah difusivitas termal material konduktor.
-  \end{block}
-
-  \begin{exampleblock}{Fenomena Fisis}
-    Berbeda dengan persamaan gelombang, persamaan panas mendeskripsikan proses ireversibel di mana suhu akan cenderung mencapai titik setimbang (steady-state). Kalor merambat dari daerah bersuhu tinggi ke daerah bersuhu rendah.
-  \end{exampleblock}
-\end{frame}
-
-\section{Penyelesaian dengan Pemisahan Variabel}
-\begin{frame}{Penyelesaian dengan Metode Pemisahan Variabel}
-    Misalkan konduktor kabel memiliki panjang $L$, dengan kedua ujungnya dipertahankan pada suhu $0^\circ$.
-    Kondisi batas: $u(0,t) = 0$ dan $u(L,t) = 0$.
-    \vspace{0.3cm}
-    Dengan substitusi $u(x,t) = X(x)T(t)$:
-    $$ \frac{T'}{\alpha T} = \frac{X''}{X} = -\lambda^2 $$
-    Didapatkan dua persamaan diferensial biasa:
+\section{Pemodelan Termal Konduktor Listrik}
+\begin{frame}{Penurunan Persamaan Difusi Panas 1D}
+  Berdasarkan Hukum Konduksi Kalor Fourier ($q = -k \frac{\partial u}{\partial x}$) dan konservasi energi pada batang konduktor dengan difusivitas termal $\alpha = \frac{k}{\rho c_p}$:
+  \begin{alertblock}{Persamaan Panas 1D}
+    $$ {\color{unibblue} \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}} $$
     \begin{itemize}
-        \item Spasial: $X'' + \lambda^2 X = 0 \implies X(x) = \sin\left(\frac{n\pi}{L}x\right)$
-        \item Temporal: $T' + \alpha\lambda^2 T = 0 \implies T(t) = e^{-\alpha\left(\frac{n\pi}{L}\right)^2 t}$
+      \item $u(x,t)$: Distribusi temperatur pada posisi $x$ dan waktu $t$ ($^\circ\text{C}$).
+      \item $\alpha$: Difusivitas termal material ($m^2/s$).
     \end{itemize}
+  \end{alertblock}
+  \pause
+  \textit{Aplikasi Elektro: Perhitungan ampacity (kapasitas hantar arus) maksimum kabel bawah tanah dan disipasi panas transformator.}
 \end{frame}
 
-\section{Solusi Umum}
-\begin{frame}{Solusi Umum Distribusi Suhu}
-  \begin{block}{Solusi Bentuk Deret Fourier}
-    Menggunakan superposisi, solusi umum suhu di sepanjang kabel adalah:
-    \begin{equation}
-        u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi}{L}x\right) e^{-\alpha\left(\frac{n\pi}{L}\right)^2 t}
-    \end{equation}
+\section{Solusi Analitik Deret Fourier}
+\begin{frame}{Penyelesaian dengan Syarat Batas Dirichlet}
+  Untuk kabel panjang $L$ dengan kedua ujung dijaga pada suhu lingkungan $0^\circ\text{C}$ ($u(0,t)=0, u(L,t)=0$) dan profil suhu awal $u(x,0) = f(x)$:
+  \pause
+  \begin{block}{Solusi Lengkap}
+    $$ {\color{unibblue} u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi x}{L}\right) e^{-\lambda_n^2 \alpha t}}, \quad \lambda_n = \frac{n\pi}{L} $$
   \end{block}
-  \textbf{Penting:}
-  Bentuk $e^{-\text{konstanta}\cdot t}$ menunjukkan peluruhan temporal. Hal ini mengindikasikan bahwa untuk waktu $t \to \infty$, suhu konduktor pada akhirnya akan turun menjadi $0$ di setiap titik jika tidak ada sumber panas konstan.
+  \pause
+  \textbf{Faktor Peluruhan Eksponensial:}
+  $$ \tau_n = \frac{1}{\alpha \lambda_n^2} = \frac{L^2}{n^2 \pi^2 \alpha} $$
+  \textit{Harmonik spasial frekuensi tinggi ($n=2,3,\dots$) meluruh jauh lebih cepat, menyisakan gelombang sinusoidal mulus mode fundamental ($n=1$).}
 \end{frame}
 
-\begin{frame}{Terima Kasih}
-  \begin{center}
-    \vspace{1cm}
-    {\Large \textbf{Terima Kasih}}\\
-    \vspace{0.5cm}
-    {\large Sesi Tanya Jawab}\\
-    \vspace{1.5cm}
-    Novalio Daratha\\
-    Program Studi Teknik Elektro\\
-    Universitas Bengkulu
-  \end{center}
+\section{Kondisi Batas Non-Homogen \& Keadaan Mantap}
+\begin{frame}{Transien vs Keadaan Mantap (*Steady-State*)}
+  Jika kedua ujung kabel memiliki suhu konstan berbeda: $u(0,t) = T_1$ dan $u(L,t) = T_2$:
+  \pause
+  Solusi total dipecah menjadi:
+  $$ u(x,t) = u_{\text{steady}}(x) + u_{\text{transient}}(x,t) $$
+  \pause
+  \begin{block}{Distribusi Suhu Keadaan Mantap (Saat $t \to \infty$)}
+    $$ \frac{d^2 u_{\text{steady}}}{dx^2} = 0 \implies {\color{unibblue} u_{\text{steady}}(x) = T_1 + \frac{T_2 - T_1}{L} x} \quad \text{(Garis Lurus Linear)} $$
+  \end{block}
+\end{frame}
+
+\section{Kuis \& Simulasi Komputasi}
+\begin{frame}{Simulasi Numerik Julia: FTCS}
+  \begin{block}{Simulasi Persamaan Panas 1D}
+    $$ u_i^{n+1} = u_i^n + r (u_{i+1}^n - 2u_i^n + u_{i-1}^n), \quad r = \frac{\alpha \Delta t}{\Delta x^2} \le 0.5 $$
+    \begin{itemize}
+      \item Mempelajari syarat stabilitas von Neumann ($r \le 0.5$).
+      \item Visualisasi difusi titik panas (*hot-spot*) kabel daya.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Kuis Interaktif 12}
+  \textbf{Soal:} Jika panjang kabel tembaga diduplikasi menjadi $2\times$ lipat semula ($L' = 2L$), berapakah peningkatan waktu pendinginan $\tau$ yang dibutuhkan kabel hingga mencapai suhu dingin?
+  \pause
+  \begin{block}{Jawaban:}
+    Karena konstanta waktu peluruhan $\tau \propto L^2$:
+    $$ \tau' \propto (2L)^2 = 4 L^2 = 4\tau $$
+    Waktu pendinginan meningkat \textbf{4 kali lipat}!
+  \end{block}
+\end{frame}
+
+\begin{frame}{Rangkuman}
+  \begin{enumerate}
+    \item Persamaan panas adalah PDP tipe parabolik yang memodelkan proses disipasi irreversibel.
+    \item Solusi selalu konvergen menuju gradien temperatur linear pada keadaan mantap.
+    \item Kestabilan numerik FTCS menuntut langkah waktu $\Delta t \le \frac{\Delta x^2}{2\alpha}$.
+  \end{enumerate}
 \end{frame}
 
 \end{document}

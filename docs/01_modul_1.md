@@ -1,77 +1,53 @@
-# Modul 1: Pengantar Persamaan Diferensial
+# Catatan Kuliah Persamaan Diferensial - Minggu 1: Pengantar Persamaan Diferensial
 
 ## Pendahuluan
 Persamaan Diferensial (PD) memegang peranan krusial dalam memodelkan berbagai fenomena fisik, terutama dalam disiplin ilmu Teknik Elektro. Secara umum, sistem dinamis, seperti rangkaian listrik, medan elektromagnetik, hingga sistem kendali, dapat direpresentasikan melalui suatu persamaan yang melibatkan fungsi beserta turunannya. Modul ini bertujuan untuk memberikan pemahaman dasar mengenai klasifikasi persamaan diferensial, pembedaan antara solusi umum dan solusi khusus, masalah nilai awal (Initial Value Problem - IVP), serta penerapannya secara dasar pada rangkaian listrik melalui Hukum Kirchhoff.
 
 ## Materi Utama
 
-## Klasifikasi Persamaan Diferensial: PDB dan PDP
+### Klasifikasi Persamaan Diferensial: PDB dan PDP
 Persamaan Diferensial dibagi menjadi dua kategori utama berdasarkan jumlah variabel bebas yang terlibat.
 
-**Definisi: Persamaan Diferensial Biasa (PDB)**
-
-Persamaan Diferensial Biasa (PDB) adalah persamaan diferensial yang hanya mengandung turunan terhadap **satu** variabel bebas.
+!!! info "Persamaan Diferensial Biasa (PDB)"
+    Persamaan Diferensial Biasa (PDB) adalah persamaan diferensial yang hanya mengandung turunan terhadap **satu** variabel bebas (misalnya waktu $t$).
 
 Bentuk umum PDB:
+$$ F\left(x, y, \frac{dy}{dx}, \frac{d^2y}{dx^2}, \dots, \frac{d^ny}{dx^n}\right) = 0 $$
 
-$$
-F\left(x, y, \frac{dy}{dx}, \frac{d^2y}{dx^2}, \dots, \frac{d^ny}{dx^n}\right) = 0
-$$
+!!! info "Persamaan Diferensial Parsial (PDP)"
+    Persamaan Diferensial Parsial (PDP) adalah persamaan diferensial yang mengandung turunan parsial terhadap **dua atau lebih** variabel bebas.
 
-dengan $x$ adalah variabel bebas dan $y$ adalah variabel terikat.
+### Solusi Umum, Solusi Khusus, dan IVP
 
-**Definisi: Persamaan Diferensial Parsial (PDP)**
+    - **Solusi Umum:** Solusi yang memuat konstanta sembarang ($C$).
+    - **Solusi Khusus:** Solusi yang diperoleh dari solusi umum dengan memasukkan nilai *Initial Value Problem* (IVP) atau kondisi awal.
 
-Persamaan Diferensial Parsial (PDP) adalah persamaan diferensial yang mengandung turunan parsial terhadap **dua atau lebih** variabel bebas.
+!!! example "Penyelesaian IVP Langkah-demi-Langkah"
+    Tinjau PDB: $\frac{dy}{dt} = -2y$, dengan kondisi awal $y(0) = 5$.
 
-Contoh PDP dalam Teknik Elektro adalah Persamaan Gelombang Elektromagnetik dan Persamaan Panas (Heat Equation).
+    **Langkah 1: Temukan Solusi Umum.** 
+    Berdasarkan pengalaman, fungsi yang turunannya adalah kelipatan dirinya sendiri adalah eksponensial. Solusi umumnya: 
+    $y(t) = C e^{-2t}$.
 
-## Orde dan Derajat Persamaan Diferensial
+    **Langkah 2: Terapkan Kondisi Awal.**
+    Substitusi $t = 0$ dan $y = 5$:
+    $5 = C e^{-2(0)} \implies 5 = C(1) \implies C = 5$.
 
-- **Orde:** Tingkat turunan tertinggi yang terdapat dalam persamaan diferensial.
-- **Derajat (Degree):** Pangkat dari turunan tertinggi dalam persamaan, asalkan persamaan tersebut dalam bentuk polinomial dari turunan-turunannya.
+    **Langkah 3: Solusi Khusus.**
+    Maka solusi khususnya adalah $y(t) = 5 e^{-2t}$.
 
-Contoh: 
+### Aplikasi Awal: Hukum Kirchhoff pada Rangkaian Listrik
+!!! example "Rangkaian RL Seri"
+    Tinjau sebuah rangkaian yang terdiri dari resistor $R$ dan induktor $L$ seri dengan sumber tegangan DC $V_0$. Hukum KVL menyatakan:
+    $$ V_R + V_L = V_0 \implies R \cdot i(t) + L \frac{di(t)}{dt} = V_0 $$
+    Persamaan ini adalah PDB orde 1 linear. 
 
-$$
-\left( \frac{d^2y}{dx^2} \right)^3 + 4\frac{dy}{dx} - y = e^x
-$$
-
-Persamaan di atas merupakan PDB orde 2 berderajat 3.
-
-## Solusi Umum dan Solusi Khusus
-Solusi dari persamaan diferensial adalah suatu fungsi yang, ketika disubstitusikan ke dalam persamaan beserta turunannya, menghasilkan identitas yang benar.
-
-- **Solusi Umum:** Solusi yang memuat konstanta sembarang ($C$). Solusi umum untuk PDB orde $n$ akan memuat $n$ buah konstanta sembarang yang saling bebas.
-- **Solusi Khusus:** Solusi yang diperoleh dari solusi umum dengan memberikan nilai tertentu pada konstanta sembarang. Nilai konstanta ini biasanya ditentukan melalui syarat awal (Initial Conditions) atau syarat batas (Boundary Conditions).
-
-## Masalah Nilai Awal (Initial Value Problem - IVP)
-Masalah Nilai Awal (IVP) adalah persamaan diferensial yang disertai dengan syarat awal sedemikian rupa sehingga kita dapat menentukan solusi khusus yang unik. 
-Untuk PDB orde 1: $\frac{dy}{dx} = f(x,y)$, syarat awalnya adalah $y(x_0) = y_0$.
-
-## Aplikasi Awal: Hukum Kirchhoff pada Rangkaian Listrik
-Dalam Teknik Elektro, Hukum Tegangan Kirchhoff (KVL) dan Hukum Arus Kirchhoff (KCL) sering menghasilkan persamaan diferensial.
-
-**Contoh: Rangkaian RL Seri**
-
-Tinjau sebuah rangkaian yang terdiri dari resistor $R$ dan induktor $L$ yang dihubungkan secara seri dengan sumber tegangan $V(t)$. Berdasarkan Hukum Tegangan Kirchhoff (KVL):
-
-$$
-V_R + V_L = V(t)
-$$
-
-Kita mengetahui bahwa $V_R = R \cdot i(t)$ dan $V_L = L \frac{di(t)}{dt}$. Dengan demikian, persamaan rangkaiannya adalah:
-
-$$
-L \frac{di}{dt} + R i = V(t)
-$$
-
-Persamaan ini merupakan Persamaan Diferensial Biasa (PDB) orde 1 linear.
+    *Catatan Komputasi:* Untuk melihat visualisasi grafis bagaimana arus $i(t)$ naik secara eksponensial terhadap waktu, silakan jalankan `Simulasi_Transien_RC_RL.ipynb` di Jupyter Notebook Anda. Cobalah mengubah nilai $R$ dan $L$ pada *slider* untuk melihat pengaruhnya terhadap konstanta waktu!
 
 ## Ringkasan
-Minggu ini kita telah mempelajari konsep dasar Persamaan Diferensial. Klasifikasi PD menjadi PDB dan PDP sangat bergantung pada jumlah variabel bebas. Orde menunjukkan turunan tertinggi, sedangkan solusi umum memuat konstanta yang dapat ditentukan melalui Masalah Nilai Awal (IVP) sehingga menjadi solusi khusus. Pemodelan rangkaian seri sederhana dengan Hukum Kirchhoff merupakan contoh fundamental tentang bagaimana PDB diterapkan dalam analisis rangkaian di Teknik Elektro.
+Klasifikasi PD menjadi PDB dan PDP sangat bergantung pada jumlah variabel bebas. Selalu gunakan simulasi Python/Julia untuk memvalidasi pemahaman analitik Anda secara visual.
 
 ## Referensi
 
-- Erwin Kreyszig, *Advanced Engineering Mathematics*, John Wiley & Sons.
-- Dennis G. Zill, *A First Course in Differential Equations with Modeling Applications*, Cengage Learning.
+    - Erwin Kreyszig, *Advanced Engineering Mathematics*.
+    - `Simulasi_Transien_RC_RL.ipynb` (Praktikum Komputasi).

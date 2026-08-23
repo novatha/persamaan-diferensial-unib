@@ -4,25 +4,26 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
 \usepackage{amsmath,amssymb}
-\usepackage{graphicx}
 
 % --- Custom Colors ---
 \definecolor{unibblue}{RGB}{0,51,102}
 \definecolor{unibgold}{RGB}{212,175,55}
 \definecolor{unibgreen}{RGB}{0,128,0}
 
-\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{palette primary}{bg=unibblue,fg=white}
+\setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
+\setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
+\setbeamercolor{structure}{fg=unibblue}
+\setbeamercolor{block title}{bg=unibblue!85,fg=white}
 \setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
-\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
-\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
-\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
 
 \title{Persamaan Diferensial}
-\subtitle{Minggu 11: Persamaan Gelombang 1D (Vibrasi/Transmisi Sinyal)}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\subtitle{Minggu 11: Persamaan Gelombang 1D pada Saluran Transmisi Elektromagnetik}
+\author{Novalio Daratha \& Muhammad Arfan}
+\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
 \date{2026}
 
 \begin{document}
@@ -31,69 +32,101 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Capaian Pembelajaran (CPMK 4)}
+  \begin{itemize}
+    \item \textbf{CPMK 4.1:} Menurunkan Persamaan Gelombang 1D dari persamaan Telegraf pada saluran transmisi.
+    \item \textbf{CPMK 4.2:} Menyelesaikan persamaan gelombang menggunakan Solusi Perjalanan Gelombang d'Alembert.
+    \item \textbf{CPMK 4.3:} Menganalisis gelombang berdiri dan fenomena refleksi pada ujung saluran.
+    \item \textbf{CPMK 4.4:} Mengamati simulasi numerik perambatan gelombang FDTD menggunakan Julia.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Daftar Isi}
   \tableofcontents
 \end{frame}
 
-\section{Pemodelan Persamaan Gelombang}
-\begin{frame}{Persamaan Gelombang 1D}
-  \begin{block}{Definisi}
-    Persamaan gelombang satu dimensi memodelkan propagasi gelombang, seperti vibrasi pada dawai atau transmisi sinyal elektromagnetik pada saluran transmisi tak merugi (lossless).
-    Bentuk persamaannya adalah:
-    \begin{equation}
-        \frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}
-    \end{equation}
-    di mana $c$ adalah kecepatan rambat gelombang.
-  \end{block}
-
-  \begin{exampleblock}{Aplikasi pada Saluran Transmisi (Teknik Elektro)}
-    Dalam konteks saluran transmisi panjang, persamaan gelombang dapat digunakan untuk mendeskripsikan variasi tegangan $v(x,t)$ atau arus $i(x,t)$:
-    $$ \frac{\partial^2 v}{\partial x^2} = LC \frac{\partial^2 v}{\partial t^2} $$
-    dengan $c = 1/\sqrt{LC}$.
-  \end{exampleblock}
+\section{Penurunan dari Rangkaian Saluran Transmisi}
+\begin{frame}{Persamaan Telegraf (Lossless Line)}
+  Tinjau segmen saluran transmisi mikro sepanjang $\Delta x$ dengan induktansi $L'$ dan kapasitansi $C'$ per meter:
+  $$ \frac{\partial v}{\partial x} = -L' \frac{\partial i}{\partial t} \quad \text{(Hukum Faraday/KVL)} $$
+  $$ \frac{\partial i}{\partial x} = -C' \frac{\partial v}{\partial t} \quad \text{(Hukum Arus Maxwell/KCL)} $$
+  \pause
+  Turunkan persamaan tegangan terhadap $x$ dan persamaan arus terhadap $t$:
+  $$ \frac{\partial^2 v}{\partial x^2} = -L' \frac{\partial^2 i}{\partial x \partial t} = -L' \frac{\partial}{\partial t}\left(-C'\frac{\partial v}{\partial t}\right) = L'C' \frac{\partial^2 v}{\partial t^2} $$
+  \pause
+  \begin{alertblock}{Persamaan Gelombang 1D Standar}
+    $$ {\color{unibblue} \frac{\partial^2 v}{\partial t^2} = c^2 \frac{\partial^2 v}{\partial x^2}}, \quad c = \frac{1}{\sqrt{L'C'}} \quad \text{(Kecepatan Rambat Gelombang)} $$
+  \end{alertblock}
 \end{frame}
 
-\section{Solusi D'Alembert}
-\begin{frame}{Solusi D'Alembert}
-    D'Alembert menunjukkan bahwa solusi umum dari persamaan gelombang 1D dapat dinyatakan sebagai penjumlahan dua gelombang yang merambat dalam arah berlawanan:
-    \begin{equation}
-        u(x,t) = f(x - ct) + g(x + ct)
-    \end{equation}
+\section{Solusi d'Alembert: Gelombang Berjalan}
+\begin{frame}{Formulasi Solusi d'Alembert}
+  \begin{block}{Teorema d'Alembert}
+    Solusi umum dari $\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}$ adalah superposisi dari dua gelombang yang merambat berlawanan arah:
+    $$ {\color{unibblue} u(x,t) = f(x - ct) + g(x + ct)} $$
     \begin{itemize}
-        \item $f(x - ct)$: Gelombang merambat ke arah kanan (sumbu $x$ positif) dengan kecepatan $c$.
-        \item $g(x + ct)$: Gelombang merambat ke arah kiri (sumbu $x$ negatif) dengan kecepatan $c$.
+      \item $f(x - ct)$: Gelombang datang (\textit{forward traveling wave}) merambat ke arah $+x$.
+      \item $g(x + ct)$: Gelombang pantul (\textit{backward traveling wave}) merambat ke arah $-x$.
     \end{itemize}
-    Solusi ini sangat elegan untuk domain yang membentang tak hingga ($-\infty < x < \infty$).
-\end{frame}
-
-\section{Solusi dengan Pemisahan Variabel}
-\begin{frame}{Solusi dengan Metode Pemisahan Variabel (Kondisi Batas)}
-  \begin{block}{Kasus Vibrasi Dawai Ujung Tetap}
-    Jika ujung terikat pada $x=0$ dan $x=L$, syarat batasnya adalah $u(0,t)=0$ dan $u(L,t)=0$.
-    Dengan substitusi $u(x,t)=X(x)T(t)$, didapatkan fungsi Eigen:
-    \begin{equation}
-        X_n(x) = \sin\left(\frac{n\pi}{L}x\right) \quad \text{untuk } n=1, 2, 3, \dots
-    \end{equation}
   \end{block}
-  \textbf{Solusi Deret Fourier:}
-  Menggabungkan dengan solusi fungsi waktu dan prinsip superposisi, solusi umumnya menjadi:
-  \begin{equation}
-      u(x,t) = \sum_{n=1}^{\infty} \sin\left(\frac{n\pi}{L}x\right) \left[ A_n \cos\left(\frac{cn\pi}{L}t\right) + B_n \sin\left(\frac{cn\pi}{L}t\right) \right]
-  \end{equation}
-  Koefisien $A_n$ dan $B_n$ ditentukan dari syarat awal (kondisi t=0).
+  \pause
+  Jika diberikan profil awal $u(x,0) = \phi(x)$ dan kecepatan awal $\frac{\partial u}{\partial t}(x,0) = 0$:
+  $$ u(x,t) = \frac{1}{2}\left[ \phi(x - ct) + \phi(x + ct) \right] $$
 \end{frame}
 
-\begin{frame}{Terima Kasih}
-  \begin{center}
-    \vspace{1cm}
-    {\Large \textbf{Terima Kasih}}\\
-    \vspace{0.5cm}
-    {\large Sesi Tanya Jawab}\\
-    \vspace{1.5cm}
-    Novalio Daratha\\
-    Program Studi Teknik Elektro\\
-    Universitas Bengkulu
-  \end{center}
+\section{Refleksi Gelombang pada Ujung Saluran}
+\begin{frame}{Kondisi Batas Saluran Transmisi}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Ujung Hubung Singkat ($x = L$ Ground)}
+        \begin{itemize}
+          \item Tegangan $v(L,t) = 0$ (Batas Dirichlet).
+          \item Koefisien Refleksi: $\Gamma = -1$.
+          \item Gelombang pantul berbalik polaritas (pergeseran fase $180^\circ$).
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \pause
+      \begin{block}{Ujung Terbuka ($x = L$ Open)}
+        \begin{itemize}
+          \item Arus $i(L,t) = 0 \implies \frac{\partial v}{\partial x}(L,t) = 0$ (Batas Neumann).
+          \item Koefisien Refleksi: $\Gamma = +1$.
+          \item Gelombang pantul sefase (tegangan berlipat ganda).
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Praktikum Julia \& Kuis}
+\begin{frame}{Simulasi Julia: Perambatan Gelombang 1D}
+  \begin{block}{Metode FDTD (Finite Difference Time Domain)}
+    $$ u_i^{n+1} = 2(1 - r^2)u_i^n + r^2(u_{i+1}^n + u_{i-1}^n) - u_i^{n-1}, \quad r = \frac{c \Delta t}{\Delta x} \le 1 $$
+    \begin{itemize}
+      \item Memvisualisasikan pemecahan pulsa Gauss menjadi 2 gelombang simetris d'Alembert.
+      \item Menghasilkan diagram spatiotemporal *heatmap* 2D.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Kuis Interaktif 11}
+  \textbf{Soal:} Saluran kabel koaksial memiliki $L' = 0.25\ \mu\text{H/m}$ dan $C' = 100\text{ pF/m}$. Berapakah kecepatan rambat sinyal dan waktu tempuh untuk kabel sepanjang $300\text{ meter}$?
+  \pause
+  \begin{block}{Jawaban:}
+    \begin{enumerate}
+      \item $c = \frac{1}{\sqrt{0.25 \times 10^{-6} \times 100 \times 10^{-12}}} = \frac{1}{\sqrt{25 \times 10^{-18}}} = \frac{1}{5 \times 10^{-9}} = 2 \times 10^8\text{ m/s} = \frac{2}{3}c$ (kecepatan cahaya). \pause
+      \item Waktu tempuh: $t = \frac{300\text{ m}}{2 \times 10^8\text{ m/s}} = 1.5\ \mu\text{s} = 1500\text{ ns}$.
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Rangkuman}
+  \begin{enumerate}
+    \item Gelombang tegangan dan arus pada saluran transmisi merupakan konsekuensi langsung dari hukum Maxwell.
+    \item Kecepatan rambat hanya bergantung pada karakteristik geometris dan material dielektrik ($L', C'$).
+    \item Analisis d'Alembert dan FDTD menjadi instrumen esensial dalam desain transmisi data berkecepatan tinggi.
+  \end{enumerate}
 \end{frame}
 
 \end{document}

@@ -4,25 +4,26 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
 \usepackage{amsmath,amssymb}
-\usepackage{graphicx}
 
 % --- Custom Colors ---
 \definecolor{unibblue}{RGB}{0,51,102}
 \definecolor{unibgold}{RGB}{212,175,55}
 \definecolor{unibgreen}{RGB}{0,128,0}
 
-\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{palette primary}{bg=unibblue,fg=white}
+\setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
+\setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
+\setbeamercolor{structure}{fg=unibblue}
+\setbeamercolor{block title}{bg=unibblue!85,fg=white}
 \setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
-\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
-\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
-\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
 
 \title{Persamaan Diferensial}
-\subtitle{Minggu 6: Transformasi Laplace Dasar}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\subtitle{Minggu 6: Transformasi Laplace Dasar \& Teorema Pergeseran}
+\author{Novalio Daratha \& Muhammad Arfan}
+\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
 \date{2026}
 
 \begin{document}
@@ -31,79 +32,122 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Capaian Pembelajaran (CPMK 3)}
+  \begin{itemize}
+    \item \textbf{CPMK 3.1:} Memahami motivasi dan definisi matematis Transformasi Laplace: mengubah domain waktu $t$ ke domain frekuensi kompleks $s$.
+    \item \textbf{CPMK 3.2:} Mampu menurunkan transformasi fungsi-fungsi dasar ($1, t^n, e^{at}, \sin\omega t, \cos\omega t$).
+    \item \textbf{CPMK 3.3:} Menguasai sifat kelinieran dan Teorema Pergeseran Pertama (*First Shifting Theorem*).
+    \item \textbf{CPMK 3.4:} Menurunkan Transformasi Laplace dari turunan fungsi: $\mathcal{L}\{f'(t)\}$ dan $\mathcal{L}\{f''(t)\}$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Daftar Isi}
   \tableofcontents
 \end{frame}
 
 \section{Definisi Transformasi Laplace}
-\begin{frame}{Definisi Transformasi Laplace}
-  \begin{block}{Definisi Formal}
-    Transformasi Laplace dari suatu fungsi $f(t)$ yang didefinisikan untuk $t \geq 0$ adalah fungsi $F(s)$ dari variabel kompleks $s$, yang diberikan oleh integral:
-    \begin{equation}
-        \mathcal{L}\{f(t)\} = F(s) = \int_{0}^{\infty} e^{-st} f(t) \, dt
-    \end{equation}
+\begin{frame}{Mengapa Menggunakan Domain Laplace ($s$)?}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \textbf{Kelemahan Metode Klasik:}
+      \begin{itemize}
+        \item Menyelesaikan PDB butuh mencari $y_h$, lalu $y_p$, lalu memasukkan IVP.
+        \item Rumit untuk sumber tegangan impulsif atau gelombang tangga (*step function*).
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \pause
+      \textbf{Keunggulan Laplace:}
+      \begin{itemize}
+        \item Mengubah operasi kalkulus (turunan/integral) menjadi \textbf{aljabar biasa}.
+        \item Syarat awal (IVP) langsung masuk di awal penurunan aljabar!
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \pause
+  \begin{block}{Definisi Integral Laplace}
+    Untuk fungsi $f(t)$ yang terdefinisi pada $t \ge 0$:
+    $$ {\color{unibblue} F(s) = \mathcal{L}\{f(t)\} = \int_{0}^{\infty} e^{-st} f(t) \, dt} $$
+    dengan $s = \sigma + j\omega$ adalah variabel frekuensi kompleks.
   \end{block}
-
-  \begin{exampleblock}{Transformasi Fungsi Dasar}
-    \begin{itemize}
-        \item $\mathcal{L}\{1\} = \frac{1}{s}$
-        \item $\mathcal{L}\{e^{at}\} = \frac{1}{s-a}$
-        \item $\mathcal{L}\{\sin(\omega t)\} = \frac{\omega}{s^2 + \omega^2}$
-        \item $\mathcal{L}\{\cos(\omega t)\} = \frac{s}{s^2 + \omega^2}$
-        \item $\mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}$
-    \end{itemize}
-  \end{exampleblock}
 \end{frame}
 
-\section{Sifat Linieritas}
-\begin{frame}{Sifat Linieritas}
-    Transformasi Laplace merupakan operasi linier. Ini berarti bahwa untuk konstanta $c_1$ dan $c_2$, serta fungsi $f(t)$ dan $g(t)$:
-    
-    \begin{alertblock}{Teorema Linieritas}
-    \begin{equation}
-        \mathcal{L}\{c_1 f(t) + c_2 g(t)\} = c_1 \mathcal{L}\{f(t)\} + c_2 \mathcal{L}\{g(t)\}
-    \end{equation}
-    \end{alertblock}
-    
-    \textbf{Contoh Penggunaan:}
-    Mencari transformasi dari $f(t) = 3e^{2t} - 5\sin(4t)$.
-    \begin{align*}
-        \mathcal{L}\{3e^{2t} - 5\sin(4t)\} &= 3\mathcal{L}\{e^{2t}\} - 5\mathcal{L}\{\sin(4t)\} \\
-        &= 3 \left( \frac{1}{s-2} \right) - 5 \left( \frac{4}{s^2 + 16} \right)
-    \end{align*}
+\section{Transformasi Fungsi-Fungsi Dasar}
+\begin{frame}{Penurunan Fungsi Elementer}
+  \begin{block}{1. Fungsi Konstan: $f(t) = 1$}
+    $$ \mathcal{L}\{1\} = \int_{0}^{\infty} e^{-st} dt = \left[ -\frac{1}{s} e^{-st} \right]_{0}^{\infty} = 0 - \left(-\frac{1}{s}\right) = {\color{unibblue} \frac{1}{s}} \quad (s > 0) $$
+  \end{block}
+  \pause
+  \begin{block}{2. Fungsi Eksponensial: $f(t) = e^{at}$}
+    $$ \mathcal{L}\{e^{at}\} = \int_{0}^{\infty} e^{-st} e^{at} dt = \int_{0}^{\infty} e^{-(s-a)t} dt = {\color{unibblue} \frac{1}{s - a}} \quad (s > a) $$
+  \end{block}
+  \pause
+  \begin{block}{3. Fungsi Pangkat: $f(t) = t^n$}
+    $$ \mathcal{L}\{t^n\} = {\color{unibblue} \frac{n!}{s^{n+1}}} \quad (n \in \mathbb{N}, s > 0) $$
+  \end{block}
 \end{frame}
 
-\section{Sifat Pergeseran (Translasi)}
-\begin{frame}{Sifat Pergeseran (Translasi)}
-    Sifat pergeseran (First Shifting Theorem) memudahkan pencarian transformasi ketika suatu fungsi dikalikan dengan eksponensial $e^{at}$.
-    
-    \begin{block}{Teorema Pergeseran Pertama}
+\begin{frame}{Tabel Standar Transformasi Laplace}
+  \begin{table}[]
+    \centering
+    \begin{tabular}{|c|c||c|c|}
+      \hline
+      $f(t)$ & $F(s) = \mathcal{L}\{f(t)\}$ & $f(t)$ & $F(s) = \mathcal{L}\{f(t)\}$ \\ \hline
+      $1$ & $\frac{1}{s}$ & $t^n$ & $\frac{n!}{s^{n+1}}$ \\ \hline
+      $e^{at}$ & $\frac{1}{s-a}$ & $\cos(\omega t)$ & $\frac{s}{s^2 + \omega^2}$ \\ \hline
+      $\sin(\omega t)$ & $\frac{\omega}{s^2 + \omega^2}$ & $\cosh(at)$ & $\frac{s}{s^2 - a^2}$ \\ \hline
+      $\sinh(at)$ & $\frac{a}{s^2 - a^2}$ & $e^{at}\sin(\omega t)$ & $\frac{\omega}{(s-a)^2 + \omega^2}$ \\ \hline
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\section{Sifat-Sifat Penting Transformasi Laplace}
+\begin{frame}{Teorema Pergeseran Pertama (s-Shifting)}
+  \begin{block}{Teorema Pergeseran Sumbu $s$}
     Jika $\mathcal{L}\{f(t)\} = F(s)$, maka:
-    \begin{equation}
-        \mathcal{L}\{e^{at} f(t)\} = F(s-a)
-    \end{equation}
-    \end{block}
-    
-    \textbf{Contoh Penggunaan:}
-    Mencari $\mathcal{L}\{e^{3t} \cos(2t)\}$.
-    \begin{itemize}
-        \item Diketahui $f(t) = \cos(2t) \implies F(s) = \frac{s}{s^2+4}$
-        \item Kalikan dengan $e^{3t}$, kita geser $s$ menjadi $s-3$.
-        \item Hasilnya: $F(s-3) = \frac{s-3}{(s-3)^2+4}$
-    \end{itemize}
+    $$ {\color{unibblue} \mathcal{L}\{e^{at} f(t)\} = F(s - a)} $$
+  \end{block}
+  \pause
+  \textbf{Contoh Soal:} Tentukan $\mathcal{L}\{e^{-2t} \cos(3t)\}$.
+  \begin{itemize}
+    \item Fungsi dasar: $f(t) = \cos(3t) \implies F(s) = \frac{s}{s^2 + 3^2} = \frac{s}{s^2 + 9}$. \pause
+    \item Dengan $a = -2$, ganti setiap $s$ dengan $(s - (-2)) = (s + 2)$:
+    $$ \mathcal{L}\{e^{-2t} \cos(3t)\} = {\color{unibblue} \frac{s + 2}{(s + 2)^2 + 9}} = \frac{s + 2}{s^2 + 4s + 13} $$
+  \end{itemize}
 \end{frame}
 
-\begin{frame}{Terima Kasih}
-  \begin{center}
-    \vspace{1cm}
-    {\Large \textbf{Terima Kasih}}\\
-    \vspace{0.5cm}
-    {\large Sesi Tanya Jawab}\\
-    \vspace{1.5cm}
-    Novalio Daratha\\
-    Program Studi Teknik Elektro\\
-    Universitas Bengkulu
-  \end{center}
+\begin{frame}{Transformasi Turunan Fungsi (Kunci Penyelesaian PDB)}
+  \begin{alertblock}{Teorema Transformasi Turunan}
+    \begin{itemize}
+      \item Turunan Pertama:
+      $$ {\color{unibblue} \mathcal{L}\{f'(t)\} = s F(s) - f(0)} $$
+      \item Turunan Kedua:
+      $$ {\color{unibblue} \mathcal{L}\{f''(t)\} = s^2 F(s) - s f(0) - f'(0)} $$
+    \end{itemize}
+  \end{alertblock}
+  \pause
+  \textit{Catatan: Kondisi awal $f(0)$ dan $f'(0)$ langsung terintegrasi secara otomatis saat menerapkan transformasi!}
+\end{frame}
+
+\section{Kuis \& Rangkuman}
+\begin{frame}{Kuis Cepat Minggu 6}
+  \textbf{Soal:} Tentukan $\mathcal{L}\{t^2 e^{5t}\}$.
+  \pause
+  \begin{block}{Solusi:}
+    \begin{enumerate}
+      \item $\mathcal{L}\{t^2\} = \frac{2!}{s^3} = \frac{2}{s^3}$. \pause
+      \item Geser $s \to s - 5$:
+      $$ \mathcal{L}\{t^2 e^{5t}\} = {\color{unibblue} \frac{2}{(s-5)^3}} $$
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Rangkuman Materi Minggu 6}
+  \begin{enumerate}
+    \item Transformasi Laplace memetakan fungsi domain waktu $t$ ke aljabar kompleks domain $s$.
+    \item Sifat pergeseran pertama mengalikan fungsi dengan eksponensial $e^{at} \iff$ menggeser frekuensi $s-a$.
+    \item Transformasi turunan merupakan jembatan utama untuk mengubah PDB menjadi persamaan aljabar.
+  \end{enumerate}
 \end{frame}
 
 \end{document}

@@ -1,27 +1,33 @@
 import os
 import re
 import time
+import getpass
 from playwright.sync_api import sync_playwright
 
 def upload_file(page, section_id, filepath, title, desc):
     print(f"Mengunggah {title} ke Topik {section_id}...")
     try:
+        # Pastikan halaman course terbuka
         if "edit=1" not in page.url and "course/view.php" not in page.url:
-            page.goto("https://elearning.unib.ac.id/course/view.php?id=5383", timeout=60000)
+            page.goto("https://elearning.unib.ac.id/course/view.php?id=5383")
             time.sleep(1)
 
+        # Cari container section berdasarkan ID
         section_locator = page.locator(f"li#section-{section_id}")
         section_locator.scroll_into_view_if_needed()
-        time.sleep(1)
+        time.sleep(0.5)
         
+        # Klik Tambah Aktivitas
         add_btn = section_locator.get_by_role("link", name=re.compile("Tambahkan sebuah aktivitas", re.IGNORECASE)).first
         add_btn.click()
         
-        time.sleep(1.5)
+        # Modal muncul, pilih Berkas
+        time.sleep(1)
         page.locator("span").filter(has_text=re.compile(r"^Berkas$", re.IGNORECASE)).first.click()
         page.get_by_role("button", name=re.compile("Tambahkan", re.IGNORECASE)).first.click()
         
-        time.sleep(2)
+        # Form Berkas
+        time.sleep(1.5)
         try:
             page.get_by_role("textbox", name=re.compile("Nama", re.IGNORECASE)).first.fill(title)
         except:
@@ -30,10 +36,11 @@ def upload_file(page, section_id, filepath, title, desc):
         try:
             page.get_by_role("textbox", name=re.compile("Deskripsi", re.IGNORECASE)).first.fill(desc)
         except:
-            pass 
+            pass
             
+        # Dialog file upload
         page.locator(".dndupload-arrow").first.click()
-        time.sleep(2)
+        time.sleep(1.5)
         
         try:
             page.get_by_role("button", name=re.compile("Lampiran", re.IGNORECASE)).first.click(timeout=1000)
@@ -45,31 +52,34 @@ def upload_file(page, section_id, filepath, title, desc):
         except:
             page.locator("input[type='file']").first.set_input_files(filepath)
             
+        # Eksekusi unggah
         page.get_by_role("button", name=re.compile("Unggah file ini", re.IGNORECASE)).first.click()
+        time.sleep(4)
         
-        time.sleep(4) # Beri waktu lebih lama
-        
+        # Submit
         page.get_by_role("button", name=re.compile("Simpan dan kembali", re.IGNORECASE)).first.click()
-        time.sleep(3)
+        time.sleep(2)
         print(f" > BERHASIL: {title}")
         
     except Exception as e:
         print(f" > GAGAL: {title} | Error: {str(e)[:50]}...")
-        page.goto("https://elearning.unib.ac.id/course/view.php?id=5383", timeout=60000)
+        page.goto("https://elearning.unib.ac.id/course/view.php?id=5383")
         time.sleep(2)
 
 def main():
+    nip = os.getenv("UNIB_NIP") or input("Masukkan NIP/NIM: ")
+    password = os.getenv("UNIB_PASSWORD") or getpass.getpass("Masukkan Password: ")
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         context = browser.new_context(viewport={'width': 1280, 'height': 800})
-        # Set default timeout lebih lama karena server agak lambat
         context.set_default_timeout(60000) 
         page = context.new_page()
 
         print("Melakukan Login otomatis (Resume)...")
         page.goto("https://elearning.unib.ac.id/login/index.php", timeout=60000)
-        page.get_by_placeholder("Masukkan NIP/NIM").fill("197911132003121002")
-        page.get_by_placeholder("Password").fill("N0v4th4#")
+        page.get_by_placeholder("Masukkan NIP/NIM").fill(nip)
+        page.get_by_placeholder("Password").fill(password)
         page.locator("#submit").click()
         time.sleep(3)
         
@@ -84,7 +94,6 @@ def main():
         except:
             pass
             
-        # HANYA FILE YANG TERSISA (Minggu 14 - 16)
         files = [
             (14, "problem_set14.pdf", "Tugas Terstruktur", "Instrumen evaluasi bab 14"),
             (14, "worksheet14.pdf", "Lembar Kerja Mahasiswa (LKM) Minggu 14", "LKM evaluasi kelas bab 14"),
@@ -95,7 +104,7 @@ def main():
             (16, "uas.pdf", "Soal Ujian Akhir Semester (UAS)", "Bahan evaluasi UAS")
         ]
 
-        base_dir = "/Users/novaliodaratha/Documents/2026/mengajar/Persamaan Diferensial"
+        base_dir = os.path.dirname(os.path.abspath(__file__))
         
         for sec, filename, title, desc in files:
             filepath = os.path.join(base_dir, filename)

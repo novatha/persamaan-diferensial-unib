@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 .DS_Store
 .vercel
+.env
+*.log
+*.aux
+*.out
+*.toc
+*.nav
+*.snm

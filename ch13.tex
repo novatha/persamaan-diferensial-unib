@@ -4,25 +4,26 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{patterns,shapes,arrows,calc,positioning}
 \usepackage{amsmath,amssymb}
-\usepackage{graphicx}
 
 % --- Custom Colors ---
 \definecolor{unibblue}{RGB}{0,51,102}
 \definecolor{unibgold}{RGB}{212,175,55}
 \definecolor{unibgreen}{RGB}{0,128,0}
 
-\setbeamercolor{block title}{bg=unibblue!80,fg=white}
+\setbeamercolor{palette primary}{bg=unibblue,fg=white}
+\setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
+\setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
+\setbeamercolor{structure}{fg=unibblue}
+\setbeamercolor{block title}{bg=unibblue!85,fg=white}
 \setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!80,fg=black}
-\setbeamercolor{alertblock body}{bg=unibgold!10,fg=black}
-\setbeamercolor{exampleblock title}{bg=unibgreen!80,fg=white}
-\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
 
 \title{Persamaan Diferensial}
-\subtitle{Minggu 13: Persamaan Laplace 2D (Distribusi Potensial Elektrostatik)}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
+\subtitle{Minggu 13: Persamaan Laplace 2D \& Analisis Potensial Elektrostatik}
+\author{Novalio Daratha \& Muhammad Arfan}
+\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
 \date{2026}
 
 \begin{document}
@@ -31,80 +32,92 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Capaian Pembelajaran (CPMK 4)}
+  \begin{itemize}
+    \item \textbf{CPMK 4.1:} Menurunkan Persamaan Laplace 2D dari Hukum Gauss elektrostatik ($\nabla \cdot \mathbf{D} = \rho_v$) dan hubungan medan potensial ($\mathbf{E} = -\nabla V$).
+    \item \textbf{CPMK 4.2:} Memahami sifat fungsi harmonik: Sifat Nilai Rata-rata (*Mean-Value Property*) dan Prinsip Ekstremum Maksimum/Minimum.
+    \item \textbf{CPMK 4.3:} Menyelesaikan Persamaan Laplace 2D pada domain persegi/persegi panjang menggunakan deret Fourier analitik.
+    \item \textbf{CPMK 4.4:} Menerapkan metode relaksasi beda hingga (Gauss-Seidel) pada simulasi Julia (Simulasi Potensial Laplace 2D).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Daftar Isi}
   \tableofcontents
 \end{frame}
 
-\section{Persamaan Laplace 2D}
-\begin{frame}{Persamaan Laplace 2D}
-  \begin{block}{Definisi Persamaan Laplace}
-    Persamaan Laplace adalah PDP orde dua yang menggambarkan keadaan tunak (steady-state) tanpa sumber. Dalam elektrostatik (tanpa muatan bebas), potensial $V$ memenuhi:
-    \begin{equation}
-        \nabla^2 V = 0
-    \end{equation}
+\section{Penurunan Persamaan Laplace \& Poisson}
+\begin{frame}{Dari Hukum Gauss ke Persamaan Laplace}
+  \begin{block}{Hukum Medan Elektrostatik}
+    $$ \nabla \cdot \mathbf{E} = \frac{\rho_v}{\varepsilon}, \quad \mathbf{E} = -\nabla V $$
   \end{block}
-
-  \begin{exampleblock}{Koordinat Kartesian 2D}
-    Jika potensial hanya bergantung pada koordinat $x$ dan $y$, maka:
-    \begin{equation}
-        \frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0
-    \end{equation}
-    Persamaan ini sangat penting untuk mencari distribusi potensial di antara elektroda pada penampang dua dimensi.
-  \end{exampleblock}
+  \pause
+  Substitusi medan listrik $\mathbf{E}$ ke Hukum Gauss:
+  $$ \nabla \cdot (-\nabla V) = \frac{\rho_v}{\varepsilon} \implies {\color{unibblue} \nabla^2 V = -\frac{\rho_v}{\varepsilon}} \quad \text{(Persamaan Poisson)} $$
+  \pause
+  \begin{alertblock}{Persamaan Laplace 2D (Ruang Bebas Muatan $\rho_v = 0$)}
+    $$ {\color{unibblue} \frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0} $$
+  \end{alertblock}
 \end{frame}
 
-\section{Metode Pemisahan Variabel}
-\begin{frame}{Metode Pemisahan Variabel}
-    Kita asumsikan solusi berbentuk perkalian fungsi $x$ dan $y$:
-    \begin{equation}
-        V(x,y) = X(x) Y(y)
-    \end{equation}
-    Substitusi ke Persamaan Laplace menghasilkan:
-    \begin{equation}
-        Y \frac{d^2X}{dx^2} + X \frac{d^2Y}{dy^2} = 0 \implies \frac{1}{X} \frac{d^2X}{dx^2} = -\frac{1}{Y} \frac{d^2Y}{dy^2} = k^2
-    \end{equation}
-    
-    \textbf{Dua Persamaan Diferensial Biasa (PDB):}
-    \begin{alertblock}{}
-    \begin{itemize}
-        \item $\frac{d^2X}{dx^2} - k^2 X = 0$
-        \item $\frac{d^2Y}{dy^2} + k^2 Y = 0$
-    \end{itemize}
-    \end{alertblock}
-    Konstanta pemisahan $k^2$ ditentukan oleh syarat batas fisik dari sistem.
+\section{Sifat Fungsi Harmonik}
+\begin{frame}{Keunikan Solusi Laplace (Fungsi Harmonik)}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Sifat Nilai Rata-rata}
+        Potensial pada titik manapun $(x,y)$ selalu sama dengan nilai rata-rata potensial pada lingkaran/kotak di sekelilingnya:
+        $$ V(x,y) = \frac{1}{2\pi}\int_0^{2\pi} V(R, \theta) d\theta $$
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \pause
+      \begin{alertblock}{Prinsip Maksimum-Minimum}
+        Fungsi harmonik tidak pernah memiliki nilai maksimum lokal atau minimum lokal di dalam domain terbuka! Nilai ekstrem hanya terjadi pada batas konduktor (*boundaries*).
+      \end{alertblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
-\section{Aplikasi Elektrostatik}
-\begin{frame}{Aplikasi Distribusi Potensial Elektrostatik}
-  \begin{block}{Solusi Umum Berdasarkan $k$}
-    Tergantung tanda konstanta, kita mendapatkan kombinasi fungsi sinus/kosinus dan fungsi hiperbolik eksponensial:
+\section{Solusi Analitik Deret 2D}
+\begin{frame}{Distribusi Potensial dalam Konduktor Persegi Panjang}
+  Domain $0 \le x \le a$ dan $0 \le y \le b$ dengan batas:
+  $V(0,y) = 0, \quad V(a,y) = 0, \quad V(x,0) = 0, \quad V(x,b) = V_0$.
+  \pause
+  Menggunakan pemisahan variabel $V(x,y) = X(x)Y(y)$:
+  $$ X_n(x) = \sin\left(\frac{n\pi x}{a}\right), \quad Y_n(y) = \sinh\left(\frac{n\pi y}{a}\right) $$
+  \pause
+  \begin{alertblock}{Solusi Deret Fourier 2D}
+    $$ {\color{unibblue} V(x,y) = \sum_{n=1,3,5,...}^{\infty} \frac{4V_0}{n\pi \sinh\left(\frac{n\pi b}{a}\right)} \sin\left(\frac{n\pi x}{a}\right) \sinh\left(\frac{n\pi y}{a}\right)} $$
+  \end{alertblock}
+\end{frame}
+
+\section{Simulasi Julia \& Kuis}
+\begin{frame}{Simulasi Numerik Relaksasi Gauss-Seidel (Julia)}
+  \begin{block}{Algoritma Beda Hingga 4-Titik}
+    $$ V_{i,j}^{(k+1)} = \frac{1}{4} \left( V_{i+1,j}^{(k)} + V_{i-1,j}^{(k)} + V_{i,j+1}^{(k)} + V_{i,j-1}^{(k)} \right) $$
     \begin{itemize}
-        \item Jika $k^2 > 0$: $X(x) = A e^{kx} + B e^{-kx}$, $Y(y) = C \sin(ky) + D \cos(ky)$ (atau sebaliknya)
-        \item Jika $k^2 = 0$: $X(x) = Ax + B$, $Y(y) = Cy + D$
+      \item Menghasilkan garis ekipotensial kontur 2D.
+      \item Memvisualisasikan permukaan potensial 3D (*Potential Wells*).
     \end{itemize}
   \end{block}
-
-  \begin{exampleblock}{Syarat Batas (Boundary Conditions)}
-    Syarat batas sangat penting untuk menentukan koefisien $A, B, C, D$ dan konstanta pemisahan $k$. 
-    \begin{itemize}
-        \item Syarat Dirichlet: Nilai potensial $V$ diketahui pada batas.
-        \item Syarat Neumann: Turunan potensial (medan listrik) diketahui pada batas.
-    \end{itemize}
-    Solusi akhirnya merupakan superposisi (Deret Fourier) dari solusi-solusi fundamental.
-  \end{exampleblock}
 \end{frame}
 
-\begin{frame}{Terima Kasih}
-  \begin{center}
-    \vspace{1cm}
-    {\Large \textbf{Terima Kasih}}\\
-    \vspace{0.5cm}
-    {\large Sesi Tanya Jawab}\\
-    \vspace{1.5cm}
-    Novalio Daratha\\
-    Program Studi Teknik Elektro\\
-    Universitas Bengkulu
-  \end{center}
+\begin{frame}{Kuis Interaktif 13}
+  \textbf{Soal:} Jika seluruh batas konduktor luar sebuah rongga kotak tertutup dihubungkan ke tanah ($V = 0\text{ V}$), berapa nilai potensial elektrostatik $V$ persis di tengah-tengah rongga tersebut?
+  \pause
+  \begin{block}{Jawaban:}
+    Berdasarkan **Teorema Keunikan (*Uniqueness Theorem*)** dan **Prinsip Ekstremum**:
+    Karena nilai batas di semua sisi adalah $0\text{ V}$, maka nilai maksimum dan minimum keduanya adalah $0\text{ V}$.
+    Maka nilai potensial di seluruh titik di dalam rongga adalah:
+    $$ {\color{unibblue} V(x,y) = 0\text{ Volt}} $$
+  \end{block}
+\end{frame}
+
+\begin{frame}{Rangkuman}
+  \begin{enumerate}
+    \item Persamaan Laplace adalah persamaan eliptik dasar untuk medan elektrostatik, magnetostatik, dan aliran panas steady-state.
+    \item Fungsi solusi selalu bersifat halus (*smooth*) dan memenuhi sifat nilai rata-rata.
+    \item Metode relaksasi Gauss-Seidel merupakan algoritma komputasi paling intuitif untuk menyelesaikan masalah elektrostatik 2D.
+  \end{enumerate}
 \end{frame}
 
 \end{document}

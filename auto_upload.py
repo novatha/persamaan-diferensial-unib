@@ -1,6 +1,7 @@
 import os
 import re
 import time
+import getpass
 from playwright.sync_api import sync_playwright
 
 def upload_file(page, section_id, filepath, title, desc):
@@ -75,6 +76,9 @@ def upload_file(page, section_id, filepath, title, desc):
         time.sleep(2)
 
 def main():
+    nip = os.getenv("UNIB_NIP") or input("Masukkan NIP/NIM: ")
+    password = os.getenv("UNIB_PASSWORD") or getpass.getpass("Masukkan Password: ")
+
     with sync_playwright() as p:
         # Buka browser agar pengguna bisa melihat keajaibannya
         browser = p.chromium.launch(headless=False)
@@ -83,8 +87,8 @@ def main():
 
         print("Melakukan Login otomatis...")
         page.goto("https://elearning.unib.ac.id/login/index.php")
-        page.get_by_placeholder("Masukkan NIP/NIM").fill("197911132003121002")
-        page.get_by_placeholder("Password").fill("N0v4th4#")
+        page.get_by_placeholder("Masukkan NIP/NIM").fill(nip)
+        page.get_by_placeholder("Password").fill(password)
         page.locator("#submit").click()
         time.sleep(3)
         
@@ -123,7 +127,7 @@ def main():
             
             files.append((i, f"worksheet{i}.pdf", f"Lembar Kerja Mahasiswa (LKM) Minggu {i}", f"LKM evaluasi kelas bab {i}"))
 
-        base_dir = "/Users/novaliodaratha/Documents/2026/mengajar/Persamaan Diferensial"
+        base_dir = os.path.dirname(os.path.abspath(__file__))
         
         for sec, filename, title, desc in files:
             filepath = os.path.join(base_dir, filename)

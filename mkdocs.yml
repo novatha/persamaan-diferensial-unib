@@ -1,9 +1,60 @@
 site_name: Persamaan Diferensial UNIB
+site_description: Materi Perkuliahan dan Dokumentasi Persamaan Diferensial Teknik Elektro Universitas Bengkulu
+site_author: Novalio Daratha, Ph.D. & Muhammad Arfan
+
 theme:
   name: material
+  language: id
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Mode Gelap
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Mode Terang
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - content.code.copy
+    - content.action.edit
+
 markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.highlight:
+      anchor_linenums: true
   - pymdownx.arithmatex:
       generic: true
+
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - 🏠 Beranda: index.md
+  - 📚 Modul Pembelajaran:
+      - "Minggu 1: Pengantar & Klasifikasi PDB": 01_modul_1.md
+      - "Minggu 2: PDB Orde 1": 02_modul_2.md
+      - "Minggu 3: Aplikasi PDB Orde 1": 03_modul_3.md
+      - "Minggu 4: PDB Orde 2 Homogen": 04_modul_4.md
+      - "Minggu 5: PDB Orde 2 Non-Homogen & RLC": 05_modul_5.md
+      - "Minggu 6: Transformasi Laplace Dasar": 06_modul_6.md
+      - "Minggu 7: Invers Laplace & Solusi PDB": 07_modul_7.md
+      - "Minggu 9: Pengantar PDP & Deret Fourier": 09_modul_9.md
+      - "Minggu 10: Solusi PDP Pemisahan Variabel": 10_modul_10.md
+      - "Minggu 11: Persamaan Gelombang 1D": 11_modul_11.md
+      - "Minggu 12: Persamaan Panas 1D": 12_modul_12.md
+      - "Minggu 13: Persamaan Laplace 2D": 13_modul_13.md
+      - "Minggu 14: Fungsi Bessel & Gelombang Silinder": 14_modul_14.md
+      - "Minggu 15: PDP & Persamaan Maxwell": 15_modul_15.md
+  - ⚡ Studi Kasus Modern: modul_studi_kasus_modern.md
