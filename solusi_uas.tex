@@ -1,0 +1,138 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{KUNCI JAWABAN & PEDOMAN PENSKORAN UAS}}
+\fancyhead[R]{Persamaan Diferensial 2026}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{KUNCI JAWABAN \& PEDOMAN PENSKORAN\\UJIAN AKHIR SEMESTER (UAS)\\Mata Kuliah: Persamaan Diferensial}}
+\author{Novalio Daratha, Ph.D. \& Muhammad Arfan, M.T.\\Program Studi Teknik Elektro, Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Informasi Dosen \& Asisten]
+Dokumen ini merupakan panduan resmi kunci jawaban dan rubrik pembobotan skor Ujian Akhir Semester (UAS) mata kuliah Persamaan Diferensial. Total skor maksimum adalah 100 poin (5 soal $\times$ 20 poin).
+\end{tcolorbox}
+
+\section*{Solusi dan Pembobotan Langkah Pengerjaan}
+
+\begin{enumerate}[label=\textbf{Soal \arabic*.}]
+    \item \textbf{(C2 - Memahami) Konsep Deret Fourier (Bobot: 20 Poin)}
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}[label=(\alph*)]
+        \item \textbf{Definisi Ekspansi Deret Fourier (7 Poin):}
+        Deret Fourier adalah metode untuk merepresentasikan suatu fungsi periodik $f(t)$ dengan periode $T = 2L$ sebagai kombinasi linier tak hingga dari fungsi basis trigonometrik ortogonal (sinus dan kosinus):
+        $$ f(t) = a_0 + \sum_{n=1}^\infty \left[ a_n \cos\left(\frac{n\pi t}{L}\right) + b_n \sin\left(\frac{n\pi t}{L}\right) \right] $$
+        \item \textbf{Mengapa Fungsi Sembarang Dapat Diuraikan (Ortogonalitas) (7 Poin):}
+        Himpunan fungsi $\{1, \cos(n\omega_0 t), \sin(n\omega_0 t)\}$ membentuk basis ortogonal pada ruang Hilbert ruang fungsi periodik. Karena sifat ortogonalitas integral:
+        $$ \int_{-L}^{L} \cos\left(\frac{n\pi t}{L}\right)\cos\left(\frac{m\pi t}{L}\right) dt = \begin{cases} 0, & n \ne m \\ L, & n = m \end{cases} $$
+        setiap koefisien $a_n, b_n$ merepresentasikan proyeksi amplitudo sinyal pada frekuensi harmonik ke-$n$ tanpa adanya interferensi antar-harmonik.
+        \item \textbf{Aplikasi dalam Teknik Elektro (6 Poin):}
+        \begin{itemize}
+            \item \textit{Analisis Harmonisa Kualitas Daya (THD):} Mengukur distorsi gelombang arus/tegangan inverter akibat beban non-linier.
+            \item \textit{Pemrosesan Sinyal & Telekomunikasi:} Desain filter lolos rendah/tinggi (*Low/High Pass Filter*) dan modulasi sinyal.
+        \end{itemize}
+    \end{enumerate}
+    \end{tcolorbox}
+
+    \item \textbf{(C3 - Mengaplikasikan) Solusi PDB dengan Laplace (Bobot: 20 Poin)}
+    \textbf{Soal:} $y'' + 4y = e^{-t}$ dengan $y(0) = 1$ dan $y'(0) = 0$.
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}
+        \item \textbf{Transformasi Laplace ke Domain-$s$ (6 Poin):}
+        $$ [s^2 Y(s) - s y(0) - y'(0)] + 4Y(s) = \frac{1}{s+1} $$
+        $$ [s^2 Y(s) - s] + 4Y(s) = \frac{1}{s+1} \implies (s^2 + 4)Y(s) = s + \frac{1}{s+1} = \frac{s(s+1) + 1}{s+1} = \frac{s^2 + s + 1}{s+1} $$
+        $$ Y(s) = \frac{s^2 + s + 1}{(s+1)(s^2 + 4)} $$
+        \item \textbf{Dekomposisi Pecahan Parsial (8 Poin):}
+        $$ \frac{s^2 + s + 1}{(s+1)(s^2 + 4)} = \frac{A}{s+1} + \frac{B s + C}{s^2 + 4} $$
+        $$ s^2 + s + 1 = A(s^2 + 4) + (Bs + C)(s+1) $$
+        \begin{itemize}
+            \item Masukkan $s = -1$: $1 - 1 + 1 = A(1+4) \implies 1 = 5A \implies \mathbf{A = \frac{1}{5}}$.
+            \item Samakan koefisien $s^2$: $A + B = 1 \implies \frac{1}{5} + B = 1 \implies \mathbf{B = \frac{4}{5}}$.
+            \item Samakan konstanta: $4A + C = 1 \implies 4\left(\frac{1}{5}\right) + C = 1 \implies \mathbf{C = \frac{1}{5}}$.
+        \end{itemize}
+        \item \textbf{Invers Transformasi Laplace (6 Poin):}
+        $$ Y(s) = \frac{1}{5}\left(\frac{1}{s+1}\right) + \frac{4}{5}\left(\frac{s}{s^2 + 2^2}\right) + \frac{1}{10}\left(\frac{2}{s^2 + 2^2}\right) $$
+        $$ \mathbf{y(t) = \frac{1}{5}e^{-t} + \frac{4}{5}\cos(2t) + \frac{1}{10}\sin(2t)} $$
+    \end{enumerate}
+    \end{tcolorbox}
+
+    \newpage
+
+    \item \textbf{(C4 - Menganalisis) Pemisahan Variabel Persamaan Panas (Bobot: 20 Poin)}
+    \textbf{Soal:} Pisahkan $u_t = \alpha^2 u_{xx}$ dengan $u(x,t) = X(x)T(t)$.
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}
+        \item \textbf{Substitusi Variabel Terpisah (6 Poin):}
+        Turunan parsial: $u_t = X(x) T'(t)$ dan $u_{xx} = X''(x) T(t)$.
+        $$ X(x) T'(t) = \alpha^2 X''(x) T(t) $$
+        \item \textbf{Pemisahan Ruas (7 Poin):}
+        Bagi kedua ruas dengan $\alpha^2 X(x) T(t)$:
+        $$ \frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} $$
+        Karena ruas kiri hanya fungsi waktu $t$ dan ruas kanan hanya fungsi posisi $x$, keduanya harus bernilai sama dengan suatu konstanta pemisah konstan, sebut $-\lambda$:
+        $$ \frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda $$
+        \item \textbf{Pembentukan Dua PDB Terpisah (7 Poin):}
+        \begin{itemize}
+            \item \textbf{PDB Spasial (Posisi):} $X''(x) + \lambda X(x) = 0$
+            \item \textbf{PDB Temporal (Waktu):} $T'(t) + \alpha^2 \lambda T(t) = 0 \implies T(t) = C e^{-\alpha^2 \lambda t}$
+        \end{itemize}
+        Penetapan nilai $-\lambda < 0$ menjamin solusi waktu meluruh stabil secara fisis.
+    \end{enumerate}
+    \end{tcolorbox}
+
+    \item \textbf{(C5 - Mengevaluasi) Kuantisasi Frekuensi pada Gelombang (Bobot: 20 Poin)}
+    \textbf{Soal:} Evaluasi $u_{tt} = c^2 u_{xx}$ dengan syarat batas ujung terikat $u(0,t)=0$ dan $u(L,t)=0$.
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}
+        \item \textbf{Penyelesaian Masalah Nilai Batas Spasial (8 Poin):}
+        PDB spasial: $X''(x) + k^2 X(x) = 0 \implies X(x) = C_1 \cos(kx) + C_2 \sin(kx)$.
+        \begin{itemize}
+            \item Syarat $X(0) = 0$: $C_1(1) + C_2(0) = 0 \implies C_1 = 0$.
+            \item Syarat $X(L) = 0$: $C_2 \sin(k L) = 0$.
+            \item Agar solusi tidak trivial ($C_2 \ne 0$), maka $\sin(k L) = 0 \implies \mathbf{k_n L = n\pi} \implies \mathbf{k_n = \frac{n\pi}{L}}$ untuk $n = 1, 2, 3, \dots$.
+        \end{itemize}
+        \item \textbf{Kuantisasi Frekuensi Natural (8 Poin):}
+        Frekuensi sudut gelombang berdiri adalah $\omega_n = c \cdot k_n = \frac{n\pi c}{L}$.
+        Frekuensi osilasi dalam Hertz ($f = \omega / 2\pi$):
+        $$ \mathbf{f_n = \frac{n c}{2L}, \quad n = 1, 2, 3, \dots} $$
+        \item \textbf{Evaluasi Argumen (4 Poin):}
+        \textbf{Kesimpulan:} Sembarang nilai frekuensi \textbf{TIDAK DIPERBOLEHKAN}. Gelombang terkurung pada domain berhingga dengan batas Dirichlet terikat hanya dapat berosilasi pada frekuensi-frekuensi diskrit terkuantisasi (harmonik nada dasar $f_1$ dan kelipatan bulatnya $n f_1$).
+    \end{enumerate}
+    \end{tcolorbox}
+
+    \item \textbf{(C6 - Mensintesis) Penurunan Persamaan Gelombang Elektromagnetik 3D (Bobot: 20 Poin)}
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}
+        \item \textbf{Persamaan Maxwell di Ruang Hampa Bebas Muatan ($\rho_v=0, \mathbf{J}=\mathbf{0}$) (5 Poin):}
+        \begin{align*}
+            \nabla \cdot \mathbf{E} &= 0 \quad \text{(Hukum Gauss)}, & \nabla \cdot \mathbf{B} &= 0 \quad \text{(Gauss Magnetik)} \\
+            \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \quad \text{(Hukum Faraday)}, & \nabla \times \mathbf{B} &= \mu_0 \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t} \quad \text{(Ampere-Maxwell)}
+        \end{align*}
+        \item \textbf{Penerapan Identitas Vektor Curl of Curl (7 Poin):}
+        Ambil curl ($\nabla \times$) dari kedua ruas Hukum Faraday:
+        $$ \nabla \times (\nabla \times \mathbf{E}) = \nabla \times \left(-\frac{\partial \mathbf{B}}{\partial t}\right) = -\frac{\partial}{\partial t}(\nabla \times \mathbf{B}) $$
+        Gunakan identitas kalkulus vektor $\nabla \times (\nabla \times \mathbf{E}) \equiv \nabla(\nabla \cdot \mathbf{E}) - \nabla^2 \mathbf{E}$:
+        $$ \nabla(\underbrace{\nabla \cdot \mathbf{E}}_{=0}) - \nabla^2 \mathbf{E} = -\frac{\partial}{\partial t}\left(\mu_0 \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t}\right) $$
+        \item \textbf{Hasil Akhir Persamaan Gelombang PDP (8 Poin):}
+        $$ -\nabla^2 \mathbf{E} = -\mu_0 \varepsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2} \implies \mathbf{\nabla^2 \mathbf{E} = \mu_0 \varepsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}} $$
+        Bentuk ini adalah Persamaan Gelombang 3D hiperbolik dengan kecepatan rambat:
+        $$ \mathbf{c = \frac{1}{\sqrt{\mu_0 \varepsilon_0}} \approx 3 \times 10^8 \text{ m/s}} \quad \text{(Kecepatan Cahaya Terbukti)} $$
+    \end{enumerate}
+    \end{tcolorbox}
+\end{enumerate}
+
+\end{document}

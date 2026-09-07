@@ -32,12 +32,13 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Capaian Pembelajaran (CPMK 2)}
+\begin{frame}{Capaian Pembelajaran (CPMK 2 / Sub-CPMK 4)}
   \begin{itemize}
-    \item \textbf{CPMK 2.1:} Memahami bentuk standar PDB linear orde 2 homogen koefisien konstan.
-    \item \textbf{CPMK 2.2:} Mampu menyusun dan menyelesaikan persamaan karakteristik / polinomial pembantu.
-    \item \textbf{CPMK 2.3:} Menganalisis 3 jenis solusi basis: akar real berbeda, akar kembar, dan akar kompleks konjugat.
-    \item \textbf{CPMK 2.4:} Mengaplikasikan prinsip superposisi dan menyelesaikan Masalah Nilai Awal (IVP) orde 2.
+    \item \textbf{CPMK 2.1:} Memahami bentuk standar PDB linear orde 2 homogen dengan koefisien konstan.
+    \item \textbf{CPMK 2.2:} Menguji kebebasan linier pasangan solusi menggunakan determinan Wronskian.
+    \item \textbf{CPMK 2.3:} Menurunkan dan menyelesaikan persamaan karakteristik untuk 3 kasus diskriminan ($D > 0, D = 0, D < 0$).
+    \item \textbf{CPMK 2.4:} Memahami metode reduksi orde yang menghasilkan faktor pengali $x$ pada akar kembar.
+    \item \textbf{CPMK 2.5:} Menyelesaikan Masalah Nilai Awal (IVP) orde 2 dan menganalisis dinamika rangkaian osilator LC murni.
   \end{itemize}
 \end{frame}
 
@@ -45,111 +46,205 @@
   \tableofcontents
 \end{frame}
 
-\section{Bentuk Umum \& Persamaan Karakteristik}
+\section{Bentuk Standar \& Prinsip Superposisi}
 \begin{frame}{Bentuk Standar PDB Orde 2 Homogen}
-  \begin{block}{Persamaan Diferensial}
-    $$ a \frac{d^2y}{dx^2} + b \frac{dy}{dx} + c y = 0, \quad a \neq 0 $$
-    dengan $a, b, c$ adalah konstanta riil.
+  \begin{block}{Definisi Persamaan Diferensial}
+    $$ a \frac{d^2y}{dx^2} + b \frac{dy}{dx} + c y = 0 \quad \iff \quad a y'' + b y' + c y = 0 $$
+    dengan $a, b, c \in \mathbb{R}$ adalah konstanta riil dan $a \neq 0$.
   \end{block}
   \pause
-  \textbf{Strategi Solusi Eksponensial:}
-  Asumsikan solusi berbentuk $y = e^{rx}$, maka $y' = r e^{rx}$ dan $y'' = r^2 e^{rx}$.
+  \begin{block}{Prinsip Superposisi Linier}
+    Jika $y_1(x)$ dan $y_2(x)$ adalah dua solusi yang bebas linier, maka sembarang kombinasi linier:
+    $$ {\color{unibblue} y(x) = C_1 y_1(x) + C_2 y_2(x)} $$
+    adalah \textbf{Solusi Umum} dari persamaan homogen untuk sembarang konstanta $C_1, C_2$.
+  \end{block}
   \pause
-  Substitusikan ke dalam PDB:
+  \textit{Mengapa harus bebas linier? Agar kita memiliki 2 derajat kebebasan untuk memenuhi 2 kondisi awal ($y(x_0) = y_0$ dan $y'(x_0) = y_0'$).}
+\end{frame}
+
+\begin{frame}{Uji Kebebasan Linier: Determinan Wronskian}
+  \begin{block}{Definisi Determinan Wronskian}
+    Untuk menguji apakah $y_1(x)$ dan $y_2(x)$ saling bebas linier, didefinisikan determinan Wronskian:
+    $$ W(y_1, y_2)(x) = \begin{vmatrix} y_1 & y_2 \\ y_1' & y_2' \end{vmatrix} = y_1 y_2' - y_1' y_2 $$
+  \end{block}
+  \pause
+  \begin{alertblock}{Teorema Wronskian}
+    \begin{itemize}
+      \item Jika $W(y_1, y_2) \neq 0$, maka $y_1$ dan $y_2$ adalah \textbf{Bebas Linier} dan membentuk himpunan solusi fundamental.
+      \item Jika $W(y_1, y_2) = 0$, maka $y_1$ dan $y_2$ bergantung linier ($y_1 = k y_2$), sehingga tidak dapat membentuk solusi umum.
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\section{Persamaan Karakteristik}
+\begin{frame}{Penurunan Persamaan Karakteristik}
+  \textbf{Strategi Solusi Eksponensial:}
+  Kita menguji solusi berbentuk $y = e^{rx}$. Maka turunannya adalah:
+  $$ y' = r e^{rx}, \quad y'' = r^2 e^{rx} $$
+  \pause
+  Substitusikan ke dalam PDB $a y'' + b y' + c y = 0$:
   $$ a(r^2 e^{rx}) + b(r e^{rx}) + c(e^{rx}) = 0 \implies e^{rx}(a r^2 + b r + c) = 0 $$
-  Karena $e^{rx} \neq 0$, diperoleh:
-  \begin{alertblock}{Persamaan Karakteristik}
+  \pause
+  Karena $e^{rx} \neq 0$ untuk semua $x$, maka syarat mutlaknya adalah:
+  \begin{alertblock}{Persamaan Karakteristik (Polinomial Pembantu)}
     $$ {\color{unibblue} a r^2 + b r + c = 0} $$
-    Akar-akar: $r_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
+    Akar-akar kuadratik: $r_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
   \end{alertblock}
 \end{frame}
 
 \section{Tiga Kasus Akar Karakteristik}
-\begin{frame}{Kasus 1: Diskriminan $D > 0$ (Dua Akar Real Berbeda)}
-  Jika $b^2 - 4ac > 0$, diperoleh dua akar real berbeda $r_1 \neq r_2$.
+\begin{frame}{Klasifikasi Berdasarkan Diskriminan $D = b^2 - 4ac$}
+  \begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+      \hline
+      \textbf{Diskriminan} & \textbf{Jenis Akar} & \textbf{Bentuk Solusi Umum} & \textbf{Rezim Fisis} \\ \hline
+      $D > 0$ & Real Berbeda ($r_1 \neq r_2$) & $y = C_1 e^{r_1 x} + C_2 e^{r_2 x}$ & \textit{Overdamped} \\ \hline
+      $D = 0$ & Real Kembar ($r_1 = r_2 = r$) & $y = (C_1 + C_2 x)e^{rx}$ & \textit{Critically Damped} \\ \hline
+      $D < 0$ & Kompleks ($\alpha \pm j\beta$) & $y = e^{\alpha x}(C_1 \cos\beta x + C_2 \sin\beta x)$ & \textit{Underdamped} \\ \hline
+    \end{tabular}
+  \end{table}
   \pause
-  \begin{block}{Solusi Umum Kasus 1}
-    $$ y(x) = C_1 e^{r_1 x} + C_2 e^{r_2 x} $$
-  \end{block}
-  \pause
-  \textbf{Contoh Soal:} Selesaikan $y'' - 5y' + 6y = 0$.
-  \begin{itemize}
-    \item Persamaan karakteristik: $r^2 - 5r + 6 = 0 \implies (r-2)(r-3) = 0$.
-    \item Akar-akar: $r_1 = 2, r_2 = 3$.
-    \item Solusi umum: ${\color{unibblue} y(x) = C_1 e^{2x} + C_2 e^{3x}}$.
-  \end{itemize}
+  \begin{center}
+  \textit{Perilaku transien sistem sepenuhnya ditentukan oleh posisi akar $r$ pada bidang kompleks!}
+  \end{center}
 \end{frame}
 
-\begin{frame}{Kasus 2: Diskriminan $D = 0$ (Akar Real Kembar)}
-  Jika $b^2 - 4ac = 0$, diperoleh akar kembar: $r_1 = r_2 = r = -\frac{b}{2a}$.
+\begin{frame}{Kasus 1: Diskriminan Positif ($D > 0$)}
+  Dua akar real berbeda: $r_1, r_2 \in \mathbb{R}$ dengan $r_1 \neq r_2$.
+  $$ y(x) = C_1 e^{r_1 x} + C_2 e^{r_2 x} $$
   \pause
-  Hanya ada satu solusi bebas $y_1 = e^{rx}$. Menggunakan metode reduksi orde, solusi bebas kedua adalah $y_2 = x e^{rx}$.
-  \pause
-  \begin{block}{Solusi Umum Kasus 2}
-    $$ y(x) = (C_1 + C_2 x)e^{rx} $$
+  \begin{block}{Uji Wronskian:}
+    $$ W(e^{r_1 x}, e^{r_2 x}) = e^{r_1 x}(r_2 e^{r_2 x}) - (r_1 e^{r_1 x})e^{r_2 x} = (r_2 - r_1)e^{(r_1+r_2)x} \neq 0 $$
   \end{block}
   \pause
-  \textbf{Contoh Soal:} Selesaikan $y'' + 4y' + 4y = 0$.
-  \begin{itemize}
-    \item Karakteristik: $r^2 + 4r + 4 = (r+2)^2 = 0 \implies r = -2$.
-    \item Solusi umum: ${\color{unibblue} y(x) = (C_1 + C_2 x)e^{-2x}}$.
-  \end{itemize}
+  \textbf{Contoh Soal (IVP):} $y'' - 5y' + 6y = 0$, dengan $y(0) = 4, y'(0) = 9$.
+  \begin{enumerate}
+    \item Karakteristik: $r^2 - 5r + 6 = 0 \implies r_1 = 2, r_2 = 3$.
+    \item Solusi umum: $y = C_1 e^{2x} + C_2 e^{3x} \implies y' = 2C_1 e^{2x} + 3C_2 e^{3x}$.
+    \item $y(0) = C_1 + C_2 = 4$ dan $y'(0) = 2C_1 + 3C_2 = 9$.
+    \item Diperoleh: $C_1 = 3, C_2 = 1 \implies {\color{unibblue} y(x) = 3e^{2x} + e^{3x}}$.
+  \end{enumerate}
 \end{frame}
 
-\begin{frame}{Kasus 3: Diskriminan $D < 0$ (Akar Kompleks Konjugat)}
-  Jika $b^2 - 4ac < 0$, diperoleh akar imajiner/kompleks:
-  $$ r_{1,2} = \alpha \pm j\beta, \quad \alpha = -\frac{b}{2a}, \quad \beta = \frac{\sqrt{4ac - b^2}}{2a} $$
+\begin{frame}{Kasus 2: Diskriminan Nol ($D = 0$)}
+  Akar kembar: $r_1 = r_2 = r = -\frac{b}{2a}$. Solusi pertama: $y_1 = e^{rx}$.
   \pause
-  Berdasarkan Rumus Euler ($e^{j\theta} = \cos\theta + j\sin\theta$):
-  \begin{block}{Solusi Umum Kasus 3 (Osilasi Teredam)}
-    $$ y(x) = e^{\alpha x} \left( C_1 \cos(\beta x) + C_2 \sin(\beta x) \right) $$
+  \begin{block}{Dari Mana Muncul Faktor Pengali $x$ (Metode Reduksi Orde)?}
+    Asumsikan $y_2(x) = u(x) y_1(x) = u(x) e^{rx}$.\\
+    Turunkan dua kali dan substitusi ke $a y'' + b y' + c y = 0$:
+    $$ e^{rx} \left[ a u'' + \underbrace{(2ar + b)}_{= 0} u' + \underbrace{(a r^2 + b r + c)}_{= 0} u \right] = 0 $$
+    $$ a u'' = 0 \implies u''(x) = 0 \implies u(x) = C x \implies \mathbf{y_2(x) = x e^{rx}} $$
   \end{block}
   \pause
-  \textit{Keterangan Fisis: $\alpha$ menentukan laju redaman amplitudo, sedangkan $\beta$ adalah frekuensi osilasi sudut.}
-\end{frame}
-
-\section{Aplikasi Fisik: Rangkaian LC Murni}
-\begin{frame}{Rangkaian LC Murni (Osilator Harmonik)}
-  \begin{block}{Pemodelan KVL Rangkaian LC}
-    $$ L \frac{d^2 i}{dt^2} + \frac{1}{C} i = 0 \implies \frac{d^2 i}{dt^2} + \omega_0^2 i = 0, \quad \omega_0 = \frac{1}{\sqrt{LC}} $$
-  \end{block}
-  \pause
-  Persamaan karakteristik:
-  $$ r^2 + \omega_0^2 = 0 \implies r = \pm j\omega_0 \quad (\alpha = 0, \beta = \omega_0) $$
-  \pause
-  \begin{alertblock}{Solusi Osilasi Tanpa Redaman}
-    $$ i(t) = C_1 \cos(\omega_0 t) + C_2 \sin(\omega_0 t) $$
-    Energi berpindah bolak-balik antara medan magnet induktor ($E_L = \frac{1}{2}Li^2$) dan medan listrik kapasitor ($E_C = \frac{1}{2}Cv^2$).
+  \begin{alertblock}{Solusi Umum Kasus 2}
+    $$ {\color{unibblue} y(x) = (C_1 + C_2 x) e^{rx}} $$
   \end{alertblock}
 \end{frame}
 
-\section{Kuis Interaktif}
-\begin{frame}{Kuis Interaktif 2: Penyelesaian Masalah Nilai Awal (IVP)}
-  \textbf{Soal:} Selesaikan IVP: $y'' + 9y = 0$ dengan syarat awal $y(0) = 4$ dan $y'(0) = 6$.
+\begin{frame}{Contoh Kasus 2 (Akar Kembar - IVP)}
+  \textbf{Soal:} Selesaikan IVP: $y'' + 4y' + 4y = 0$ dengan $y(0) = 2$ dan $y'(0) = 1$.
   \pause
-  \begin{block}{Langkah Solusi:}
+  \begin{block}{Penyelesaian Langkah Demi Langkah:}
     \begin{enumerate}
-      \item Karakteristik: $r^2 + 9 = 0 \implies r = \pm 3j$. \pause
-      \item Solusi umum: $y(x) = C_1 \cos(3x) + C_2 \sin(3x)$. \pause
-      \item Terapkan $y(0) = 4$: $C_1 \cos(0) + C_2 \sin(0) = 4 \implies C_1 = 4$. \pause
-      \item Turunan: $y'(x) = -3C_1 \sin(3x) + 3C_2 \cos(3x)$. \pause
-      \item Terapkan $y'(0) = 6$: $3C_2 = 6 \implies C_2 = 2$.
+      \item Karakteristik: $r^2 + 4r + 4 = 0 \implies (r+2)^2 = 0 \implies r = -2$. \pause
+      \item Solusi umum: $y(x) = (C_1 + C_2 x)e^{-2x}$. \pause
+      \item Turunan: $y'(x) = C_2 e^{-2x} - 2(C_1 + C_2 x)e^{-2x} = (C_2 - 2C_1 - 2C_2 x)e^{-2x}$. \pause
+      \item Terapkan nilai awal:
+      $$ y(0) = C_1 = 2 $$
+      $$ y'(0) = C_2 - 2C_1 = 1 \implies C_2 - 2(2) = 1 \implies C_2 = 5 $$
     \end{enumerate}
-    $$ {\color{unibblue} y(x) = 4\cos(3x) + 2\sin(3x)} $$
+    $$ {\color{unibblue} y(x) = (2 + 5x)e^{-2x}} $$
+  \end{block}
+\end{frame}
+
+\begin{frame}{Kasus 3: Diskriminan Negatif ($D < 0$)}
+  Akar kompleks konjugat: $r_{1,2} = \alpha \pm j\beta$, dengan $\alpha = -\frac{b}{2a}$ dan $\beta = \frac{\sqrt{4ac - b^2}}{2a}$.
+  \pause
+  \begin{block}{Penurunan Bentuk Riil Menggunakan Formula Euler}
+    Solusi kompleks: $y = c_1 e^{(\alpha + j\beta)x} + c_2 e^{(\alpha - j\beta)x} = e^{\alpha x}(c_1 e^{j\beta x} + c_2 e^{-j\beta x})$.\\
+    Gunakan $e^{\pm j\beta x} = \cos\beta x \pm j\sin\beta x$:
+    $$ y = e^{\alpha x}\left[ (c_1 + c_2)\cos\beta x + j(c_1 - c_2)\sin\beta x \right] $$
+    Definisikan konstanta riil: $C_1 = c_1 + c_2$ dan $C_2 = j(c_1 - c_2)$.
+  \end{block}
+  \pause
+  \begin{alertblock}{Solusi Umum Kasus 3 (Osilasi Sinusoidal Teredam)}
+    $$ {\color{unibblue} y(x) = e^{\alpha x} \left( C_1 \cos(\beta x) + C_2 \sin(\beta x) \right)} $$
+    $\alpha$ = faktor pembungkus redaman (*damping envelope*), $\beta$ = frekuensi sudut teredam.
+  \end{alertblock}
+\end{frame}
+
+\section{Aplikasi Fisik: Rangkaian Osilator LC Murni}
+\begin{frame}{Aplikasi Rekayasa Elektro: Rangkaian Tangki LC (*RF Tank*)}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      Tinjau rangkaian tertutup $L$ dan $C$ tanpa resistor ($R = 0$).
+      $$ v_L + v_C = 0 $$
+      Karena $v_L = L \frac{d^2q}{dt^2}$ dan $v_C = \frac{q}{C}$:
+      $$ L \frac{d^2q}{dt^2} + \frac{1}{C} q = 0 $$
+      $$ {\color{unibblue} \frac{d^2q}{dt^2} + \omega_0^2 q = 0}, \quad \omega_0 = \frac{1}{\sqrt{LC}} $$
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \pause
+      \begin{block}{Solusi Osilasi Harmonik Abadi}
+        Karakteristik: $r^2 + \omega_0^2 = 0 \implies r = \pm j\omega_0$ ($\alpha = 0$).
+        $$ q(t) = Q_0 \cos(\omega_0 t) $$
+        $$ i(t) = \frac{dq}{dt} = -\omega_0 Q_0 \sin(\omega_0 t) $$
+      \end{block}
+      \pause
+      \begin{alertblock}{Kekekalan Energi Total}
+        $$ E_L + E_C = \frac{1}{2}Li^2 + \frac{q^2}{2C} = \frac{Q_0^2}{2C} = \text{Konstan} $$
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Kuis Interaktif}
+\begin{frame}{Kuis Interaktif 1: Menentukan Karakteristik Sistem}
+  \textbf{Soal:} Sebuah rangkaian memiliki PDB arus: $i'' + 6i' + 25i = 0$.
+  Tentukan jenis redamannya dan frekuensi sudut osilasinya $\beta$!
+  \pause
+  \begin{block}{Pembahasan:}
+    \begin{enumerate}
+      \item Karakteristik: $r^2 + 6r + 25 = 0$. \pause
+      \item Diskriminan: $D = 6^2 - 4(1)(25) = 36 - 100 = -64 < 0$ (\textbf{Kasus 3: Underdamped}). \pause
+      \item Akar-akar:
+      $$ r_{1,2} = \frac{-6 \pm \sqrt{-64}}{2} = -3 \pm 4j $$
+      \item Parameter: Konstanta redaman $\alpha = -3$, Frekuensi sudut $\beta = 4\text{ rad/s}$.
+    \end{enumerate}
+    $$ {\color{unibblue} i(t) = e^{-3t}(C_1 \cos 4t + C_2 \sin 4t)} $$
+  \end{block}
+\end{frame}
+
+\begin{frame}{Kuis Interaktif 2: Analisis Kondisi Redaman Kritis}
+  \textbf{Soal:} Diberikan PDB: $y'' + k y' + 16y = 0$. Tentukan nilai konstanta positif $k$ agar sistem berada dalam kondisi \textbf{Redaman Kritis (*Critically Damped*)}!
+  \pause
+  \begin{block}{Pembahasan:}
+    \begin{enumerate}
+      \item Syarat redaman kritis adalah diskriminan bernilai tepat nol:
+      $$ D = b^2 - 4ac = 0 $$ \pause
+      \item Substitusikan parameter: $a = 1, b = k, c = 16$:
+      $$ k^2 - 4(1)(16) = 0 \implies k^2 - 64 = 0 $$ \pause
+      \item Diperoleh:
+      $$ k = \sqrt{64} = \mathbf{8} \quad (\text{karena } k > 0) $$
+    \end{enumerate}
+    Saat $k = 8$, persamaan karakteristik memiliki akar kembar $r = -4$.
   \end{block}
 \end{frame}
 
 \begin{frame}{Rangkuman Materi Minggu 4}
-  \begin{table}[]
-    \centering
-    \begin{tabular}{|c|c|c|}
-      \hline
-      \textbf{Diskriminan} & \textbf{Akar Karakteristik} & \textbf{Bentuk Solusi Umum} \\ \hline
-      $D > 0$ & Real berbeda: $r_1 \neq r_2$ & $y = C_1 e^{r_1 x} + C_2 e^{r_2 x}$ \\ \hline
-      $D = 0$ & Real kembar: $r_1 = r_2 = r$ & $y = (C_1 + C_2 x)e^{rx}$ \\ \hline
-      $D < 0$ & Kompleks: $\alpha \pm j\beta$ & $y = e^{\alpha x}(C_1 \cos\beta x + C_2 \sin\beta x)$ \\ \hline
-    \end{tabular}
-  \end{table}
+  \begin{enumerate}
+    \item PDB linier orde 2 homogen $ay'' + by' + cy = 0$ diselesaikan melalui akar karakteristik $ar^2 + br + c = 0$.
+    \item Kebebasan linier pasangan basis dibuktikan dengan determinan Wronskian $W(y_1, y_2) \neq 0$.
+    \item Suku $x e^{rx}$ pada kasus akar kembar diturunkan secara formal dari metode reduksi orde.
+    \item Tiga tipe respons fisik:
+    \begin{itemize}
+      \item $D > 0$: *Overdamped* (lambat, tanpa osilasi).
+      \item $D = 0$: *Critically Damped* (paling cepat mencapai stabil, tanpa osilasi).
+      \item $D < 0$: *Underdamped* (berosilasi teredam).
+    \end{itemize}
+    \item Pada rangkaian LC murni ($R = 0$), $\alpha = 0$ menghasilkan osilasi harmonik alami abadi $\omega_0 = 1/\sqrt{LC}$.
+  \end{enumerate}
 \end{frame}
 
 \end{document}

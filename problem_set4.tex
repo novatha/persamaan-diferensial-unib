@@ -23,23 +23,47 @@
 \maketitle
 
 \begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
-Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis matematis, dan cara Anda menentukan akar karakteristik secara sistematis.
+Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis matematis, dan cara Anda menentukan akar karakteristik secara sistematis. Seluruh soal dikontekstualisasikan untuk aplikasi rekayasa sistem kelistrikan.
 \end{tcolorbox}
 
 \section*{Daftar Soal (Level Kognitif C1 - C6)}
 
 \begin{enumerate}[label=\textbf{\arabic*.}]
-    \item \textbf{(C1 - Mengingat)} Tuliskan bentuk umum dari persamaan diferensial biasa (PDB) orde 2 linier homogen dengan koefisien konstan beserta persamaan karakteristik yang berkorespondensi dengannya.
-    \item \textbf{(C2 - Memahami)} Jelaskan mengapa kita mengasumsikan solusi dari PDB linier orde 2 homogen dengan koefisien konstan dalam bentuk fungsi eksponensial $y = e^{rx}$!
-    \item \textbf{(C3 - Mengaplikasikan)} Tentukan solusi umum dari persamaan diferensial berikut: $y'' - 5y' + 6y = 0$.
-    \item \textbf{(C4 - Menganalisis)} Analisislah persamaan diferensial $y'' + 4y' + 4y = 0$. Tentukan akar karakteristiknya dan tuliskan solusi umumnya. Mengapa muncul faktor $x$ pada salah satu bagian solusinya?
-    \item \textbf{(C5 - Mengevaluasi)} Diberikan sebuah sistem massa-pegas tanpa redaman dan tanpa gaya luar yang dimodelkan oleh persamaan $y'' + \omega^2 y = 0$. Evaluasi dan buktikan bahwa solusi umum sistem tersebut berbentuk osilasi murni sinus dan kosinus. Tentukan frekuensi sudut osilasi tersebut!
-    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah persamaan diferensial orde 2 linier homogen dengan koefisien konstan sedemikian rupa sehingga memiliki solusi khusus $y(x) = e^{-2x} (\cos(3x) + 4\sin(3x))$. Tuliskan langkah-langkah dalam menemukan persamaan diferensial tersebut dan temukan kondisi awal $y(0)$ serta $y'(0)$.
+    \item \textbf{(C1 - Mengingat)} Tuliskan bentuk standar dari persamaan diferensial biasa (PDB) linier orde 2 homogen dengan koefisien konstan beserta definisi determinan Wronskian $W(y_1, y_2)$ yang digunakan untuk menguji kebebasan linier pasangan solusinya.
+
+    \item \textbf{(C2 - Memahami)} Mengapa pada kasus diskriminan nol ($D = b^2 - 4ac = 0$), kita tidak boleh sekadar menuliskan solusi umum sebagai $y(x) = C_1 e^{rx} + C_2 e^{rx}$? Jelaskan mengapa fungsi basis kedua harus dikalikan dengan variabel bebas $x$ ($y_2 = x e^{rx}$), dan buktikan bahwa nilai Wronskian dari pasangan tersebut tidak pernah bernilai nol ($W \neq 0$)!
+
+    \item \textbf{(C3 - Mengaplikasikan)} Tentukan solusi khusus dari Masalah Nilai Awal (IVP) berikut:
+    $$ y'' + 8y' + 16y = 0, \quad y(0) = 3, \quad y'(0) = -4 $$
+
+    \item \textbf{(C4 - Menganalisis)} Sebuah rangkaian transien tanpa sumber dimodelkan oleh persamaan:
+    $$ \frac{d^2 i}{dt^2} + 6 \frac{di}{dt} + 25 i = 0 $$
+    dengan kondisi awal arus $i(0) = 2\text{ A}$ dan laju perubahan arus $\frac{di}{dt}(0) = 0$.
+    \begin{enumerate}[label=(\alph*)]
+        \item Tentukan nilai konstanta redaman $\alpha$ dan frekuensi sudut teredam $\beta$ (dalam rad/s).
+        \item Selesaikan persamaan untuk mendapatkan fungsi arus analitik $i(t)$.
+        \item Analisislah pada detik ke berapa arus $i(t)$ untuk pertama kalinya melintasi nilai nol ($i(t) = 0$).
+    \end{enumerate}
+
+    \item \textbf{(C5 - Mengevaluasi - Aplikasi Rangkaian Osilator LC)} Sebuah tangki osilator frekuensi radio (RF tank circuit) terdiri atas sebuah induktor $L = 2\text{ mH}$ dan kapasitor $C = 50\text{ nF}$ yang terhubung seri secara tertutup tanpa resistor ($R = 0$).
+    \begin{enumerate}[label=(\alph*)]
+        \item Turunkan PDB homogen muatan kapasitor $q(t)$ dari Hukum Tegangan Kirchhoff (KVL).
+        \item Hitung frekuensi resonansi sudut alami $\omega_0$ (rad/s) dan frekuensi dalam Hertz $f_0$ (Hz).
+        \item Jika kapasitor mula-mula diisi muatan sebesar $Q_0 = 10\ \mu\text{C}$ dan saklar ditutup pada $t=0$ saat arus awal $i(0)=0$, buktikan bahwa amplitudo arus puncak rangkaian tidak akan pernah meluruh untuk seluruh $t > 0$ dan tentukan besarnya arus puncak tersebut!
+    \end{enumerate}
+
+    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sistem PDB linier orde 2 homogen dengan koefisien konstan yang merepresentasikan respons *underdamped* sedemikian rupa sehingga:
+    \begin{itemize}
+        \item Frekuensi osilasi sudutnya adalah $\beta = 4\text{ rad/s}$.
+        \item Amplitudo osilasinya meluruh menjadi setengah dari nilai awalnya ($50\%$) tepat dalam waktu $t = 2\text{ detik}$.
+        \item Nilai awal amplitudo adalah $y(0) = 6$ dengan kecepatan awal $y'(0) = 0$.
+    \end{itemize}
+    Tentukan koefisien $a, b, c$ dari PDB tersebut dan tuliskan fungsi solusi khusus $y(t)$-nya secara lengkap!
 \end{enumerate}
 
 \vfill
 \begin{center}
-\textbf{Semoga berhasil!}
+\textbf{Semoga berhasil \& Junjung Tinggi Kejujuran Akademik!}
 \end{center}
 
 \end{document}

@@ -1,307 +1,341 @@
-// Soal Minggu 1: Konsep Dasar dan Klasifikasi Persamaan Diferensial
-Orde dari persamaan diferensial $y''' + 2(y'')^4 + y = \sin(x)$ adalah... {
-=3
-~4
-~1
-~2
+// ============================================================================
+// BANK SOAL MOODLE (FORMAT GIFT)
+// Mata Kuliah: Persamaan Diferensial (Teknik Elektro UNIB)
+// Dosen: Novalio Daratha, Ph.D. & Muhammad Arfan, M.T.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// MINGGU 1: Pengantar & Klasifikasi Persamaan Diferensial
+// ----------------------------------------------------------------------------
+Orde dan derajat dari persamaan diferensial $\left(\frac{d^3 y}{dx^3}\right)^2 + 4\left(\frac{dy}{dx}\right)^5 - y = \sin(x)$ berturut-turut adalah... {
+=Orde 3 dan derajat 2
+~Orde 3 dan derajat 5
+~Orde 5 dan derajat 3
+~Orde 2 dan derajat 3
 }
 
-Persamaan diferensial berikut ini yang merupakan persamaan diferensial linier adalah... {
-=$y'' + 3y' + 2y = e^x$
-~$y'' + 3y y' = 0$
-~$(y')^2 + y = x$
-~$y'' + \sin(y) = 0$
+Persamaan diferensial berikut yang tergolong sebagai Persamaan Diferensial Biasa (PDB) linier adalah... {
+=$\frac{d^2 y}{dx^2} + 5x \frac{dy}{dx} + 2y = e^x$
+~$\frac{d^2 y}{dx^2} + y \frac{dy}{dx} = 0$
+~$\left(\frac{dy}{dx}\right)^2 + 4y = \cos(x)$
+~$\frac{d^2 y}{dx^2} + \sin(y) = 0$
 }
 
-Derajat (degree) dari persamaan diferensial $(y'')^3 + (y')^4 + y = 0$ adalah... {
-=3
-~4
-~2
-~1
+Berdasarkan Hukum Tegangan Kirchhoff (KVL), model matematika arus $i(t)$ pada rangkaian seri RL dengan sumber tegangan $V(t)$ menghasilkan persamaan... {
+=PDB linier orde 1: $L\frac{di}{dt} + Ri = V(t)$
+~PDB non-linier orde 1: $R\frac{di}{dt} + Li^2 = V(t)$
+~PDB homogen orde 2: $L\frac{d^2i}{dt^2} + Ri = 0$
+~PDP linier orde 1: $\frac{\partial i}{\partial t} + \frac{\partial i}{\partial x} = V(t)$
 }
 
-// Soal Minggu 2: Persamaan Diferensial Orde Satu - Variabel Terpisah
-Persamaan diferensial $\frac{dy}{dx} = \frac{x}{y}$ merupakan jenis persamaan diferensial... {
-=Variabel terpisah
-~Eksak
-~Linier orde dua
-~Parsial
+// ----------------------------------------------------------------------------
+// MINGGU 2: PDB Orde 1 (Separabel, Eksak, dan Faktor Integrasi)
+// ----------------------------------------------------------------------------
+Solusi umum dari PDB separabel $\frac{dy}{dx} = \frac{x}{y}$ adalah... {
+=$y^2 - x^2 = C$
+~$y^2 + x^2 = C$
+~$y = x^2 + C$
+~$y = \ln(x) + C$
 }
 
-Solusi umum dari persamaan diferensial $\frac{dy}{dx} = 2x$ adalah... {
-=$y = x^2 + C$
-~$y = 2x^2 + C$
-~$y = x + C$
-~$y = \frac{1}{2}x^2 + C$
-}
-
-Bentuk umum dari persamaan diferensial homogen orde satu adalah $\frac{dy}{dx} = f(x,y)$, di mana $f(x,y)$ dapat dinyatakan sebagai fungsi dari... {
-=$\frac{y}{x}$
-~$x+y$
-~$xy$
-~$x-y$
-}
-
-// Soal Minggu 3: Persamaan Diferensial Eksak dan Faktor Integrasi
-Suatu persamaan diferensial $M(x,y)dx + N(x,y)dy = 0$ dikatakan eksak jika memenuhi syarat... {
+Suatu PDB dalam bentuk diferensial $M(x,y)dx + N(x,y)dy = 0$ dikatakan EKSAK jika memenuhi syarat perlu dan cukup... {
 =$\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}$
 ~$\frac{\partial M}{\partial x} = \frac{\partial N}{\partial y}$
 ~$\frac{\partial M}{\partial y} = -\frac{\partial N}{\partial x}$
-~$\frac{\partial M}{\partial x} = -\frac{\partial N}{\partial y}$
+~$\frac{\partial^2 M}{\partial x^2} + \frac{\partial^2 N}{\partial y^2} = 0$
 }
 
-Faktor integrasi digunakan untuk mengubah persamaan diferensial tak eksak menjadi eksak. Jika $\frac{1}{N}(\frac{\partial M}{\partial y} - \frac{\partial N}{\partial x})$ hanya fungsi dari $x$ saja, sebut saja $f(x)$, maka faktor integrasinya adalah... {
-=$e^{\int f(x) dx}$
-~$e^{\int f(x) dy}$
-~$\int f(x) dx$
-~$\ln(f(x))$
+Faktor integrasi $\mu(x)$ untuk menyelesaikan PDB linier standar $\frac{dy}{dx} + P(x)y = Q(x)$ dirumuskan sebagai... {
+=$\mu(x) = e^{\int P(x) dx}$
+~$\mu(x) = e^{-\int P(x) dx}$
+~$\mu(x) = \int P(x) dx$
+~$\mu(x) = e^{\int Q(x) dx}$
 }
 
-Persamaan diferensial $(2xy)dx + (x^2)dy = 0$ adalah persamaan diferensial... {
-=Eksak
-~Tak eksak
-~Linier non-homogen
-~Bernoulli
+// ----------------------------------------------------------------------------
+// MINGGU 3: Aplikasi PDB Orde 1 (Transien RC, RL, & Hukum Pendinginan Newton)
+// ----------------------------------------------------------------------------
+Konstanta waktu ($\tau$) pada pengisian arus rangkaian RL seri dengan induktansi $L$ dan resistansi $R$ adalah... {
+=$\tau = \frac{L}{R}$
+~$\tau = R \cdot L$
+~$\tau = \frac{R}{L}$
+~$\tau = \frac{1}{\sqrt{LC}}$
 }
 
-// Soal Minggu 4: Persamaan Diferensial Linier Orde Satu dan Bernoulli
-Bentuk umum persamaan diferensial linier orde satu adalah... {
-=$\frac{dy}{dx} + P(x)y = Q(x)$
-~$\frac{dy}{dx} + P(x)y^n = Q(x)$
-~$\frac{dy}{dx} = P(x)Q(y)$
-~$M(x,y)dx + N(x,y)dy = 0$
+Pada proses pengosongan (*discharging*) kapasitor pada rangkaian RC seri dengan tegangan awal $V_0$, tegangan $V_C(t)$ saat $t = 1\tau$ bernilai sekitar... {
+=$36.8\%$ dari $V_0$
+=$63.2\%$ dari $V_0$
+=$50.0\%$ dari $V_0$
+=$95.0\%$ dari $V_0$
 }
 
-Persamaan diferensial Bernoulli memiliki bentuk $\frac{dy}{dx} + P(x)y = Q(x)y^n$. Untuk menyelesaikannya, digunakan substitusi... {
-=$u = y^{1-n}$
-~$u = y^n$
-~$u = \frac{y}{x}$
-~$u = xy$
+Menurut Hukum Pendinginan Newton $\frac{dT}{dt} = -k(T - T_a)$, jika sebuah trafo bersuhu awal $80^\circ\text{C}$ berada di lingkungan bersuhu $30^\circ\text{C}$, maka saat $t \to \infty$ suhu trafo akan menuju... {
+=$30^\circ\text{C}$
+=$0^\circ\text{C}$
+=$55^\circ\text{C}$
+=$80^\circ\text{C}$
 }
 
-Faktor integrasi untuk persamaan diferensial linier orde satu $\frac{dy}{dx} + P(x)y = Q(x)$ adalah... {
-=$e^{\int P(x) dx}$
-~$e^{\int Q(x) dx}$
-~$\int P(x) dx$
-~$e^{P(x)}$
+// ----------------------------------------------------------------------------
+// MINGGU 4: PDB Orde 2 Linier Homogen Koefisien Konstan
+// ----------------------------------------------------------------------------
+Jika persamaan karakteristik dari PDB $a y'' + b y' + c y = 0$ memiliki diskriminan $D = b^2 - 4ac < 0$ dengan akar kompleks $r = \alpha \pm j\beta$, maka bentuk solusi umumnya adalah... {
+=$y(x) = e^{\alpha x}\left(C_1 \cos(\beta x) + C_2 \sin(\beta x)\right)$
+~$y(x) = C_1 e^{\alpha x} + C_2 e^{\beta x}$
+~$y(x) = (C_1 + C_2 x)e^{\alpha x}$
+~$y(x) = C_1 \cosh(\alpha x) + C_2 \sinh(\beta x)$
 }
 
-// Soal Minggu 5: Aplikasi Persamaan Diferensial Orde Satu
-Dalam model peluruhan radioaktif $\frac{dN}{dt} = -kN$, konstanta $k$ bernilai... {
-=Positif
-~Negatif
-~Nol
-~Imajiner
+Akar-akar karakteristik dari PDB osilasi bebas $y'' + 16y = 0$ adalah... {
+=$r = \pm 4j$
+~$r = \pm 4$
+~$r = -4$ (akar kembar)
+~$r = 0$ dan $r = 16$
 }
 
-Hukum Pendinginan Newton memodelkan laju perubahan suhu suatu benda sebanding dengan selisih suhu benda tersebut dengan suhu... {
-=Lingkungannya
-~Awalnya
-~Maksimumnya
-~Minimumnya
+Rangkaian LC murni tanpa resistansi ($R=0$) dimodelkan oleh $L\frac{d^2i}{dt^2} + \frac{1}{C}i = 0$. Frekuensi sudut natural $\omega_0$ osilasi rangkaian tersebut adalah... {
+=$\omega_0 = \frac{1}{\sqrt{LC}}$
+~$\omega_0 = \sqrt{LC}$
+~$\omega_0 = \frac{L}{C}$
+~$\omega_0 = \frac{R}{2L}$
 }
 
-Pada rangkaian RL seri dengan sumber tegangan $V(t)$, persamaan diferensial yang memodelkan arus $I(t)$ adalah... {
-=$L\frac{dI}{dt} + RI = V(t)$
-~$R\frac{dI}{dt} + LI = V(t)$
-~$\frac{dI}{dt} + RLI = V(t)$
-~$L\frac{dI}{dt} + \frac{1}{C}I = V(t)$
+// ----------------------------------------------------------------------------
+// MINGGU 5: PDB Orde 2 Non-Homogen & RLC Seri
+// ----------------------------------------------------------------------------
+Solusi total dari PDB linier non-homogen $a y'' + b y' + c y = g(x)$ selalu dinyatakan sebagai... {
+=$y(x) = y_h(x) + y_p(x)$ (solusi homogen ditambah solusi partikular)
+~$y(x) = y_h(x) \cdot y_p(x)$ (perkalian solusi homogen dan partikular)
+~$y(x) = y_p(x) - y_h(x)$
+~$y(x) = \frac{y_h(x)}{y_p(x)}$
 }
 
-// Soal Minggu 6: PD Linier Orde Dua Homogen
-Persamaan karakteristik dari persamaan diferensial $y'' - 5y' + 6y = 0$ adalah... {
-=$r^2 - 5r + 6 = 0$
-~$r^2 + 5r - 6 = 0$
-~$r^2 - 5r - 6 = 0$
-~$r^2 + 5r + 6 = 0$
+Pada rangkaian RLC seri, jika koefisien redaman $\alpha = \frac{R}{2L}$ bernilai LEBIH KECIL daripada frekuensi natural $\omega_0 = \frac{1}{\sqrt{LC}}$ ($\alpha < \omega_0$), maka respons transien rangkaian bertipe... {
+=Underdamped (Kurang Redam / Berosilasi teredam)
+~Critically Damped (Redam Kritis)
+~Overdamped (Lebih Redam / Tanpa osilasi lambat)
+~Tak teredam sempurna
 }
 
-Jika akar-akar persamaan karakteristik adalah real dan berbeda, yaitu $r_1$ dan $r_2$, maka solusi umumnya adalah... {
-=$y = C_1 e^{r_1 x} + C_2 e^{r_2 x}$
-~$y = (C_1 + C_2 x) e^{r_1 x}$
-~$y = e^{\alpha x} (C_1 \cos \beta x + C_2 \sin \beta x)$
-~$y = C_1 \cos(r_1 x) + C_2 \sin(r_2 x)$
+Jika ruas kanan PDB adalah $g(x) = 5e^{2x}$, dan nilai $r=2$ merupakan salah satu akar dari solusi homogen $y_h(x)$, maka menurut aturan modifikasi resonansi, tebakan solusi partikular $y_p(x)$ harus berbentuk... {
+=$y_p = A x e^{2x}$
+~$y_p = A e^{2x}$
+~$y_p = A x^2 e^{2x}$
+~$y_p = (A x + B)e^{2x}$
 }
 
-Jika akar-akar persamaan karakteristik adalah bilangan kompleks konjugat $\alpha \pm \beta i$, maka solusi umumnya melibatkan fungsi... {
-=Eksponensial dan Trigonometri (Sinus, Cosinus)
-~Hanya Polinomial
-~Hanya Eksponensial
-~Logaritma
+// ----------------------------------------------------------------------------
+// MINGGU 6: Transformasi Laplace Dasar
+// ----------------------------------------------------------------------------
+Transformasi Laplace dari fungsi konstan $f(t) = 1$ untuk $s > 0$ didefinisikan sebagai... {
+=$F(s) = \frac{1}{s}$
+~$F(s) = \frac{1}{s^2}$
+~$F(s) = s$
+~$F(s) = 1$
 }
 
-// Soal Minggu 7: PD Linier Orde Dua Non-Homogen (Koefisien Tak Tentu)
-Untuk persamaan diferensial non-homogen $y'' + p y' + q y = g(x)$, solusi umumnya adalah penjumlahan dari solusi homogen $y_h$ dan... {
-=Solusi partikular $y_p$
-~Solusi singular
-~Solusi eksak
-~Solusi trivial
+Berdasarkan Teorema Pergeseran Pertama (*First Shifting Theorem*), jika $\mathcal{L}\{\cos(3t)\} = \frac{s}{s^2 + 9}$, maka $\mathcal{L}\{e^{-2t}\cos(3t)\}$ adalah... {
+=$\frac{s+2}{(s+2)^2 + 9}$
+~$\frac{s-2}{(s-2)^2 + 9}$
+~$\frac{s}{(s+2)^2 + 9}$
+~$\frac{s+2}{s^2 + 9}$
 }
 
-Jika $g(x) = e^{kx}$ dan $k$ bukan merupakan akar persamaan karakteristik, maka tebakan bentuk solusi partikular $y_p$ pada metode koefisien tak tentu adalah... {
-=$A e^{kx}$
-~$A x e^{kx}$
-~$A \sin(kx)$
-~$A x^2 e^{kx}$
+Transformasi Laplace dari turunan kedua $\mathcal{L}\{f''(t)\}$ dengan kondisi awal $f(0)$ dan $f'(0)$ adalah... {
+=$s^2 F(s) - s f(0) - f'(0)$
+=$s^2 F(s) - f(0) - s f'(0)$
+=$s^2 F(s) + s f(0) + f'(0)$
+=$\frac{F(s)}{s^2} - f(0)$
 }
 
-Metode koefisien tak tentu paling cocok digunakan jika fungsi $g(x)$ berbentuk polinomial, eksponensial, atau kombinasi linier dari fungsi... {
-=Sinus dan Cosinus
-~Logaritma natural
-~Tangen dan Secan
-~Fungsi rasional
+// ----------------------------------------------------------------------------
+// MINGGU 7: Invers Laplace & Solusi Sistem PDB
+// ----------------------------------------------------------------------------
+Invers Transformasi Laplace dari $F(s) = \frac{6}{s+4}$ adalah... {
+=$f(t) = 6e^{-4t}$
+~$f(t) = 6e^{4t}$
+~$f(t) = 4e^{-6t}$
+~$f(t) = 6\sin(4t)$
 }
 
-// Soal Minggu 9: PD Linier Orde Dua Non-Homogen (Variasi Parameter)
-Metode variasi parameter digunakan untuk mencari solusi partikular $y_p$ dari PD non-homogen. Metode ini mengasumsikan $y_p$ berbentuk... {
-=$u_1(x)y_1(x) + u_2(x)y_2(x)$
-~$C_1 y_1(x) + C_2 y_2(x)$
-~$A(x) e^{rx}$
-~$x^m$
-}
-
-Dalam metode variasi parameter, determinan dari matriks Wronskian $W(y_1, y_2)$ tidak boleh... {
-=Sama dengan nol
-~Kurang dari nol
-~Lebih dari nol
-~Sama dengan satu
-}
-
-Kelebihan metode variasi parameter dibandingkan metode koefisien tak tentu adalah... {
-=Dapat diterapkan untuk sembarang fungsi $g(x)$ asalkan integralnya dapat dievaluasi
-~Proses perhitungannya selalu lebih singkat
-~Tidak memerlukan pencarian solusi homogen terlebih dahulu
-~Hanya berlaku untuk PD orde satu
-}
-
-// Soal Minggu 10: Transformasi Laplace: Konsep Dasar
-Transformasi Laplace dari fungsi $f(t)$ didefinisikan sebagai integral... {
-=$\int_0^\infty e^{-st} f(t) dt$
-=$\int_{-\infty}^\infty e^{-st} f(t) dt$
-=$\int_0^\infty e^{st} f(t) dt$
-=$\int_0^1 e^{-st} f(t) dt$
-}
-
-Transformasi Laplace dari $f(t) = 1$ untuk $s > 0$ adalah... {
-=$\frac{1}{s}$
-~$s$
-~$\frac{1}{s^2}$
-~$1$
-}
-
-Sifat linearitas dari Transformasi Laplace menyatakan bahwa $\mathcal{L}\{af(t) + bg(t)\}$ sama dengan... {
-=$a\mathcal{L}\{f(t)\} + b\mathcal{L}\{g(t)\}$
-~$\mathcal{L}\{f(t)\} \cdot \mathcal{L}\{g(t)\}$
-~$a b \mathcal{L}\{f(t)g(t)\}$
-~$\frac{\mathcal{L}\{f(t)\}}{\mathcal{L}\{g(t)\}}$
-}
-
-// Soal Minggu 11: Invers Transformasi Laplace dan Aplikasi
-Invers Transformasi Laplace disimbolkan dengan... {
-=$\mathcal{L}^{-1}$
-~$\mathcal{L}^*$
-~$\mathcal{I}$
-~$\mathcal{F}^{-1}$
-}
-
-Transformasi Laplace sangat berguna untuk menyelesaikan persamaan diferensial linier dengan kondisi... {
-=Awal (Initial Value Problem)
-~Batas (Boundary Value Problem)
-~Tak terhingga
-~Berkala (Periodik)
-}
-
-Untuk menentukan invers Transformasi Laplace dari fungsi rasional yang kompleks, teknik aljabar yang sering digunakan adalah dekomposisi... {
-=Pecahan parsial (Partial fractions)
+Untuk mencari invers Laplace dari $F(s) = \frac{3s+1}{(s-1)(s+2)}$, metode aljabar yang paling tepat digunakan adalah... {
+=Dekomposisi Pecahan Parsial (*Partial Fraction Expansion*)
 ~Deret Taylor
-~Nilai eigen
-~Faktor integrasi
+~Metode Eliminasi Gauss
+~Integrasi Parsial Klasik
 }
 
-// Soal Minggu 12: Penyelesaian PD dengan Deret Pangkat
-Untuk menyelesaikan PD dengan metode deret kuasa (pangkat) di sekitar titik $x_0$, kita mengasumsikan solusinya berbentuk... {
-=$y = \sum_{n=0}^{\infty} c_n (x-x_0)^n$
-~$y = \sum_{n=0}^{\infty} c_n e^{nx}$
-~$y = \sum_{n=1}^{\infty} c_n \sin(nx)$
-~$y = c_1 x + c_2 x^2$
+Dalam representasi domain-$s$ (Laplace), impedansi operasional sebuah induktor murni $L$ adalah... {
+=$Z_L(s) = sL$
+~$Z_L(s) = \frac{1}{sL}$
+~$Z_L(s) = L$
+~$Z_L(s) = \frac{s}{L}$
 }
 
-Titik $x_0$ disebut titik singular biasa jika koefisien tak berhingga namun dapat diatasi dengan metode... {
-=Frobenius
-~Koefisien tak tentu
-~Variasi parameter
-~Euler
+// ----------------------------------------------------------------------------
+// MINGGU 9: Pengantar PDP & Analisis Deret Fourier
+// ----------------------------------------------------------------------------
+Persamaan diferensial $\frac{\partial^2 u}{\partial t^2} = v^2 \frac{\partial^2 u}{\partial x^2}$ diklasifikasikan sebagai... {
+=Persamaan Diferensial Parsial (PDP) orde 2
+~Persamaan Diferensial Biasa (PDB) orde 2
+~PDB linier orde 1
+~PDP non-linier orde 1
 }
 
-Jika titik ekpansi $x = 0$ merupakan titik biasa bagi PD linier orde dua, maka metode solusi deret kuasa akan menghasilkan relasi berulang (recurrence relation) untuk menentukan nilai dari... {
-=Koefisien deret $c_n$
-~Akar-akar karakteristik
-~Matriks Wronskian
-~Variabel bebas
+Jika suatu fungsi periodik $f(t)$ memiliki simetri GENAP ($f(-t) = f(t)$), maka dalam ekspansi Deret Fouriernya... {
+=Seluruh koefisien sinus bernilai nol ($b_n = 0$)
+~Seluruh koefisien kosinus bernilai nol ($a_n = 0$)
+~Nilai rata-rata $a_0 = 0$
+~Seluruh koefisien $a_n$ dan $b_n$ bernilai sama
 }
 
-// Soal Minggu 13: Sistem Persamaan Diferensial Linier
-Sistem persamaan diferensial linier orde satu dapat direpresentasikan dalam bentuk persamaan matriks... {
-=$\mathbf{X}' = \mathbf{A}\mathbf{X} + \mathbf{F}(t)$
-=$\mathbf{X} = \mathbf{A}\mathbf{X}' + \mathbf{F}(t)$
-=$\mathbf{X}'' = \mathbf{A}\mathbf{X}' + \mathbf{B}\mathbf{X}$
-=$\mathbf{A}\mathbf{X}' = \mathbf{X} + \mathbf{F}(t)$
+Koefisien nilai rata-rata $a_0$ pada Deret Fourier untuk fungsi dengan periode $T = 2L$ dirumuskan sebagai... {
+=$a_0 = \frac{1}{2L} \int_{-L}^{L} f(t) \, dt$
+=$a_0 = \frac{1}{L} \int_{-L}^{L} f(t) \, dt$
+=$a_0 = \int_{0}^{L} f(t) \, dt$
+=$a_0 = \frac{2}{L} \int_{0}^{L} f(t)\cos(nt) \, dt$
 }
 
-Untuk sistem linier homogen $\mathbf{X}' = \mathbf{A}\mathbf{X}$, solusi dasarnya sangat bergantung pada... {
-=Nilai eigen dan vektor eigen dari matriks $\mathbf{A}$
-~Determinan matriks $\mathbf{A}$ saja
-~Invers dari matriks $\mathbf{A}$
-~Matriks identitas
+// ----------------------------------------------------------------------------
+// MINGGU 10: Solusi PDP Metode Pemisahan Variabel
+// ----------------------------------------------------------------------------
+Metode pemisahan variabel mengasumsikan bahwa solusi fungsi multi-variabel $u(x,t)$ dapat dituliskan sebagai... {
+=Perkalian dua fungsi satu variabel: $u(x,t) = X(x) \cdot T(t)$
+~Penjumlahan linear: $u(x,t) = X(x) + T(t)$
+~Pembagian fungsi: $u(x,t) = \frac{X(x)}{T(t)}$
+~Fungsi komposisi: $u(x,t) = X(T(t))$
 }
 
-Metode penyelesaian sistem persamaan diferensial juga dapat dilakukan menggunakan... {
-=Transformasi Laplace
-~Metode Euler
-~Faktor integrasi skalar
-~Substitusi variabel polar
+Pada penyelesaian persamaan difusi panas 1D menggunakan pemisahan variabel, konstanta pemisahan harus dipilih bernilai NEGATIF ($-\lambda^2$) karena alasan fisik... {
+=Agar solusi waktu $T(t)$ meluruh stabil secara eksponensial menuju kesetimbangan termal
+~Agar suhu meningkat secara eksponensial menuju tak terhingga
+~Agar tidak diperlukan syarat batas pada ujung konduktor
+~Agar solusi spasial berbentuk polinomial orde tinggi
 }
 
-// Soal Minggu 14: Pengantar Persamaan Diferensial Parsial (PDP)
-Persamaan diferensial parsial (PDP) melibatkan fungsi yang tidak diketahui yang bergantung pada... {
-=Dua atau lebih variabel bebas
-~Hanya satu variabel bebas
-~Variabel acak
-~Konstanta tak tentu
+Masalah nilai batas spasial $X''(x) + \lambda^2 X(x) = 0$ dengan syarat batas Dirichlet $X(0) = 0$ dan $X(L) = 0$ menghasilkan nilai eigen... {
+=$\lambda_n = \frac{n\pi}{L}, \quad n = 1, 2, 3, \dots$
+~$\lambda_n = \frac{(2n-1)\pi}{2L}$
+~$\lambda_n = n L \pi$
+~$\lambda_n = \frac{n^2 \pi^2}{L^2}$
 }
 
-Metode klasik untuk memecahkan banyak PDP linier, seperti persamaan panas atau gelombang, adalah metode... {
-=Pemisahan variabel (Separation of variables)
-~Transformasi Euler
-~Koefisien tak tentu
-~Faktor integrasi parsial
+// ----------------------------------------------------------------------------
+// MINGGU 11: Persamaan Gelombang 1D pada Saluran Transmisi
+// ----------------------------------------------------------------------------
+Kecepatan rambat gelombang tegangan dan arus $v$ pada saluran transmisi tanpa rugi-rugi (*lossless transmission line*) dengan induktansi per meter $L'$ dan kapasitansi per meter $C'$ adalah... {
+=$v = \frac{1}{\sqrt{L' C'}}$
+~$v = \sqrt{L' C'}$
+~$v = \frac{L'}{C'}$
+~$v = \frac{1}{L' C'}$
 }
 
-Orde dari persamaan diferensial parsial ditentukan oleh turunan parsial... {
-=Tertinggi yang ada dalam persamaan
-~Terendah yang ada dalam persamaan
-~Pertama saja
-~Totalnya
+Solusi d'Alembert menyatakan bahwa perambatan gelombang 1D merupakan superposisi dari dua gelombang berjalan... {
+=$u(x,t) = f(x - ct) + g(x + ct)$
+~$u(x,t) = f(x) \cdot g(ct)$
+~$u(x,t) = f(x - ct) \cdot g(x + ct)$
+~$u(x,t) = f(x^2 - c^2 t^2)$
 }
 
-// Soal Minggu 15: Aplikasi Persamaan Diferensial Parsial
-Persamaan diferensial parsial $\alpha^2 \frac{\partial^2 u}{\partial x^2} = \frac{\partial u}{\partial t}$ dikenal sebagai persamaan... {
-=Panas (Suhu) satu dimensi
-~Gelombang satu dimensi
-~Laplace dua dimensi
-~Poisson
+Pada ujung saluran transmisi yang terhubung singkat (*short circuit* / ground), syarat batas yang berlaku untuk gelombang tegangan $v(L,t)$ adalah... {
+=Batas Dirichlet: $v(L,t) = 0$ (koefisien refleksi $\Gamma = -1$)
+~Batas Neumann: $\frac{\partial v}{\partial x}(L,t) = 0$ (koefisien refleksi $\Gamma = +1$)
+~Batas Cauchy: $v(L,t) = \infty$
+~Batas Robin: $v(L,t) + \frac{\partial v}{\partial t} = 1$
 }
 
-Persamaan diferensial parsial $a^2 \frac{\partial^2 u}{\partial x^2} = \frac{\partial^2 u}{\partial t^2}$ memodelkan fenomena... {
-=Getaran pada dawai (Gelombang)
-~Distribusi potensial elektrostatik (Laplace)
-~Perambatan panas pada batang
-~Aliran fluida stasioner
+// ----------------------------------------------------------------------------
+// MINGGU 12: Persamaan Panas 1D pada Kabel Konduktor Daya
+// ----------------------------------------------------------------------------
+Persamaan diferensial parsial yang memodelkan difusi temperatur $u(x,t)$ sepanjang konduktor tembaga dengan difusivitas termal $\alpha$ adalah... {
+=$\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}$
+~$\frac{\partial^2 u}{\partial t^2} = \alpha^2 \frac{\partial^2 u}{\partial x^2}$
+~$\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0$
+~$\frac{\partial u}{\partial t} + \alpha \frac{\partial u}{\partial x} = 0$
 }
 
-Persamaan Laplace dalam dua dimensi dinyatakan dengan $\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0$. Persamaan ini merupakan contoh dari PDP jenis... {
-=Eliptik
-~Parabolik
-~Hiperbolik
-~Aljabar linier
+Pada solusi deret Fourier untuk persamaan panas 1D, suku harmonik spasial frekuensi tinggi ($n=3, 5, \dots$) akan... {
+=Meluruh jauh lebih cepat dibandingkan harmonik fundamental ($n=1$)
+~Meluruh lebih lambat dibandingkan harmonik fundamental
+~Memiliki laju peluruhan yang sama persis untuk semua $n$
+~Tumbuh membesar seiring berjalannya waktu
+}
+
+Syarat kestabilan numerik Von Neumann untuk simulasi beda hingga eksplisit (FTCS) pada persamaan panas dengan rasio difusi $r = \frac{\alpha \Delta t}{\Delta x^2}$ adalah... {
+=$r \le 0.5$
+~$r \le 1.0$
+~$r \ge 1.0$
+~$r > 2.0$
+}
+
+// ----------------------------------------------------------------------------
+// MINGGU 13: Persamaan Laplace 2D & Medan Elektrostatik
+// ----------------------------------------------------------------------------
+Persamaan Laplace 2D yang memodelkan potensial elektrostatik $V(x,y)$ di dalam ruang bebas muatan adalah... {
+=$\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0$
+~$\frac{\partial^2 V}{\partial x^2} - \frac{\partial^2 V}{\partial y^2} = 0$
+~$\frac{\partial V}{\partial x} + \frac{\partial V}{\partial y} = 0$
+~$\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = -\frac{\rho_v}{\varepsilon}$
+}
+
+Berdasarkan *Mean-Value Property* dari fungsi harmonik solusi Laplace 2D, nilai potensial pada titik pusat suatu grid numerik 4-titik tetangga sama dengan... {
+=Nilai rata-rata dari 4 titik di sekelilingnya: $V_{i,j} = \frac{1}{4}(V_{i+1,j} + V_{i-1,j} + V_{i,j+1} + V_{i,j-1})$
+~Penjumlahan dari 4 titik tetangga: $V_{i+1,j} + V_{i-1,j} + V_{i,j+1} + V_{i,j-1}$
+~Nilai maksimum dari 4 titik di sekelilingnya
+~Selisih antara titik horizontal dan vertikal
+}
+
+Menurut Prinsip Ekstremum pada Persamaan Laplace, nilai potensial maksimum dan minimum suatu medan elektrostatik... {
+=Hanya dapat terjadi pada batas (*boundary*) domain, bukan di dalam interior terbuka
+~Selalu terjadi persis di titik pusat domain
+~Dapat berada di sembarang titik lokal di dalam rongga
+~Selalu bernilai nol di semua titik
+}
+
+// ----------------------------------------------------------------------------
+// MINGGU 14: Fungsi Khusus — Persamaan Bessel & Efek Kulit
+// ----------------------------------------------------------------------------
+Transformasi operator Laplacian $\nabla^2 u$ ke dalam koordinat silinder $(r, \theta, z)$ secara alami memunculkan... {
+=Persamaan Diferensial Bessel: $x^2 y'' + x y' + (x^2 - \nu^2)y = 0$
+~Persamaan Polinomial Legendre: $(1-x^2)y'' - 2x y' + n(n+1)y = 0$
+~Persamaan Diferensial Hermite: $y'' - 2x y' + 2n y = 0$
+~Persamaan Diferensial Chebyshev: $(1-x^2)y'' - x y' + n^2 y = 0$
+}
+
+Pada pemodelan rapat arus kabel silinder tembaga pejal, fungsi Bessel jenis kedua $Y_\nu(x)$ tidak diikutsertakan ($C_2 = 0$) karena... {
+=Nilai $Y_\nu(x)$ menuju $-\infty$ saat $x \to 0$ (singular di titik pusat sumbu kabel)
+~Nilai $Y_\nu(x)$ selalu bernilai nol di semua titik
+~Fungsi $Y_\nu(x)$ tidak dapat diturunkan
+~Nilai $Y_\nu(x)$ hanya berlaku untuk bilangan negatif
+}
+
+Fenomena Efek Kulit (*Skin Effect*) pada konduktor yang dialiri arus bolak-balik (AC) frekuensi tinggi menyebabkan rapat arus... {
+=Terpusat mengumpul di dekat permukaan luar kabel
+=Terpusat mengumpul di inti tengah kabel
+=Terdistribusi merata di seluruh penampang kabel
+=Menghilang secara total di seluruh kabel
+}
+
+// ----------------------------------------------------------------------------
+// MINGGU 15: Sintesis PDP dalam Persamaan Maxwell & Gelombang EM
+// ----------------------------------------------------------------------------
+Hukum induksi Faraday dalam bentuk diferensial dinyatakan oleh persamaan... {
+=$\nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$
+~$\nabla \cdot \mathbf{D} = \rho_v$
+~$\nabla \cdot \mathbf{B} = 0$
+~$\nabla \times \mathbf{H} = \mathbf{J} + \frac{\partial \mathbf{D}}{\partial t}$
+}
+
+Kecepatan rambat gelombang elektromagnetik 3D di ruang hampa ($c$) diturunkan dari persamaan Maxwell sebagai... {
+=$c = \frac{1}{\sqrt{\mu_0 \varepsilon_0}}$
+~$c = \sqrt{\mu_0 \varepsilon_0}$
+~$c = \frac{\mu_0}{\varepsilon_0}$
+~$c = \mu_0 \varepsilon_0$
+}
+
+Persamaan gelombang elektromagnetik 3D untuk vektor medan listrik $\mathbf{E}$ di ruang bebas muatan adalah... {
+=$\nabla^2 \mathbf{E} = \mu_0 \varepsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}$
+~$\nabla^2 \mathbf{E} = \frac{\partial \mathbf{E}}{\partial t}$
+~$\nabla \cdot \mathbf{E} = \mu_0 \varepsilon_0 \mathbf{E}$
+~$\nabla \times \mathbf{E} = \mu_0 \varepsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}$
 }

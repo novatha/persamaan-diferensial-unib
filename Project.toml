@@ -1,0 +1,20 @@
+name = "PersamaanDiferensialUNIB"
+uuid = "e8c71b12-9c3f-4e3a-9694-81d7f6b9075d"
+authors = ["Novalio Daratha <ndaratha@unib.ac.id>", "Muhammad Arfan"]
+version = "1.0.0"
+
+[deps]
+DifferentialEquations = "0c46a032-eb83-5123-abaf-05429fde3060"
+IJulia = "7073ff75-c55e-5645-ba40-50978160e548"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d938438"
+
+[compat]
+DifferentialEquations = "7"
+IJulia = "1"
+LaTeXStrings = "1"
+Plots = "1"
+SpecialFunctions = "2"
+julia = "1.10"

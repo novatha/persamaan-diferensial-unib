@@ -1,0 +1,130 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{KUNCI JAWABAN & PEDOMAN PENSKORAN UTS}}
+\fancyhead[R]{Persamaan Diferensial 2026}
+\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
+\fancyfoot[R]{\thepage}
+\def\footrule{{\color{gray}\hrule}}
+
+\title{\vspace{-2cm}\textbf{KUNCI JAWABAN \& PEDOMAN PENSKORAN\\UJIAN TENGAH SEMESTER (UTS)\\Mata Kuliah: Persamaan Diferensial}}
+\author{Novalio Daratha, Ph.D. \& Muhammad Arfan, M.T.\\Program Studi Teknik Elektro, Universitas Bengkulu}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Informasi Dosen \& Asisten]
+Dokumen ini merupakan panduan resmi kunci jawaban dan rubrik pembobotan skor Ujian Tengah Semester (UTS) mata kuliah Persamaan Diferensial. Total skor maksimum adalah 100 poin.
+\end{tcolorbox}
+
+\section*{Solusi dan Pembobotan Langkah Pengerjaan}
+
+\begin{enumerate}[label=\textbf{Soal \arabic*.}]
+    \item \textbf{(C2 - Memahami) (Bobot: 15 Poin)}
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}[label=(\alph*)]
+        \item \textbf{Perbedaan Konsep PDB dan PDP (7 Poin):}
+        \begin{itemize}
+            \item \textit{Persamaan Diferensial Biasa (PDB):} Melibatkan fungsi yang hanya bergantung pada \textbf{satu variabel bebas} (misalnya waktu $t$ pada analisis rangkaian $i(t)$ atau posisi $x$). Turunannya adalah turunan total $\frac{dy}{dt}$.
+            \item \textit{Persamaan Diferensial Parsial (PDP):} Melibatkan fungsi yang bergantung pada \textbf{dua atau lebih variabel bebas} (misalnya ruang dan waktu $u(x,t)$ atau $V(x,y)$ pada gelombang/panas/elektrostatika). Turunannya adalah turunan parsial $\frac{\partial u}{\partial t}, \frac{\partial^2 u}{\partial x^2}$.
+        \end{itemize}
+        \item \textbf{Keunggulan Transformasi Laplace pada Transien Kelistrikan (8 Poin):}
+        \begin{itemize}
+            \item \textit{Kondisi Awal Otomatis:} Laplace langsung memasukkan nilai awal $y(0), y'(0)$ ke dalam persamaan aljabar di langkah pertama tanpa perlu mencari konstanta integrasi $C_1, C_2$ terpisah.
+            \item \textit{Aljabar vs Kalkulus:} Mengubah operasi turunan/integral menjadi manipulasi aljabar pecahan di domain frekuensi kompleks $s$.
+            \item \textit{Fungsi Tak Kontinu / Impuls:} Mampu menangani masukan *switching* tak kontinu seperti fungsi tangga Heaviside $u(t)$ atau impuls Dirac $\delta(t)$ yang sulit diselesaikan dengan metode klasik.
+        \end{itemize}
+    \end{enumerate}
+    \end{tcolorbox}
+
+    \item \textbf{(C3 - Mengaplikasikan) (Bobot: 20 Poin)}
+    \textbf{Soal:} $\frac{dy}{dt} - 3y = e^{2t}$ dengan $y(0) = 4$.
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}
+        \item \textbf{Faktor Integrasi (5 Poin):}
+        PDB berbentuk linier standar $\frac{dy}{dt} + P(t)y = Q(t)$ dengan $P(t) = -3$ dan $Q(t) = e^{2t}$.
+        $$ \mu(t) = e^{\int -3 dt} = e^{-3t} $$
+        \item \textbf{Solusi Umum (8 Poin):}
+        Kalikan kedua ruas dengan $\mu(t)$:
+        $$ \frac{d}{dt}\left[ y e^{-3t} \right] = e^{2t} \cdot e^{-3t} = e^{-t} $$
+        Integrasikan kedua ruas:
+        $$ y e^{-3t} = \int e^{-t} dt = -e^{-t} + C $$
+        $$ y(t) = -e^{2t} + C e^{3t} \quad \text{(Solusi Umum)} $$
+        \item \textbf{Solusi Khusus IVP (7 Poin):}
+        Masukkan kondisi awal $y(0) = 4$:
+        $$ 4 = -e^{0} + C e^{0} \implies 4 = -1 + C \implies C = 5 $$
+        $$ \mathbf{y(t) = -e^{2t} + 5e^{3t}} $$
+    \end{enumerate}
+    \end{tcolorbox}
+
+    \item \textbf{(C4 - Menganalisis) (Bobot: 20 Poin)}
+    \textbf{Soal:} $\frac{d^2 i}{dt^2} + 4\frac{di}{dt} + 2i = 0$, dengan $i(0) = 1$, $i'(0) = 0$ menggunakan Transformasi Laplace.
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}
+        \item \textbf{Transformasi Laplace ke Domain-$s$ (6 Poin):}
+        $$ \mathcal{L}\{i''(t)\} + 4\mathcal{L}\{i'(t)\} + 2\mathcal{L}\{i(t)\} = 0 $$
+        $$ [s^2 I(s) - s i(0) - i'(0)] + 4[s I(s) - i(0)] + 2I(s) = 0 $$
+        Substitusi $i(0) = 1$ dan $i'(0) = 0$:
+        $$ [s^2 I(s) - s] + 4[s I(s) - 1] + 2I(s) = 0 $$
+        $$ (s^2 + 4s + 2)I(s) = s + 4 \implies I(s) = \frac{s+4}{s^2 + 4s + 2} $$
+        \item \textbf{Penyempurnaan Kuadrat (7 Poin):}
+        Penyebut: $s^2 + 4s + 2 = (s+2)^2 - 2 = (s+2)^2 - (\sqrt{2})^2$.
+        Uraikan pembilang terhadap $(s+2)$:
+        $$ I(s) = \frac{(s+2) + 2}{(s+2)^2 - (\sqrt{2})^2} = \frac{s+2}{(s+2)^2 - (\sqrt{2})^2} + \sqrt{2} \frac{\sqrt{2}}{(s+2)^2 - (\sqrt{2})^2} $$
+        \item \textbf{Invers Transformasi Laplace (7 Poin):}
+        Menggunakan sifat pergeseran frekuensi $\mathcal{L}^{-1}\{F(s+a)\} = e^{-at}f(t)$ dan tabel cosh/sinh (atau dekomposisi pecahan real):
+        $$ \mathbf{i(t) = e^{-2t}\cosh(\sqrt{2}t) + \sqrt{2}e^{-2t}\sinh(\sqrt{2}t)} $$
+        \textit{Bentuk ekuivalen eksponensial real:}
+        $$ i(t) = \left(\frac{1+\sqrt{2}}{2}\right)e^{-(2-\sqrt{2})t} + \left(\frac{1-\sqrt{2}}{2}\right)e^{-(2+\sqrt{2})t} $$
+    \end{enumerate}
+    \end{tcolorbox}
+
+    \newpage
+
+    \item \textbf{(C5 - Mengevaluasi) (Bobot: 20 Poin)}
+    \textbf{Soal:} Evaluasi $V(s) = \frac{5s^2 + 20s + 15}{(s^2+4)(s+1)}$ apakah saat $t \to \infty$ berosilasi murni.
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Solusi Model:]
+    \begin{enumerate}
+        \item \textbf{Dekomposisi Pecahan Parsial (8 Poin):}
+        $$ V(s) = \frac{5s^2 + 20s + 15}{(s^2+4)(s+1)} = \frac{A s + B}{s^2 + 4} + \frac{C}{s+1} $$
+        Samakan pembilang:
+        $$ 5s^2 + 20s + 15 = (As + B)(s+1) + C(s^2+4) $$
+        \begin{itemize}
+            \item Untuk $s = -1$: $5(1) - 20 + 15 = C(1+4) \implies 0 = 5C \implies \mathbf{C = 0}$.
+            \item Karena $C = 0$, maka $(As + B)(s+1) = 5s^2 + 20s + 15$.
+            \item Faktor dari $5s^2+20s+15 = 5(s+1)(s+3)$.
+            \item Maka: $\frac{5(s+1)(s+3)}{(s^2+4)(s+1)} = \frac{5s + 15}{s^2 + 4} \implies \mathbf{A = 5, B = 15}$.
+        \end{itemize}
+        \item \textbf{Invers Transformasi Laplace (6 Poin):}
+        $$ V(s) = \frac{5s}{s^2+2^2} + \frac{15}{2}\frac{2}{s^2+2^2} $$
+        $$ \mathbf{v(t) = 5\cos(2t) + 7.5\sin(2t)} $$
+        \item \textbf{Evaluasi Pernyataan Asisten (6 Poin):}
+        Karena $C=0$, suku peluruhan eksponensial $e^{-t}$ sama sekali tidak ada. Solusi hanya tersusun atas fungsi sinus dan kosinus murni dengan frekuensi sudut $\omega = 2\text{ rad/s}$.
+        \textbf{Kesimpulan:} Pernyataan asisten laboratorium adalah \textbf{BENAR (TERBUKTI)}. Tegangan berosilasi harmonik murni tanpa redaman untuk seluruh $t \ge 0$.
+    \end{enumerate}
+    \end{tcolorbox}
+
+    \item \textbf{(C6 - Mencipta) (Bobot: 25 Poin)}
+    \begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Rubrik Penilaian Desain Sistem:]
+    Penilaian didasarkan pada 4 kriteria independen:
+    \begin{enumerate}
+        \item \textbf{Validitas Pemodelan Sistem (7 Poin):} Menuliskan PDB orde 2 yang merepresentasikan sistem kelistrikan fisis yang masuk akal (misal: RLC seri/paralel, motor DC armature, atau filter tapis lolos rendah).
+        \item \textbf{Definisi Forcing Function & Kondisi Awal (6 Poin):} Menentukan $g(t)$ yang jelas (step $V_0 u(t)$, sinus $\sin\omega t$, atau impuls) dan kondisi awal $y(0), y'(0)$ yang konsisten secara fisis.
+        \item \textbf{Ketepatan Prosedur Solusi Matematis (7 Poin):} Menggunakan Transformasi Laplace atau metode koefisien tak tentu dengan langkah aljabar yang benar dan teliti.
+        \item \textbf{Interpretasi Rekayasa (5 Poin):} Menjelaskan makna fisis solusi transien dan solusi keadaan tunak (*steady-state*) yang diperoleh.
+    \end{enumerate}
+    \end{tcolorbox}
+\end{enumerate}
+
+\end{document}
