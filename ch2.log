@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  20 AUG 2026 06:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  7 SEP 2026 07:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1414,11 +1414,11 @@ Package rerunfilecheck Info: File `ch2.out' has not changed.
 (rerunfilecheck)             Checksum: A16F76B3ABF89D2883EBCE33F36950A2;553.
  ) 
 Here is how much of TeX's memory you used:
- 24976 strings out of 467525
- 506397 string characters out of 5408440
- 877644 words of memory out of 5000000
- 53334 multiletter control sequences out of 15000+600000
- 633961 words of font info for 62 fonts, out of 8000000 for 9000
+ 24984 strings out of 467525
+ 506500 string characters out of 5408440
+ 877674 words of memory out of 5000000
+ 53340 multiletter control sequences out of 15000+600000
+ 634624 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,15n,123p,395b,686s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
@@ -1434,12 +1434,14 @@ share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></opt/homebrew/Cellar
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmssi10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmssi8.pfb></opt/homebrew/Cellar/texlive/20260301/s
-hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar
-/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on ch2.pdf (31 pages, 223412 bytes).
+hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi9.pfb></opt/homebrew/Cellar
+/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
+opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmsy7.pfb>
+Output written on ch2.pdf (31 pages, 235254 bytes).
 PDF statistics:
- 1014 PDF objects out of 1200 (max. 8388607)
- 896 compressed objects within 9 object streams
+ 1019 PDF objects out of 1200 (max. 8388607)
+ 899 compressed objects within 9 object streams
  67 named destinations out of 1000 (max. 500000)
  279 words of extra memory for PDF output out of 10000 (max. 10000000)
 

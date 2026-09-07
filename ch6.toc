@@ -1,3 +1,4 @@
-\beamer@sectionintoc {1}{Definisi Transformasi Laplace}{3}{0}{1}
-\beamer@sectionintoc {2}{Sifat Linieritas}{4}{0}{2}
-\beamer@sectionintoc {3}{Sifat Pergeseran (Translasi)}{5}{0}{3}
+\beamer@sectionintoc {1}{Definisi Transformasi Laplace}{4}{0}{1}
+\beamer@sectionintoc {2}{Transformasi Fungsi-Fungsi Dasar}{7}{0}{2}
+\beamer@sectionintoc {3}{Sifat-Sifat Penting Transformasi Laplace}{11}{0}{3}
+\beamer@sectionintoc {4}{Kuis \& Rangkuman}{16}{0}{4}

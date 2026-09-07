@@ -1,3 +1,4 @@
-\beamer@sectionintoc {1}{Persamaan Laplace 2D}{3}{0}{1}
-\beamer@sectionintoc {2}{Metode Pemisahan Variabel}{4}{0}{2}
-\beamer@sectionintoc {3}{Aplikasi Elektrostatik}{5}{0}{3}
+\beamer@sectionintoc {1}{Penurunan Persamaan Laplace \& Poisson}{4}{0}{1}
+\beamer@sectionintoc {2}{Sifat Fungsi Harmonik}{7}{0}{2}
+\beamer@sectionintoc {3}{Solusi Analitik Deret 2D}{9}{0}{3}
+\beamer@sectionintoc {4}{Simulasi Julia \& Kuis}{12}{0}{4}

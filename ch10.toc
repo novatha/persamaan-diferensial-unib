@@ -1,3 +1,3 @@
-\beamer@sectionintoc {1}{Pengantar Metode Pemisahan Variabel}{3}{0}{1}
-\beamer@sectionintoc {2}{Langkah-langkah Penyelesaian}{4}{0}{2}
-\beamer@sectionintoc {3}{Contoh Aplikasi Sederhana}{5}{0}{3}
+\beamer@sectionintoc {1}{Prinsip Dasar Pemisahan Variabel}{4}{0}{1}
+\beamer@sectionintoc {2}{Studi Kasus: Pemisahan pada Persamaan Panas 1D}{6}{0}{2}
+\beamer@sectionintoc {3}{Kuis \& Rangkuman}{17}{0}{3}

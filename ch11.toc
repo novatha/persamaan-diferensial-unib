@@ -1,3 +1,4 @@
-\beamer@sectionintoc {1}{Pemodelan Persamaan Gelombang}{3}{0}{1}
-\beamer@sectionintoc {2}{Solusi D'Alembert}{4}{0}{2}
-\beamer@sectionintoc {3}{Solusi dengan Pemisahan Variabel}{5}{0}{3}
+\beamer@sectionintoc {1}{Penurunan dari Rangkaian Saluran Transmisi}{4}{0}{1}
+\beamer@sectionintoc {2}{Solusi d'Alembert: Gelombang Berjalan}{7}{0}{2}
+\beamer@sectionintoc {3}{Refleksi Gelombang pada Ujung Saluran}{9}{0}{3}
+\beamer@sectionintoc {4}{Praktikum Julia \& Kuis}{11}{0}{4}

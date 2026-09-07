@@ -1,4 +1,4 @@
-\beamer@sectionintoc {1}{Invers Transformasi Laplace}{3}{0}{1}
-\beamer@sectionintoc {2}{Pecahan Parsial (Partial Fraction)}{4}{0}{2}
-\beamer@sectionintoc {3}{Menyelesaikan PDB dengan Laplace}{5}{0}{3}
-\beamer@sectionintoc {4}{Contoh Kasus Rangkaian Listrik}{6}{0}{4}
+\beamer@sectionintoc {1}{Metode Invers Transformasi Laplace}{4}{0}{1}
+\beamer@sectionintoc {2}{Ekspansi Pecahan Parsial (Partial Fractions)}{7}{0}{2}
+\beamer@sectionintoc {3}{Alur Lengkap Penyelesaian PDB dengan Laplace}{10}{0}{3}
+\beamer@sectionintoc {4}{Aplikasi Rangkaian Elektrik}{16}{0}{4}
