@@ -70,12 +70,12 @@ DATA = {
             "chapter": "04. Bentuk Standar & Karakteristik",
             "quiz": False,
             "text": (
-                "Bentuk umum PDB orde dua linier homogen koefisien konstan dinyatakan sebagai: a dikali d kuadrat y per d t kuadrat "
-                "ditambah b dikali d y per d t ditambah c dikali y sama dengan nol. "
-                "Dengan menggunakan postulat solusi eksponensial y t sama dengan e pangkat s dikali t, kita turunkan Persamaan Karakteristik: "
-                "a dikali s kuadrat ditambah b dikali s ditambah c sama dengan nol. "
-                "Akar-akar persamaan kuadrat ini adalah s satu dan s dua sama dengan minus b plus minus akar b kuadrat dikurang empat a c "
-                "seluruhnya dibagi dua a. Sifat fisis dari solusi gerak sistem sepenuhnya ditentukan oleh tanda diskriminan kuadratik tersebut."
+                "Bentuk umum PDB orde dua linier homogen koefisien konstan dinyatakan sebagai: a dikali d kuadrat y per d x kuadrat "
+                "ditambah b dikali d y per d x ditambah c dikali y sama dengan nol, dengan konstanta a tidak sama dengan nol. "
+                "Dengan menggunakan postulat solusi basis eksponensial y x sama dengan e pangkat r dikali x, kita turunkan Persamaan Karakteristik: "
+                "a dikali r kuadrat ditambah b dikali r ditambah c sama dengan nol. "
+                "Akar-akar persamaan kuadrat ini ditentukan oleh rumus a b c, yaitu r satu dan r dua sama dengan minus b plus minus akar b kuadrat dikurang empat a c "
+                "seluruhnya dibagi dua a. Sifat dari solusi sistem sepenuhnya ditentukan oleh tanda diskriminan D sama dengan b kuadrat dikurang empat a c."
             )
         },
         {

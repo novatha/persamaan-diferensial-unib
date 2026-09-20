@@ -132,7 +132,7 @@ export const pdModules: PdModule[] = [
     computationLab: "Julia: Simulasi Tiga Ragam Redaman & Ruang Fasa Titik Fokus",
     slidesPdf: "/pdf/ch4.pdf",
     videoFile: "/video/video_pd_minggu04.mp4",
-    youtubeUrl: "https://youtu.be/7GUGYVkbPbE",
+    youtubeUrl: "https://youtu.be/Auxi-6ZSJ6o",
     notesPdf: "/pdf/modul_4.pdf",
     worksheetPdf: "/pdf/worksheet4.pdf",
     solvedPdf: "/pdf/problem_set4.pdf",

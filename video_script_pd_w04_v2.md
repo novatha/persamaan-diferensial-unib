@@ -2,7 +2,7 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
-**Tautan Resmi YouTube:** [https://youtu.be/7GUGYVkbPbE](https://youtu.be/7GUGYVkbPbE)  
+**Tautan Resmi YouTube:** [https://youtu.be/Auxi-6ZSJ6o](https://youtu.be/Auxi-6ZSJ6o)  
 
 **Judul Resmi:** `[Minggu 04] PDB Orde 2 Homogen: Karakteristik Akar & Tiga Ragam Redaman RLC | Persamaan Diferensial | Teknik Elektro UNIB`
 
@@ -25,17 +25,17 @@ Linimasa Bab (Timestamps):
 00:39 - 02. Sub-CPMK 3 & Taksonomi Bloom
 01:28 - 03. Peta Konsep: Lompatan ke Orde 2
 02:06 - 04. Bentuk Standar & Karakteristik
-02:41 - 05. Superposisi & Determinan Wronskian
-03:19 - 06. Pemodelan Sirkuit RLC Seri
-03:58 - 07. Parameter Standar Karakteristik RLC
-04:38 - 08. Ragam 1: Overdamped
-05:17 - 09. Ragam 2: Critically Damped
-05:59 - 10. Ragam 3: Underdamped
-06:40 - 11. Tangki LC & Ruang Fasa
-07:20 - 12. Contoh Soal Terhitung RLC
-08:09 - 13. Praktikum Julia: Tiga Ragam Redaman
-08:47 - 14. Kuis Interaktif & Evaluasi Bloom
-10:24 - 15. Rangkuman Perkuliahan & Penutup
+02:46 - 05. Superposisi & Determinan Wronskian
+03:24 - 06. Pemodelan Sirkuit RLC Seri
+04:03 - 07. Parameter Standar Karakteristik RLC
+04:43 - 08. Ragam 1: Overdamped
+05:22 - 09. Ragam 2: Critically Damped
+06:04 - 10. Ragam 3: Underdamped
+06:45 - 11. Tangki LC & Ruang Fasa
+07:25 - 12. Contoh Soal Terhitung RLC
+08:14 - 13. Praktikum Julia: Tiga Ragam Redaman
+08:52 - 14. Kuis Interaktif & Evaluasi Bloom
+10:29 - 15. Rangkuman Perkuliahan & Penutup
 
 Buku Referensi Pembelajaran:
 1. Erwin Kreyszig, "Advanced Engineering Mathematics", 10th Edition, John Wiley & Sons.
@@ -74,7 +74,7 @@ Perhatikan diagram transisi pada slide ini. Pada sistem orde satu yang kita pela
 
 ### Salindia 04: Bentuk Standar PDB Orde 2 Homogen & Persamaan Karakteristik
 
-Bentuk umum PDB orde dua linier homogen koefisien konstan dinyatakan sebagai: a dikali d kuadrat y per d t kuadrat ditambah b dikali d y per d t ditambah c dikali y sama dengan nol. Dengan menggunakan postulat solusi eksponensial y t sama dengan e pangkat s dikali t, kita turunkan Persamaan Karakteristik: a dikali s kuadrat ditambah b dikali s ditambah c sama dengan nol. Akar-akar persamaan kuadrat ini adalah s satu dan s dua sama dengan minus b plus minus akar b kuadrat dikurang empat a c seluruhnya dibagi dua a. Sifat fisis dari solusi gerak sistem sepenuhnya ditentukan oleh tanda diskriminan kuadratik tersebut.
+Bentuk umum PDB orde dua linier homogen koefisien konstan dinyatakan sebagai: a dikali d kuadrat y per d x kuadrat ditambah b dikali d y per d x ditambah c dikali y sama dengan nol, dengan konstanta a tidak sama dengan nol. Dengan menggunakan postulat solusi basis eksponensial y x sama dengan e pangkat r dikali x, kita turunkan Persamaan Karakteristik: a dikali r kuadrat ditambah b dikali r ditambah c sama dengan nol. Akar-akar persamaan kuadrat ini ditentukan oleh rumus a b c, yaitu r satu dan r dua sama dengan minus b plus minus akar b kuadrat dikurang empat a c seluruhnya dibagi dua a. Sifat dari solusi sistem sepenuhnya ditentukan oleh tanda diskriminan D sama dengan b kuadrat dikurang empat a c.
 
 ### Salindia 05: Teorema Superposisi & Determinan Wronskian
 
