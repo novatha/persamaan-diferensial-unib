@@ -1,7 +1,28 @@
-\contentsline {section}{\numberline {1}Pendahuluan}{2}{section.1}%
-\contentsline {section}{\numberline {2}Materi Utama}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Analisis Transien Rangkaian RL}{2}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Rangkaian RC: Pengisian dan Pengosongan Kapasitor}{2}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Hukum Pendinginan Newton (Newton's Law of Cooling)}{3}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Ringkasan}{3}{section.3}%
-\contentsline {section}{\numberline {4}Referensi}{3}{section.4}%
+\babel@toc {indonesian}{}\relax 
+\contentsline {section}{\numberline {1}Peta Konsep \& Posisi Modul dalam Kurikulum}{4}{section.1}%
+\contentsline {section}{\numberline {2}Pendahuluan \& Filosofi Fisika Rekayasa: Relaksasi Energi dan Skala Waktu Alami}{4}{section.2}%
+\contentsline {section}{\numberline {3}Pemodelan Fisis Transien Rangkaian RL \& Inductive Kickback}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Prinsip Dasar Induktor \& Kontinuitas Arus}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Rangkaian RL Pengisian: Respon Langkah (\textit {Step Response})}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Fenomena Bahaya: Lonjakan Tegangan Induktif (\textit {Inductive Kickback})}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Mitigasi Standar Industri: Sirkuit Dioda Freewheeling}{7}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Pemodelan Fisis Transien Rangkaian RC \& Analisis Multi-Interval}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Respon Alami \& Respon Langkah Kapasitor}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Analisis Transien Multi-Interval (Switching Dinamis)}{8}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Pemodelan Termal Transformator Berbasis Hukum Pendinginan Newton}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Filosofi Perpindahan Kalor pada Transformator Daya}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Penurunan Persamaan Diferensial Termal dari Prinsip Pertama}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Analogi Rangkaian Listrik-Termal (Lumped Parameter Model)}{9}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Derivasi Analitis Solusi Respon Temperatur Transformator}{9}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Standar Industri IEEE Std C57.91: Penuaan Isolasi \& Pembebanan Darurat}{10}{subsection.5.5}%
+\contentsline {section}{\numberline {6}Contoh Soal Terhitung Numerik Langkah demi Langkah}{10}{section.6}%
+\contentsline {paragraph}{Penyelesaian Langkah demi Langkah:}{10}{section*.2}%
+\contentsline {paragraph}{Penyelesaian Langkah demi Langkah:}{12}{section*.3}%
+\contentsline {paragraph}{Penyelesaian Langkah demi Langkah:}{13}{section*.4}%
+\contentsline {section}{\numberline {7}Praktikum Komputasi Numerik Terbuka Berbasis Julia}{14}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Skrip Komputasi: Simulasi Transien Elektrik \& Termal Trafo}{14}{subsection.7.1}%
+\contentsline {section}{\numberline {8}Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}{15}{section.8}%
+\contentsline {section}{\numberline {9}Rangkuman \& Glosarium Istilah Teknis}{16}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Rangkuman Inti}{16}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Glosarium Istilah Teknis}{16}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Referensi Standar Industri \& Buku Teks Acuan}{17}{section.10}%

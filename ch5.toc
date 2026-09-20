@@ -1,3 +1,0 @@
-\beamer@sectionintoc {1}{Struktur Solusi PDB Non-Homogen}{4}{0}{1}
-\beamer@sectionintoc {2}{Metode Koefisien Tak Tentu}{6}{0}{2}
-\beamer@sectionintoc {3}{Pemodelan Lengkap RLC Seri}{13}{0}{3}

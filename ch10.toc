@@ -1,3 +1,0 @@
-\beamer@sectionintoc {1}{Prinsip Dasar Pemisahan Variabel}{4}{0}{1}
-\beamer@sectionintoc {2}{Studi Kasus: Pemisahan pada Persamaan Panas 1D}{6}{0}{2}
-\beamer@sectionintoc {3}{Kuis \& Rangkuman}{17}{0}{3}

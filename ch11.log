@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  7 SEP 2026 07:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Homebrew) (preloaded format=pdflatex 2026.3.4)  20 SEP 2026 20:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -503,6 +503,7 @@ Package hyperref Info: Backreferencing OFF on input line 4221.
 Package hyperref Info: Implicit mode OFF; no redefinition of LaTeX internals.
 Package hyperref Info: Bookmarks ON on input line 4468.
 \c@Hy@tempcnt=\count326
+
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
@@ -530,6 +531,7 @@ Package hyperref Info: Link coloring OFF on input line 6104.
 Package hyperref Info: Link coloring with OCG OFF on input line 6109.
 Package hyperref Info: PDF/A mode OFF on input line 6114.
 \Hy@abspage=\count328
+
 
 Package hyperref Message: Stopped early.
 
@@ -703,6 +705,7 @@ basetheorems.sty
 th.sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
 \@mathmargin=\skip61
+
 For additional information on amsmath, use the `?' option.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsmath/amste
@@ -887,31 +890,198 @@ File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 dlayer/tikz/libraries/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/fronten
+dlayer/tikz/libraries/tikzlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/fronten
+dlayer/tikz/libraries/tikzlibraryshapes.geometric.code.tex
+File: tikzlibraryshapes.geometric.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/librari
+es/shapes/pgflibraryshapes.geometric.code.tex
+File: pgflibraryshapes.geometric.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/librari
+es/pgflibraryarrows.meta.code.tex
+File: pgflibraryarrows.meta.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfarrowinset=\dimen315
+\pgfarrowlength=\dimen316
+\pgfarrowwidth=\dimen317
+\pgfarrowlinewidth=\dimen318
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/fronten
+dlayer/tikz/libraries/tikzlibrarycalc.code.tex
+File: tikzlibrarycalc.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/circuitikz/ci
+rcuitikz.sty
+Package: circuitikz 2026/02/04{} The CircuiTikz circuit drawing package version
+ 1.8.5
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/fronten
+dlayer/tikz/libraries/tikzlibrarybending.code.tex
+File: tikzlibrarybending.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/modules
+/pgfmodulebending.code.tex
+File: pgfmodulebending.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/modules
+/pgfmodulenonlineartransformations.code.tex
+File: pgfmodulenonlineartransformations.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgftransformnonlinearflatness=\dimen319
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/librari
+es/pgflibrarycurvilinear.code.tex
+File: pgflibrarycurvilinear.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@curvilinear@time@a=\dimen320
+\pgf@curvilinear@length@a=\dimen321
+\pgf@curvilinear@length@b=\dimen322
+\pgf@curvilinear@length@c=\dimen323
+\pgf@curvilinear@length@d=\dimen324
+)
+\pgf@arrows@the@rigidity=\dimen325
+))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/fronten
+dlayer/tikz/libraries/tikzlibraryfpu.code.tex
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/pgf/librari
+es/pgflibraryfpu.code.tex))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcirc.defines.tex
+\pgf@circ@count@a=\count367
+\pgf@circ@count@b=\count368
+\pgf@circ@count@c=\count369
+\pgf@circ@res@up=\dimen326
+\pgf@circ@res@down=\dimen327
+\pgf@circ@res@zero=\dimen328
+\pgf@circ@res@left=\dimen329
+\pgf@circ@res@right=\dimen330
+\pgf@circ@res@other=\dimen331
+\pgf@circ@res@step=\dimen332
+\pgf@circ@res@temp=\dimen333
+\pgf@circ@Rlen=\dimen334
+\pgf@circ@scaled@Rlen=\dimen335
+\pgfstartlinewidth=\dimen336
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircutils.tex
+\ctikz@scratchbox=\box83
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircpath.tex
+\ctikz@vif@count=\count370
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircshapes.tex)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircmonopoles.tex)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircbipoles.tex)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcirctripoles.tex
+\pgf@circ@res@count=\count371
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircquadpoles.tex)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircmultipoles.tex)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcirclabel.tex)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircvoltage.tex
+\pgfcirc@labelshift=\dimen337
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcirccurrent.tex)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/generic/circuitikz/
+pgfcircflow.tex))
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/listings/list
+ings.sty
+\lst@mode=\count372
+\lst@gtempboxa=\box84
+\lst@token=\toks48
+\lst@length=\count373
+\lst@currlwidth=\dimen338
+\lst@column=\count374
+\lst@pos=\count375
+\lst@lostspace=\dimen339
+\lst@width=\dimen340
+\lst@newlines=\count376
+\lst@lineno=\count377
+\lst@maxwidth=\dimen341
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/listings/lstp
+atch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/listings/lstm
+isc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count378
+\lst@skipnumbers=\count379
+\lst@framebox=\box85
+)
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/listings/list
+ings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
+))
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
+
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/booktabs/book
+tabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen342
+\lightrulewidth=\dimen343
+\cmidrulewidth=\dimen344
+\belowrulesep=\dimen345
+\belowbottomsep=\dimen346
+\aboverulesep=\dimen347
+\abovetopsep=\dimen348
+\cmidrulesep=\dimen349
+\cmidrulekern=\dimen350
+\defaultaddspace=\dimen351
+\@cmidla=\count380
+\@cmidlb=\count381
+\@aboverulesep=\dimen352
+\@belowrulesep=\dimen353
+\@thisruleclass=\count382
+\@lastruleclass=\count383
+\@thisrulewidth=\dimen354
+)
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/l3backend/l3b
 ackend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count367
+\l__color_backend_stack_int=\count384
 ) (./ch11.aux)
 \openout1 = `ch11.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -950,17 +1120,17 @@ LaTeX Font Info:    ... okay on input line 29.
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/context/base/mkii/s
 upp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count368
-\scratchdimen=\dimen315
-\scratchbox=\box83
-\nofMPsegments=\count369
-\nofMParguments=\count370
-\everyMPshowfont=\toks48
-\MPscratchCnt=\count371
-\MPscratchDim=\dimen316
-\MPnumerator=\count372
-\makeMPintoPDFobject=\count373
-\everyMPtoPDFconversion=\toks49
+\scratchcounter=\count385
+\scratchdimen=\dimen355
+\scratchbox=\box86
+\nofMPsegments=\count386
+\nofMParguments=\count387
+\everyMPshowfont=\toks49
+\MPscratchCnt=\count388
+\MPscratchDim=\dimen356
+\MPnumerator=\count389
+\makeMPintoPDFobject=\count390
+\everyMPtoPDFconversion=\toks50
 )
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/epstopdf-pkg/
 epstopdf-base.sty
@@ -973,63 +1143,63 @@ pstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 29.
-(./ch11.out) (./ch11.out)
+Package hyperref Info: Link coloring OFF on input line 59.
+ (./ch11.out) (./ch11.out)
 \@outlinefile=\write5
 \openout5 = `ch11.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 29.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 59.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 29.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 59.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 29.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 29.
+(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 59.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 29.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 29.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 29.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 59.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 29.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 29.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 29.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 59.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 29.
+(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 29.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 29.
+(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 59.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 29.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 29.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 59.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 29.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 59.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 29.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/cmr/b/n on input line 29.
+(Font)                  OT1/cmss/b/n --> OT1/cmr/b/n on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/cmss/b/n on input line 29.
+(Font)                  OT1/cmss/b/n --> OT1/cmss/b/n on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 29.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 29.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 59.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/b/n on input line 29.
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 29.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/b/n on input line 59.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 59.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 2
+(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 5
 9.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 2
+(Font)                  OT1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 5
 9.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
-ut line 29.
+ut line 59.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/translator/tr
 anslator-basic-dictionary-English.dict
@@ -1054,61 +1224,17 @@ Dictionary: translator-numbers-dictionary, Language: English
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/translator/tr
 anslator-theorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
-) (./ch11.nav)
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 29--29
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 33--33
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[1
-
-{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/map/pdftex/updmap
-/pdftex.map}]
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 42--42
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[2
-
-]
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 46--46
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-(./ch11.toc)
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[3
-
-]
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 60--60
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-LaTeX Font Info:    Trying to load font information for U+msa on input line 60.
+)
+\c@lstlisting=\count391
+ (./ch11.nav)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 66.
 
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/umsa
 .fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 60.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 66.
 
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/amsfonts/umsb
@@ -1116,120 +1242,94 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 60.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
-ut line 60.
+ut line 66.
 
 (/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/tex/latex/sansmathaccen
 t/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
 )
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+LaTeX Font Info:    Trying to load font information for OMS+cmss on input line 
+66.
+LaTeX Font Info:    No file OMScmss.fd. on input line 66.
 
-[4
 
-]
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+LaTeX Font Warning: Font shape `OMS/cmss/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbar' on input line 66.
 
-[5
+[1
 
-]
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[6
+{/opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/map/pdftex/updmap
+/pdftex.map}] [2
 
 ]
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 75--75
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+LaTeX Font Info:    Font shape `OT1/cmss/b/n' in size <9> not available
+(Font)              Font shape `OT1/cmss/bx/n' tried instead on input line 117.
 
+LaTeX Font Info:    Font shape `OT1/cmss/b/n' in size <6> not available
+(Font)              Font shape `OT1/cmss/bx/n' tried instead on input line 117.
 
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+LaTeX Font Info:    Font shape `OT1/cmss/b/n' in size <5> not available
+(Font)              Font shape `OT1/cmss/bx/n' tried instead on input line 117.
 
-[7
-
-]
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[8
+ [3
 
 ]
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 100--100
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+LaTeX Font Info:    Font shape `OT1/cmss/b/n' in size <10> not available
+(Font)              Font shape `OT1/cmss/bx/n' tried instead on input line 153.
 
+LaTeX Font Info:    Font shape `OT1/cmss/b/n' in size <7> not available
+(Font)              Font shape `OT1/cmss/bx/n' tried instead on input line 153.
 
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+LaTeX Font Info:    Font shape `OT1/cmss/b/n' in size <14.4> not available
+(Font)              Font shape `OT1/cmss/bx/n' tried instead on input line 153.
 
-[9
-
-]
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[10
+ [4
 
 ]
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 111--111
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+LaTeX Font Info:    Font shape `OT1/cmss/b/n' in size <12> not available
+(Font)              Font shape `OT1/cmss/bx/n' tried instead on input line 188.
 
+LaTeX Font Info:    Font shape `OT1/cmss/b/n' in size <8> not available
+(Font)              Font shape `OT1/cmss/bx/n' tried instead on input line 188.
 
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+ [5
 
-[11
+] [6
+
+] [7
+
+] [8
+
+] [9
+
+] [10
+
+] [11
+
+] [12
 
 ]
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 122--122
- [][]  \OT1/cmss/m/n/5 ([])  
- []
+\openout4 = `ch11.vrb'.
 
-
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[12
-
-]
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
+ (./ch11.vrb
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <5> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 6.
+<figures/slides/plot_ch11.png, id=730, 346.896pt x 231.264pt>
+File: figures/slides/plot_ch11.png Graphic file (type png)
+<use figures/slides/plot_ch11.png>
+Package pdftex.def Info: figures/slides/plot_ch11.png  used on input line 22.
+(pdftex.def)             Requested size: 139.57109pt x 93.0474pt.
+)
 [13
 
-]
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[14
+ <./figures/slides/plot_ch11.png>] [14
 
 ]
-Overfull \hbox (52.06044pt too wide) in paragraph at lines 130--130
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-
-Overfull \hbox (52.06044pt too wide) has occurred while \output is active
- [][]  \OT1/cmss/m/n/5 ([])  
- []
-
-[15
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <7> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 535.
+ [15
 
 ]
 \tf@nav=\write6
@@ -1241,44 +1341,63 @@ Overfull \hbox (52.06044pt too wide) has occurred while \output is active
 \tf@snm=\write8
 \openout8 = `ch11.snm'.
 
-(./ch11.aux)
+ (./ch11.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
 Package rerunfilecheck Info: File `ch11.out' has not changed.
-(rerunfilecheck)             Checksum: B66367C3A6FEFEE08ACC5412797E68F1;907.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 24987 strings out of 467525
- 507243 string characters out of 5408440
- 878441 words of memory out of 5000000
- 53368 multiletter control sequences out of 15000+600000
- 639282 words of font info for 81 fonts, out of 8000000 for 9000
+ 46795 strings out of 467525
+ 1133901 string characters out of 5408440
+ 1834959 words of memory out of 5000000
+ 75076 multiletter control sequences out of 15000+600000
+ 646027 words of font info for 106 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 128i,15n,123p,396b,873s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,18n,123p,484b,1818s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmex10.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20260301/
-share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></opt/homebrew/Cellar
-/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></
+nts/type1/public/amsfonts/cmextra/cmex9.pfb></opt/homebrew/Cellar/texlive/20260
+301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></opt/homebrew/
+Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.
+pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi12.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmi5.pfb></opt/homebrew/Cellar/texlive/20260301
+/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/homebrew/Cella
+r/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></
 opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmss12.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmss8.pfb></opt/homebrew/Cellar/texlive/20260301/share
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></opt/homebrew/Cellar/t
-exlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></o
-pt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmssi12.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmssi8.pfb></opt/homebrew/Cellar/texlive/20260301/shar
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi9.pfb></opt/homebrew/Cellar/te
-xlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt
-/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy5.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmsy7.pfb>
-Output written on ch11.pdf (15 pages, 205161 bytes).
+ts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi9.pfb></opt/homebrew/Cellar/texlive/20260301/share/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></opt/homebrew/Cellar/texl
+ive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></opt/h
+omebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmss8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmss9.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></opt/homebrew/Cellar/texlive
+/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></opt/hom
+ebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mssi12.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmssi8.pfb></opt/homebrew/Cellar/texlive/20260301/share/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmssi9.pfb></opt/homebrew/Cellar/texlive/
+20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homeb
+rew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y5.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/20260301/share/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy7.pfb></opt/homebrew/Cellar/texlive/202603
+01/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cel
+lar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
+</opt/homebrew/Cellar/texlive/20260301/share/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmtt8.pfb>
+Output written on ch11.pdf (15 pages, 474425 bytes).
 PDF statistics:
- 683 PDF objects out of 1000 (max. 8388607)
- 533 compressed objects within 6 object streams
- 35 named destinations out of 1000 (max. 500000)
- 567 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1012 PDF objects out of 1200 (max. 8388607)
+ 694 compressed objects within 7 object streams
+ 31 named destinations out of 1000 (max. 500000)
+ 1332 words of extra memory for PDF output out of 10000 (max. 10000000)
 

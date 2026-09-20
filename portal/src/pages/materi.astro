@@ -1,0 +1,259 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PdWeekCard from '../components/PdWeekCard.astro';
+import { pdModules } from '../data/pdData';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+const getUrl = (path: string) => `${base}${path}`;
+---
+
+<Layout title="Katalog 14 Modul Perkuliahan & Slide | Persamaan Diferensial UNIB 2026">
+  <!-- Header Banner -->
+  <section class="materi-header-section">
+    <div class="container">
+      <div class="header-breadcrumbs">
+        <a href={getUrl('/')} class="crumb-link">&larr; Kembali ke Beranda</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current">Katalog Modul Perkuliahan</span>
+      </div>
+
+      <div class="header-content">
+        <span class="pill-badge">
+          <i data-lucide="book-marked"></i> REPOSITORI LENGKAP BAHAN AJAR
+        </span>
+        <h1 class="header-title">
+          14 Bab Modul, Slide &amp; <span class="gradient-text">Solved Problems C1–C6</span>
+        </h1>
+        <p class="header-lead">
+          Kumpulan materi lengkap mata kuliah Persamaan Diferensial (Fokus Medan Elektromagnetika &amp; Rangkaian Listrik): slide presentasi Beamer (PDF), bank soal terstruktur level Bloom C1–C6 beserta solusi analitis, lembar kerja mahasiswa (LKM), video perkuliahan Full HD, dan catatan kuliah monograf komprehensif.
+        </p>
+        <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="https://www.youtube.com/playlist?list=PLS5oOZWXZeTw" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-yt-nav" style="padding: 8px 16px; font-size: 0.95rem;">
+            <i data-lucide="youtube"></i> Tonton Playlist Lengkap Perkuliahan (14 Video YouTube)
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter & Catalog Grid -->
+  <section class="catalog-section">
+    <div class="container">
+      <!-- Filter Controls & Live Search -->
+      <div class="filter-toolbar glass-panel">
+        <div class="filter-chips-wrap" id="filter-chips">
+          <button class="filter-chip active" data-filter="all">Semua Minggu (1–14)</button>
+          <button class="filter-chip" data-filter="Fondasi PDB & Rangkaian">Fondasi PDB</button>
+          <button class="filter-chip" data-filter="Aplikasi Transien">Aplikasi Transien</button>
+          <button class="filter-chip" data-filter="Sistem Orde 2 & Resonansi">Orde 2 &amp; RLC</button>
+          <button class="filter-chip" data-filter="Metode Laplace">Transformasi Laplace</button>
+          <button class="filter-chip" data-filter="PDP & Deret Fourier">PDP &amp; Fourier</button>
+          <button class="filter-chip" data-filter="Medan EM & Gelombang">Gelombang &amp; Maxwell</button>
+        </div>
+
+        <div class="search-input-wrap">
+          <i data-lucide="search" class="search-icon-pos"></i>
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-text-input" 
+            placeholder="Cari Laplace, Fourier, Telegrafer, RLC, Maxwell, atau rumus..." 
+          />
+        </div>
+      </div>
+
+      <div class="weeks-grid-container" id="weeks-grid">
+        {pdModules.map((mod) => (
+          <PdWeekCard module={mod} />
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .materi-header-section {
+    padding: 60px 0 40px;
+    background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .header-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+  }
+
+  .crumb-link {
+    color: var(--neon-gold);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .crumb-link:hover {
+    text-decoration: underline;
+  }
+
+  .crumb-sep {
+    color: var(--text-dim);
+  }
+
+  .crumb-current {
+    color: var(--text-muted);
+  }
+
+  .header-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin: 14px 0 12px;
+    line-height: 1.2;
+  }
+
+  .header-lead {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 740px;
+    line-height: 1.6;
+  }
+
+  .catalog-section {
+    padding: 50px 0 80px;
+  }
+
+  .filter-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    margin-bottom: 30px;
+    border-radius: var(--radius-lg);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .filter-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-chip {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-chip:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+  }
+
+  .filter-chip.active {
+    background: var(--gradient-gold-amber);
+    color: #04121e;
+    border-color: var(--neon-gold);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+  }
+
+  .search-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 280px;
+  }
+
+  .search-icon-pos {
+    position: absolute;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    color: var(--text-dim);
+    pointer-events: none;
+  }
+
+  .search-text-input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    background: rgba(9, 13, 22, 0.8);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-size: 0.85rem;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .search-text-input:focus {
+    border-color: var(--neon-gold);
+    box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+  }
+
+  .weeks-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+  }
+</style>
+
+<script>
+  function initMateriFilter() {
+    const filterChips = document.querySelectorAll('.filter-chip');
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const cards = document.querySelectorAll('.pd-card') as NodeListOf<HTMLElement>;
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function applyFilterAndSearch() {
+      cards.forEach((card) => {
+        const category = card.getAttribute('data-category') || '';
+        const title = (card.getAttribute('data-title') || '').toLowerCase();
+        const topics = (card.getAttribute('data-topics') || '').toLowerCase();
+        const week = card.getAttribute('data-week') || '';
+
+        const matchesCategory = currentFilter === 'all' || category === currentFilter;
+        const matchesSearch = 
+          searchQuery === '' ||
+          title.includes(searchQuery) ||
+          topics.includes(searchQuery) ||
+          week === searchQuery;
+
+        if (matchesCategory && matchesSearch) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        filterChips.forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentFilter = chip.getAttribute('data-filter') || 'all';
+        applyFilterAndSearch();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e: any) => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        applyFilterAndSearch();
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initMateriFilter);
+  document.addEventListener('astro:page-load', initMateriFilter);
+</script>

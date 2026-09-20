@@ -1,3 +1,0 @@
-\beamer@sectionintoc {1}{Empat Persamaan Diferensial Maxwell}{4}{0}{1}
-\beamer@sectionintoc {2}{Penurunan Persamaan Gelombang EM 3D}{8}{0}{2}
-\beamer@sectionintoc {3}{Panduan Team-Based Project}{11}{0}{3}

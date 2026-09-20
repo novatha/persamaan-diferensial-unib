@@ -1,7 +1,24 @@
-\contentsline {section}{\numberline {1}Pendahuluan}{2}{section.1}%
-\contentsline {section}{\numberline {2}Materi Utama}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Prinsip Dasar Metode Pemisahan Variabel}{2}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Langkah-langkah Pemecahan}{2}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Contoh: Persamaan Panas 1D}{3}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Ringkasan}{3}{section.3}%
-\contentsline {section}{\numberline {4}Referensi}{3}{section.4}%
+\babel@toc {indonesian}{}\relax 
+\contentsline {section}{\numberline {1}Peta Konsep \& Posisi Modul dalam Kurikulum}{4}{section.1}%
+\contentsline {section}{\numberline {2}Pendahuluan \& Filosofi Fisika Rekayasa: Dekomposisi Ruang dan Waktu}{4}{section.2}%
+\contentsline {section}{\numberline {3}Prinsip Dasar Matematis Pemisahan Variabel \& Konstanta Pemisahan}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Reduksi PDP Menjadi Pasangan PDB}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Argumen Logika Pemisahan: Mengapa Rasio Harus Konstan?}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Analisis Fisis Pemilihan Tanda Konstanta Pemisahan}{5}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Taksonomi Tiga Syarat Batas Fisis Rekayasa (Dirichlet, Neumann, Robin)}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}1. Syarat Batas Dirichlet (\textit {Dirichlet Boundary Condition})}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}2. Syarat Batas Neumann (\textit {Neumann Boundary Condition})}{6}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}3. Syarat Batas Campuran / Robin (\textit {Robin Boundary Condition})}{7}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Nilai Eigen, Fungsi Eigen \& Teori Sturm-Liouville}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Penurunan Nilai Eigen untuk Syarat Batas Dirichlet}{7}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Prinsip Superposisi \& Penentuan Koefisien dari Syarat Awal}{8}{section.6}%
+\contentsline {section}{\numberline {7}Studi Kasus Industri: Distribusi Termal Transien Busbar Gardu Induk 500 kV PLN}{8}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Konteks Rekayasa Transien Termal Gardu Induk}{8}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Pemodelan Matematis Difusi Panas 1D Busbar}{8}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Contoh Soal Terhitung Numerik Langkah demi Langkah}{9}{section.8}%
+\contentsline {section}{\numberline {9}Praktikum Komputasi Numerik Terbuka Berbasis Julia}{12}{section.9}%
+\contentsline {section}{\numberline {10}Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}{13}{section.10}%
+\contentsline {section}{\numberline {11}Rangkuman, Glosarium Istilah Teknis, dan Referensi Standar}{14}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Rangkuman Inti Perkuliahan}{14}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Glosarium Istilah Teknis Rekayasa}{14}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Referensi Standar Industri \& Akademis}{14}{subsection.11.3}%

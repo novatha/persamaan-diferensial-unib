@@ -1,0 +1,220 @@
+---
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+const getUrl = (path: string) => `${base}${path}`;
+---
+
+<header class="navbar-wrapper">
+  <nav class="navbar glass-panel" aria-label="Navigasi Utama">
+    <a href={getUrl('/')} class="nav-brand" aria-label="Beranda Portal Persamaan Diferensial UNIB">
+      <div class="brand-badge">
+        <span class="brand-icon" aria-hidden="true">∫</span>
+      </div>
+      <div class="brand-info">
+        <span class="brand-title">PERSAMAAN DIFERENSIAL</span>
+        <span class="brand-subtitle">Medan Elektromagnetika & Rangkaian • S1 Elektro UNIB</span>
+      </div>
+    </a>
+
+    <ul class="nav-menu">
+      <li><a href={getUrl('/')} class="nav-link">Beranda</a></li>
+      <li><a href={getUrl('/silabus')} class="nav-link">Silabus &amp; RPS</a></li>
+      <li><a href={getUrl('/materi')} class="nav-link">14 Modul Ajar</a></li>
+      <li><a href={getUrl('/tugas')} class="nav-link">Solved Problems C1–C6</a></li>
+      <li><a href={getUrl('/ujian')} class="nav-link">UTS &amp; UAS</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="https://www.youtube.com/playlist?list=PLS5oOZWXZeTw" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-yt-nav" aria-label="Playlist YouTube Resmi">
+        <i data-lucide="youtube" aria-hidden="true"></i> YouTube
+      </a>
+      <a href="https://www.ndaratha.my.id" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline" aria-label="Website Utama ndaratha.my.id">
+        <i data-lucide="globe" aria-hidden="true"></i> ndaratha.my.id
+      </a>
+      <button class="mobile-toggle-btn" id="mobile-toggle-btn" aria-label="Buka Menu Navigasi" aria-expanded="false">
+        <i data-lucide="menu" id="menu-icon-bars" aria-hidden="true"></i>
+        <i data-lucide="x" id="menu-icon-close" class="hidden-icon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-menu-drawer glass-panel" id="mobile-menu-drawer">
+    <ul class="mobile-nav-list">
+      <li><a href={getUrl('/')} class="mobile-nav-link">∫ Beranda Portal</a></li>
+      <li><a href={getUrl('/silabus')} class="mobile-nav-link">📋 Silabus &amp; RPS OBE</a></li>
+      <li><a href={getUrl('/materi')} class="mobile-nav-link">📚 14 Bab Modul &amp; Slide</a></li>
+      <li><a href={getUrl('/tugas')} class="mobile-nav-link">📝 Solved Problems C1–C6</a></li>
+      <li><a href={getUrl('/ujian')} class="mobile-nav-link">🎯 Arsip UTS &amp; UAS</a></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLS5oOZWXZeTw" target="_blank" rel="noopener noreferrer" class="mobile-nav-link text-yt">📺 Playlist YouTube Resmi</a></li>
+    </ul>
+  </div>
+</header>
+
+<style>
+  .navbar-wrapper {
+    position: sticky;
+    top: 12px;
+    z-index: 100;
+    width: 100%;
+    padding: 0 16px;
+    max-width: var(--container-width);
+    margin: 0 auto;
+  }
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-subtle);
+    background: rgba(9, 13, 22, 0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .brand-badge {
+    width: 36px;
+    height: 36px;
+    background: var(--gradient-gold-amber);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+  }
+
+  .brand-icon {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #04121e;
+  }
+
+  .brand-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: 0.04em;
+  }
+
+  .brand-subtitle {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    transition: all 0.2s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mobile-toggle-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 6px;
+  }
+
+  .hidden-icon {
+    display: none;
+  }
+
+  .mobile-menu-drawer {
+    display: none;
+    margin-top: 8px;
+    border-radius: var(--radius-lg);
+    padding: 16px;
+  }
+
+  .btn-yt-nav {
+    background: rgba(239, 68, 68, 0.14);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #fca5a5;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
+  .btn-yt-nav:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.45);
+  }
+  .text-yt {
+    color: #ef4444 !important;
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .nav-menu {
+      display: none;
+    }
+    .mobile-toggle-btn {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  function initMobileMenu() {
+    const toggleBtn = document.getElementById('mobile-toggle-btn');
+    const drawer = document.getElementById('mobile-menu-drawer');
+    const bars = document.getElementById('menu-icon-bars');
+    const close = document.getElementById('menu-icon-close');
+
+    if (toggleBtn && drawer) {
+      toggleBtn.addEventListener('click', () => {
+        const isOpen = drawer.style.display === 'block';
+        drawer.style.display = isOpen ? 'none' : 'block';
+        if (bars && close) {
+          bars.style.display = isOpen ? 'block' : 'none';
+          close.style.display = isOpen ? 'none' : 'block';
+        }
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initMobileMenu);
+  document.addEventListener('astro:page-load', initMobileMenu);
+</script>

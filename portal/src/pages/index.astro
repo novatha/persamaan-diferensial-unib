@@ -1,0 +1,308 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PdWeekCard from '../components/PdWeekCard.astro';
+import { pdMetadata, pdModules } from '../data/pdData';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+const getUrl = (path: string) => `${base}${path}`;
+---
+
+<Layout title="Persamaan Diferensial | S1 Teknik Elektro UNIB 2026">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-pill-box">
+            <span class="pill-badge">
+              <i data-lucide="zap"></i> S1 TEKNIK ELEKTRO UNIB • KURIKULUM OBE 2026
+            </span>
+          </div>
+
+          <h1 class="hero-headline">
+            Matematika Teknik:<br />
+            <span class="gradient-text">Persamaan Diferensial</span>
+          </h1>
+
+          <p class="hero-lead">
+            Portal pembelajaran interaktif dan repositori perkuliahan komprehensif. Menghubungkan intuisi fisika dinamika energi rangkaian listrik (RC, RL, RLC), transformasi Laplace domain frekuensi kompleks $s$, deret Fourier, persamaan telegrafer saluran transmisi 1D, persamaan difusi panas kabel daya, hingga sintesis mahakarya 4 Persamaan Maxwell.
+          </p>
+
+          <!-- Quick Action Buttons -->
+          <div class="hero-cta-group">
+            <a href={getUrl('/silabus')} class="btn btn-primary">
+              <i data-lucide="book-open"></i> Rencana Pembelajaran (RPS)
+            </a>
+            <a href={getUrl('/materi')} class="btn btn-outline">
+              <i data-lucide="layers"></i> 14 Modul Slide &amp; Soal
+            </a>
+            <a href="https://www.youtube.com/playlist?list=PLS5oOZWXZeTw" target="_blank" rel="noopener noreferrer" class="btn btn-cyan">
+              <i data-lucide="youtube"></i> Playlist Resmi YouTube
+            </a>
+          </div>
+
+          <!-- Metadata Quick Stats -->
+          <div class="hero-stats-row">
+            <div class="stat-item">
+              <span class="stat-number">14</span>
+              <span class="stat-label">Bab Perkuliahan</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">3 SKS</span>
+              <span class="stat-label">Teori &amp; Komputasi</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">1080p</span>
+              <span class="stat-label">Video Kuliah Daring</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">C1–C6</span>
+              <span class="stat-label">Taksonomi Bloom</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profil Mata Kuliah & Pengampu -->
+  <section class="section-container">
+    <div class="container">
+      <div class="grid-2col">
+        <div class="glass-panel info-card">
+          <h2 class="card-section-title">
+            <i data-lucide="info"></i> Informasi Akademik Mata Kuliah
+          </h2>
+          <table class="meta-table">
+            <tbody>
+              <tr>
+                <td><strong>Mata Kuliah</strong></td>
+                <td>{pdMetadata.courseName}</td>
+              </tr>
+              <tr>
+                <td><strong>Fokus Keahlian</strong></td>
+                <td>{pdMetadata.courseSubtitle}</td>
+              </tr>
+              <tr>
+                <td><strong>Kode &amp; Bobot</strong></td>
+                <td>{pdMetadata.courseCode} • {pdMetadata.credits}</td>
+              </tr>
+              <tr>
+                <td><strong>Program Studi</strong></td>
+                <td>{pdMetadata.studyProgram}, {pdMetadata.faculty}, {pdMetadata.university}</td>
+              </tr>
+              <tr>
+                <td><strong>Dosen Pengampu</strong></td>
+                <td>
+                  <strong>{pdMetadata.lecturers[0].name}</strong><br />
+                  <span class="text-dim">{pdMetadata.lecturers[1].name}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="glass-panel info-card">
+          <h2 class="card-section-title">
+            <i data-lucide="check-circle-2"></i> Capaian Pembelajaran Mata Kuliah (CPMK)
+          </h2>
+          <ul class="cpmk-list">
+            {pdMetadata.cpmkList.map(c => (
+              <li>
+                <span class="cpmk-tag">{c.code}</span>
+                <span class="cpmk-desc">{c.desc}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Modules Preview (First 4 Weeks) -->
+  <section class="section-container">
+    <div class="container">
+      <div class="section-header-row">
+        <div>
+          <span class="pill-badge">KATALOG BAHAN AJAR</span>
+          <h2 class="section-title">Modul Perkuliahan Unggulan</h2>
+          <p class="section-sub">Akses materi kuliah lengkap, slide presentasi, lembar kerja, dan simulasi komputasi.</p>
+        </div>
+        <a href={getUrl('/materi')} class="btn btn-outline">
+          Lihat Semua 14 Modul &rarr;
+        </a>
+      </div>
+
+      <div class="weeks-grid-container">
+        {pdModules.slice(0, 4).map((mod) => (
+          <PdWeekCard module={mod} />
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero-section {
+    padding: 70px 0 60px;
+    background: radial-gradient(circle at 50% 10%, rgba(245, 158, 11, 0.1) 0%, transparent 65%);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .hero-headline {
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 16px 0;
+  }
+
+  .hero-lead {
+    font-size: 1.08rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 820px;
+    margin-bottom: 28px;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+
+  .hero-stats-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--neon-gold);
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .section-container {
+    padding: 60px 0;
+  }
+
+  .grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 860px) {
+    .grid-2col {
+      grid-template-columns: 1fr;
+    }
+    .hero-headline {
+      font-size: 2.3rem;
+    }
+  }
+
+  .info-card {
+    padding: 28px;
+    border-radius: var(--radius-lg);
+  }
+
+  .card-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-main);
+  }
+
+  .meta-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .meta-table td {
+    padding: 10px 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+  }
+
+  .meta-table td strong {
+    color: var(--text-main);
+  }
+
+  .cpmk-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cpmk-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .cpmk-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--neon-gold);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 8px 0 4px;
+  }
+
+  .section-sub {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .weeks-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+  }
+</style>

@@ -1,4 +1,0 @@
-\beamer@sectionintoc {1}{Asal Mula Persamaan Bessel dalam Koordinat Silinder}{4}{0}{1}
-\beamer@sectionintoc {2}{Solusi: Fungsi Bessel $J_\nu (x)$ \& $Y_\nu (x)$}{6}{0}{2}
-\beamer@sectionintoc {3}{Aplikasi Elektro: Efek Kulit \& Pandu Gelombang}{9}{0}{3}
-\beamer@sectionintoc {4}{Kuis \& Rangkuman}{11}{0}{4}

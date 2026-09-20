@@ -1,0 +1,340 @@
+---
+import type { PdModule } from '../data/pdData';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+const getUrl = (path?: string) => path ? `${base}${path}` : null;
+
+interface Props {
+  module: PdModule;
+}
+
+const { module } = Astro.props;
+
+const categoryClasses: Record<string, string> = {
+  'Fondasi PDB & Rangkaian': 'cat-fondasi',
+  'Aplikasi Transien': 'cat-transien',
+  'Sistem Orde 2 & Resonansi': 'cat-orde2',
+  'Metode Laplace': 'cat-laplace',
+  'PDP & Deret Fourier': 'cat-fourier',
+  'Medan EM & Gelombang': 'cat-gelombang'
+};
+
+const catClass = categoryClasses[module.category] || 'cat-fondasi';
+---
+
+<article 
+  class={`pd-card card ${catClass}`} 
+  data-category={module.category} 
+  data-week={module.week} 
+  data-title={module.title.toLowerCase()}
+  data-topics={module.theoryTopics.join(' ').toLowerCase()}
+>
+  <div class="card-inner-top">
+    <div class="card-header-meta">
+      <span class="week-number-pill">
+        <i data-lucide="zap"></i> Minggu {module.week}
+      </span>
+      <span class="category-badge">
+        {module.category}
+      </span>
+    </div>
+
+    <h3 class="card-title">
+      {module.title}
+    </h3>
+
+    <p class="card-subtitle">
+      {module.subTitle}
+    </p>
+
+    <div class="subcpmk-pill">
+      <i data-lucide="check-circle-2" class="cpmk-icon"></i>
+      <span>{module.subCpmk}</span>
+    </div>
+
+    <div class="topics-tags-wrap">
+      {module.theoryTopics.map(topic => (
+        <span class="topic-tag">{topic}</span>
+      ))}
+    </div>
+
+    {module.formulaLatex && (
+      <div class="formula-preview-box">
+        <span class="formula-label">Formulasi Matematis:</span>
+        <div class="math-expr">
+          $${module.formulaLatex}$$
+        </div>
+      </div>
+    )}
+  </div>
+
+  <div class="card-inner-bottom">
+    <div class="download-action-grid">
+      {module.youtubeUrl ? (
+        <a href={module.youtubeUrl} target="_blank" rel="noopener noreferrer" class="doc-btn doc-btn-yt" title="Tonton Video Kuliah di YouTube">
+          <i data-lucide="youtube"></i> YouTube
+        </a>
+      ) : (
+        <span class="doc-btn doc-btn-disabled" title="Video Segera Hadir">
+          <i data-lucide="clock"></i> Video Segera
+        </span>
+      )}
+      {module.videoFile && (
+        <a href={getUrl(module.videoFile)} target="_blank" rel="noopener noreferrer" class="doc-btn doc-btn-video" title="Unduh Video Full HD MP4">
+          <i data-lucide="play-circle"></i> Video MP4
+        </a>
+      )}
+      {module.slidesPdf && (
+        <a href={getUrl(module.slidesPdf)} target="_blank" rel="noopener noreferrer" class="doc-btn doc-btn-slide" title="Unduh Slide Beamer 16:9 PDF">
+          <i data-lucide="presentation"></i> Slide Beamer
+        </a>
+      )}
+      {module.solvedPdf && (
+        <a href={getUrl(module.solvedPdf)} target="_blank" rel="noopener noreferrer" class="doc-btn doc-btn-sol" title="Unduh Solusi & Bank Soal C1–C6 PDF">
+          <i data-lucide="check-square"></i> Solusi C1–C6
+        </a>
+      )}
+      {module.worksheetPdf && (
+        <a href={getUrl(module.worksheetPdf)} target="_blank" rel="noopener noreferrer" class="doc-btn doc-btn-ws" title="Unduh Lembar Kerja Mahasiswa PDF">
+          <i data-lucide="file-text"></i> Lembar Kerja
+        </a>
+      )}
+      {module.notesPdf && (
+        <a href={getUrl(module.notesPdf)} target="_blank" rel="noopener noreferrer" class="doc-btn doc-btn-notes" title="Unduh Diktat / Catatan Kuliah Monograf PDF">
+          <i data-lucide="book-open"></i> Catatan Kuliah
+        </a>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .pd-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-inner-top {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card-header-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .week-number-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--neon-gold);
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.04em;
+  }
+
+  .category-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--cat-bg, rgba(255, 255, 255, 0.06));
+    color: var(--cat-color, var(--text-muted));
+    border: 1px solid var(--cat-border, rgba(255, 255, 255, 0.1));
+  }
+
+  .card-title {
+    font-size: 1.22rem;
+    font-weight: 800;
+    line-height: 1.35;
+    margin: 4px 0 0;
+    color: var(--text-main);
+  }
+
+  .card-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    line-height: 1.5;
+  }
+
+  .subcpmk-pill {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #fde68a;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+  }
+
+  .cpmk-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--neon-gold);
+  }
+
+  .topics-tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .topic-tag {
+    font-size: 0.72rem;
+    color: var(--text-subtle);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .formula-preview-box {
+    background: rgba(9, 13, 22, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-top: 6px;
+    font-size: 0.82rem;
+  }
+
+  .formula-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--neon-gold);
+    margin-bottom: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  .math-expr {
+    overflow-x: auto;
+    color: #e2e8f0;
+  }
+
+  .card-inner-bottom {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .download-action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+  }
+
+  .doc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .doc-btn-slide {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--neon-gold);
+    border-color: rgba(245, 158, 11, 0.25);
+  }
+
+  .doc-btn-slide:hover {
+    background: var(--neon-gold);
+    color: #04121e;
+  }
+
+  .doc-btn-sol {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--neon-emerald);
+    border-color: rgba(16, 185, 129, 0.25);
+  }
+
+  .doc-btn-sol:hover {
+    background: var(--neon-emerald);
+    color: #04121e;
+  }
+
+  .doc-btn-ws {
+    background: rgba(6, 182, 212, 0.12);
+    color: var(--neon-cyan);
+    border-color: rgba(6, 182, 212, 0.25);
+  }
+
+  .doc-btn-ws:hover {
+    background: var(--neon-cyan);
+    color: #04121e;
+  }
+
+  .doc-btn-notes {
+    background: rgba(139, 92, 246, 0.12);
+    color: var(--neon-violet);
+    border-color: rgba(139, 92, 246, 0.25);
+  }
+
+  .doc-btn-notes:hover {
+    background: var(--neon-violet);
+    color: #04121e;
+  }
+
+  .doc-btn-video {
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.25);
+  }
+
+  .doc-btn-video:hover {
+    background: #ef4444;
+    color: #ffffff;
+  }
+
+  .doc-btn-yt {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.45);
+    font-weight: 700;
+  }
+
+  .doc-btn-yt:hover {
+    background: #dc2626;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
+  }
+
+  .doc-btn-disabled {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-dim);
+    border-color: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+  }
+</style>

@@ -1,8 +1,22 @@
-\contentsline {section}{\numberline {1}Pendahuluan}{2}{section.1}%
-\contentsline {section}{\numberline {2}Materi Utama}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Persamaan Bessel}{2}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Fungsi Bessel Jenis Pertama, $J_\nu (x)$}{2}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Fungsi Bessel Jenis Kedua, $Y_\nu (x)$}{2}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Aplikasi: Gelombang dalam Waveguide Silinder}{2}{subsection.2.4}%
-\contentsline {section}{\numberline {3}Ringkasan}{3}{section.3}%
-\contentsline {section}{\numberline {4}Referensi}{3}{section.4}%
+\babel@toc {indonesian}{}\relax 
+\contentsline {section}{\numberline {1}Peta Konsep \& Posisi Modul dalam Kurikulum}{4}{section.1}%
+\contentsline {section}{\numberline {2}Pendahuluan \& Filosofi Fisika: Asal Usul Geometris Fungsi Bessel}{4}{section.2}%
+\contentsline {section}{\numberline {3}Metode Deret Frobenius \& Solusi Persamaan Bessel}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Metode Deret Frobenius}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Fungsi Bessel Jenis Pertama: $J_\nu (x)$}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Fungsi Bessel Jenis Kedua: $Y_\nu (x)$ (Fungsi Neumann)}{6}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Aplikasi Fundamental Rekayasa Elektro: Efek Kulit (Skin Effect) pada Konduktor AC}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Latar Belakang Fisika: Desakan Arus AC ke Permukaan}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Penurunan Persamaan Diferensial Kerapatan Arus}{7}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Kedalaman Penetrasi Kulit (Skin Depth, $\delta $)}{7}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Distribusi Rapat Arus \& Fungsi Kelvin}{7}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Studi Kasus Industri: Rugi-Rugi Daya AC pada Kawat Transmisi ACSR 150 kV PLN (Standar IEC 61089 \& IEEE Std 738)}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Dampak Efek Kulit pada Resistansi Efektif Saluran}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Inovasi Rekayasa: Konduktor ACSR \& Busbar Tubular}{8}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Contoh Soal Terhitung Numerik Langkah demi Langkah}{8}{section.6}%
+\contentsline {section}{\numberline {7}Praktikum Komputasi Numerik Terbuka Berbasis Julia}{10}{section.7}%
+\contentsline {section}{\numberline {8}Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}{11}{section.8}%
+\contentsline {section}{\numberline {9}Rangkuman, Glosarium Istilah Teknis, dan Referensi Standar}{12}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Rangkuman Inti Perkuliahan}{12}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Glosarium Istilah Teknis Rekayasa}{12}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Referensi Standar Industri \& Akademis}{12}{subsection.9.3}%

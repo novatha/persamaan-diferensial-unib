@@ -1,0 +1,127 @@
+---
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+const getUrl = (path: string) => `${base}${path}`;
+---
+
+<footer class="footer-wrapper">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Col 1: Course Brand -->
+      <div class="footer-col-main">
+        <div class="footer-brand">
+          <div class="brand-badge-sm">∫</div>
+          <div>
+            <h4 class="brand-title-sm">PERSAMAAN DIFERENSIAL</h4>
+            <p class="brand-sub-sm">Medan Elektromagnetika, Rangkaian Listrik &amp; GNU Octave</p>
+          </div>
+        </div>
+        <p class="footer-desc">
+          Portal pembelajaran digital, repositori materi kuliah Beamer 16:9, monograf diktat ajar, lembar kerja C1–C6, dan komputasi numerik untuk mahasiswa S1 Teknik Elektro, Fakultas Teknik, Universitas Bengkulu.
+        </p>
+        <div class="lecturer-tag">
+          <i data-lucide="user-check"></i>
+          <span>Dosen Pengampu: <strong>Ir. Novalio Daratha, S.T., M.Sc., Ph.D.</strong> &amp; <strong>Muhammad Arfan, S.T., M.T.</strong></span>
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation Links -->
+      <div class="footer-col">
+        <h5 class="col-title">Navigasi Perkuliahan</h5>
+        <ul class="col-links">
+          <li><a href={getUrl('/')}>Beranda Utama</a></li>
+          <li><a href={getUrl('/silabus')}>Silabus &amp; Rencana Pembelajaran (RPS)</a></li>
+          <li><a href={getUrl('/materi')}>14 Modul Slide &amp; Catatan</a></li>
+          <li><a href={getUrl('/tugas')}>Solved Problems C1–C6 Bloom</a></li>
+          <li><a href={getUrl('/ujian')}>Arsip UTS &amp; UAS Resmi</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Reference & Resources -->
+      <div class="footer-col">
+        <h5 class="col-title">Pustaka &amp; Perangkat Terbuka</h5>
+        <ul class="col-links">
+          <li><a href={getUrl('/pdf/RPS_Persamaan_Diferensial.pdf')} target="_blank" rel="noopener noreferrer">📄 RPS Persamaan Diferensial</a></li>
+          <li><a href="https://www.youtube.com/playlist?list=PLS5oOZWXZeTw" target="_blank" rel="noopener noreferrer">📺 Playlist Resmi YouTube</a></li>
+          <li><span>⚡ Erwin Kreyszig - Adv. Eng. Mathematics</span></li>
+          <li><span>🔋 GNU Octave &amp; Python NumPy / SciPy</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="copyright">
+        &copy; 2026 Program Studi S1 Teknik Elektro • Fakultas Teknik Universitas Bengkulu.
+      </div>
+      <div class="site-link">
+        <a href="https://www.ndaratha.my.id">ndaratha.my.id</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-wrapper {
+    background: #030712;
+    border-top: 1px solid var(--border-subtle);
+    padding: 60px 0 30px;
+    margin-top: 80px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 900px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+  }
+  .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .brand-badge-sm {
+    width: 32px;
+    height: 32px;
+    background: var(--gradient-gold-amber);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #04121e;
+  }
+  .brand-title-sm { font-size: 0.95rem; font-weight: 800; margin: 0; color: var(--text-main); }
+  .brand-sub-sm { font-size: 0.72rem; color: var(--text-muted); margin: 0; }
+  .footer-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 16px; }
+  .lecturer-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--neon-gold);
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+  }
+  .col-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--text-main); margin-bottom: 16px; letter-spacing: 0.04em; }
+  .col-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; }
+  .col-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .col-links a:hover { color: var(--neon-gold); }
+  .col-links span { color: var(--text-dim); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-bottom a { color: var(--text-muted); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--neon-gold); }
+</style>

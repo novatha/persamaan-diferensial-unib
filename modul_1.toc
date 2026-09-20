@@ -1,7 +1,29 @@
-\contentsline {section}{\numberline {1}Pendahuluan}{2}{section.1}%
-\contentsline {section}{\numberline {2}Materi Utama}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Klasifikasi Persamaan Diferensial: PDB dan PDP}{2}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Solusi Umum, Solusi Khusus, dan IVP}{2}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Aplikasi Awal: Hukum Kirchhoff pada Rangkaian Listrik}{3}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Ringkasan}{3}{section.3}%
-\contentsline {section}{\numberline {4}Referensi}{3}{section.4}%
+\babel@toc {indonesian}{}\relax 
+\contentsline {section}{\numberline {1}Peta Konsep dan Posisi Modul dalam Kurikulum Persamaan Diferensial}{4}{section.1}%
+\contentsline {section}{\numberline {2}Pendahuluan \& Filosofi Dinamika dalam Rekayasa Elektro}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Mengapa Dunia Teknik Elektro Diatur oleh Persamaan Diferensial?}{4}{subsection.2.1}%
+\contentsline {section}{\numberline {3}Taksonomi \& Klasifikasi Persamaan Diferensial}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Persamaan Diferensial Biasa (PDB) vs Parsial (PDP)}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Orde dan Derajat Persamaan Diferensial}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Linieritas: Konsep Operator Linier \& Prinsip Superposisi}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Homogenitas: Respons Alami vs Respons Paksa}{6}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Konsep Solusi: Solusi Umum, Solusi Khusus, dan Medan Arah}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Solusi Umum sebagai Keluarga Kurva Karakteristik}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Medan Arah (\textit {Slope Field / Direction Field})}{7}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Masalah Nilai Awal (\textit {Initial Value Problem} - IVP) \& Prinsip Fisika Kontinuitas Energi}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Formulasi Matematis Masalah Nilai Awal}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Teorema Eksistensi dan Keunikan Picard-Lindelöf}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Prinsip Fisika Kontinuitas Energi: Mengapa $i_L(0^-) = i_L(0^+)$ dan $v_C(0^-) = v_C(0^+)$?}{8}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Pemodelan Fisis Rangkaian Elektrik dari Hukum-Hukum Kirchhoff}{9}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Pemodelan Rangkaian RL Seri: Pengisian Arus Induktor}{9}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}Penurunan Solusi Analitik dengan Metode Pemisahan Variabel}{9}{subsubsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.2}Penerapan Kondisi Awal \& Solusi Khusus Unik}{10}{subsubsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.2}Dinamika Transien: Evaluasi Berbasis Kelipatan Konstanta Waktu $\tau $}{10}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Studi Kasus Nyata: Transien Penyalaan Trafo Gardu Induk \& Arus Inrush}{11}{section.7}%
+\contentsline {section}{\numberline {8}Contoh Soal Terhitung Langkah demi Langkah (\textit {Worked Numerical Examples})}{11}{section.8}%
+\contentsline {section}{\numberline {9}Praktikum Komputasi Terbuka Berbasis Julia}{13}{section.9}%
+\contentsline {section}{\numberline {10}Evaluasi \& Bank Soal Terstruktur (Taksonomi Bloom C1 s.d. C6)}{15}{section.10}%
+\contentsline {section}{\numberline {11}Rangkuman \& Glosarium Istilah Teknis Persamaan Diferensial}{16}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Rangkuman Konseptual}{16}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Glosarium Istilah}{16}{subsection.11.2}%
+\contentsline {section}{\numberline {12}Referensi Standar Industri \& Pustaka Rujukan}{17}{section.12}%

@@ -1,0 +1,140 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { pdModules } from '../data/pdData';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+const getUrl = (path?: string) => path ? `${base}${path}` : null;
+---
+
+<Layout title="Solved Problems & Problem Sets (C1–C6) | Persamaan Diferensial UNIB 2026" description="Kumpulan Latihan Soal dan Pembahasan Lengkap Solved Problems Level Bloom C1-C6 Persamaan Diferensial.">
+  <section class="tugas-header">
+    <div class="container">
+      <div class="header-breadcrumbs">
+        <a href={getUrl('/')} class="crumb-link">&larr; Kembali ke Beranda</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current">Solved Problems &amp; Bank Soal</span>
+      </div>
+
+      <div class="header-content">
+        <span class="pill-badge">
+          <i data-lucide="check-square"></i> BANK SOAL TERSTRUKTUR C1–C6
+        </span>
+        <h1 class="header-title">
+          Koleksi <span class="gradient-text">Solved Problems &amp; Worksheet</span>
+        </h1>
+        <p class="header-lead">
+          Akses seluruh Lembar Kerja Mahasiswa (LKM) dan Problem Set mingguan yang dirancang berjenjang dari level mengingat (C1), memahami (C2), menerapkan analitis (C3), menganalisis sistem (C4), mengevaluasi batas operasional (C5), hingga merancang komputasi terbuka (C6).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tugas-body">
+    <div class="container">
+      <div class="tugas-grid">
+        {pdModules.map((m) => (
+          <div class="glass-panel tugas-card">
+            <div class="tugas-card-header">
+              <span class="week-pill">Minggu {m.week}</span>
+              <h3 class="tugas-card-title">{m.title}</h3>
+            </div>
+            
+            <p class="tugas-card-sub">{m.subTitle}</p>
+
+            <div class="bloom-box">
+              <span class="bloom-label">Fokus Asesmen Taksonomi Bloom:</span>
+              <ul class="bloom-list">
+                <li><strong>C1–C2:</strong> {m.bloomHighlights.c1_c2}</li>
+                <li><strong>C3–C4:</strong> {m.bloomHighlights.c3_c4}</li>
+                <li><strong>C5–C6:</strong> {m.bloomHighlights.c5_c6}</li>
+              </ul>
+            </div>
+
+            <div class="tugas-action-row">
+              {m.youtubeUrl && (
+                <a href={m.youtubeUrl} target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-yt" title="Tonton Video Kuliah YouTube">
+                  <i data-lucide="youtube"></i> Video
+                </a>
+              )}
+              {m.worksheetPdf && (
+                <a href={getUrl(m.worksheetPdf)} target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-cyan">
+                  <i data-lucide="file-text"></i> Lembar Kerja
+                </a>
+              )}
+              {m.solvedPdf && (
+                <a href={getUrl(m.solvedPdf)} target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline">
+                  <i data-lucide="check-circle"></i> Solved Problems
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .tugas-header {
+    padding: 60px 0 40px;
+    background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .header-breadcrumbs { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; font-size: 0.85rem; }
+  .crumb-link { color: var(--neon-emerald); text-decoration: none; font-weight: 600; }
+  .crumb-link:hover { text-decoration: underline; }
+  .crumb-sep { color: var(--text-dim); }
+  .crumb-current { color: var(--text-muted); }
+  .header-title { font-size: 2.4rem; font-weight: 800; margin: 14px 0 12px; line-height: 1.2; }
+  .header-lead { font-size: 1rem; color: var(--text-muted); max-width: 740px; line-height: 1.6; }
+  .tugas-body { padding: 50px 0 80px; }
+  .tugas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 24px;
+  }
+  .tugas-card {
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .week-pill {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--neon-emerald);
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .tugas-card-title { font-size: 1.15rem; font-weight: 800; margin: 0 0 6px; color: var(--text-main); }
+  .tugas-card-sub { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 16px; line-height: 1.4; }
+  .bloom-box {
+    background: rgba(9, 13, 22, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-bottom: 18px;
+  }
+  .bloom-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--neon-emerald); display: block; margin-bottom: 6px; }
+  .bloom-list { list-style: none; padding: 0; margin: 0; font-size: 0.76rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+  .tugas-action-row { display: flex; gap: 8px; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px; }
+  .btn-yt {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    font-weight: 700;
+  }
+  .btn-yt:hover {
+    background: #dc2626;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
+  }
+</style>

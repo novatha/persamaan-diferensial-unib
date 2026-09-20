@@ -1,4 +1,0 @@
-\beamer@sectionintoc {1}{Pengantar Persamaan Diferensial Parsial (PDP)}{4}{0}{1}
-\beamer@sectionintoc {2}{Fondasi Deret Fourier Trigonometrik}{7}{0}{2}
-\beamer@sectionintoc {3}{Simetri Fungsi: Genap \& Ganjil}{9}{0}{3}
-\beamer@sectionintoc {4}{Kuis \& Rangkuman}{16}{0}{4}

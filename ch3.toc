@@ -1,4 +1,0 @@
-\beamer@sectionintoc {1}{Pemodelan Fisis Rangkaian RL Seri}{4}{0}{1}
-\beamer@sectionintoc {2}{Pemodelan Fisis Rangkaian RC Seri}{10}{0}{2}
-\beamer@sectionintoc {3}{Aplikasi Termal: Hukum Pendinginan Newton}{16}{0}{3}
-\beamer@sectionintoc {4}{Uji Konsep \& Kuis Interaktif}{19}{0}{4}

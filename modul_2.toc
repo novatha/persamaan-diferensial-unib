@@ -1,7 +1,27 @@
-\contentsline {section}{\numberline {1}Pendahuluan}{2}{section.1}%
-\contentsline {section}{\numberline {2}Materi Utama}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Persamaan Diferensial Separabel}{2}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Persamaan Diferensial Eksak}{2}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Persamaan Linear dan Faktor Integrasi}{2}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Ringkasan}{3}{section.3}%
-\contentsline {section}{\numberline {4}Referensi}{3}{section.4}%
+\babel@toc {indonesian}{}\relax 
+\contentsline {section}{\numberline {1}Peta Konsep dan Posisi Modul dalam Kurikulum Persamaan Diferensial}{4}{section.1}%
+\contentsline {section}{\numberline {2}Pendahuluan \& Filosofi Fisika Medan Elektrostatik dan Kapasitansi}{4}{section.2}%
+\contentsline {section}{\numberline {3}Metodologi Analitik PDB Orde 1}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Metode Persamaan Separabel (Pemisahan Variabel)}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Persamaan Diferensial Eksak \& Teorema Euler-Clairaut}{6}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Algoritma Konstruksi Solusi PDB Eksak}{7}{subsubsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.3}Teori Faktor Pengintegrasi (\textit {Integrating Factor})}{7}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Kasus 1: Faktor Integrasi Variabel Tunggal $\mu (x)$}{8}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Kasus 2: Faktor Integrasi Variabel Tunggal $\mu (y)$}{8}{subsubsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.4}PDB Linier Orde 1: Penurunan Formula Solusi Leibniz}{8}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Masalah Nilai Awal (IVP) \& Prinsip Kontinuitas Muatan Kapasitor}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Prinsip Kontinuitas Muatan \& Tegangan Kapasitor}{9}{subsection.4.1}%
+\contentsline {section}{\numberline {5}Pemodelan Fisis Rangkaian RC dari Prinsip Dasar (\textit {First-Principles})}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Proses Pengisian Kapasitor (\textit {Charging Transient})}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Proses Pengosongan Kapasitor (\textit {Discharging Transient})}{10}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Dinamika Transien, Skala Waktu Alami \& Paradoks Efisiensi Energi}{11}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Evaluasi Skala Waktu Kelipatan $\tau = RC$}{11}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Paradoks Efisiensi Pengisian Kapasitor (Disipasi Termal 50\%)}{11}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Studi Kasus Nyata: Rangkaian Snubber RC Proteksi Sakelar Daya IGBT}{12}{section.7}%
+\contentsline {section}{\numberline {8}Contoh Soal Terhitung Langkah demi Langkah (\textit {Worked Numerical Examples})}{13}{section.8}%
+\contentsline {section}{\numberline {9}Praktikum Komputasi Terbuka Berbasis Julia}{16}{section.9}%
+\contentsline {section}{\numberline {10}Evaluasi \& Bank Soal Terstruktur (Taksonomi Bloom C1 s.d. C6)}{17}{section.10}%
+\contentsline {section}{\numberline {11}Rangkuman \& Glosarium Istilah Teknis Persamaan Diferensial}{18}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Rangkuman Konseptual}{18}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Glosarium Istilah Teknis}{18}{subsection.11.2}%
+\contentsline {section}{\numberline {12}Referensi Standar Industri \& Pustaka Rujukan}{19}{section.12}%
