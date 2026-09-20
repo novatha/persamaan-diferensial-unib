@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/x15SuJBvZQE](https://youtu.be/x15SuJBvZQE)  
+
 **Judul Resmi:** `[Minggu 05] PDB Orde 2 Non-Homogen: Resonansi Seri & RLC AC | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

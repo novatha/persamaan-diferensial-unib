@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/Ml9wA1x3wDU](https://youtu.be/Ml9wA1x3wDU)  
+
 **Judul Resmi:** `[Minggu 15] Legendre, 4 Persamaan Maxwell, & Sintesis Kurikulum | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

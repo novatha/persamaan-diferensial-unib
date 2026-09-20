@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/iIYM-WRaTiU](https://youtu.be/iIYM-WRaTiU)  
+
 **Judul Resmi:** `[Minggu 06] Transformasi Laplace Dasar: Domain-s & Teorema Pergeseran | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

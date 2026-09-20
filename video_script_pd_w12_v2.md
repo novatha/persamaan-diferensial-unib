@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/piBpNjXaKpQ](https://youtu.be/piBpNjXaKpQ)  
+
 **Judul Resmi:** `[Minggu 12] Persamaan Panas 1D: Difusi Termal Kabel Bawah Tanah IEC 60287 | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

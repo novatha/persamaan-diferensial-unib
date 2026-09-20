@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/VaRiwphPnaw](https://youtu.be/VaRiwphPnaw)  
+
 **Judul Resmi:** `[Minggu 09] Pengantar PDP & Deret Fourier: Harmonis Sistem Tenaga IEEE 519 | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

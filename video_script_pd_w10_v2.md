@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/oEBvpt86fvI](https://youtu.be/oEBvpt86fvI)  
+
 **Judul Resmi:** `[Minggu 10] Pemisahan Variabel: Nilai Batas BVP & Difusi Busbar GITET | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

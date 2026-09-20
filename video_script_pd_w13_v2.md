@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/JgFsCfTgg4U](https://youtu.be/JgFsCfTgg4U)  
+
 **Judul Resmi:** `[Minggu 13] Persamaan Laplace 2D: Distribusi Medan & Stres Isolator 150 kV | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

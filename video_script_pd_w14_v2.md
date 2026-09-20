@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/VidTzwMhRDo](https://youtu.be/VidTzwMhRDo)  
+
 **Judul Resmi:** `[Minggu 14] Fungsi Bessel: Koordinat Silinder & Efek Kulit Konduktor ACSR | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

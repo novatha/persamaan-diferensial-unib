@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/_JZ7kBkgxlk](https://youtu.be/_JZ7kBkgxlk)  
+
 **Judul Resmi:** `[Minggu 03] Aplikasi Rekayasa PDB Orde 1: Transien RC, RL, & Termal Trafo | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

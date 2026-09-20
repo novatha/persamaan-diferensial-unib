@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/5GQHKrvaSwg](https://youtu.be/5GQHKrvaSwg)  
+
 **Judul Resmi:** `[Minggu 02] PDB Orde 1: Separabel, Eksak, Faktor Integrasi & Rangkaian RC | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

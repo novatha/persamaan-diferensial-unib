@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/Zq6IbzuVLBw](https://youtu.be/Zq6IbzuVLBw)  
+
 **Judul Resmi:** `[Minggu 01] Klasifikasi PDB/PDP, Masalah Nilai Awal, & Pemodelan Rangkaian RL | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

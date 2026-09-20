@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/7GUGYVkbPbE](https://youtu.be/7GUGYVkbPbE)  
+
 **Judul Resmi:** `[Minggu 04] PDB Orde 2 Homogen: Karakteristik Akar & Tiga Ragam Redaman RLC | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

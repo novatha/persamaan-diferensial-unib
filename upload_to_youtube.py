@@ -98,7 +98,9 @@ def add_video_to_playlist(youtube, playlist_id, video_id):
         print(f"[PLAYLIST WARNING] Gagal menambahkan ke playlist: {e}")
 
 def parse_metadata(week_num):
-    script_file = f"video_script_pd_w{week_num:02d}.md"
+    script_file = f"video_script_pd_w{week_num:02d}_v2.md"
+    if not os.path.exists(script_file):
+        script_file = f"video_script_pd_w{week_num:02d}.md"
     if not os.path.exists(script_file):
         raise FileNotFoundError(f"Script metadata file not found: {script_file}")
 
@@ -106,11 +108,11 @@ def parse_metadata(week_num):
 
     # Title extraction
     title = None
-    m1 = re.search(r"\*\*Judul Video(?: \(Opsi 1 - Utama\))?:\*\*\s*[\r\n]+\s*`([^`\n]+)`", content)
+    m1 = re.search(r"\*\*Judul[^:]*:\*\*\s*[`]+([^`\n]+)[`]+", content)
     if m1:
         title = m1.group(1).strip()
     else:
-        m2 = re.search(r"Judul Video[^\n]*\n+```[a-z]*\n([^\n]+)\n```", content)
+        m2 = re.search(r"Judul[^\n]*\n+```[a-z]*\n([^\n]+)\n```", content)
         if m2:
             title = m2.group(1).strip()
 
@@ -231,24 +233,25 @@ def upload_video(youtube, week_num, privacy="public", dry_run=False):
         print(f"[WARNING] Kendala playlist: {e}")
 
     # Perbarui metadata script dengan link YouTube resmi
-    script_file = f"video_script_pd_w{week_num:02d}.md"
-    if os.path.exists(script_file):
-        s_content = open(script_file, "r", encoding="utf-8").read()
-        if "**Tautan Resmi YouTube:**" not in s_content:
-            s_content = s_content.replace(
-                "### 1. Metadata Siap Unggah YouTube (SEO Optimized)\n",
-                f"### 1. Metadata Siap Unggah YouTube (SEO Optimized)\n\n**Tautan Resmi YouTube:** [{video_url}]({video_url})  \n"
-            )
-            with open(script_file, "w", encoding="utf-8") as sf:
-                sf.write(s_content)
+    for s_name in [f"video_script_pd_w{week_num:02d}_v2.md", f"video_script_pd_w{week_num:02d}.md"]:
+        if os.path.exists(s_name):
+            s_content = open(s_name, "r", encoding="utf-8").read()
+            if "**Tautan Resmi YouTube:**" not in s_content:
+                s_content = s_content.replace(
+                    "### 1. Metadata Siap Unggah YouTube (SEO Optimized)\n",
+                    f"### 1. Metadata Siap Unggah YouTube (SEO Optimized)\n\n**Tautan Resmi YouTube:** [{video_url}]({video_url})  \n"
+                )
+                with open(s_name, "w", encoding="utf-8") as sf:
+                    sf.write(s_content)
 
     return video_id
 
 def main():
     parser = argparse.ArgumentParser(description="Otomasi Unggah Video Perkuliahan Persamaan Diferensial ke YouTube")
-    parser.add_argument("--week", type=str, default="1", help="Nomor minggu (misal: 1 atau 'all' atau '1-7')")
+    parser.add_argument("--week", type=str, default="all", help="Nomor minggu (misal: 1 atau 'all' atau '1-7' atau '3,4,5')")
     parser.add_argument("--privacy", type=str, default="public", choices=["unlisted", "public", "private"], help="Visibilitas video (default: public)")
     parser.add_argument("--dry-run", action="store_true", help="Uji coba parsing tanpa mengunggah")
+    parser.add_argument("--skip-existing", action="store_true", help="Lewati minggu yang sudah ada di uploaded_youtube_videos.json")
     args = parser.parse_args()
 
     youtube = None
@@ -272,6 +275,9 @@ def main():
             results = {}
 
     for w in weeks:
+        if args.skip_existing and str(w) in results:
+            print(f"[SKIP] Minggu {w:02d} sudah terunggah sebelumnya: {results[str(w)]}")
+            continue
         try:
             vid_id = upload_video(youtube, w, privacy=args.privacy, dry_run=args.dry_run)
             if vid_id and vid_id != "DRY_RUN_ID":

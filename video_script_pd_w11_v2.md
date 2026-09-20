@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/RxoN7UaK3OI](https://youtu.be/RxoN7UaK3OI)  
+
 **Judul Resmi:** `[Minggu 11] Persamaan Gelombang 1D: Telegrafer Saluran Transmisi & Surja IEC 60071 | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**

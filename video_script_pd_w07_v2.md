@@ -2,6 +2,8 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
+**Tautan Resmi YouTube:** [https://youtu.be/crWRyniSoi0](https://youtu.be/crWRyniSoi0)  
+
 **Judul Resmi:** `[Minggu 07] Invers Transformasi Laplace & Analisis Sirkuit Domain-s | Persamaan Diferensial | Teknik Elektro UNIB`
 
 **Deskripsi Siap Unggah:**
