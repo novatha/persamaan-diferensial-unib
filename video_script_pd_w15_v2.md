@@ -2,7 +2,7 @@
 
 ### 1. Metadata Siap Unggah YouTube (SEO Optimized)
 
-**Tautan Resmi YouTube:** [https://youtu.be/Ml9wA1x3wDU](https://youtu.be/Ml9wA1x3wDU)  
+**Tautan Resmi YouTube:** [https://youtu.be/J4XziBcVtfk](https://youtu.be/J4XziBcVtfk)  
 
 **Judul Resmi:** `[Minggu 15] Legendre, 4 Persamaan Maxwell, & Sintesis Kurikulum | Persamaan Diferensial | Teknik Elektro UNIB`
 
@@ -23,19 +23,19 @@ https://www.ndaratha.my.id/persamaan-diferensial/
 Linimasa Bab (Timestamps):
 00:00 - 01. Pembukaan Perkuliahan Minggu 15
 00:42 - 02. Sub-CPMK 15 & Taksonomi Bloom
-01:35 - 03. Peta Kurikulum: Sintesis Akhir
-02:15 - 04. Koordinat Bola & PDB Legendre
-03:00 - 05. Polinomial Legendre & Ortogonalitas
-03:42 - 06. Bola Konduktor dalam Medan Seragam
-04:22 - 07. Empat Persamaan Maxwell
-05:07 - 08. Arus Pergeseran Maxwell
-05:47 - 09. Contoh Soal Arus Pergeseran Kapasitor
-06:30 - 10. Gelombang Elektromagnetik 3D
-07:12 - 11. Vektor Poynting Aliran Daya
-07:49 - 12. Paparan Medan SUTET & ICNIRP
-08:34 - 13. Praktikum Julia: Polinomial Legendre
-09:13 - 14. Kuis Interaktif & Evaluasi Bloom
-10:54 - 15. Matriks Sintesis Kurikulum & Penutup
+01:51 - 03. Peta Kurikulum: Sintesis Akhir
+02:31 - 04. Koordinat Bola & PDB Legendre
+03:16 - 05. Polinomial Legendre & Ortogonalitas
+03:58 - 06. Bola Konduktor dalam Medan Seragam
+04:37 - 07. Empat Persamaan Maxwell
+05:23 - 08. Arus Pergeseran Maxwell
+06:02 - 09. Contoh Soal Arus Pergeseran Kapasitor
+06:46 - 10. Gelombang Elektromagnetik 3D
+07:28 - 11. Vektor Poynting Aliran Daya
+08:05 - 12. Paparan Medan SUTET & ICNIRP
+08:50 - 13. Praktikum Julia: Polinomial Legendre
+09:29 - 14. Kuis Interaktif & Evaluasi Bloom
+11:10 - 15. Matriks Sintesis Kurikulum & Penutup
 
 Buku Referensi Pembelajaran:
 1. Erwin Kreyszig, "Advanced Engineering Mathematics", 10th Edition, John Wiley & Sons.
@@ -49,12 +49,12 @@ Buku Referensi Pembelajaran:
 ---
 
 ## 2. Capaian Pembelajaran (Sub-CPMK 15 OBE Taksonomi Bloom)
-- **C1 (Mengingat):** Menyatakan bentuk kanonik PDB Legendre (1-x^2)y'' - 2xy' + n(n+1)y = 0 dan 4 Persamaan Maxwell bentuk diferensial.
-- **C2 (Memahami):** Menjelaskan konsep fisis Arus Pergeseran Maxwell J_d = dD/dt yang menyempurnakan Hukum Ampere dan kontinuitas muatan.
-- **C3 (Menerapkan):** Menurunkan persamaan gelombang elektromagnetik 3D dari Persamaan Maxwell pada medium ruang bebas.
-- **C4 (Menganalisis):** Menganalisis kerapatan fluks aliran daya gelombang elektromagnetik menggunakan Vektor Poynting S = E x H.
-- **C5 (Mengevaluasi):** Mengevaluasi keselamatan batas paparan radiasi medan elektromagnetik di bawah koridor SUTET 500 kV sesuai standar ICNIRP.
-- **C6 (Komputasi):** Memprogram visualisasi permukaan fungsi Polinomial Legendre dan gelombang 3D menggunakan bahasa Julia.
+- **C1 (Mengingat):** Menyebutkan bentuk diferensial dan integral dari 4 Persamaan Maxwell serta bentuk standar Persamaan Diferensial Legendre.
+- **C2 (Memahami):** Menjelaskan peran fisis arus pergeseran Maxwell dD/dt dalam menjaga kekekalan muatan kontinuitas listrik.
+- **C3 (Menerapkan):** Menurunkan solusi potensial elektrostatik V(r, theta) di luar bola konduktor netral dalam medan listrik seragam E_0.
+- **C4 (Menganalisis):** Menurunkan persamaan gelombang EM 3D dari Persamaan Maxwell dan membuktikan kecepatan rambat c = 1/sqrt(mu_0 epsilon_0).
+- **C5 (Mengevaluasi):** Memvalidasi kesamaan arus konduksi I_c dan arus pergeseran I_d pada kapasitor serta batas paparan medan SUTET IEEE C95.1.
+- **C6 (Menciptakan/Sintesis):** Menyintesis peta konseptual unifikasi yang menghubungkan PDB, Laplace, Fourier, dan PDP menuju medan elektromagnetika lanjut.
 
 ---
 
@@ -66,7 +66,7 @@ Halo rekan-rekan mahasiswa Program Studi Teknik Elektro Universitas Bengkulu, se
 
 ### Salindia 02: Capaian Pembelajaran Modul (Sub-CPMK 15 -- OBE)
 
-Berikut adalah Capaian Pembelajaran Sub-CPMK Minggu kelima belas berbasis Taksonomi Bloom. Pada C1 Mengingat, mahasiswa mampu menyatakan empat persamaan Maxwell diferensial dan formula Rodrigues polinomial Legendre. Pada C2 Memahami, mahasiswa mampu menjelaskan konsep fisis Arus Pergeseran Maxwell yang menyatukan kelistrikan dan kemagnetan. Pada C3 Menerapkan, mahasiswa mampu menurunkan perambatan gelombang medan elektromagnetik 3D dari hukum Faraday dan Ampere. Pada C4 Menganalisis, mahasiswa mampu menghitung laju kerapatan daya yang diradiasikan menggunakan Vektor Poynting S. Pada C5 Mengevaluasi, mahasiswa mampu mengkaji ambang batas paparan medan EM di bawah jalur transmisi SUTET 500 kV standar ICNIRP. Dan pada C6 Komputasi, mahasiswa mampu memprogram visualisasi ortogonalitas Legendre dengan bahasa Julia.
+Mari kita cermati Capaian Pembelajaran Sub-CPMK Minggu kelima belas berbasis Taksonomi Bloom. Setelah menyelesaikan modul perkuliahan ini, mahasiswa diharapkan mampu: Pada C1 Mengingat, menyebutkan bentuk diferensial dan integral dari empat Persamaan Maxwell serta bentuk standar Persamaan Diferensial Legendre. Pada C2 Memahami, menjelaskan peran fisis arus pergeseran Maxwell parsial D per parsial t dalam menjaga kekekalan muatan kontinuitas listrik. Pada C3 Menerapkan, menurunkan solusi potensial elektrostatik V r theta di luar bola konduktor netral dalam medan listrik seragam E nol arah a z. Pada C4 Menganalisis, menurunkan persamaan gelombang medan elektromagnetik 3D dari Persamaan Maxwell dan membuktikan kecepatan rambat c sama dengan satu per akar mu nol epsilon nol. Pada C5 Mengevaluasi, memvalidasi kesamaan arus konduksi I c dan arus pergeseran I d pada kapasitor serta batas paparan medan SUTET standar IEEE C95.1. Dan pada C6 Menciptakan atau Sintesis, menyintesis peta konseptual unifikasi yang menghubungkan PDB, Laplace, Fourier, dan PDP menuju medan elektromagnetika lanjut.
 
 ### Salindia 03: Peta Kurikulum: Dari Parameter Terpusat ke Terdistribusi
 

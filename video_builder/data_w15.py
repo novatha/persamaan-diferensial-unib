@@ -12,12 +12,12 @@ DATA = {
     "title": "Legendre, 4 Persamaan Maxwell, & Sintesis Kurikulum",
     "subtitle": "Polinomial Legendre Koordinat Bola, Arus Pergeseran Maxwell, Gelombang EM 3D, Vektor Poynting, Paparan Medan SUTET 500 kV, dan Matriks Sintesis Komprehensif Persamaan Diferensial Menuju UAS",
     "cpmk": [
-        ("C1", "Mengingat", "Menyatakan bentuk kanonik PDB Legendre (1-x^2)y'' - 2xy' + n(n+1)y = 0 dan 4 Persamaan Maxwell bentuk diferensial."),
-        ("C2", "Memahami", "Menjelaskan konsep fisis Arus Pergeseran Maxwell J_d = dD/dt yang menyempurnakan Hukum Ampere dan kontinuitas muatan."),
-        ("C3", "Menerapkan", "Menurunkan persamaan gelombang elektromagnetik 3D dari Persamaan Maxwell pada medium ruang bebas."),
-        ("C4", "Menganalisis", "Menganalisis kerapatan fluks aliran daya gelombang elektromagnetik menggunakan Vektor Poynting S = E x H."),
-        ("C5", "Mengevaluasi", "Mengevaluasi keselamatan batas paparan radiasi medan elektromagnetik di bawah koridor SUTET 500 kV sesuai standar ICNIRP."),
-        ("C6", "Komputasi", "Memprogram visualisasi permukaan fungsi Polinomial Legendre dan gelombang 3D menggunakan bahasa Julia.")
+        ("C1", "Mengingat", "Menyebutkan bentuk diferensial dan integral dari 4 Persamaan Maxwell serta bentuk standar Persamaan Diferensial Legendre."),
+        ("C2", "Memahami", "Menjelaskan peran fisis arus pergeseran Maxwell dD/dt dalam menjaga kekekalan muatan kontinuitas listrik."),
+        ("C3", "Menerapkan", "Menurunkan solusi potensial elektrostatik V(r, theta) di luar bola konduktor netral dalam medan listrik seragam E_0."),
+        ("C4", "Menganalisis", "Menurunkan persamaan gelombang EM 3D dari Persamaan Maxwell dan membuktikan kecepatan rambat c = 1/sqrt(mu_0 epsilon_0)."),
+        ("C5", "Mengevaluasi", "Memvalidasi kesamaan arus konduksi I_c dan arus pergeseran I_d pada kapasitor serta batas paparan medan SUTET IEEE C95.1."),
+        ("C6", "Menciptakan/Sintesis", "Menyintesis peta konseptual unifikasi yang menghubungkan PDB, Laplace, Fourier, dan PDP menuju medan elektromagnetika lanjut.")
     ],
     "slides": [
         {
@@ -43,13 +43,14 @@ DATA = {
             "chapter": "02. Sub-CPMK 15 & Taksonomi Bloom",
             "quiz": False,
             "text": (
-                "Berikut adalah Capaian Pembelajaran Sub-CPMK Minggu kelima belas berbasis Taksonomi Bloom. "
-                "Pada C1 Mengingat, mahasiswa mampu menyatakan empat persamaan Maxwell diferensial dan formula Rodrigues polinomial Legendre. "
-                "Pada C2 Memahami, mahasiswa mampu menjelaskan konsep fisis Arus Pergeseran Maxwell yang menyatukan kelistrikan dan kemagnetan. "
-                "Pada C3 Menerapkan, mahasiswa mampu menurunkan perambatan gelombang medan elektromagnetik 3D dari hukum Faraday dan Ampere. "
-                "Pada C4 Menganalisis, mahasiswa mampu menghitung laju kerapatan daya yang diradiasikan menggunakan Vektor Poynting S. "
-                "Pada C5 Mengevaluasi, mahasiswa mampu mengkaji ambang batas paparan medan EM di bawah jalur transmisi SUTET 500 kV standar ICNIRP. "
-                "Dan pada C6 Komputasi, mahasiswa mampu memprogram visualisasi ortogonalitas Legendre dengan bahasa Julia."
+                "Mari kita cermati Capaian Pembelajaran Sub-CPMK Minggu kelima belas berbasis Taksonomi Bloom. "
+                "Setelah menyelesaikan modul perkuliahan ini, mahasiswa diharapkan mampu: "
+                "Pada C1 Mengingat, menyebutkan bentuk diferensial dan integral dari empat Persamaan Maxwell serta bentuk standar Persamaan Diferensial Legendre. "
+                "Pada C2 Memahami, menjelaskan peran fisis arus pergeseran Maxwell parsial D per parsial t dalam menjaga kekekalan muatan kontinuitas listrik. "
+                "Pada C3 Menerapkan, menurunkan solusi potensial elektrostatik V r theta di luar bola konduktor netral dalam medan listrik seragam E nol arah a z. "
+                "Pada C4 Menganalisis, menurunkan persamaan gelombang medan elektromagnetik 3D dari Persamaan Maxwell dan membuktikan kecepatan rambat c sama dengan satu per akar mu nol epsilon nol. "
+                "Pada C5 Mengevaluasi, memvalidasi kesamaan arus konduksi I c dan arus pergeseran I d pada kapasitor serta batas paparan medan SUTET standar IEEE C95.1. "
+                "Dan pada C6 Menciptakan atau Sintesis, menyintesis peta konseptual unifikasi yang menghubungkan PDB, Laplace, Fourier, dan PDP menuju medan elektromagnetika lanjut."
             )
         },
         {
