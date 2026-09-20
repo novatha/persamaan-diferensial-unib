@@ -1,58 +1,173 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
+\usepackage[top=1.5cm, bottom=1.5cm, left=1.6cm, right=1.6cm, headheight=14pt, footskip=18pt]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsfonts,amssymb}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage[many]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{calc,patterns}
+\usepackage[most]{tcolorbox}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{hyperref}
 
+% --- Palet Warna Resmi UNIB ---
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{boxbg}{RGB}{248, 250, 253}
+\definecolor{linegray}{RGB}{210, 215, 225}
+
+% --- Pengaturan Header & Footer ---
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\lhead{\footnotesize\textbf{\color{unibblue}Universitas Bengkulu} \textbar\ Program Studi S1 Teknik Elektro}
+\rhead{\footnotesize\color{gray}Persamaan Diferensial (Genap 2026)}
+\lfoot{\footnotesize\color{gray}Lembar Kerja Mahasiswa (LKM) Berbasis OBE}
+\cfoot{\footnotesize\color{gray}Hal. \thepage\ dari 2}
+\rfoot{\footnotesize\color{unibblue}\textbf{Minggu 5: PDB Orde 2 Non-Homogen \& Resonan...}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
 
-\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 5: Latihan PDB Orde 2 Non-Homogen}}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% --- Custom Box untuk Lembar Jawab ---
+\newtcolorbox{answerbox}[1]{%
+  colback=white,
+  colframe=unibblue!70!black,
+  coltitle=white,
+  fonttitle=\bfseries\scriptsize,
+  colbacktitle=unibblue,
+  title={#1},
+  arc=2pt,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,
+  boxrule=0.6pt
+}
 
 \begin{document}
 
-\maketitle
+% ==================== HALAMAN 1 ====================
+\noindent\begin{minipage}[c]{0.68\textwidth}%
+  {\large\textbf{\color{unibblue}LEMBAR KERJA MAHASISWA (LKM)}}\\[1mm]
+  {\normalsize\textbf{Mata Kuliah: Persamaan Diferensial (2 SKS)}}\\[0.5mm]
+  {\small\textbf{Topik Minggu 5:} PDB Orde 2 Non-Homogen \& Resonansi RLC Eksitasi AC}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[c]{0.30\textwidth}%
+  \begin{tcolorbox}[colback=unibblue!5,colframe=unibblue,boxrule=0.6pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt]
+    \scriptsize
+    \textbf{Nama:} \dotfill\\[1.2mm]
+    \textbf{NPM:} \dotfill\\[1.2mm]
+    \textbf{Kelas/Klp:} \dotfill\\[1.2mm]
+    \textbf{Nilai Final:} \hfill \textbf{/ 100}
+  \end{tcolorbox}%
+\end{minipage}\par
 
-\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
-Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih pemahaman Anda tentang Metode Koefisien Tak Tentu dan aplikasinya pada RLC Seri. Waktu: 45--60 menit.
+\vspace{1.5mm}
+
+% Kotak Sub-CPMK & Pedoman
+\begin{tcolorbox}[colback=boxbg,colframe=unibgold!90!black,boxrule=0.6pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,title=\textbf{\scriptsize Capaian Pembelajaran (Sub-CPMK 3) \& Pedoman Evaluasi OBE}]
+  \scriptsize
+  \textbf{Sub-CPMK 3:} Mahasiswa mampu memecahkan PDB linier orde 2 non-homogen menggunakan metode koefisien tak tentu dan variasi parameter untuk menganalisis resonansi dan faktor kualitas rangkaian AC.\\
+  \textbf{Alokasi Waktu:} 50--60 Menit \quad\textbar\quad \textbf{Model:} Kolaboratif / Mandiri Terstruktur \quad\textbar\quad \textbf{Bahasa Komputasi:} Julia 1.12+
 \end{tcolorbox}
 
-\section*{Soal-Soal Latihan}
+\vspace{1mm}
 
-\begin{enumerate}[label=\textbf{\arabic*.}]
-    \item \textbf{(C1 - Mengingat)} Tuliskan persamaan diferensial orde 2 non-homogen yang mendeskripsikan arus $i(t)$ pada rangkaian RLC seri!
-    \vspace{2.5cm}
+% Soal C1
+\noindent\textbf{1. (C1 - Mengingat \textbar\ Bobot: 10 Poin)}\par\vspace{0.5mm}
+{\footnotesize Jelaskan prinsip superposisi solusi total PDB non-homogen $y(t) = y_h(t) + y_p(t)$, dan sebutkan aturan pemilihan bentuk tebakan solusi partikular $y_p(t)$ jika fungsi pemaksa berbentuk $F(t) = V_m \sin(\omega t)$.}
+\begin{answerbox}{Ruang Pengerjaan C1 (Prinsip Solusi Lengkap \& Bentuk Tebakan Partikular)}
+  \vspace{2.0cm}
+\end{answerbox}
 
-    \item \textbf{(C2 - Memahami)} Dalam konteks rangkaian listrik, jelaskan apa yang dimaksud dengan respons transien dan respons tunak (steady-state), dan hubungkan konsep tersebut dengan $y_h(t)$ dan $y_p(t)$.
-    \vspace{3.5cm}
+\vspace{1mm}
 
-    \item \textbf{(C3 - Mengaplikasikan)} Tentukan solusi umum dari persamaan diferensial berikut: 
-    $$ y'' - 4y = 8x^2 $$
-    \vspace{3.5cm}
+% Soal C2
+\noindent\textbf{2. (C2 - Memahami \textbar\ Bobot: 15 Poin)}\par\vspace{0.5mm}
+{\footnotesize Jelaskan fenomena resonansi listrik seri secara fisis. Mengapa pada frekuensi resonansi $\omega_0 = 1/\sqrt{LC}$, impedansi total rangkaian menjadi minimum ($Z = R$) dan arus mencapai nilai maksimum?}
+\begin{answerbox}{Ruang Pengerjaan C2 (Intuisi Fisika Resonansi Seri \& Pembatalan Reaktansi)}
+  \vspace{2.1cm}
+\end{answerbox}
 
-    \item \textbf{(C4 - Menganalisis)} Analisislah persamaan differensial $y'' + 9y = 5\sin(3x)$. Temukan solusi partikular $y_p(x)$ menggunakan aturan modifikasi metode koefisien tak tentu!
-    \vspace{4.5cm}
+\vspace{1mm}
 
-    \item \textbf{(C5 - Mengevaluasi)} Diberikan persamaan tegangan kapasitor pada rangkaian seri RC dengan sumber AC: $R \frac{dq}{dt} + \frac{1}{C}q = E_m \cos(\omega t)$. Evaluasi dan bandingkan pendekatan penyelesaian persamaan diferensial orde 1 non-homogen dengan metode fasor yang Anda pelajari di Rangkaian Listrik!
-    \vspace{5.5cm}
+% Soal C3
+\noindent\textbf{3. (C3 - Menerapkan \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+\noindent\begin{minipage}[t]{0.60\textwidth}%
+  {\footnotesize Rangkaian RLC seri di samping dihubungkan ke sumber tegangan AC $v_s(t) = 100 \cos(1000 t)\text{ V}$. Dengan $R = 10\,\Omega$, $L = 0{,}05\text{ H}$, dan $C = 20\,\mu\text{F}$, tentukan solusi partikular tunak (*steady-state*) arus $i_{\text{ss}}(t) = I_m \cos(1000 t - \phi)$.}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.37\textwidth}%
+  \centering
+  \resizebox{0.95\linewidth}{!}{%
+  \begin{circuitikz}[american, scale=0.65, transform shape]
+    \draw (0,0) to[sV, l=$v_s(t)$] (0,1.8)
+          to[R, l=$R$] (1.6,1.8)
+          to[L, l=$L$] (3.0,1.8)
+          to[C, l=$C$] (3.0,0)
+          to[short] (0,0);
+    \draw[->, >=stealth, thick, unibblue] (1.4,0.8) arc (160:-160:0.35);
+    \node at (1.8,0.8) [unibblue, font=\tiny\bfseries] {$i(t)$};
+  \end{circuitikz}%
+  }%
+\end{minipage}\par\vspace{1mm}
+\begin{answerbox}{Ruang Pengerjaan C3 (Penurunan Solusi Partikular Arus AC Tunak)}
+  \vspace{2.8cm}
+\end{answerbox}
 
-    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sistem peredam kejut kendaraan yang memiliki gaya luar sinusoidal dari jalan bergelombang. Formulasikan persamaannya sehingga terjadi fenomena "resonansi". Tentukan parameter yang tepat dan buktikan dengan solusi matematis!
-    \vspace{6cm}
-\end{enumerate}
+\newpage
+% ==================== HALAMAN 2 ====================
 
-\vfill
-\begin{center}
-\textbf{Semoga berhasil!}
-\end{center}
+% Soal C4
+\noindent\textbf{4. (C4 - Menganalisis \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+{\footnotesize Analisis perbesaran tegangan kapasitor pada kondisi resonansi: Definisikan Faktor Kualitas $Q = \frac{\omega_0 L}{R}$. Buktikan secara matematis bahwa pada kondisi resonansi, amplitudo tegangan pada kapasitor memenuhi hubungan $V_{C,\text{maks}} = Q \cdot V_s$. Apa bahaya fenomena ini terhadap dielektrik isolasi?}
+\begin{answerbox}{Ruang Pengerjaan C4 (Analisis Faktor Kualitas Q \& Perbesaran Tegangan Kritis)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Soal C5
+\noindent\textbf{5. (C5 - Mengevaluasi \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+{\footnotesize Suatu sistem mengalami eksitasi tepat pada frekuensi alami tanpa redaman: $y'' + \omega_0^2 y = F_0 \cos(\omega_0 t)$. Evaluasi kegagalan tebakan standar dan buktikan dengan metode variasi parameter bahwa solusinya tumbuh secara linier terhadap waktu ($t \sin(\omega_0 t)$) menuju resonansi tak-hingga (destruktif).}
+\begin{answerbox}{Ruang Pengerjaan C5 (Evaluasi Resonansi Murni Tak-Hingga \& Amplifikasi Linier)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Soal C6
+\noindent\textbf{6. (C6 - Merancang \& Komputasi Julia \textbar\ Bobot: 15 Poin)}\par\vspace{0.5mm}
+{\footnotesize Rancang program simulasi frekuensi sapuan (\textit{frequency sweep}) dalam \textbf{Julia} untuk menghitung respons amplitudo arus terhadap variasi frekuensi eksitasi $\omega \in [0{,}2\omega_0, 2\omega_0]$. Tuliskan algoritma vektorisasi perhitungan magnitudo impedansi $|Z(\omega)|$.}
+\begin{answerbox}{Ruang Pengerjaan C6 (Skrip Julia Kurva Respon Resonansi \& Lebar Pita)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Tabel Rekapitulasi Skor OBE & Tanda Tangan
+\noindent\begin{minipage}[b]{0.65\textwidth}%
+  \centering
+  \scriptsize
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \rowcolor{unibblue}
+    \textbf{\color{white}C1} & \textbf{\color{white}C2} & \textbf{\color{white}C3} & \textbf{\color{white}C4} & \textbf{\color{white}C5} & \textbf{\color{white}C6} & \textbf{\color{white}Total} \\
+    \rowcolor{unibblue!10}
+    10 Pts & 15 Pts & 20 Pts & 20 Pts & 20 Pts & 15 Pts & 100 Pts \\
+    \hline
+    & & & & & & \\[2.5mm]
+    \hline
+  \end{tabular}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[b]{0.32\textwidth}%
+  \centering
+  \scriptsize
+  \textbf{Verifikasi Dosen / Asisten:}\\[5mm]
+  (\dotfill)
+\end{minipage}\par
 
 \end{document}

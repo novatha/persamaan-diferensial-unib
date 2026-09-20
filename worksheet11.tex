@@ -1,57 +1,172 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
+\usepackage[top=1.5cm, bottom=1.5cm, left=1.6cm, right=1.6cm, headheight=14pt, footskip=18pt]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsfonts,amssymb}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage[many]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{calc,patterns}
+\usepackage[most]{tcolorbox}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{hyperref}
 
+% --- Palet Warna Resmi UNIB ---
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{boxbg}{RGB}{248, 250, 253}
+\definecolor{linegray}{RGB}{210, 215, 225}
+
+% --- Pengaturan Header & Footer ---
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\lhead{\footnotesize\textbf{\color{unibblue}Universitas Bengkulu} \textbar\ Program Studi S1 Teknik Elektro}
+\rhead{\footnotesize\color{gray}Persamaan Diferensial (Genap 2026)}
+\lfoot{\footnotesize\color{gray}Lembar Kerja Mahasiswa (LKM) Berbasis OBE}
+\cfoot{\footnotesize\color{gray}Hal. \thepage\ dari 2}
+\rfoot{\footnotesize\color{unibblue}\textbf{Minggu 11: Persamaan Gelombang 1D \& Telegra...}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
 
-\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 11: Persamaan Gelombang 1D}}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% --- Custom Box untuk Lembar Jawab ---
+\newtcolorbox{answerbox}[1]{%
+  colback=white,
+  colframe=unibblue!70!black,
+  coltitle=white,
+  fonttitle=\bfseries\scriptsize,
+  colbacktitle=unibblue,
+  title={#1},
+  arc=2pt,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,
+  boxrule=0.6pt
+}
 
 \begin{document}
 
-\maketitle
+% ==================== HALAMAN 1 ====================
+\noindent\begin{minipage}[c]{0.68\textwidth}%
+  {\large\textbf{\color{unibblue}LEMBAR KERJA MAHASISWA (LKM)}}\\[1mm]
+  {\normalsize\textbf{Mata Kuliah: Persamaan Diferensial (2 SKS)}}\\[0.5mm]
+  {\small\textbf{Topik Minggu 11:} Persamaan Gelombang 1D \& Telegrafer Saluran Transmisi}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[c]{0.30\textwidth}%
+  \begin{tcolorbox}[colback=unibblue!5,colframe=unibblue,boxrule=0.6pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt]
+    \scriptsize
+    \textbf{Nama:} \dotfill\\[1.2mm]
+    \textbf{NPM:} \dotfill\\[1.2mm]
+    \textbf{Kelas/Klp:} \dotfill\\[1.2mm]
+    \textbf{Nilai Final:} \hfill \textbf{/ 100}
+  \end{tcolorbox}%
+\end{minipage}\par
 
-\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
-Kerjakan secara berkelompok atau mandiri untuk memahami perambatan gelombang pada dawai dan media transmisi kelistrikan. Soal menguji dari level C1 hingga C6. Alokasikan waktu 45-60 menit.
+\vspace{1.5mm}
+
+% Kotak Sub-CPMK & Pedoman
+\begin{tcolorbox}[colback=boxbg,colframe=unibgold!90!black,boxrule=0.6pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,title=\textbf{\scriptsize Capaian Pembelajaran (Sub-CPMK 6) \& Pedoman Evaluasi OBE}]
+  \scriptsize
+  \textbf{Sub-CPMK 6:} Mahasiswa mampu memecahkan persamaan gelombang 1D dan persamaan telegrafer saluran transmisi daya serta menganalisis refleksi surja petir sesuai standar proteksi IEC 60071.\\
+  \textbf{Alokasi Waktu:} 50--60 Menit \quad\textbar\quad \textbf{Model:} Kolaboratif / Mandiri Terstruktur \quad\textbar\quad \textbf{Bahasa Komputasi:} Julia 1.12+
 \end{tcolorbox}
 
-\section*{Soal-Soal Latihan}
+\vspace{1mm}
 
-\begin{enumerate}[label=\textbf{\arabic*.}]
-    \item \textbf{(C1 - Mengingat)} Apa persamaan yang mengatur gelombang yang bergerak dengan kecepatan konstan $c$?
-    \vspace{2.5cm}
+% Soal C1
+\noindent\textbf{1. (C1 - Mengingat \textbar\ Bobot: 10 Poin)}\par\vspace{0.5mm}
+{\footnotesize Tuliskan bentuk baku Persamaan Gelombang 1D $\frac{\partial^2 u}{\partial t^2} = v^2 \frac{\partial^2 u}{\partial x^2}$, dan tuliskan kecepatan rambat gelombang $v$ serta impedansi karakteristik $Z_0$ dinyatakan dalam parameter saluran transmisi per satuan panjang ($L'$ dan $C'$).}
+\begin{answerbox}{Ruang Pengerjaan C1 (Persamaan Gelombang 1D \& Karakteristik Saluran)}
+  \vspace{2.0cm}
+\end{answerbox}
 
-    \item \textbf{(C2 - Memahami)} Bagaimana efek secara grafis fungsi $f(x-ct)$ saat waktu $t$ bertambah? Jelaskan pergeserannya.
-    \vspace{3.5cm}
+\vspace{1mm}
 
-    \item \textbf{(C3 - Mengaplikasikan)} Terapkan kondisi batas $u(0,t)=0$ pada solusi pemisahan variabel $X(x)=C_1\cos(\lambda x)+C_2\sin(\lambda x)$. Tentukan parameter yang bernilai nol.
-    \vspace{3.5cm}
+% Soal C2
+\noindent\textbf{2. (C2 - Memahami \textbar\ Bobot: 15 Poin)}\par\vspace{0.5mm}
+{\footnotesize Jelaskan makna fisis solusi d'Alembert $u(x,t) = f(x - vt) + g(x + vt)$. Bagaimana fungsi $f$ dan $g$ merepresentasikan fenomena gelombang berjalan maju dan gelombang berjalan pantul pada kawat transmisi?}
+\begin{answerbox}{Ruang Pengerjaan C2 (Intuisi Fisika Solusi d'Alembert \& Perambatan Gelombang)}
+  \vspace{2.1cm}
+\end{answerbox}
 
-    \item \textbf{(C4 - Menganalisis)} Hubungkan kecepatan rambat mekanik pada dawai ($c = \sqrt{T/\rho}$, di mana $T=$ tegangan, $\rho=$ massa jenis linier) dengan frekuensi vibrasi. Apa yang terjadi pada frekuensi jika dawai ditegangkan (T ditingkatkan)?
-    \vspace{5cm}
+\vspace{1mm}
 
-    \item \textbf{(C5 - Mengevaluasi)} Suatu model gelombang memberikan kecepatan $c = 0$. Evaluasi keadaan fisik dari sistem ini, apakah ada propagasi atau pengiriman sinyal informasi pada kondisi tersebut?
-    \vspace{5.5cm}
+% Soal C3
+\noindent\textbf{3. (C3 - Menerapkan \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+\noindent\begin{minipage}[t]{0.60\textwidth}%
+  {\footnotesize Sebuah surja tegangan petir $V_0 = 500\text{ kV}$ merambat pada saluran transmisi udara ($Z_{01} = 400\,\Omega$) menuju kabel bawah tanah ($Z_{02} = 50\,\Omega$). Turunkan koefisien refleksi $\Gamma_L$ dan koefisien transmisi $T_L$, serta hitung tegangan gelombang yang diteruskan ke kabel tanah!}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.37\textwidth}%
+  \centering
+  \resizebox{0.95\linewidth}{!}{%
+  \begin{tikzpicture}[scale=0.65]
+    \draw[very thick, unibblue] (0,0.8) -- (2.0,0.8) node[midway, above, font=\tiny] {$Z_{01}=400\,\Omega$};
+    \draw[very thick, unibblue] (0,0) -- (2.0,0);
+    \draw[line width=1.5mm, unibgold] (2.0,0.8) -- (3.8,0.8) node[midway, above, font=\tiny] {$Z_{02}=50\,\Omega$};
+    \draw[line width=1.5mm, unibgold] (2.0,0) -- (3.8,0);
+    \draw[dashed, red] (2.0,-0.3) -- (2.0,1.2) node[above, font=\tiny] {Antarmuka};
+    \draw[->, >=stealth, thick, red] (0.5,0.4) -- (1.5,0.4) node[above, font=\tiny] {$V^+$};
+  \end{tikzpicture}%
+  }%
+\end{minipage}\par\vspace{1mm}
+\begin{answerbox}{Ruang Pengerjaan C3 (Penurunan Koefisien Refleksi \& Transmisi Surja)}
+  \vspace{2.8cm}
+\end{answerbox}
 
-    \item \textbf{(C6 - Mencipta)} Ciptakan sebuah model sederhana untuk sinyal pulsa listrik berbentuk kotak tunggal yang berjalan di sepanjang saluran transmisi. Nyatakan fenomena transmisi ini secara matematis dengan solusi D'Alembert untuk pulsa sembarang $f(z)$!
-    \vspace{6cm}
-\end{enumerate}
+\newpage
+% ==================== HALAMAN 2 ====================
 
-\vfill
-\begin{center}
-\textbf{Semoga berhasil!}
-\end{center}
+% Soal C4
+\noindent\textbf{4. (C4 - Menganalisis \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+{\footnotesize Analisis fenomena pelipatgandaan tegangan pada ujung saluran terbuka (\textit{open-circuit termination}, $Z_L \to \infty$). Buktikan bahwa koefisien refleksi bernilai $\Gamma_L = +1$ dan tegangan transien pada titik ujung terbuka meningkat tepat menjadi 2 kali lipat ($2\text{ pu}$), yang dapat merusak arrester gardu induk!}
+\begin{answerbox}{Ruang Pengerjaan C4 (Analisis Tegangan Lebih Ujung Terbuka 2 pu IEC 60071)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Soal C5
+\noindent\textbf{5. (C5 - Mengevaluasi \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+{\footnotesize Evaluasi Rasio Gelombang Berdiri (\textit{Voltage Standing Wave Ratio} / VSWR): Diberikan saluran tanpa rugi-rugi terhubung ke beban kompleks dengan $|\Gamma_L| = 0{,}6$. Hitung nilai $\text{VSWR} = \frac{1 + |\Gamma_L|}{1 - |\Gamma_L|}$ dan evaluasi dampak disonansi impedansi terhadap rugi transmisi daya.}
+\begin{answerbox}{Ruang Pengerjaan C5 (Evaluasi Parameter VSWR \& Keselamatan Transmisi)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Soal C6
+\noindent\textbf{6. (C6 - Merancang \& Komputasi Julia \textbar\ Bobot: 15 Poin)}\par\vspace{0.5mm}
+{\footnotesize Rancang program simulasi gelombang datang dan pantul berbasis \textbf{Julia} untuk memodelkan solusi d'Alembert interaksi dua pulsa gelombang yang bergerak berlawanan arah. Plot diagram kisi ruang-waktu (*lattice diagram*).}
+\begin{answerbox}{Ruang Pengerjaan C6 (Skrip Simulasi Kisi Pantulan Gelombang Julia)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Tabel Rekapitulasi Skor OBE & Tanda Tangan
+\noindent\begin{minipage}[b]{0.65\textwidth}%
+  \centering
+  \scriptsize
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \rowcolor{unibblue}
+    \textbf{\color{white}C1} & \textbf{\color{white}C2} & \textbf{\color{white}C3} & \textbf{\color{white}C4} & \textbf{\color{white}C5} & \textbf{\color{white}C6} & \textbf{\color{white}Total} \\
+    \rowcolor{unibblue!10}
+    10 Pts & 15 Pts & 20 Pts & 20 Pts & 20 Pts & 15 Pts & 100 Pts \\
+    \hline
+    & & & & & & \\[2.5mm]
+    \hline
+  \end{tabular}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[b]{0.32\textwidth}%
+  \centering
+  \scriptsize
+  \textbf{Verifikasi Dosen / Asisten:}\\[5mm]
+  (\dotfill)
+\end{minipage}\par
 
 \end{document}

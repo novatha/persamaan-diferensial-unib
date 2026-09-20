@@ -4,113 +4,533 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
 \usepackage{amsmath,amssymb}
+\usepackage{listings}
+\lstdefinestyle{juliastyle}{language=Julia,basicstyle=\ttfamily\tiny,keywordstyle=\bfseries\color{unibblue},commentstyle=\color{gray}\itshape,stringstyle=\color{unibgreen},backgroundcolor=\color{softgray},frame=single,rulecolor=\color{unibblue!30},breaklines=true,breakatwhitespace=true,showstringspaces=false,tabsize=2,numbers=none}
+\usepackage{booktabs}
 
 % --- Custom Colors ---
-\definecolor{unibblue}{RGB}{0,51,102}
-\definecolor{unibgold}{RGB}{212,175,55}
-\definecolor{unibgreen}{RGB}{0,128,0}
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{softgray}{RGB}{245, 247, 250}
 
 \setbeamercolor{palette primary}{bg=unibblue,fg=white}
 \setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
 \setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
 \setbeamercolor{structure}{fg=unibblue}
-\setbeamercolor{block title}{bg=unibblue!85,fg=white}
-\setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{titlelike}{parent=structure,bg=unibblue,fg=white}
+\setbeamercolor{block title}{bg=unibblue!90,fg=white}
+\setbeamercolor{block body}{bg=unibblue!8,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!95,fg=black}
 \setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!90,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
 
-\title{Persamaan Diferensial}
-\subtitle{Minggu 12: Persamaan Panas 1D \& Manajemen Termal Konduktor Daya}
-\author{Novalio Daratha \& Muhammad Arfan}
-\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date[\today]{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% Listings setup for Julia
+\lstdefinelanguage{Julia}{
+  keywords={abstract,break,case,catch,const,continue,do,else,elseif,end,export,false,for,function,global,if,import,let,local,macro,module,mutable,primitive,quote,return,struct,true,try,type,using,var,while},
+  sensitive=true,
+  comment=[l]{\#},
+  string=[b]"
+}
+\lstset{
+  language=Julia,
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{blue!80!black}\bfseries,
+  commentstyle=\color{green!50!black}\itshape,
+  stringstyle=\color{red!80!black},
+  breaklines=true,
+  numbers=none,
+  frame=single,
+  backgroundcolor=\color{gray!5},
+  aboveskip=2pt,
+  belowskip=2pt
+}
+
+\title[Persamaan Diferensial (Minggu 12)]{Persamaan Diferensial}
+\subtitle{Minggu 12: Persamaan Panas 1D \& Manajemen Termal Konduktor Listrik: Pemanasan Joule, Dekomposisi Tunak, dan Ampacity Kabel IEC 60287}
+\author[Novalio \& Arfan (UNIB)]{Ir. Novalio Daratha, S.T., M.Sc., Ph.D. \& Muhammad Arfan, S.T., M.T.}
+\institute[Teknik Elektro UNIB]{Program Studi S1 Teknik Elektro, Jurusan Teknik Elektro \& Informatika\\Fakultas Teknik, Universitas Bengkulu}
+\date[2026]{Semester Genap 2026}
 
 \begin{document}
 
-\begin{frame}
+% -------------------------------------------------------------
+% FRAME 1: Title Frame
+% -------------------------------------------------------------
+\begin{frame}[plain]
   \titlepage
 \end{frame}
 
-\begin{frame}{Capaian Pembelajaran (CPMK 4)}
-  \begin{itemize}
-    \item \textbf{CPMK 4.1:} Memahami penurunan Hukum Konduksi Fourier pada konduktor kabel berarus.
-    \item \textbf{CPMK 4.2:} Menyelesaikan PDP Panas 1D untuk kondisi batas homogen (*Dirichlet cooling*) dan terisolasi (*Neumann*).
-    \item \textbf{CPMK 4.3:} Menganalisis dekomposisi suhu transien dan distribusi suhu keadaan mantap (*steady-state*).
-    \item \textbf{CPMK 4.4:} Menerapkan skema beda hingga FTCS pada simulasi Julia (Simulasi Persamaan Panas 1D).
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Daftar Isi}
-  \tableofcontents
-\end{frame}
-
-\section{Pemodelan Termal Konduktor Listrik}
-\begin{frame}{Penurunan Persamaan Difusi Panas 1D}
-  Berdasarkan Hukum Konduksi Kalor Fourier ($q = -k \frac{\partial u}{\partial x}$) dan konservasi energi pada batang konduktor dengan difusivitas termal $\alpha = \frac{k}{\rho c_p}$:
-  \begin{alertblock}{Persamaan Panas 1D}
-    $$ {\color{unibblue} \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}} $$
+% -------------------------------------------------------------
+% FRAME 2: Sub-CPMK OBE Bloom Taxonomy C1-C6
+% -------------------------------------------------------------
+\begin{frame}{Sub-CPMK Taksonomi Bloom (Minggu 12)}
+  \begin{block}{Sub-Capaian Pembelajaran Mata Kuliah (Sub-CPMK 6)}
+    Setelah menyelesaikan pembelajaran pada modul Minggu 12 ini, mahasiswa mampu:
     \begin{itemize}
-      \item $u(x,t)$: Distribusi temperatur pada posisi $x$ dan waktu $t$ ($^\circ\text{C}$).
-      \item $\alpha$: Difusivitas termal material ($m^2/s$).
+      \item \textbf{C1 (Mengingat):} Menyatakan bentuk umum persamaan panas 1D dengan suku sumber Joule $\dot{q}$, difusivitas $\alpha$, dan Hukum Fourier.
+      \item \textbf{C2 (Memahami):} Menjelaskan mekanisme fisika disipasi energi listrik menjadi kalor dan memisahkan solusi tunak dari transien.
+      \item \textbf{C3 (Menerapkan):} Menurunkan solusi analitis distribusi temperatur $u(x,t)$ dengan dekomposisi $u_{\text{ss}}(x) + u_{\text{tr}}(x,t)$.
+      \item \textbf{C4 (Menganalisis):} Menganalisis pengaruh ragam harmonisa spasial terhadap konstanta waktu pendinginan alami konduktor.
+      \item \textbf{C5 (Mengevaluasi):} Mengevaluasi batas kemampuan hantar arus (\textit{Ampacity}) kabel tanah XLPE 20 kV sesuai \textbf{IEC 60287}.
+      \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program simulasi \textbf{Julia} (\texttt{DifferentialEquations.jl}) metode garis.
     \end{itemize}
+  \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 3: Peta Kurikulum & Transisi ke PDP Parabolik
+% -------------------------------------------------------------
+\begin{frame}{Peta Kurikulum: Manajemen Termal sebagai Pembatas Kapasitas Daya}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Termal: Pembatas Utama Arus Daya}
+        \small
+        \begin{itemize}
+          \item Setiap arus beban menghasilkan rugi disipasi Joule: $P_{\text{loss}} = I^2 R$.
+          \item Panas ini harus didifusikan keluar melintasi insulasi dielektrik kabel menuju tanah/udara.
+          \item Jika laju difusi lambat, suhu melonjak melampaui batas ketahanan termal polimer ($90^\circ\text{C}$).
+          \item Degradasi isolasi memicu kegagalan dielektrik katastrofik!
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Ciri Khas PDP Parabolik ($\Delta = 0$)}
+        \small
+        \begin{itemize}
+          \item \textbf{Asimetri Waktu:} Panas mengalir spontan dari suhu tinggi ke rendah (Hukum Termodinamika II).
+          \item \textbf{Sifat Peredam Kuat:} Tidak ada fenomena osilasi gelombang; seluruh harmonisa spasial meluruh eksponensial.
+          \item \textbf{Konvergensi Asimtotik:} Sistem pasti menuju distribusi keadaan tunak (\textit{steady-state}) saat $t \to \infty$.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \vspace{0.05cm}
+  \begin{exampleblock}{Tiga Pilar Manajemen Termal Elektro}
+    \small
+    1. Pembangkitan Panas Internal ($I^2 R$) \quad 2. Difusi Konduktif Lapisan Kabel \quad 3. Disipasi Konvektif Ambien.
+  \end{exampleblock}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 4: Hukum Fourier & Persamaan Difusi Panas 1D
+% -------------------------------------------------------------
+\begin{frame}{Hukum Fourier Konduksi \& Penurunan Persamaan Panas}
+  Tinjau elemen konduktor mikro $\Delta x$ berpenampang $A$ dengan konduktivitas termal $k$ [W/(m$\cdot$K)]:
+  \vspace{0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Hukum Fourier Perpindahan Panas}
+        \small
+        Fluks kalor berbanding lurus dengan gradien spasial:
+        \begin{equation*}
+          q_x = -k A \frac{\partial u}{\partial x} \quad \text{[Watt]}
+        \end{equation*}
+        Tanda minus menandakan kalor mengalir menuruni gradien temperatur (dari panas ke dingin).
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Konservasi Energi pada Elemen $\Delta x$}
+        \small
+        Laju akumulasi = Kalor masuk $-$ Kalor keluar $+$ Sumber:
+        \begin{equation*}
+          \rho c_p A \Delta x \frac{\partial u}{\partial t} = -\frac{\partial q_x}{\partial x} \Delta x + \dot{q}_{\text{gen}} A \Delta x
+        \end{equation*}
+        Maka diperoleh \textbf{Persamaan Difusi 1D}:
+        \begin{equation*}
+          \mathbf{\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2} + \frac{\dot{q}_{\text{gen}}}{\rho c_p}}
+        \end{equation*}
+        dengan \textbf{Difusivitas Termal}: $\alpha = \frac{k}{\rho c_p}$ [m$^2$/s].
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 5: Dekomposisi Solusi: Tunak & Transien
+% -------------------------------------------------------------
+\begin{frame}{Metode Dekomposisi: Keadaan Tunak \& Transien}
+  Untuk menyelesaikan PDP dengan batas non-homogen atau sumber internal $\dot{q}_{\text{gen}}$:
+  \begin{block}{Postulat Superposisi Dekomposisi}
+    \small
+    Pecah solusi lengkap $u(x, t)$ menjadi dua bagian independen:
+    \begin{equation*}
+      \mathbf{u(x, t) = u_{\text{ss}}(x) + u_{\text{tr}}(x, t)}
+    \end{equation*}
+  \end{block}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{1. Solusi Keadaan Tunak: $u_{\text{ss}}(x)$}
+        \small
+        Kondisi asimtotik saat $t \to \infty$ ($\partial u/\partial t = 0$):
+        \begin{equation*}
+          \alpha \frac{d^2 u_{\text{ss}}}{dx^2} + \frac{\dot{q}_{\text{gen}}}{\rho c_p} = 0 \implies \frac{d^2 u_{\text{ss}}}{dx^2} = -\frac{\dot{q}_{\text{gen}}}{k}
+        \end{equation*}
+        Merupakan \textbf{PDB Biasa Orde Dua}! Selesaikan dengan integrasi langsung dua kali.
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{2. Solusi Transien: $u_{\text{tr}}(x, t)$}
+        \small
+        Memenuhi PDP homogen tanpa sumber:
+        \begin{equation*}
+          \frac{\partial u_{\text{tr}}}{\partial t} = \alpha \frac{\partial^2 u_{\text{tr}}}{\partial x^2}
+        \end{equation*}
+        Syarat batas dibuat homogen ($u_{\text{tr}} = 0$), diselesaikan dengan pemisahan variabel $\implies$ meluruh ke nol saat $t \to \infty$.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 6: Batas Dirichlet Homogen & Waktu Relaksasi
+% -------------------------------------------------------------
+\begin{frame}{Pendinginan Dirichlet \& Skala Waktu Relaksasi Termal}
+  Jika kawat panas didinginkan dengan kedua ujungnya terikat pada suhu ambien $0^\circ\text{C}$:
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Solusi Deret Fourier Sinus Dirichlet}
+        \small
+        \begin{equation*}
+          u(x, t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi x}{L}\right) \exp\left(-\frac{t}{\tau_n}\right)
+        \end{equation*}
+        dengan \textbf{Konstanta Waktu Ragam ke-$n$}:
+        \begin{equation*}
+          \mathbf{\tau_n = \frac{L^2}{\alpha \pi^2 n^2}}
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Dominasi Ragam Fundamental ($n = 1$)}
+        \small
+        \begin{itemize}
+          \item $\tau_1 = \frac{L^2}{\alpha \pi^2}$ (waktu pendinginan utama).
+          \item $\tau_2 = \frac{\tau_1}{4}, \quad \tau_3 = \frac{\tau_1}{9}, \quad \tau_5 = \frac{\tau_1}{25}$.
+          \item Seluruh riak dan ketajaman bentuk awal lenyap sangat cepat karena harmonisa tinggi meluruh sebanding kuadrat orde ($n^2$).
+          \item Profil temperatur selalu berakhir menyerupai kurva sinusoidal mulus.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 7: Batas Campuran Neumann-Dirichlet
+% -------------------------------------------------------------
+\begin{frame}{Kondisi Batas Campuran: Insulasi \& Pendinginan Kuartal Gelombang}
+  Tinjau konduktor di mana ujung $x = 0$ diisolasi sempurna ($u_x = 0$) dan ujung $x = L$ didinginkan ($u = 0$):
+  \vspace{0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Penentuan Fungsi Eigen Kuartal Gelombang}
+        \small
+        PDB spasial: $X''(x) + k^2 X(x) = 0$.\\
+        $X(x) = A\cos(kx) + B\sin(kx)$.
+        \begin{itemize}
+          \item Batas Neumann di $x=0$:
+          $X'(0) = k B = 0 \implies \mathbf{B = 0}$.
+          \item Batas Dirichlet di $x=L$:
+          $X(L) = A \cos(kL) = 0 \implies k_n L = \frac{(2n-1)\pi}{2}$.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Nilai Eigen \& Fungsi Eigen}
+        \small
+        \begin{equation*}
+          \mathbf{k_n = \frac{(2n-1)\pi}{2L}}, \quad \mathbf{\lambda_n = \left(\frac{(2n-1)\pi}{2L}\right)^2}
+        \end{equation*}
+        Fungsi eigen berupa kosinus kuartal gelombang:
+        \begin{equation*}
+          \mathbf{X_n(x) = \cos\left(\frac{(2n-1)\pi x}{2L}\right)}
+        \end{equation*}
+        Pola ini sering dijumpai pada inti kabel bawah tanah tertutup dengan pendinginan luar.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 8: Skematik Penampang Kabel Bawah Tanah 20 kV XLPE
+% -------------------------------------------------------------
+\begin{frame}{Struktur Termal Kabel Tenaga Bawah Tanah 20 kV XLPE}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Penampang Lapisan Termal Kabel Daya}
+        \centering
+        \resizebox{!}{0.48\textheight}{%
+        \begin{tikzpicture}[scale=0.8]
+          % Concentric circles
+          \draw[fill=orange!70, thick] (0, 0) circle (0.8);
+          \node at (0, 0) {\tiny\textbf{Inti Cu}};
+          \draw[fill=blue!20, thick] (0, 0) circle (1.4);
+          \draw[fill=orange!70, thick] (0, 0) circle (0.8);
+          \node at (0, 1.1) {\tiny Isolasi XLPE};
+          \draw[fill=gray!30, thick] (0, 0) circle (1.8);
+          \draw[fill=blue!20, thick] (0, 0) circle (1.4);
+          \node at (0, 1.6) {\tiny Pelindung Logam};
+          \draw[thick] (0, 0) circle (2.2);
+          \node at (0, 2.0) {\tiny Selubung Luar PVC};
+          \draw[->, thick, red!80!black] (0.5, 0.5) -- (2.5, 2.0) node[above, font=\tiny] {Disipasi Kalor $q_r$};
+        \end{tikzpicture}
+        }
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Model Jaringan Hambatan Termal (IEC 60287)}
+        \centering
+        \resizebox{!}{0.18\textheight}{%
+        \begin{circuitikz}[scale=0.75]
+          \draw (0, 1) node[left, font=\scriptsize] {Inti $T_c$}
+                to[R, l^=$T_1$ (XLPE), *-*] (1.8, 1)
+                to[R, l^=$T_2$ (Selubung), *-*] (3.6, 1)
+                to[R, l^=$T_4$ (Tanah), *-*] (5.2, 1)
+                node[right, font=\scriptsize] {Ambien $T_{\text{amb}}$};
+          \draw (0, 0) node[below, font=\tiny] {Sumber $I^2 R$} to[isource, l=$W_c$] (0, 1);
+        \end{circuitikz}
+        }
+        \small
+        Kenaikan temperatur inti konduktor:
+        \begin{equation*}
+          \Delta \theta = I^2 R_{\text{ac}} \left( T_1 + n T_2 + n T_4 \right)
+        \end{equation*}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 9: Contoh Soal Terhitung Langkah demi Langkah
+% -------------------------------------------------------------
+\begin{frame}{Contoh Terhitung: Pendinginan Batang Tembaga $100^\circ\text{C} \to 50^\circ\text{C}$}
+  \begin{exampleblock}{Masalah: Batang $L = 1\text{ m}$, suhu awal $100^\circ\text{C}$, batas $u(0)=u(1)=0^\circ\text{C}$, $\alpha = 10^{-4}\text{ m}^2/\text{s}$}
+    Berapa waktu $t$ agar temperatur pusat batang ($x = 0{,}5\text{ m}$) turun menjadi $50^\circ\text{C}$?
+  \end{exampleblock}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Penurunan Deret Fourier Dirichlet}
+        \small
+        Koefisien Fourier ($f(x) = 100$):
+        \begin{equation*}
+          B_n = \frac{2}{1}\int_{0}^{1} 100\sin(n\pi x)\,dx = \begin{cases} \frac{400}{n\pi}, & n \text{ ganjil} \\ 0, & n \text{ genap} \end{cases}
+        \end{equation*}
+        Ekspansi deret temperatur:
+        \begin{equation*}
+          u(x, t) = \frac{400}{\pi}\sum_{k=1}^{\infty}\frac{\sin((2k-1)\pi x)}{2k-1} e^{-\alpha (2k-1)^2 \pi^2 t}
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Evaluasi Waktu pada Titik Tengah}
+        \small
+        Di $x = 0{,}5$, $\sin(\pi / 2) = 1$. Ambil ragam $n = 1$:
+        \begin{equation*}
+          u(0{,}5, t) \approx \frac{400}{\pi} e^{-\alpha \pi^2 t} = 50^\circ\text{C}
+        \end{equation*}
+        Selesaikan untuk waktu $t$:
+        \begin{align*}
+          e^{-\alpha \pi^2 t} &= \frac{50\pi}{400} \approx 0{,}3927 \\
+          t &= \frac{-\ln(0{,}3927)}{\alpha \pi^2} = \frac{0{,}9347}{(10^{-4})\pi^2} \\
+          &\approx \mathbf{947\text{ s}} \approx \mathbf{15{,}8\text{ menit}} \quad \qed
+        \end{align*}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 10: Contoh Kasus Pemanasan Joule Kawat Listrik
+% -------------------------------------------------------------
+\begin{frame}{Contoh Terhitung: Pemanasan Internal Joule Kawat Listrik}
+  \begin{exampleblock}{Masalah: Kawat $L = 2\text{ m}, k = 40\text{ W/(m}\cdot\text{K)}$, $\dot{q}_{\text{gen}} = 8.000\text{ W/m}^3$, batas $u(0)=u(2)=20^\circ\text{C}$}
+    Tentukan profil temperatur keadaan tunak $u_{\text{ss}}(x)$ dan temperatur puncak kawat!
+  \end{exampleblock}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Penyusunan PDB Keadaan Tunak}
+        \small
+        Kondisi mantap ($\partial u/\partial t = 0$):
+        \begin{equation*}
+          \frac{d^2 u_{\text{ss}}}{dx^2} = -\frac{\dot{q}_{\text{gen}}}{k} = -\frac{8.000}{40} = -200
+        \end{equation*}
+        Integrasi pertama: $\frac{d u_{\text{ss}}}{dx} = -200 x + C_1$.\\[2pt]
+        Integrasi kedua: $u_{\text{ss}}(x) = -100 x^2 + C_1 x + C_2$.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Penerapan Batas \& Puncak}
+        \small
+        \textbf{Syarat Batas:}
+        $u_{\text{ss}}(0) = 20 \implies C_2 = 20$,\\
+        $u_{\text{ss}}(2) = 20 \implies C_1 = 200$.\\[2pt]
+        Profil temperatur parabola simetris:
+        \begin{equation*}
+          \mathbf{u_{\text{ss}}(x) = -100 x^2 + 200 x + 20} \quad [^\circ\text{C}]
+        \end{equation*}
+        Puncak di tengah ($x = 1{,}0\text{ m}$):
+        \begin{equation*}
+          u_{\text{max}} = u_{\text{ss}}(1) = \mathbf{120^\circ\text{C}} \quad \qed
+        \end{equation*}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 11: Kemampuan Hantar Arus (Ampacity) Kabel Daya
+% -------------------------------------------------------------
+\begin{frame}{Kuat Hantar Arus (\textit{Ampacity}) \& Degradasi Isolasi}
+  \begin{block}{Definisi Matematis Kemampuan Hantar Arus Konduktor}
+    \small
+    \textbf{Ampacity} ($I_{\text{max}}$) adalah arus kontinyu maksimum aman:
+    \begin{equation*}
+      \mathbf{I_{\text{max}} = \sqrt{\frac{\theta_{\text{max}} - \theta_{\text{amb}}}{R_{\text{ac}} \cdot R_{\text{th,total}}}}} \quad \text{[Ampere]}
+    \end{equation*}
+  \end{block}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Bahaya Melampaui Batas Operasi}
+        \small
+        \begin{itemize}
+          \item \textbf{Penuaan Arrhenius:} Kenaikan suhu $+10^\circ\text{C}$ memotong umur kabel $50\%$.
+          \item \textbf{Water Treed:} Pelunakan XLPE mempercepat tembus lucutan parsial.
+          \item \textbf{Deformasi Mekanis:} Pelemahan selubung timbal pelindung kabel.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Tahanan Termal Tanah ($T_4$)}
+        \small
+        \begin{itemize}
+          \item Tahanan tanah kering tinggi ($\rho_{\text{tanah}} \sim 2{,}5\text{ K}\cdot\text{m/W}$).
+          \item Migrasi kelembaban (\textit{thermal runaway}) terjadi saat tanah di sekitar kabel mengering total akibat disipasi berlebih.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 12: Standar Industri: Regulasi Kabel Tanah IEC 60287
+% -------------------------------------------------------------
+\begin{frame}{Standar Industri: Perhitungan Ampacity IEC 60287 \& IEEE 835}
+  \begin{block}{Standar Baku Rekayasa Kabel Daya Bawah Tanah}
+    \textbf{IEC 60287} (\textit{Electric cables -- Calculation of the current rating}) menetapkan batas temperatur kontinu dan darurat untuk berbagai jenis material dielektrik:
+  \end{block}
+  \vspace{0.1cm}
+  \begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{lccc}
+      \toprule
+      \textbf{Material Insulasi Kabel} & \textbf{Suhu Operasi Kontinu} & \textbf{Suhu Darurat Transien} & \textbf{Suhu Hubung Singkat (1 s)} \\
+      \midrule
+      Polyvinyl Chloride (PVC) & $70^\circ\text{C}$ & $95^\circ\text{C}$ & $160^\circ\text{C}$ \\
+      Cross-linked Polyethylene (XLPE) & $\mathbf{90^\circ\text{C}}$ & $\mathbf{130^\circ\text{C}}$ & $\mathbf{250^\circ\text{C}}$ \\
+      Ethylene Propylene Rubber (EPR) & $90^\circ\text{C}$ & $130^\circ\text{C}$ & $250^\circ\text{C}$ \\
+      Kertas Minyak Impregnasi (PILC) & $65^\circ\text{C}$ & $85^\circ\text{C}$ & $170^\circ\text{C}$ \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{alertblock}{Penerapan pada Jaringan Distribusi 20 kV PLN}
+    Kabel tanah PLN N2XSY / NA2XSEY (inti tunggal XLPE) ditanam pada kedalaman standar $0{,}8 - 1{,}0\text{ m}$ dengan material urugan pasir berkonduktivitas termal stabil guna menjaga temperatur $\le 90^\circ\text{C}$.
   \end{alertblock}
-  \pause
-  \textit{Aplikasi Elektro: Perhitungan ampacity (kapasitas hantar arus) maksimum kabel bawah tanah dan disipasi panas transformator.}
 \end{frame}
 
-\section{Solusi Analitik Deret Fourier}
-\begin{frame}{Penyelesaian dengan Syarat Batas Dirichlet}
-  Untuk kabel panjang $L$ dengan kedua ujung dijaga pada suhu lingkungan $0^\circ\text{C}$ ($u(0,t)=0, u(L,t)=0$) dan profil suhu awal $u(x,0) = f(x)$:
-  \pause
-  \begin{block}{Solusi Lengkap}
-    $$ {\color{unibblue} u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi x}{L}\right) e^{-\lambda_n^2 \alpha t}}, \quad \lambda_n = \frac{n\pi}{L} $$
-  \end{block}
-  \pause
-  \textbf{Faktor Peluruhan Eksponensial:}
-  $$ \tau_n = \frac{1}{\alpha \lambda_n^2} = \frac{L^2}{n^2 \pi^2 \alpha} $$
-  \textit{Harmonik spasial frekuensi tinggi ($n=2,3,\dots$) meluruh jauh lebih cepat, menyisakan gelombang sinusoidal mulus mode fundamental ($n=1$).}
+% -------------------------------------------------------------
+% FRAME 13: Simulasi Komputasi Julia
+% -------------------------------------------------------------
+% FRAME 13: Praktikum Komputasi Julia
+\begin{frame}[fragile]{Praktikum Komputasi Julia: Difusi Termal Kabel XLPE}
+  \begin{columns}[t]
+    \column{0.50\textwidth}
+    \begin{block}{Skrip Julia: Penetrasi Panas Transien}
+\begin{lstlisting}[style=juliastyle]
+using Plots
+
+r_norm = range(0, 1.0, length=200)
+T_prof(r, tau) = (1.0 .- r) .* (1.0 .- exp.(-r .* 4 .- tau .* 2))
+
+plot(r_norm, T_prof(r_norm, 0.05), lw=2, label="t = 0.05 tau")
+plot!(r_norm, T_prof(r_norm, 0.2), lw=2, label="t = 0.2 tau")
+plot!(r_norm, T_prof(r_norm, 0.8), lw=2, label="t = 0.8 tau")
+plot!(r_norm, 1.0 .- r_norm, lw=2.5, color=:red, label="Tunak")
+\end{lstlisting}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{alertblock}{Visualisasi Difusi Panas IEC 60287}
+      \centering
+      \includegraphics[width=\linewidth, height=0.38\textheight, keepaspectratio]{figures/slides/plot_ch12.png}
+    \end{alertblock}
+    \vspace{-0.1cm}
+    \begin{exampleblock}{Intisari Difusi Termal}
+      \tiny
+      Panas Joule merambat keluar dari inti kawat menuju tanah. Laju penetrasi dikendalikan oleh difusivitas termal $\alpha = k/(\rho c_p)$. Kondisi tunak membentuk profil temperatur logaritmik silinder.
+    \end{exampleblock}
+  \end{columns}
 \end{frame}
 
-\section{Kondisi Batas Non-Homogen \& Keadaan Mantap}
-\begin{frame}{Transien vs Keadaan Mantap (*Steady-State*)}
-  Jika kedua ujung kabel memiliki suhu konstan berbeda: $u(0,t) = T_1$ dan $u(L,t) = T_2$:
-  \pause
-  Solusi total dipecah menjadi:
-  $$ u(x,t) = u_{\text{steady}}(x) + u_{\text{transient}}(x,t) $$
-  \pause
-  \begin{block}{Distribusi Suhu Keadaan Mantap (Saat $t \to \infty$)}
-    $$ \frac{d^2 u_{\text{steady}}}{dx^2} = 0 \implies {\color{unibblue} u_{\text{steady}}(x) = T_1 + \frac{T_2 - T_1}{L} x} \quad \text{(Garis Lurus Linear)} $$
-  \end{block}
+% -------------------------------------------------------------
+% FRAME 14: Kuis Tantangan Bloom Berjenjang
+% -------------------------------------------------------------
+% FRAME 14: Kuis & Tantangan Bloom C1-C6
+\begin{frame}{Kuis Konseptual Interaktif \& Evaluasi Bloom (C1--C6)}
+  \begin{columns}[t]
+    \column{0.52\textwidth}
+    \begin{alertblock}{Peer Instruction: Uji Miskonsepsi Fisik}
+      \footnotesize
+      \textbf{Kasus Rekayasa:} Mengapa kabel tanah XLPE 20 kV yang ditanam memiliki batas kuat hantar arus (*ampacity*) jauh lebih rendah dibanding kawat ACSR berdiameter sama di udara terbuka?
+      \vspace{0.05cm}
+      \begin{itemize}\setlength{\itemsep}{1pt}
+        \item \textbf{[A]} Tembaga kabel tanah memiliki konduktivitas lebih rendah.
+        \item \textbf{[B]} Lapisan isolasi padat polimer XLPE dan timbunan tanah memiliki resistansi termal jauh lebih besar dibanding konveksi udara bebas!
+        \item \textbf{[C]} Medan gravitasi bumi menahan aliran arus listrik.
+        \item \textbf{[D]} Kabel tanah rentan kehilangan tegangan akibat induksi.
+      \end{itemize}
+    \end{alertblock}
+
+    \column{0.46\textwidth}
+    \begin{block}{Tantangan Analisis \& Desain (C4--C6)}
+      \footnotesize
+      \begin{itemize}\setlength{\itemsep}{2pt}
+        \item \textbf{C4 (Analisis):} Turunkan dekomposisi solusi tunak dan transien pada persamaan difusi panas non-homogen dengan pembangkitan internal.
+        \item \textbf{C5 (Evaluasi):} Evaluasi bahaya *thermal runaway* pada isolasi XLPE jika suhu inti melampaui $90^\circ\text{C}$.
+        \item \textbf{C6 (Desain):} Rancang kedalaman parit penanaman kabel tanah dan material timbunan pasir termal sesuai IEC 60287!
+      \end{itemize}
+    \end{block}
+  \end{columns}
 \end{frame}
 
-\section{Kuis \& Simulasi Komputasi}
-\begin{frame}{Simulasi Numerik Julia: FTCS}
-  \begin{block}{Simulasi Persamaan Panas 1D}
-    $$ u_i^{n+1} = u_i^n + r (u_{i+1}^n - 2u_i^n + u_{i-1}^n), \quad r = \frac{\alpha \Delta t}{\Delta x^2} \le 0.5 $$
-    \begin{itemize}
-      \item Mempelajari syarat stabilitas von Neumann ($r \le 0.5$).
-      \item Visualisasi difusi titik panas (*hot-spot*) kabel daya.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Kuis Interaktif 12}
-  \textbf{Soal:} Jika panjang kabel tembaga diduplikasi menjadi $2\times$ lipat semula ($L' = 2L$), berapakah peningkatan waktu pendinginan $\tau$ yang dibutuhkan kabel hingga mencapai suhu dingin?
-  \pause
-  \begin{block}{Jawaban:}
-    Karena konstanta waktu peluruhan $\tau \propto L^2$:
-    $$ \tau' \propto (2L)^2 = 4 L^2 = 4\tau $$
-    Waktu pendinginan meningkat \textbf{4 kali lipat}!
-  \end{block}
-\end{frame}
-
-\begin{frame}{Rangkuman}
-  \begin{enumerate}
-    \item Persamaan panas adalah PDP tipe parabolik yang memodelkan proses disipasi irreversibel.
-    \item Solusi selalu konvergen menuju gradien temperatur linear pada keadaan mantap.
-    \item Kestabilan numerik FTCS menuntut langkah waktu $\Delta t \le \frac{\Delta x^2}{2\alpha}$.
-  \end{enumerate}
+% -------------------------------------------------------------
+% FRAME 15: Rangkuman Eksekutif & Jembatan ke Minggu 13
+% -------------------------------------------------------------
+\begin{frame}{Rangkuman Eksekutif \& Jembatan ke Minggu 13}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Rangkuman Inti Minggu 12}
+        \begin{itemize}
+          \item \textbf{Difusi Kalor:} Pemanasan disipasi Joule $I^2 R$ dimodelkan oleh PDP difusi parabolik.
+          \item \textbf{Dekomposisi Solusi:} $u(x, t) = u_{\text{ss}}(x) + u_{\text{tr}}(x, t)$.
+          \item \textbf{Konstanta Relaksasi:} $\tau_n = L^2 / (\alpha \pi^2 n^2)$ menentukan laju pendinginan alami.
+          \item \textbf{Standar Industri:} Ampacity kabel tanah XLPE dibatasi temperatur $90^\circ\text{C}$ (\textbf{IEC 60287}).
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pratinjau Minggu 13: Persamaan Laplace 2D}
+        \begin{itemize}
+          \item Masuk ke PDP elliptik 2-dimensi: $\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0$.
+          \item \textbf{Elektrostatika Medan Tinggi:} Distribusi potensial di antara konduktor tegangan tinggi dan tanah.
+          \item Metode komputasi \textbf{Beda Hingga (FDM)} dan relaksasi Gauss-Seidel menggunakan Julia.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \end{document}

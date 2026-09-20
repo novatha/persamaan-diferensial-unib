@@ -1,60 +1,172 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
+\usepackage[top=1.5cm, bottom=1.5cm, left=1.6cm, right=1.6cm, headheight=14pt, footskip=18pt]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsfonts,amssymb}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage[many]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{calc,patterns}
+\usepackage[most]{tcolorbox}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{hyperref}
 
+% --- Palet Warna Resmi UNIB ---
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{boxbg}{RGB}{248, 250, 253}
+\definecolor{linegray}{RGB}{210, 215, 225}
+
+% --- Pengaturan Header & Footer ---
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\lhead{\footnotesize\textbf{\color{unibblue}Universitas Bengkulu} \textbar\ Program Studi S1 Teknik Elektro}
+\rhead{\footnotesize\color{gray}Persamaan Diferensial (Genap 2026)}
+\lfoot{\footnotesize\color{gray}Lembar Kerja Mahasiswa (LKM) Berbasis OBE}
+\cfoot{\footnotesize\color{gray}Hal. \thepage\ dari 2}
+\rfoot{\footnotesize\color{unibblue}\textbf{Minggu 7: Invers Transformasi Laplace \& Pe...}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
 
-\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 7: Latihan Invers Laplace \& Solusi PDB}}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% --- Custom Box untuk Lembar Jawab ---
+\newtcolorbox{answerbox}[1]{%
+  colback=white,
+  colframe=unibblue!70!black,
+  coltitle=white,
+  fonttitle=\bfseries\scriptsize,
+  colbacktitle=unibblue,
+  title={#1},
+  arc=2pt,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,
+  boxrule=0.6pt
+}
 
 \begin{document}
 
-\maketitle
+% ==================== HALAMAN 1 ====================
+\noindent\begin{minipage}[c]{0.68\textwidth}%
+  {\large\textbf{\color{unibblue}LEMBAR KERJA MAHASISWA (LKM)}}\\[1mm]
+  {\normalsize\textbf{Mata Kuliah: Persamaan Diferensial (2 SKS)}}\\[0.5mm]
+  {\small\textbf{Topik Minggu 7:} Invers Transformasi Laplace \& Pemutus Tenaga (TRV)}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[c]{0.30\textwidth}%
+  \begin{tcolorbox}[colback=unibblue!5,colframe=unibblue,boxrule=0.6pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt]
+    \scriptsize
+    \textbf{Nama:} \dotfill\\[1.2mm]
+    \textbf{NPM:} \dotfill\\[1.2mm]
+    \textbf{Kelas/Klp:} \dotfill\\[1.2mm]
+    \textbf{Nilai Final:} \hfill \textbf{/ 100}
+  \end{tcolorbox}%
+\end{minipage}\par
 
-\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
-Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih ketajaman matematis Anda. Alokasikan waktu sekitar 45--60 menit untuk berdiskusi.
+\vspace{1.5mm}
+
+% Kotak Sub-CPMK & Pedoman
+\begin{tcolorbox}[colback=boxbg,colframe=unibgold!90!black,boxrule=0.6pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,title=\textbf{\scriptsize Capaian Pembelajaran (Sub-CPMK 4) \& Pedoman Evaluasi OBE}]
+  \scriptsize
+  \textbf{Sub-CPMK 4:} Mahasiswa mampu merekonstruksi sinyal waktu melalui Invers Transformasi Laplace (pecahan parsial \& integral konvolusi) serta menganalisis fenomena Transient Recovery Voltage (TRV) pada pemutus tenaga PMT.\\
+  \textbf{Alokasi Waktu:} 50--60 Menit \quad\textbar\quad \textbf{Model:} Kolaboratif / Mandiri Terstruktur \quad\textbar\quad \textbf{Bahasa Komputasi:} Julia 1.12+
 \end{tcolorbox}
 
-\section*{Soal-Soal Latihan}
+\vspace{1mm}
 
-\begin{enumerate}[label=\textbf{\arabic*.}]
-    \item \textbf{(C1 - Mengingat)} Tuliskan dua sifat linieritas dari Invers Transformasi Laplace!
-    \vspace{2cm}
+% Soal C1
+\noindent\textbf{1. (C1 - Mengingat \textbar\ Bobot: 10 Poin)}\par\vspace{0.5mm}
+{\footnotesize Tuliskan tiga kasus dekomposisi pecahan parsial (*partial fraction expansion*) untuk fungsi rasional $F(s) = P(s)/Q(s)$ (akar riil berbeda, akar riil berulang, dan pasangan akar kompleks konjugat).}
+\begin{answerbox}{Ruang Pengerjaan C1 (Kaidah Dekomposisi Pecahan Parsial)}
+  \vspace{2.0cm}
+\end{answerbox}
 
-    \item \textbf{(C2 - Memahami)} Diberikan dua fungsi Laplace $F_1(s)$ dan $F_2(s)$. Jelaskan mengapa $\mathcal{L}^{-1}\{F_1(s) \cdot F_2(s)\}$ tidak sama dengan $f_1(t) \cdot f_2(t)$. Konsep matematika apa yang sebenarnya mewakili perkalian di domain $s$?
-    \vspace{3cm}
+\vspace{1mm}
 
-    \item \textbf{(C3 - Mengaplikasikan)} Carilah solusi Invers Laplace untuk:
-    $$ F(s) = \frac{3s+1}{s^2-4} $$
-    \vspace{4.5cm}
+% Soal C2
+\noindent\textbf{2. (C2 - Memahami \textbar\ Bobot: 15 Poin)}\par\vspace{0.5mm}
+{\footnotesize Jelaskan definisi fisis *Transient Recovery Voltage* (TRV) yang muncul melintasi kontak Pemutus Tenaga (PMT / *Circuit Breaker*) sesaat setelah pemutusan arus hubung singkat menurut standar \textbf{IEC 62271-100}.}
+\begin{answerbox}{Ruang Pengerjaan C2 (Intuisi Fisika TRV \& Kegagalan Dielektrik PMT)}
+  \vspace{2.1cm}
+\end{answerbox}
 
-    \item \textbf{(C4 - Menganalisis)} Gunakan Transformasi Laplace untuk menyelesaikan sistem PDB Orde 1 berikut, yang memodelkan arus di sebuah induktor:
-    $$ \frac{di}{dt} + 2i = u(t), \quad i(0) = 0 $$
-    (Catatan: $u(t)$ adalah fungsi step satuan, di mana $U(s) = 1/s$).
-    \vspace{5cm}
+\vspace{1mm}
 
-    \item \textbf{(C5 - Mengevaluasi)} Diberikan PDB orde 2: $y'' + 4y = \delta(t)$ dengan $y(0)=0$ dan $y'(0)=0$. Fungsi $\delta(t)$ adalah impuls Dirac. Tentukan penyelesaian $y(t)$ dan evaluasi apakah masuk akal bahwa impuls sesaat menghasilkan respon yang berkelanjutan?
-    \vspace{5cm}
+% Soal C3
+\noindent\textbf{3. (C3 - Menerapkan \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+\noindent\begin{minipage}[t]{0.60\textwidth}%
+  {\footnotesize Model domain-$s$ dari tegangan pemulihan transien PMT diberikan oleh $V_{\text{TRV}}(s) = V_m \left( \frac{1}{s} - \frac{s}{s^2 + \omega_0^2} \right)$. Gunakan invers transformasi Laplace untuk menurunkan fungsi waktu analitis $v_{\text{TRV}}(t)$, dan tentukan nilai puncak maksimumnya!}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.37\textwidth}%
+  \centering
+  \resizebox{0.95\linewidth}{!}{%
+  \begin{circuitikz}[american, scale=0.65, transform shape]
+    \draw (0,0) to[sV, l=$v_s(t)$] (0,1.8)
+          to[L, l=$L_{\text{trafo}}$] (1.6,1.8)
+          to[switch, l={PMT Buka}] (3.0,1.8)
+          to[short] (3.0,0)
+          to[short] (0,0);
+    \draw (1.6,1.8) to[C, l=$C_{\text{bus}}$, v=$v_{\text{TRV}}$] (1.6,0);
+  \end{circuitikz}%
+  }%
+\end{minipage}\par\vspace{1mm}
+\begin{answerbox}{Ruang Pengerjaan C3 (Invers Laplace \& Penentuan Nilai Puncak TRV)}
+  \vspace{2.8cm}
+\end{answerbox}
 
-    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sistem elektromekanis dengan menggunakan Hukum Newton dan Transformasi Laplace yang respon waktu penyelesaiannya memuat fungsi eksponensial dan sinus secara bersamaan, misal $x(t) = e^{-t} \sin(2t)$.
-    \vspace{5cm}
-\end{enumerate}
+\newpage
+% ==================== HALAMAN 2 ====================
 
-\vfill
-\begin{center}
-\textbf{Semoga berhasil!}
-\end{center}
+% Soal C4
+\noindent\textbf{4. (C4 - Menganalisis \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+{\footnotesize Analisis laju kenaikan tegangan pemulihan (\textit{Rate of Rise of Recovery Voltage} / RRRV) yang didefinisikan sebagai $\text{RRRV} = \left. \frac{dv_{\text{TRV}}}{dt} \right|_{\text{maks}}$. Jelaskan mengapa jika RRRV melebihi kekuatan dielektrik celah busur gas $\text{SF}_6$, pemutus tenaga akan mengalami *re-strike* (kegagalan interupsi).}
+\begin{answerbox}{Ruang Pengerjaan C4 (Analisis Kritis Parameter RRRV Standar IEC 62271)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Soal C5
+\noindent\textbf{5. (C5 - Mengevaluasi \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+{\footnotesize Selesaikan PDB sistem kendali eksitasi dengan nilai awal tidak nol: $y'' + 4y' + 13y = 0$, $y(0) = 5$, $y'(0) = -10$. Evaluasi apakah respons waktu mengalami osilasi teredam, dan tentukan frekuensi osilasi teredamnya $\omega_d$.}
+\begin{answerbox}{Ruang Pengerjaan C5 (Penyelesaian Lengkap IVP Domain-s \& Evaluasi Redaman)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Soal C6
+\noindent\textbf{6. (C6 - Merancang \& Komputasi Julia \textbar\ Bobot: 15 Poin)}\par\vspace{0.5mm}
+{\footnotesize Rancang skrip numerik berbasis \textbf{Julia} untuk menyelesaikan PDB TRV orde 2 non-homogen dengan paket \texttt{Differential\-Equations.jl} serta memplot kurva $v_{\text{TRV}}(t)$ bersama garis batas dielektrik PMT.}
+\begin{answerbox}{Ruang Pengerjaan C6 (Skrip Simulasi Numerik TRV PMT Gardu Induk Julia)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Tabel Rekapitulasi Skor OBE & Tanda Tangan
+\noindent\begin{minipage}[b]{0.65\textwidth}%
+  \centering
+  \scriptsize
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \rowcolor{unibblue}
+    \textbf{\color{white}C1} & \textbf{\color{white}C2} & \textbf{\color{white}C3} & \textbf{\color{white}C4} & \textbf{\color{white}C5} & \textbf{\color{white}C6} & \textbf{\color{white}Total} \\
+    \rowcolor{unibblue!10}
+    10 Pts & 15 Pts & 20 Pts & 20 Pts & 20 Pts & 15 Pts & 100 Pts \\
+    \hline
+    & & & & & & \\[2.5mm]
+    \hline
+  \end{tabular}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[b]{0.32\textwidth}%
+  \centering
+  \scriptsize
+  \textbf{Verifikasi Dosen / Asisten:}\\[5mm]
+  (\dotfill)
+\end{minipage}\par
 
 \end{document}

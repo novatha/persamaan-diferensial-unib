@@ -1,46 +1,171 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
+\usepackage[top=1.4cm, bottom=1.4cm, left=1.6cm, right=1.6cm, headheight=14pt, footskip=18pt]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsfonts,amssymb}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage[many]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{calc,patterns}
+\usepackage[most]{tcolorbox}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{hyperref}
 
+% --- Palet Warna Resmi UNIB ---
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{boxbg}{RGB}{248, 250, 253}
+\definecolor{linegray}{RGB}{210, 215, 225}
+
+% --- Pengaturan Header & Footer ---
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
-
-\title{\vspace{-2cm}\textbf{Problem Set (Tugas Terstruktur)\\Persamaan Diferensial - Minggu 1: Klasifikasi \& Pemodelan}}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\lhead{\footnotesize\textbf{\color{unibblue}Universitas Bengkulu} \textbar\ Program Studi S1 Teknik Elektro}
+\rhead{\footnotesize\color{gray}Persamaan Diferensial (Genap 2026)}
+\lfoot{\footnotesize\color{gray}Problem Set Tugas Terstruktur Berbasis OBE}
+\cfoot{\footnotesize\color{gray}Hal. \thepage\ dari 2}
+\rfoot{\footnotesize\color{unibblue}\textbf{Minggu 1: Klasifikasi PDB/PDP, Nilai Awal ...}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
 
 \begin{document}
 
-\maketitle
+% ==================== HALAMAN 1 ====================
+\noindent\begin{minipage}[c]{0.68\textwidth}%
+  {\large\textbf{\color{unibblue}PROBLEM SET (TUGAS MANDIRI TERSTRUKTUR)}}\\[1mm]
+  {\normalsize\textbf{Mata Kuliah: Persamaan Diferensial (2 SKS)}}\\[0.5mm]
+  {\small\textbf{Topik Minggu 1:} Klasifikasi PDB/PDP, Nilai Awal (IVP), \& Pemodelan RL}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[c]{0.30\textwidth}%
+  \begin{tcolorbox}[colback=unibblue!5,colframe=unibblue,boxrule=0.6pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt]
+    \scriptsize
+    \textbf{Nama:} \dotfill\\[1.2mm]
+    \textbf{NPM:} \dotfill\\[1.2mm]
+    \textbf{Kelas/Klp:} \dotfill\\[1.2mm]
+    \textbf{Nilai Final:} \hfill \textbf{/ 100}
+  \end{tcolorbox}%
+\end{minipage}\par
 
-\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Instruksi Tugas]
-Kumpulkan jawaban Problem Set ini pada awal perkuliahan minggu berikutnya. Tunjukkan semua langkah pemikiran, analisis fisis, dan penurunan matematis Anda. Serta lampirkan bukti validasi jika diinstruksikan.
+\vspace{1.5mm}
+
+% Kotak Sub-CPMK & Pedoman Tugas Terstruktur
+\begin{tcolorbox}[colback=boxbg,colframe=unibgold!90!black,boxrule=0.6pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,title=\textbf{\scriptsize Capaian Pembelajaran (Sub-CPMK 1) \& Pedoman Pengerjaan Tugas}]
+  \scriptsize
+  \textbf{Sub-CPMK 1:} Mahasiswa mampu mengidentifikasi, mengklasifikasi, dan memodelkan fenomena dinamika sistem elektrik terpusat ke dalam Persamaan Diferensial Biasa (PDB) orde 1 serta memvalidasinya secara numerik.\\
+  \textbf{Ketentuan Tugas:} Kerjakan secara mandiri pada kertas folio/A4 bergaris atau laporan digital rapi. Lampirkan penurunan rumus analitis lengkap dan cetak visualisasi kode program Julia (Soal C6). Kumpulkan pada awal perkuliahan minggu berikutnya.
 \end{tcolorbox}
 
-\section*{Daftar Soal (Level Kognitif C1 - C6)}
+\vspace{1.5mm}
 
-\begin{enumerate}[label=\textbf{\arabic*.}]
-    \item \textbf{(C1 - Mengingat)} Tuliskan definisi lengkap dari Persamaan Diferensial Biasa (PDB) linier orde 2. Berikan satu contoh persamaan yang memenuhi kriteria tersebut di bidang kelistrikan.
-    \item \textbf{(C2 - Memahami)} Jelaskan dengan bahasa Anda sendiri perbedaan mendasar antara "Solusi Umum" dan "Solusi Khusus" pada penyelesaian suatu \textit{Initial Value Problem} (IVP). Mengapa kita membutuhkan kondisi awal?
-    \item \textbf{(C3 - Mengaplikasikan)} Tentukan apakah persamaan-persamaan diferensial berikut merupakan persamaan linier atau non-linier, serta sebutkan ordenya:
-    \begin{enumerate}[label=\alph*.]
-        \item $\frac{d^2y}{dt^2} + 3t\frac{dy}{dt} + y = \sin(t)$
-        \item $\left(\frac{dx}{dt}\right)^2 + 4x = 0$
-        \item $\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = \rho(x,y)$
-    \end{enumerate}
-    \item \textbf{(C4 - Menganalisis)} Analisislah sebuah rangkaian seri RC (Resistor-Kapasitor) yang dihubungkan dengan sumber tegangan DC sebesar $V_0$. Dengan menggunakan Hukum Tegangan Kirchhoff (KVL), turunkan pemodelan fisis rangkaian tersebut hingga membentuk PDB orde 1 terhadap variabel muatan kapasitor $q(t)$.
-    \item \textbf{(C5 - Mengevaluasi)} Diberikan model PDB rangkaian listrik: $\frac{di}{dt} + 5i = 10$ dengan kondisi awal $i(0)=0$. Seorang praktikan mengklaim solusi khususnya adalah $i(t) = 2 - 2e^{-5t}$. Evaluasi dan buktikan apakah klaim tersebut benar atau salah!
-    \item \textbf{(C6 - Mencipta)} Rancanglah sebuah sistem elektromekanik atau sirkuit listrik imajiner sederhana sedemikian rupa sehingga dinamika responsnya direpresentasikan oleh $\frac{dx}{dt} + kx = F_0$. Jelaskan secara detil komponen-komponen sistem Anda, variabel $x$, serta makna fisis dari parameter $k$ dan $F_0$. \textbf{Tugas Tambahan:} Tulis fungsi Python sederhana (Euler Method) di secarik kertas untuk menyelesaikan persamaan yang Anda rancang.
-\end{enumerate}
+\noindent{\textbf{\color{unibblue}\large BAGIAN I: FONDASI KONSEPTUAL \& PENURUNAN MATEMATIS}}\par
+\vspace{1mm}
+
+% Soal C1
+\noindent\textbf{1. (C1 - Mengingat \textbar\ Bobot: 10 Poin)}\par\vspace{0.8mm}
+{\footnotesize Tuliskan definisi lengkap Persamaan Diferensial Biasa (PDB) linier orde 1 beserta bentuk kanonikalnya $\frac{dy}{dt} + P(t)y = Q(t)$. Berikan satu contoh nyata fenomena kelistrikan yang direpresentasikan oleh bentuk tersebut.}\par
+
+\vspace{2.5mm}
+
+% Soal C2
+\noindent\textbf{2. (C2 - Memahami \textbar\ Bobot: 15 Poin)}\par\vspace{0.8mm}
+{\footnotesize Jelaskan perbedaan mendasar antara 'Solusi Umum' dan 'Solusi Khusus' pada penyelesaian suatu Masalah Nilai Awal (IVP). Jelaskan mengapa hukum kontinuitas fluks magnetik induktor mensyaratkan arus tidak boleh melompat seketika ($i(0^-) = i(0^+)$).}\par
+
+\vspace{2.5mm}
+
+% Soal C3
+\noindent\textbf{3. (C3 - Menerapkan \textbar\ Bobot: 20 Poin)}\par\vspace{0.8mm}
+\noindent\begin{minipage}[t]{0.60\textwidth}%
+  {\footnotesize Tinjau rangkaian pengisian induktor pada gambar di samping. Sakelar ditutup pada $t=0$ dengan arus mula-mula $i(0) = 0$. Jika sumber tegangan DC bernilai $V_s = 48\text{ V}$, resistansi $R = 12\,\Omega$, dan induktansi $L = 0{,}6\text{ H}$, turunkan persamaan diferensial arus dari KVK dan tentukan solusi khusus arus transien $i(t)$ untuk $t \ge 0$.}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.37\textwidth}%
+  \centering
+  \resizebox{0.95\linewidth}{!}{%
+  \begin{circuitikz}[american, scale=0.68, transform shape]
+    \draw (0,0) to[battery2, l=$V_s$, invert] (0,1.8)
+          to[switch, l={$t{=}0$}] (1.6,1.8)
+          to[R, l=$R$] (3.2,1.8)
+          to[L, l=$L$, v=$v_L(t)$] (3.2,0)
+          to[short] (0,0);
+    \draw[->, >=stealth, thick, unibblue] (1.4,0.8) arc (160:-160:0.35);
+    \node at (1.8,0.8) [unibblue, font=\tiny\bfseries] {$i(t)$};
+  \end{circuitikz}%
+  }%
+\end{minipage}\par
+
+\vfill
+
+% Kotak Formula Rujukan Teknis & Standar Industri
+\begin{tcolorbox}[colback=unibblue!3,colframe=unibblue,colbacktitle=unibblue,coltitle=white,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=3pt,bottom=3pt,title=\textbf{\scriptsize FORMULA RUJUKAN TEKNIS \& STANDAR INDUSTRI TERKAIT}]
+  \scriptsize
+  \begin{itemize}[leftmargin=*, nosep]
+  \item Hukum Tegangan Kirchhoff (KVK): $\sum v = 0 \implies V_s - v_R(t) - v_L(t) = 0$
+  \item Karakteristik Dinamika Induktor: $v_L(t) = L \frac{di}{dt}$ \quad\textbar\quad Fluks Magnetik: $\lambda = L i$
+  \item Konstanta Waktu Rangkaian: $\tau = \frac{L}{R}$ (detik) \quad\textbar\quad Respons Arus: $i(t) = \frac{V_s}{R} \left(1 - e^{-t/\tau}\right)$
+  \item Energi Medan Magnetik Tersimpan: $W_L(t) = \frac{1}{2} L i^2(t)$ (Joule)
+\end{itemize}
+\end{tcolorbox}
+
+\newpage
+% ==================== HALAMAN 2 ====================
+
+\noindent{\textbf{\color{unibblue}\large BAGIAN II: ANALISIS SISTEM, EVALUASI STANDAR, \& KOMPUTASI JULIA}}\par
+\vspace{1mm}
+
+% Soal C4
+\noindent\textbf{4. (C4 - Menganalisis \textbar\ Bobot: 20 Poin)}\par\vspace{0.8mm}
+{\footnotesize Berdasarkan solusi arus $i(t)$ pada Soal 3: (a) Tentukan ekspresi analitis tegangan induktor $v_L(t) = L \frac{di}{dt}$ dan buktikan bahwa $v_L(0^+) = V_s$; (b) Analisis waktu yang dibutuhkan agar arus mencapai tepat $95\%$ dari nilai arus tunaknya ($I_{\text{ss}} = V_s/R$); (c) Hitung energi total yang disuplai sumber $W_{\text{sumber}}$ selama selang waktu $0 \le t \le 3\tau$.}\par
+
+\vspace{3.5mm}
+
+% Soal C5
+\noindent\textbf{5. (C5 - Mengevaluasi \textbar\ Bobot: 20 Poin)}\par\vspace{0.8mm}
+{\footnotesize Seorang teknisi mengklaim bahwa dengan menggandakan nilai induktansi $L$ menjadi dua kali lipat tanpa mengubah nilai $R$, energi akhir yang tersimpan dalam medan magnetik induktor pada kondisi tunak ($t \to \infty$) akan meningkat 4 kali lipat. Evaluasi kebenaran klaim teknis tersebut secara matematis berdasarkan rumus energi medan magnetik $W_L = \frac{1}{2} L i^2$.}\par
+
+\vspace{3.5mm}
+
+% Soal C6
+\noindent\textbf{6. (C6 - Merancang \& Komputasi Julia \textbar\ Bobot: 15 Poin)}\par\vspace{0.8mm}
+{\footnotesize Rancang sebuah program ilmiah berbasis \textbf{Julia} (\texttt{Differential\-Equations.jl} \& \texttt{Plots.jl}) untuk mensimulasikan respons arus transien rangkaian RL pada Soal 3 dengan solver \texttt{Tsit5()}. Program harus memplot kurva $i(t)$ dan $v_L(t)$ pada satu kanvas grafik terpisah dengan anotasi garis konstanta waktu $\tau = L/R$. Lampirkan sintaks kode Julia dan interpretasi kurvanya.}\par
+
+\vfill
+
+% Tabel Rekapitulasi Skor OBE & Lembar Catatan Umpan Balik Dosen
+\noindent\begin{minipage}[b]{0.62\textwidth}%
+  \centering
+  \scriptsize
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \rowcolor{unibblue}
+    \textbf{\color{white}C1} & \textbf{\color{white}C2} & \textbf{\color{white}C3} & \textbf{\color{white}C4} & \textbf{\color{white}C5} & \textbf{\color{white}C6} & \textbf{\color{white}Total} \\
+    \rowcolor{unibblue!10}
+    10 Pts & 15 Pts & 20 Pts & 20 Pts & 20 Pts & 15 Pts & 100 Pts \\
+    \hline
+    & & & & & & \\[3mm]
+    \hline
+  \end{tabular}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[b]{0.35\textwidth}%
+  \centering
+  \scriptsize
+  \textbf{Verifikasi Dosen / Asisten:}\\[6mm]
+  (\dotfill)\\[1mm]
+  \tiny Tanggal: \dotfill
+\end{minipage}\par
+
+\vspace{2mm}
+\begin{tcolorbox}[colback=white,colframe=unibblue!40!black,colbacktitle=unibblue!10,coltitle=unibblue,boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,title=\textbf{\tiny Catatan Evaluasi \& Umpan Balik Dosen Pengampu}]
+  \tiny
+  \textbf{Rubrik Pemeriksaan Pengerjaan Tugas Mandiri:}\par\vspace{0.8mm}
+  $\square$ Penurunan matematis langkah-demi-langkah runtut (C1--C4) \hfill $\square$ Validasi analitis \& standar industri IEEE/IEC/SPLN akurat (C5)\\[0.8mm]
+  $\square$ Skrip program Julia mandiri \& grafik visualisasi terlampir (C6) \hfill $\square$ Kerapian format laporan \& ketepatan waktu pengumpulan\\[2.0mm]
+  \textbf{Catatan / Koreksi Khusus Dosen:}\\[1.6cm]
+\end{tcolorbox}
 
 \end{document}

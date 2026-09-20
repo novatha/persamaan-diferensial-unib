@@ -4,143 +4,538 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
 \usepackage{amsmath,amssymb}
+\usepackage{listings}
+\lstdefinestyle{juliastyle}{language=Julia,basicstyle=\ttfamily\tiny,keywordstyle=\bfseries\color{unibblue},commentstyle=\color{gray}\itshape,stringstyle=\color{unibgreen},backgroundcolor=\color{softgray},frame=single,rulecolor=\color{unibblue!30},breaklines=true,breakatwhitespace=true,showstringspaces=false,tabsize=2,numbers=none}
+\usepackage{booktabs}
 
 % --- Custom Colors ---
-\definecolor{unibblue}{RGB}{0,51,102}
-\definecolor{unibgold}{RGB}{212,175,55}
-\definecolor{unibgreen}{RGB}{0,128,0}
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{softgray}{RGB}{245, 247, 250}
 
 \setbeamercolor{palette primary}{bg=unibblue,fg=white}
 \setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
 \setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
 \setbeamercolor{structure}{fg=unibblue}
-\setbeamercolor{block title}{bg=unibblue!85,fg=white}
-\setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{titlelike}{parent=structure,bg=unibblue,fg=white}
+\setbeamercolor{block title}{bg=unibblue!90,fg=white}
+\setbeamercolor{block body}{bg=unibblue!8,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!95,fg=black}
 \setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!90,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
 
-\title{Persamaan Diferensial}
-\subtitle{Minggu 9: Pengantar Persamaan Diferensial Parsial (PDP) \& Analisis Deret Fourier}
-\author{Novalio Daratha \& Muhammad Arfan}
-\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date[\today]{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% Listings setup for Julia
+\lstdefinelanguage{Julia}{
+  keywords={abstract,break,case,catch,const,continue,do,else,elseif,end,export,false,for,function,global,if,import,let,local,macro,module,mutable,primitive,quote,return,struct,true,try,type,using,var,while},
+  sensitive=true,
+  comment=[l]{\#},
+  string=[b]"
+}
+\lstset{
+  language=Julia,
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{blue!80!black}\bfseries,
+  commentstyle=\color{green!50!black}\itshape,
+  stringstyle=\color{red!80!black},
+  breaklines=true,
+  numbers=none,
+  frame=single,
+  backgroundcolor=\color{gray!5},
+  aboveskip=2pt,
+  belowskip=2pt
+}
+
+\title[Persamaan Diferensial (Minggu 9)]{Persamaan Diferensial}
+\subtitle{Minggu 9: Pengantar PDP \& Analisis Deret Fourier: Taksonomi Orde Dua, Ortogonalitas, Simetri, Fenomena Gibbs, dan Distorsi Harmonisa IEEE Std 519}
+\author[Novalio \& Arfan (UNIB)]{Ir. Novalio Daratha, S.T., M.Sc., Ph.D. \& Muhammad Arfan, S.T., M.T.}
+\institute[Teknik Elektro UNIB]{Program Studi S1 Teknik Elektro, Jurusan Teknik Elektro \& Informatika\\Fakultas Teknik, Universitas Bengkulu}
+\date[2026]{Semester Genap 2026}
 
 \begin{document}
 
-\begin{frame}
+% -------------------------------------------------------------
+% FRAME 1: Title Frame
+% -------------------------------------------------------------
+\begin{frame}[plain]
   \titlepage
 \end{frame}
 
-\begin{frame}{Capaian Pembelajaran (CPMK 4)}
-  \begin{itemize}
-    \item \textbf{CPMK 4.1:} Memahami perbedaan mendasar antara PDB (1 variabel bebas) dan PDP (multi-variabel bebas seperti ruang $x,y$ dan waktu $t$).
-    \item \textbf{CPMK 4.2:} Memahami teorema ortogonalitas fungsi trigonometri.
-    \item \textbf{CPMK 4.3:} Mampu menghitung koefisien Deret Fourier ($a_0, a_n, b_n$) untuk sinyal periodik non-sinusoidal.
-    \item \textbf{CPMK 4.4:} Memanfaatkan simetri fungsi genap (*cosine series*) dan fungsi ganjil (*sine series*) untuk mempermudah integrasi.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Daftar Isi}
-  \tableofcontents
-\end{frame}
-
-\section{Pengantar Persamaan Diferensial Parsial (PDP)}
-\begin{frame}{Mengapa Kita Membutuhkan PDP?}
-  Dalam fenomena fisik elektro, besaran seringkali bergantung pada \textbf{posisi spasial ($x,y,z$)} DAN \textbf{waktu ($t$)}.
-  \begin{block}{Tiga Persamaan Klasik PDP dalam Teknik Elektro}
-    \begin{enumerate}
-      \item \textbf{Persamaan Gelombang 1D (Saluran Transmisi):}
-      $$ \frac{\partial^2 u}{\partial t^2} = v^2 \frac{\partial^2 u}{\partial x^2} $$
-      \pause
-      \item \textbf{Persamaan Panas/Difusi 1D (Pemanasan Kabel):}
-      $$ \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2} $$
-      \pause
-      \item \textbf{Persamaan Laplace 2D (Medan Elektrostatik):}
-      $$ \frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0 $$
-    \end{enumerate}
-  \end{block}
-\end{frame}
-
-\section{Fondasi Deret Fourier Trigonometrik}
-\begin{frame}{Prinsip Representasi Deret Fourier}
-  \begin{alertblock}{Teorema Fourier}
-    Setiap fungsi periodik $f(t)$ dengan periode $T = 2L$ yang memenuhi syarat Dirichlet dapat diuraikan menjadi jumlahan tak hingga gelombang harmonik sinus dan kosinus:
-    $$ {\color{unibblue} f(t) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{n\pi t}{L}\right) + b_n \sin\left(\frac{n\pi t}{L}\right) \right)} $$
-  \end{alertblock}
-  \pause
-  \begin{block}{Rumus Euler-Fourier untuk Koefisien:}
+% -------------------------------------------------------------
+% FRAME 2: Sub-CPMK OBE Bloom Taxonomy C1-C6
+% -------------------------------------------------------------
+\begin{frame}{Sub-CPMK Taksonomi Bloom (Minggu 9)}
+  \begin{block}{Sub-Capaian Pembelajaran Mata Kuliah (Sub-CPMK 5)}
+    Setelah menyelesaikan pembelajaran pada modul Minggu 9 ini, mahasiswa mampu:
     \begin{itemize}
-      \item Nilai Rata-rata: $a_0 = \frac{1}{2L} \int_{-L}^{L} f(t) \, dt$
-      \item Koefisien Kosinus: $a_n = \frac{1}{L} \int_{-L}^{L} f(t) \cos\left(\frac{n\pi t}{L}\right) \, dt$
-      \item Koefisien Sinus: $b_n = \frac{1}{L} \int_{-L}^{L} f(t) \sin\left(\frac{n\pi t}{L}\right) \, dt$
+      \item \textbf{C1 (Mengingat):} Mengidentifikasi bentuk kanonik PDP linier orde dua dan relasi ortogonalitas fungsi trigonometrik.
+      \item \textbf{C2 (Memahami):} Mengklasifikasikan fisik PDP linier orde dua (Elliptik, Parabolik, Hiperbolik) melalui diskriminan $B^2 - 4AC$.
+      \item \textbf{C3 (Menerapkan):} Menghitung ekspansi Deret Fourier trigonometrik ($a_0, a_n, b_n$) memanfaatkan prinsip simetri genap/ganjil.
+      \item \textbf{C4 (Menganalisis):} Menganalisis fenomena Gibbs pada batas diskontinuitas dan menghitung \textit{Total Harmonic Distortion} (THD).
+      \item \textbf{C5 (Mengevaluasi):} Menilai kepatuhan distorsi harmonisa inverter terhadap batas standar \textbf{IEEE Std 519-2022} pada PCC.
+      \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program ilmiah berbasis \textbf{Julia} untuk sintesis harmonisa gelombang periodik.
     \end{itemize}
   \end{block}
 \end{frame}
 
-\section{Simetri Fungsi: Genap \& Ganjil}
-\begin{frame}{Memanfaatkan Sifat Simetri Gelombang}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Fungsi Genap: $f(-t) = f(t)$}
+% -------------------------------------------------------------
+% FRAME 3: Peta Kurikulum & Transisi PDB ke PDP
+% -------------------------------------------------------------
+\begin{frame}{Peta Kurikulum: Transisi Parameter Terpusat ke Terdistribusi}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Paruh 1 (W1--W7): PDB Terpusat}
         \begin{itemize}
-          \item Simetri terhadap sumbu-$y$.
-          \item Hanya memuat suku kosinus!
-          \item $b_n = 0$
-          \item $a_n = \frac{2}{L}\int_{0}^{L} f(t)\cos\left(\frac{n\pi t}{L}\right) dt$
+          \item Asumsi: Komponen ideal terkonsentrasi di titik ($R, L, C$).
+          \item Peubah bebas hanya satu: waktu $t$.
+          \item Dimensi fisik sirkuit jauh lebih kecil dari panjang gelombang ($\ell \ll \lambda$).
+          \item Formulasi: Persamaan Diferensial Biasa (KVL/KCL).
         \end{itemize}
       \end{block}
-      \textit{Contoh: Gelombang segitiga genap, $\cos(\omega t)$.}
     \end{column}
-    \begin{column}{0.5\textwidth}
-      \pause
-      \begin{block}{Fungsi Ganjil: $f(-t) = -f(t)$}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Paruh 2 (W9--W15): PDP Terdistribusi}
         \begin{itemize}
-          \item Simetri terhadap titik asal $(0,0)$.
-          \item Hanya memuat suku sinus!
-          \item $a_0 = 0, \quad a_n = 0$
-          \item $b_n = \frac{2}{L}\int_{0}^{L} f(t)\sin\left(\frac{n\pi t}{L}\right) dt$
+          \item Medan \& gelombang merambat di ruang dan waktu: $u(x,y,z,t)$.
+          \item Dimensi sebanding/melampaui panjang gelombang ($\ell \gtrsim \lambda$).
+          \item Saluran transmisi puluhan km, konduktor panas kabel, rongga pandu gelombang.
+          \item Formulasi: Persamaan Diferensial Parsial!
         \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \vspace{0.2cm}
+  \begin{exampleblock}{Tiga Persamaan Kanonik PDP Rekayasa Elektro}
+    \begin{itemize}
+      \item \textbf{Gelombang 1D (Saluran Transmisi):} $\dfrac{\partial^2 u}{\partial t^2} = v^2 \dfrac{\partial^2 u}{\partial x^2}$ \quad \textbf{Panas 1D (Kabel Daya):} $\dfrac{\partial u}{\partial t} = \alpha \dfrac{\partial^2 u}{\partial x^2}$ \quad \textbf{Laplace 2D:} $\nabla^2 V = 0$
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 4: Taksonomi & Klasifikasi PDP Orde Dua
+% -------------------------------------------------------------
+\begin{frame}{Taksonomi \& Klasifikasi PDP Linier Orde Dua}
+  Bentuk umum PDP linier orde dua dengan dua variabel bebas $(x,y)$ atau $(x,t)$:
+  \begin{equation*}
+    A \frac{\partial^2 u}{\partial x^2} + B \frac{\partial^2 u}{\partial x \partial y} + C \frac{\partial^2 u}{\partial y^2} + D \frac{\partial u}{\partial x} + E \frac{\partial u}{\partial y} + F u = G
+  \end{equation*}
+  Sifat matematis dan fenomena fisik ditentukan oleh \textbf{Diskriminan}: $\Delta = B^2 - 4AC$.
+  \vspace{0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.31\textwidth}
+      \begin{block}{Hiperbolik: $\Delta > 0$}
+        \small
+        \textbf{Fisika:} Perambatan gelombang \& getaran akustik/EM.\\
+        \textbf{Memori:} Kecepatan hingga $v$, syarat batas Dirichlet/Neumann.\\
+        \textit{Contoh:} Pers. Gelombang Telegrafer $\frac{\partial^2 v}{\partial x^2} = LC \frac{\partial^2 v}{\partial t^2}$.
       \end{block}
-      \textit{Contoh: Gelombang kotak simetris, gelombang gigi gergaji, $\sin(\omega t)$.}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{alertblock}{Parabolik: $\Delta = 0$}
+        \small
+        \textbf{Fisika:} Proses difusi \& transien disipatif tak bolak-balik.\\
+        \textbf{Memori:} Relaksasi menuju kesetimbangan termal.\\
+        \textit{Contoh:} Difusi Panas Kabel $k \frac{\partial^2 T}{\partial x^2} = \rho c \frac{\partial T}{\partial t}$.
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{exampleblock}{Elliptik: $\Delta < 0$}
+        \small
+        \textbf{Fisika:} Distribusi medan tunak/kesetimbangan statik.\\
+        \textbf{Memori:} Bergantung penuh pada seluruh batas tertutup.\\
+        \textit{Contoh:} Pers. Laplace Medan $\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0$.
+      \end{exampleblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Contoh Nyata: Penguraian Harmonik Gelombang Kotak}
-  Tinjau gelombang kotak ganjil: $f(t) = -V_0$ untuk $-\pi < t < 0$, dan $f(t) = +V_0$ untuk $0 < t < \pi$ ($L = \pi$).
-  \pause
-  Karena fungsi ganjil: $a_0 = 0, a_n = 0$.
-  \pause
-  $$ b_n = \frac{2}{\pi} \int_{0}^{\pi} V_0 \sin(nt) \, dt = \frac{2V_0}{\pi} \left[ -\frac{\cos(nt)}{n} \right]_{0}^{\pi} = \frac{2V_0}{n\pi} (1 - (-1)^n) $$
-  \pause
-  \begin{itemize}
-    \item Jika $n$ genap ($n=2,4,6,\dots$): $b_n = 0$.
-    \item Jika $n$ ganjil ($n=1,3,5,\dots$): $b_n = \frac{4V_0}{n\pi}$.
-  \end{itemize}
-  \pause
-  \begin{alertblock}{Deret Fourier Gelombang Kotak}
-    $$ {\color{unibblue} f(t) = \frac{4V_0}{\pi} \left( \sin(t) + \frac{1}{3}\sin(3t) + \frac{1}{5}\sin(5t) + \dots \right)} $$
-  \end{alertblock}
-\end{frame}
-
-\section{Kuis \& Rangkuman}
-\begin{frame}{Kuis Interaktif 9}
-  \textbf{Pertanyaan:} Sebuah inverter daya menghasilkan tegangan bolak-balik $v(t) = v(-t)$. Manakah koefisien Fourier yang bernilai pasti nol tanpa perlu dihitung?
-  \pause
-  \begin{block}{Jawaban:}
-    Karena $v(t)$ adalah fungsi \textbf{genap} ($v(-t) = v(t)$), maka seluruh koefisien sinus:
-    $$ {\color{unibblue} b_n = 0 \quad \text{untuk seluruh } n \ge 1} $$
-    Sinyal tersebut murni dapat dinyatakan hanya dengan deret kosinus Fourier!
+% -------------------------------------------------------------
+% FRAME 5: Teorema Ortogonalitas Fungsi Trigonometri
+% -------------------------------------------------------------
+\begin{frame}{Fondasi Matematika: Teorema Ortogonalitas}
+  \begin{block}{Konsep Ruang Vektor Fungsi}
+    Sama seperti vektor basis saling tegak lurus ($\mathbf{i} \cdot \mathbf{j} = 0$), himpunan fungsi $\{1, \cos\frac{n\pi t}{L}, \sin\frac{n\pi t}{L}\}$ saling \textbf{ortogonal} pada selang periodik $[-L, L]$ terhadap perkalian titik berupa integral:
   \end{block}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Relasi Ortogonalitas Sinus \& Kosinus}
+        Untuk bilangan bulat positif $m, n \ge 1$:
+        \begin{align*}
+          \int_{-L}^{L} \cos\left(\frac{m\pi t}{L}\right) \sin\left(\frac{n\pi t}{L}\right) dt &= 0 \\
+          \int_{-L}^{L} \cos\left(\frac{m\pi t}{L}\right) \cos\left(\frac{n\pi t}{L}\right) dt &= \begin{cases} 0, & m \ne n \\ L, & m = n \end{cases} \\
+          \int_{-L}^{L} \sin\left(\frac{m\pi t}{L}\right) \sin\left(\frac{n\pi t}{L}\right) dt &= \begin{cases} 0, & m \ne n \\ L, & m = n \end{cases}
+        \end{align*}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Makna Rekayasa \& Ekstraksi Sinyal}
+        \begin{itemize}
+          \item Sifat ortogonalitas memungkinkan kita mengekstraksi \textbf{hanya satu komponen frekuensi} tertentu tanpa tercampur harmonisa lainnya.
+          \item Merupakan prinsip dasar kerja \textit{Discrete Fourier Transform} (DFT), filter bank harmonisa, dan relai diferensial proteksi modern.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
-\begin{frame}{Rangkuman Materi Minggu 9}
-  \begin{enumerate}
-    \item PDP melibatkan turunan terhadap ruang dan waktu, membutuhkan ekspansi deret untuk memecahkan batas-batasnya.
-    \item Deret Fourier membedah sinyal non-sinusoidal menjadi spektrum frekuensi harmonik.
-    \item Pengenalan simetri genap/ganjil memangkas separuh proses kalkulasi integral secara efisien.
-  \end{enumerate}
+% -------------------------------------------------------------
+% FRAME 6: Deret Fourier Trigonometrik & Rumus Euler-Fourier
+% -------------------------------------------------------------
+\begin{frame}{Formulasi Deret Fourier Trigonometrik}
+  \begin{block}{Teorema Representasi Fourier ($T = 2L$)}
+    \small
+    Sinyal periodik $f(t)$ memenuhi syarat Dirichlet diuraikan menjadi gelombang harmonik:
+    \begin{equation*}
+      f(t) = a_0 + \sum_{n=1}^{\infty} \left[ a_n \cos\left(\frac{n\pi t}{L}\right) + b_n \sin\left(\frac{n\pi t}{L}\right) \right]
+    \end{equation*}
+  \end{block}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Koefisien Euler-Fourier}
+        \small
+        $a_0 = \frac{1}{2L} \int_{-L}^{L} f(t) \, dt \quad \text{(Rata-rata / DC)}$\\[2pt]
+        $a_n = \frac{1}{L} \int_{-L}^{L} f(t) \cos\left(\frac{n\pi t}{L}\right) dt$\\[2pt]
+        $b_n = \frac{1}{L} \int_{-L}^{L} f(t) \sin\left(\frac{n\pi t}{L}\right) dt$
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Bentuk Polar Magnitudo-Fasa}
+        \small
+        Sering digunakan dalam sistem tenaga listrik:
+        \begin{equation*}
+          f(t) = C_0 + \sum_{n=1}^{\infty} C_n \cos(n\omega_0 t - \theta_n)
+        \end{equation*}
+        $C_n = \sqrt{a_n^2 + b_n^2}$, $\quad \theta_n = \arctan(b_n / a_n)$.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 7: Pemanfaatan Simetri Gelombang
+% -------------------------------------------------------------
+\begin{frame}{Pemanfaatan Sifat Simetri Bentuk Gelombang}
+  Memeriksa sifat simetri gelombang sebelum mengintegralkan menghemat $\ge 50\%$ waktu komputasi analitis:
+  \vspace{0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.31\textwidth}
+      \begin{block}{Simetri Genap: $f(-t) = f(t)$}
+        \small
+        \begin{itemize}
+          \item Simetris terhadap sumbu-$y$.
+          \item Suku sinus hilang: $b_n = 0$.
+          \item $a_0 = \frac{1}{L} \int_{0}^{L} f(t) \, dt$
+          \item $a_n = \frac{2}{L} \int_{0}^{L} f(t) \cos\left(\frac{n\pi t}{L}\right) dt$
+        \end{itemize}
+        \textit{Contoh: Penyearah gelombang penuh, kosinus murni.}
+      \end{block}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{alertblock}{Simetri Ganjil: $f(-t) = -f(t)$}
+        \small
+        \begin{itemize}
+          \item Simetris terhadap titik $(0,0)$.
+          \item Rata-rata nol: $a_0 = 0$.
+          \item Suku kosinus hilang: $a_n = 0$.
+          \item $b_n = \frac{2}{L} \int_{0}^{L} f(t) \sin\left(\frac{n\pi t}{L}\right) dt$
+        \end{itemize}
+        \textit{Contoh: Gelombang kotak inverter, gigi gergaji.}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{exampleblock}{Half-Wave: $f(t - L) = -f(t)$}
+        \small
+        \begin{itemize}
+          \item Bentuk paruh kedua pembalikan paruh pertama.
+          \item Seluruh harmonisa genap lenyap: $a_{2k} = b_{2k} = 0$.
+          \item Hanya memuat harmonisa ganjil ($n = 1, 3, 5, \dots$).
+        \end{itemize}
+        \textit{Sangat krusial dalam sistem tenaga 3-fasa simetris!}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 8: Diagram Gelombang & Spektrum Harmonik
+% -------------------------------------------------------------
+\begin{frame}{Diagram Gelombang Kotak Inverter \& Dekomposisi Spektrum}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Sinyal Domain Waktu Inverter PWM}
+        \centering
+        \resizebox{\linewidth}{!}{%
+        \begin{tikzpicture}[>=stealth, scale=0.85]
+          \draw[->, thick] (-3.5, 0) -- (3.5, 0) node[right] {$t$};
+          \draw[->, thick] (0, -2) -- (0, 2.2) node[above] {$v(t)$ [V]};
+          % Square wave
+          \draw[line width=1.5pt, unibblue] (-3.14, 0) -- (-3.14, -1.5) -- (0, -1.5) -- (0, 1.5) -- (3.14, 1.5) -- (3.14, 0);
+          \draw[dashed, red!80!black] (-3.14, 0) node[below] {$-\pi$};
+          \draw[dashed, red!80!black] (3.14, 0) node[below] {$+\pi$};
+          \draw[dotted] (-3.14, -1.5) -- (0, -1.5) node[left] {$-V_0$};
+          \draw[dotted] (0, 1.5) node[left] {$+V_0$} -- (3.14, 1.5);
+          % Fundamental overlay
+          \draw[thick, unibgold, domain=-3.14:3.14, samples=100] plot (\x, {1.91*sin(\x r)});
+          \node[unibgold, font=\scriptsize] at (1.5, 1.8) {Fund. $n=1$};
+        \end{tikzpicture}
+        }
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Spektrum Garis Frekuensi Harmonisa}
+        \centering
+        \resizebox{\linewidth}{!}{%
+        \begin{tikzpicture}[>=stealth, scale=0.85]
+          \draw[->, thick] (0, 0) -- (5.5, 0) node[right] {$n$};
+          \draw[->, thick] (0, 0) -- (0, 2.5) node[above] {$|b_n|$ [V]};
+          % Harmonic bars
+          \draw[line width=4pt, unibblue] (1, 0) -- (1, 2.0) node[above, font=\scriptsize] {$127{,}3$};
+          \draw[line width=4pt, unibblue] (2, 0) -- (2, 0) node[below, font=\scriptsize] {2};
+          \draw[line width=4pt, unibblue] (3, 0) -- (3, 0.67) node[above, font=\scriptsize] {$42{,}4$};
+          \draw[line width=4pt, unibblue] (4, 0) -- (4, 0) node[below, font=\scriptsize] {4};
+          \draw[line width=4pt, unibblue] (5, 0) -- (5, 0.40) node[above, font=\scriptsize] {$25{,}5$};
+          \node[below, font=\scriptsize] at (1, 0) {1};
+          \node[below, font=\scriptsize] at (3, 0) {3};
+          \node[below, font=\scriptsize] at (5, 0) {5};
+          \node[font=\scriptsize, red!80!black] at (3.5, 1.8) {Luruh $1/n$};
+        \end{tikzpicture}
+        }
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 9: Contoh Soal Terhitung Langkah demi Langkah
+% -------------------------------------------------------------
+\begin{frame}{Contoh Terhitung: Deret Fourier Gelombang Persegi $V_0 = 100\text{ V}$}
+  \begin{exampleblock}{Masalah: Sinyal Inverter $v(t) = -100\text{ V}$ ($-\pi < t < 0$) \& $+100\text{ V}$ ($0 < t < \pi$)}
+    Tentukan koefisien Fourier, ekspansi deret, dan estimasi $\text{THD}_V$ hingga harmonisa ke-7!
+  \end{exampleblock}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Penurunan Analitis Koefisien}
+        \small
+        \textbf{1. Analisis Simetri:}
+        $v(-t) = -v(t) \implies \text{Ganjil} \implies a_0 = 0, \, a_n = 0$.\\
+        \textbf{2. Integrasi Koefisien Sinus ($L = \pi$):}
+        \begin{align*}
+          b_n &= \frac{2}{\pi} \int_{0}^{\pi} 100 \sin(nt) \, dt = \frac{200}{\pi} \left[ -\frac{\cos(nt)}{n} \right]_{0}^{\pi} \\
+              &= \frac{200}{n\pi} [1 - (-1)^n] = \begin{cases} \mathbf{\dfrac{400}{n\pi}}, & n \text{ ganjil} \\ 0, & n \text{ genap} \end{cases}
+        \end{align*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Sintesis \& Estimasi Distorsi THD}
+        \small
+        \textbf{3. Ekspansi Deret Tegangan:}
+        \begin{equation*}
+          v(t) = \frac{400}{\pi} \left[ \sin(t) + \frac{1}{3}\sin(3t) + \frac{1}{5}\sin(5t) + \dots \right]
+        \end{equation*}
+        \textbf{4. Amplitudo 4 Harmonisa:}
+        $V_1 = 127{,}32\text{ V}, \; V_3 = 42{,}44\text{ V}, \; V_5 = 25{,}46\text{ V}, \; V_7 = 18{,}19\text{ V}$.\\[2pt]
+        \textbf{5. Distorsi Tegangan Total:}
+        \begin{equation*}
+          \text{THD}_{V,\le 7} = \frac{\sqrt{V_3^2 + V_5^2 + V_7^2}}{V_1} \times 100\% = \mathbf{41{,}41\%}
+        \end{equation*}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 10: Fenomena Gibbs & Konvergensi Titik Diskontinuitas
+% -------------------------------------------------------------
+\begin{frame}{Fenomena Gibbs (\textit{Gibbs Phenomenon}) pada Tepi Sinyal}
+  \begin{columns}[t]
+    \begin{column}{0.52\textwidth}
+      \begin{alertblock}{Teorema \& Batas Overshoot Asimtotik}
+        \small
+        Pada setiap diskontinuitas loncat $\Delta f$, jumlahan deret Fourier $S_N(t)$ selalu memiliki overshoot:
+        \begin{align*}
+          \lim_{N \to \infty} \text{Overshoot} &= \frac{\Delta f}{\pi} \int_{0}^{\pi} \frac{\sin x}{x} \, dx - \frac{\Delta f}{2} \\
+          &\approx \mathbf{8{,}95\%} \times \Delta f
+        \end{align*}
+      \end{alertblock}
+      \begin{block}{Konvergensi Nilai Rata-rata Dirichlet}
+        \small
+        Tepat pada titik patahan loncat $t_0$:
+        \begin{equation*}
+          f_{\text{Fourier}}(t_0) = \frac{f(t_0^+) + f(t_0^-)}{2}
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{exampleblock}{Dampak Rekayasa Elektro}
+        \small
+        \begin{itemize}
+          \item \textbf{Switching IGBT/MOSFET:} Fenomena Gibbs memicu tegangan \textit{ringing} parasitik melampaui rating $V_{\text{DS,max}}$.
+          \item \textbf{Bahaya Breakdown:} Tegangan lonjak ini dapat memicu tembus dielektrik pada lilitan transformator.
+          \item \textbf{Mitigasi:} Pemasangan snubber $RC$ dan filter perata (\textit{windowing} Lanczos/Hann).
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 11: Analisis Kualitas Daya & Distorsi Harmonisa Total (THD)
+% -------------------------------------------------------------
+\begin{frame}{Analisis Polusi Harmonisa Sistem Tenaga Listrik}
+  \begin{block}{Dekomposisi Arus Beban Nonlinier}
+    \small
+    Beban industri (VSD, UPS, charger EV) menarik arus tak sinusoidal:
+    \begin{equation*}
+      i(t) = I_0 + \sqrt{2} I_{1,\text{rms}} \sin(\omega t - \phi_1) + \sum_{n=2}^{\infty} \sqrt{2} I_{n,\text{rms}} \sin(n\omega t - \phi_n)
+    \end{equation*}
+  \end{block}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Definisi Matematis THD}
+        \small
+        Distorsi arus total:
+        \begin{equation*}
+          \text{THD}_I = \frac{\sqrt{\sum_{n=2}^{\infty} I_{n,\text{rms}}^2}}{I_{1,\text{rms}}} \times 100\%
+        \end{equation*}
+        Rugi tembaga: $R_{\text{ac}} \propto \sqrt{n}$, rugi arus pusar: $P_{\text{eddy}} \propto n^2$.
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Dampak Kerusakan Jaringan PLN}
+        \small
+        \begin{itemize}
+          \item \textbf{Overheating Trafo:} Rugi panas melonjak.
+          \item \textbf{Ledakan Kapasitor Bank:} Resonansi harmonika paralel $n \omega_0 L_{\text{t}} = \frac{1}{n \omega_0 C_{\text{b}}}$.
+          \item \textbf{Trip Palsu:} Harmonisa ke-3, 9 menumpuk di kawat netral sistem 3-fasa.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 12: Standar Industri: Batasan Harmonisa IEEE Std 519-2022
+% -------------------------------------------------------------
+\begin{frame}{Standar Industri: Regulasi Harmonisa IEEE Std 519-2022}
+  \begin{block}{Tanggung Jawab Bersama pada Point of Common Coupling (PCC)}
+    \textbf{IEEE Std 519-2022} menetapkan bahwa konsumen bertanggung jawab membatasi distorsi arus ($\text{THD}_I$), sedangkan penyedia utilitas (PLN) membatasi distorsi tegangan ($\text{THD}_V$).
+  \end{block}
+  \vspace{0.1cm}
+  \begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{lccc}
+      \toprule
+      \textbf{Tegangan Busbar di PCC} & \textbf{Harmonisa Individu (\%)} & \textbf{THD Tegangan Total (\%)} & \textbf{Aplikasi Rekayasa} \\
+      \midrule
+      $V \le 1{,}0\text{ kV}$ (Tegangan Rendah) & $5{,}0\%$ & $\le 8{,}0\%$ & Komersial \& Perumahan \\
+      $1{,}0\text{ kV} < V \le 69\text{ kV}$ (TM 20 kV PLN) & $3{,}0\%$ & $\le 5{,}0\%$ & Kawasan Industri Menengah \\
+      $69\text{ kV} < V \le 161\text{ kV}$ (TT 150 kV) & $1{,}5\%$ & $\le 2{,}5\%$ & Gardu Induk Transmisi \\
+      $V > 161\text{ kV}$ (TET 275/500 kV) & $1{,}0\%$ & $\le 1{,}5\%$ & Saluran Interkoneksi Utama \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{exampleblock}{Solusi Teknis Kepatuhan Regulasi}
+    Pemasangan \textbf{Filter Pasif Tuned} ($LC$), \textbf{Active Power Filter (APF)}, atau peningkatan konverter menjadi penyearah \textit{Active Front End} (AFE) dengan kontrol PWM canggih.
+  \end{exampleblock}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 13: Simulasi Komputasi Julia
+% -------------------------------------------------------------
+% FRAME 13: Praktikum Komputasi Julia
+\begin{frame}[fragile]{Praktikum Komputasi Julia: Rekonstruksi Deret Fourier}
+  \begin{columns}[t]
+    \column{0.50\textwidth}
+    \begin{block}{Skrip Julia: Rekonstruksi \& Gibbs}
+\begin{lstlisting}[style=juliastyle]
+using Plots
+
+x = range(-pi, pi, length=400)
+fourier_sq(x, N) = sum((4.0 / (pi * n)) .* sin.(n .* x) for n in 1:2:N)
+
+plot(x ./ pi, sign.(x), ls=:dash, color=:gray, label="Target")
+plot!(x ./ pi, fourier_sq(x, 1), lw=1.5, label="N = 1")
+plot!(x ./ pi, fourier_sq(x, 5), lw=1.8, label="N = 5")
+plot!(x ./ pi, fourier_sq(x, 25), lw=2, color=:red, label="N = 25 (Gibbs)")
+\end{lstlisting}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{alertblock}{Visualisasi Fenomena Gibbs}
+      \centering
+      \includegraphics[width=\linewidth, height=0.38\textheight, keepaspectratio]{figures/slides/plot_ch9.png}
+    \end{alertblock}
+    \vspace{-0.1cm}
+    \begin{exampleblock}{Intisari Fourier}
+      \tiny
+      Harmonisa ganjil merekonstruksi gelombang simetris ganjil. Pada titik diskontinuitas, lonjakan overshoot $8{,}95\%$ tidak hilang meskipun $N \to \infty$ (Gibbs overshoot).
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 14: Kuis Tantangan Bloom Berjenjang
+% -------------------------------------------------------------
+% FRAME 14: Kuis & Tantangan Bloom C1-C6
+\begin{frame}{Kuis Konseptual Interaktif \& Evaluasi Bloom (C1--C6)}
+  \begin{columns}[t]
+    \column{0.52\textwidth}
+    \begin{alertblock}{Peer Instruction: Uji Miskonsepsi Fisik}
+      \footnotesize
+      \textbf{Kasus Rekayasa:} Jika jumlah harmonisa deret Fourier gelombang kotak dinaikkan dari $N = 25$ hingga $N = 1.000.000$ suku, apakah lonjakan overshoot di sudut diskontinuitas akan hilang ke $0\%$?
+      \vspace{0.05cm}
+      \begin{itemize}\setlength{\itemsep}{1pt}
+        \item \textbf{[A]} Ya, karena deret Fourier konvergen sempurna ke fungsi.
+        \item \textbf{[B]} **Tidak**, lecutan overshoot tetap bertengger konstan sebesar $\approx 8{,}95\%$ (Fenomena Gibbs) dan lebarnya menyempit menuju nol!
+        \item \textbf{[C]} Ya, tetapi membutuhkan komponen resistor fisik.
+        \item \textbf{[D]} Tidak, lecutan justru membesar menjadi $50\%$.
+      \end{itemize}
+    \end{alertblock}
+
+    \column{0.46\textwidth}
+    \begin{block}{Tantangan Analisis \& Desain (C4--C6)}
+      \footnotesize
+      \begin{itemize}\setlength{\itemsep}{2pt}
+        \item \textbf{C4 (Analisis):} Hitung Total Harmonic Distortion (THD) tegangan inverter PLTS sesuai batas aman IEEE Std 519 ($<5\%$).
+        \item \textbf{C5 (Evaluasi):} Buktikan teorema ortogonalitas fungsi trigonometri pada interval simetris $[-L, L]$.
+        \item \textbf{C6 (Desain):} Rancang spektrum filter harmonisa aktif untuk meredam harmonisa ke-3 dan ke-5 beban non-linier!
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 15: Rangkuman Eksekutif & Jembatan ke Minggu 10
+% -------------------------------------------------------------
+\begin{frame}{Rangkuman Eksekutif \& Jembatan ke Minggu 10}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Rangkuman Inti Minggu 9}
+        \begin{itemize}
+          \item \textbf{PDP vs PDB:} PDP mengatur fenomena terdistribusi ruang-waktu ($u_{tt}, u_t, \nabla^2 u$).
+          \item \textbf{Ortogonalitas:} Landasan matematis ekstraksi koefisien Fourier Euler ($a_0, a_n, b_n$).
+          \item \textbf{Simetri:} Memanfaatkan simetri genap/ganjil/half-wave mempercepat analisis harmonika.
+          \item \textbf{Aplikasi Nyata:} Fenomena Gibbs \& mitigasi distorsi THD sesuai \textbf{IEEE Std 519-2022}.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pratinjau Minggu 10: Pemisahan Variabel}
+        \begin{itemize}
+          \item Bagaimana memecahkan PDP secara analitis?
+          \item \textbf{Metode Pemisahan Variabel (\textit{Separation of Variables}):} Mengasumsikan solusi $u(x,t) = X(x) \cdot T(t)$.
+          \item Mengubah 1 PDP menjadi 2 PDB berkopel melalui konstanta separasi ($-\lambda$).
+          \item Deret Fourier menjadi kunci akhir pemenuhan Syarat Awal \& Batas (BVP)!
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \end{document}

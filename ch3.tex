@@ -4,175 +4,491 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\usetikzlibrary{patterns,shapes,arrows,calc,positioning,decorations.markings}
+\usepackage{circuitikz}
 \usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{booktabs}
 
-% --- Custom Colors ---
-\definecolor{unibblue}{RGB}{0,51,102}
-\definecolor{unibgold}{RGB}{212,175,55}
-\definecolor{unibgreen}{RGB}{0,128,0}
+% --- Custom Colors UNIB ---
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
 
 \setbeamercolor{palette primary}{bg=unibblue,fg=white}
 \setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
 \setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
 \setbeamercolor{structure}{fg=unibblue}
-\setbeamercolor{block title}{bg=unibblue!85,fg=white}
-\setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{titlelike}{parent=structure,bg=unibblue,fg=white}
+\setbeamercolor{block title}{bg=unibblue!90,fg=white}
+\setbeamercolor{block body}{bg=unibblue!8,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!95,fg=black}
 \setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!90,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
 
-\title{Persamaan Diferensial}
-\subtitle{Minggu 3: Aplikasi PDB Orde 1 dalam Rekayasa Elektro (Transien RC, RL, \& Termal)}
-\author{Novalio Daratha \& Muhammad Arfan}
-\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date[\today]{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% --- Pengaturan Listing Julia ---
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\ttfamily\tiny,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=none,
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    xleftmargin=4pt,
+    xrightmargin=4pt,
+    aboveskip=2pt,
+    belowskip=2pt
+}
+
+\title[Persamaan Diferensial (Minggu 3)]{Persamaan Diferensial}
+\subtitle{Minggu 3: Aplikasi Rekayasa PDB Orde 1 (Transien RC, RL, \& Termal Trafo)}
+\author[Novalio \& Arfan (UNIB)]{Ir. Novalio Daratha, S.T., M.Sc., Ph.D. \& Muhammad Arfan, S.T., M.T.}
+\institute[Teknik Elektro UNIB]{Program Studi S1 Teknik Elektro, Jurusan Teknik Elektro \& Informatika\\Fakultas Teknik, Universitas Bengkulu}
+\date[2026]{Semester Genap 2026}
 
 \begin{document}
 
-\begin{frame}
+% FRAME 1: Titlepage
+\begin{frame}[plain]
   \titlepage
 \end{frame}
 
-\begin{frame}{Capaian Pembelajaran Perkuliahan (CPMK 2)}
-  \begin{itemize}
-    \item \textbf{CPMK 2.1:} Mahasiswa mampu menyusun pemodelan fisis rangkaian elektrik orde 1 menggunakan Hukum Kirchhoff (KVL/KCL).
-    \item \textbf{CPMK 2.2:} Mahasiswa mampu menyelesaikan PDB orde 1 untuk respons transien dan kondisi mantap (\textit{steady-state}).
-    \item \textbf{CPMK 2.3:} Mahasiswa memahami makna fisis dari konstanta waktu (\textit{time constant} $\tau$) pada pengisian/pengosongan energi.
-    \item \textbf{CPMK 2.4:} Mahasiswa mampu memverifikasi hasil analitik dengan simulasi numerik berbasis bahasa Julia.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Daftar Isi Materi Minggu 3}
-  \tableofcontents
-\end{frame}
-
-\section{Pemodelan Fisis Rangkaian RL Seri}
-\begin{frame}{Rangkaian RL Seri: Pengisian Arus Induktor}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Persamaan KVL}
-        Berdasarkan Hukum Tegangan Kirchhoff:
-        $$ V_R(t) + V_L(t) = V_0 $$
-        $$ R \cdot i(t) + L \frac{di(t)}{dt} = V_0 $$
-      \end{block}
-      \pause
-      Bentuk standar PDB linear:
-      $$ \frac{di}{dt} + \frac{R}{L}i = \frac{V_0}{L} $$
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{alertblock}{Karakteristik Fisik}
-        \begin{itemize}
-          \item Induktor menentang perubahan arus tiba-tiba: $i(0^-) = i(0^+) = 0$.
-          \item Konstanta waktu: $\tau = \frac{L}{R}$ (detik).
-          \item Arus akhir saat mantap ($t \to \infty$): $I_{\text{maks}} = \frac{V_0}{R}$.
-        \end{itemize}
-      \end{alertblock}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Penurunan Solusi Analitik Arus Induktor}
-  Menggunakan faktor integrasi $\mu(t) = e^{\int \frac{R}{L} dt} = e^{\frac{R}{L}t}$:
-  \pause
-  \begin{equation*}
-    e^{\frac{R}{L}t}\frac{di}{dt} + \frac{R}{L}e^{\frac{R}{L}t}i = \frac{V_0}{L}e^{\frac{R}{L}t} \implies \frac{d}{dt}\left(i \cdot e^{\frac{R}{L}t}\right) = \frac{V_0}{L}e^{\frac{R}{L}t}
-  \end{equation*}
-  \pause
-  Integralkan kedua ruas terhadap $t$:
-  \begin{equation*}
-    i(t) \cdot e^{\frac{R}{L}t} = \int \frac{V_0}{L}e^{\frac{R}{L}t} dt = \frac{V_0}{L}\left(\frac{L}{R}\right)e^{\frac{R}{L}t} + C = \frac{V_0}{R}e^{\frac{R}{L}t} + C
-  \end{equation*}
-  \pause
-  \begin{block}{Solusi Umum \& Solusi Khusus IVP ($i(0)=0$)}
-    $$ i(t) = \frac{V_0}{R} + C e^{-\frac{R}{L}t} \implies 0 = \frac{V_0}{R} + C \implies C = -\frac{V_0}{R} $$
-    $$ {\color{unibblue} i(t) = \frac{V_0}{R}\left(1 - e^{-t/\tau}\right)}, \quad \tau = \frac{L}{R} $$
+% FRAME 2: Sub-CPMK OBE Bloom
+\begin{frame}{Capaian Pembelajaran (Sub-CPMK 3) \& Taksonomi Bloom}
+  \begin{block}{Sub-CPMK Minggu 3 (Aplikasi Transien Rekayasa \& Pemodelan Termal)}
+    Mahasiswa mampu menerapkan metodologi PDB orde 1 untuk menganalisis respon transien pensaklaran sirkuit RL/RC, mitigasi tegangan balik induktif (\textit{inductive kickback}), serta pemodelan termal transformator daya.
   \end{block}
-\end{frame}
-
-\section{Pemodelan Fisis Rangkaian RC Seri}
-\begin{frame}{Rangkaian RC Seri: Pengisian Muatan \& Tegangan}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Persamaan Diferensial}
-        $$ V_R(t) + V_C(t) = V_0 $$
-        $$ R \frac{dq}{dt} + \frac{q}{C} = V_0 \implies R C \frac{dV_C}{dt} + V_C = V_0 $$
-      \end{block}
-      \pause
-      Konstanta waktu kapasitor:
-      $$ \tau = R \cdot C \quad (\text{detik}) $$
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \pause
-      \begin{alertblock}{Solusi Pengisian ($V_C(0) = 0$)}
-        $$ V_C(t) = V_0 \left(1 - e^{-t/RC}\right) $$
-        $$ i(t) = C \frac{dV_C}{dt} = \frac{V_0}{R} e^{-t/RC} $$
-      \end{alertblock}
-      \textit{Tegangan naik mulus, arus melonjak maksimum lalu meluruh.}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Pengosongan Kapasitor (Discharging Transient)}
-  Bila kapasitor yang telah terisi penuh $V_0$ dihubungkan singkat melalui resistor $R$ ($V_{\text{sumber}} = 0$):
-  $$ R C \frac{dV_C}{dt} + V_C = 0 \implies \frac{dV_C}{V_C} = -\frac{1}{RC} dt $$
-  \pause
-  Integrasikan dengan kondisi awal $V_C(0) = V_0$:
-  \begin{block}{Respons Pelepasan Energi}
-    $$ \ln\left(\frac{V_C(t)}{V_0}\right) = -\frac{t}{RC} \implies {\color{unibblue} V_C(t) = V_0 e^{-t/\tau}} $$
-  \end{block}
-  \pause
-  \begin{itemize}
-    \item Saat $t = 1\tau$: $V_C(t) = V_0 e^{-1} \approx 0.368 V_0$ (Tersisa $36.8\%$).
-    \item Saat $t = 5\tau$: $V_C(t) = V_0 e^{-5} \approx 0.0067 V_0$ (Sistem dianggap mencapai \textit{steady-state} $<1\%$).
-  \end{itemize}
-\end{frame}
-
-\section{Aplikasi Termal: Hukum Pendinginan Newton}
-\begin{frame}{Hukum Pendinginan Newton pada Trafo / Motor Listrik}
-  \begin{block}{Persamaan Laju Pelepasan Kalor}
-    Laju perubahan suhu $T(t)$ konduktor terhadap suhu sekitar $T_a$:
-    $$ \frac{dT}{dt} = -k(T - T_a) $$
-  \end{block}
-  \pause
-  Penyelesaian menggunakan separasi variabel:
-  $$ \int \frac{dT}{T - T_a} = -k \int dt \implies \ln|T - T_a| = -kt + C_1 $$
-  \pause
-  \begin{alertblock}{Solusi Suhu Motor/Kabel Terhadap Waktu}
-    Jika suhu awal konduktor adalah $T(0) = T_0$:
-    $$ T(t) = T_a + (T_0 - T_a)e^{-kt} $$
-  \end{alertblock}
-\end{frame}
-
-\section{Uji Konsep \& Kuis Interaktif}
-\begin{frame}{Kuis Interaktif 1: Konstanta Waktu Rangkaian}
-  \textbf{Pertanyaan:} Sebuah rangkaian pengapian mobil menggunakan induktor $L = 500\text{ mH}$ dan resistor $R = 25\ \Omega$. Berapakah konstanta waktu $\tau$ dan berapa waktu yang diperlukan arus untuk mencapai $99\%$ dari nilai maksimumnya?
-  \pause
-  \begin{block}{Pembahasan:}
-    \begin{enumerate}
-      \item $\tau = \frac{L}{R} = \frac{0.5\text{ H}}{25\ \Omega} = 0.02\text{ detik} = 20\text{ ms}$. \pause
-      \item Arus mencapai $99\%$ saat: $1 - e^{-t/\tau} = 0.99 \implies e^{-t/\tau} = 0.01$. \pause
-      \item $t = -\tau \ln(0.01) \approx 4.605 \times 20\text{ ms} \approx 92.1\text{ ms} \approx 5\tau$.
-    \end{enumerate}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Integrasi Komputasi: Praktikum Julia}
-  \begin{block}{Jupyter Notebook Minggu 3: Simulasi Transien RC \& RL}
+  \vspace{0.15cm}
+  \begin{columns}[t]
+    \column{0.5\textwidth}
+    \textbf{Target Kognitif (Bloom C1--C3):}
     \begin{itemize}
-      \item Mempelajari algoritma \textbf{Metode Euler} secara langsung:
-      $$ i_{k+1} = i_k + \Delta t \cdot \left(\frac{V_0 - R i_k}{L}\right) $$
-      \item Membandingkan galat (*truncation error*) antara solusi numerik dan analitik eksak.
-      \item Menjalankan pustaka industri \textbf{DifferentialEquations.jl} (SciML).
+      \item \textbf{C1 (Mengingat):} Menyatakan bentuk PDB respon alami dan respon paksa sirkuit transien.
+      \item \textbf{C2 (Memahami):} Menjelaskan asal fisis lonjakan tegangan induktif $v_L = L \frac{di}{dt}$ saat sakelar dibuka.
+      \item \textbf{C3 (Menerapkan):} Menghitung respon multi-interval sirkuit RC dan kenaikan suhu trafo.
     \end{itemize}
+
+    \column{0.5\textwidth}
+    \textbf{Target Kognitif (Bloom C4--C6):}
+    \begin{itemize}
+      \item \textbf{C4 (Menganalisis):} Menganalisis efektivitas dioda \textit{freewheeling} dalam proteksi sakelar.
+      \item \textbf{C5 (Mengevaluasi):} Mengevaluasi laju penuaan isolasi minyak trafo berdasarkan IEEE Std C57.91.
+      \item \textbf{C6 (Komputasi):} Mengembangkan simulasi ganda transien elektrik-termal dengan Julia.
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+% FRAME 3: Peta Konsep Transien Multi-Domain
+\begin{frame}{Peta Konsep: Transien Elektrik vs Analogi Termal}
+  \begin{center}
+    \resizebox{0.92\linewidth}{!}{%
+    \begin{tabular}{lccc}
+      \toprule
+      \textbf{Parameter Fisis} & \textbf{Sirkuit Induktif (RL)} & \textbf{Sirkuit Kapasitif (RC)} & \textbf{Sistem Termal Trafo} \\ \midrule
+      \textbf{Variabel Keadaan ($x$)} & Arus Induktor $i_L(t)$ & Tegangan Kapasitor $v_C(t)$ & Temperatur Minyak $T(t)$ \\
+      \textbf{Penyimpan Energi ($C_e$)} & Induktansi $L$ [H] & Kapasitansi $C$ [F] & Kapasitas Panas $C_{\text{th}}$ [J/$^\circ$C] \\
+      \textbf{Elemen Disipatif ($R_e$)} & Resistansi $R$ [$\Omega$] & Resistansi $R$ [$\Omega$] & Hambatan Termal $R_{\text{th}}$ [$^\circ$C/W] \\
+      \textbf{Gaya Penggerak ($u$)} & Tegangan Sumber $V_0$ & Tegangan Sumber $V_0$ & Rugi-Rugi Daya $P_{\text{loss}}$ [W] \\
+      \textbf{Konstanta Waktu ($\tau$)} & $\mathbf{\tau = L / R}$ & $\mathbf{\tau = R C}$ & $\mathbf{\tau_{\text{th}} = R_{\text{th}} C_{\text{th}}}$ \\
+      \textbf{Persamaan Diferensial} & $L \frac{di}{dt} + R i = V_0$ & $R C \frac{dv}{dt} + v = V_0$ & $C_{\text{th}} \frac{dT}{dt} + \frac{T - T_a}{R_{\text{th}}} = P_{\text{loss}}$ \\ \bottomrule
+    \end{tabular}%
+    }
+  \end{center}
+  \vspace{0.2cm}
+  \begin{block}{Prinsip Kesatuan Matematika}
+    Ketiga sistem di atas memiliki struktur matematika \textbf{PDB linier orde 1 identik}: $\frac{dx}{dt} + \frac{1}{\tau} x = \frac{x_{\text{ss}}}{\tau}$.
   \end{block}
 \end{frame}
 
-\begin{frame}{Ringkasan \& Kesimpulan}
-  \begin{enumerate}
-    \item Rangkaian RL dan RC dimodelkan oleh PDB linear orde 1 dengan konstanta waktu $\tau = L/R$ atau $\tau = RC$.
-    \item Respons total selalu terdiri atas **respons alami (transien)** yang meluruh dan **respons paksa (keadaan mantap)**.
-    \item Mahasiswa wajib memverifikasi perhitungan matematis menggunakan simulasi Julia pada Lembar Kerja Mandiri.
-  \end{enumerate}
+% FRAME 4: Transien RL & Inductive Kickback
+\begin{frame}{Transien Pemutusan Sirkuit RL: Lonjakan Tegangan Balik}
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \textbf{Fenomena \textit{Inductive Kickback}:}
+    \begin{itemize}
+      \item Pada kondisi tunak DC, arus koil mengalir mantap: $I_0 = \frac{V_0}{R}$.
+      \item Bila sakelar tiba-tiba dibuka pada $t=0$, arus dipaksa turun ke nol dalam waktu sangat singkat $\Delta t \to 0$:
+      \begin{equation*}
+        \left| \frac{di}{dt} \right| \to \infty
+      \end{equation*}
+      \item Induktor merespons dengan membangkitkan tegangan lawan (\textit{back-EMF}):
+      \begin{equation*}
+        \mathbf{v_L(t) = L \frac{di}{dt} \gg V_0}
+      \end{equation*}
+      \item Tegangan balik ini dapat mencapai \textbf{ribuan Volt}, memicu busur api atau merusak transistor!
+    \end{itemize}
+
+    \column{0.44\textwidth}
+    \begin{alertblock}{Bahaya Kerusakan Semikonduktor}
+      Transistor sakelar DC (MOSFET/BJT) memiliki batas tegangan maksimum $V_{\text{DS, max}}$. Lonjakan induktif yang tidak diredam akan menembus batas ini dalam orde mikrodetik.
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% FRAME 5: Proteksi Dioda Freewheeling
+\begin{frame}{Mitigasi Lonjakan Induktif: Dioda Freewheeling (Flyback)}
+  \begin{columns}
+    \column{0.46\textwidth}
+    \begin{center}
+      \resizebox{\linewidth}{!}{%
+      \begin{circuitikz}[scale=1.1, american]
+        \draw (0,0) to[battery2, l=$V_0$, invert] (0,2.8)
+              -- (2.2,2.8)
+              to[L, l=$L$, v=$v_L$] (2.2,1.4)
+              to[R, l=$R$] (2.2,0.8)
+              to[normal open switch, l=SW] (2.2,0)
+              -- (0,0);
+        % Flyback diode
+        \draw (2.2,2.8) -- (3.6,2.8)
+              to[diode, l=$D_{\text{flyback}}$, invert] (3.6,0.8)
+              -- (2.2,0.8);
+      \end{circuitikz}%
+      }
+    \end{center}
+    \vspace{-0.2cm}
+    \begin{center}
+      \footnotesize Rangkaian Proteksi Dioda Freewheeling Paralel Beban Induktif.
+    \end{center}
+
+    \column{0.54\textwidth}
+    \textbf{Mekanisme Pelepasan Energi Sirkuit:}
+    \begin{itemize}
+      \item Saat sakelar tertutup, dioda terbias mundur (\textit{reverse biased}) dan tidak aktif.
+      \item Saat sakelar dibuka, induktor membalik polaritas tegangannya, memicu dioda terbias maju (\textit{forward biased}).
+      \item Arus induktor bersirkulasi aman melalui loop koil-dioda:
+      \begin{equation*}
+        L \frac{di}{dt} + R i + V_F = 0 \implies i(t) \approx I_0 e^{-\frac{t}{\tau}}
+      \end{equation*}
+      \item Tegangan pada sakelar dibatasi hanya sebesar $\mathbf{V_{\text{sakelar}} = V_0 + V_F \approx V_0 + 0{,}7\text{ V}}$.
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+% FRAME 6: Transien RC Pensaklaran Multi-Interval
+\begin{frame}{Transien Pensaklaran Multi-Interval Sirkuit RC}
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \textbf{Prinsip Pergeseran Waktu Acuan:}
+    \begin{itemize}
+      \item Pada sirkuit dengan pensaklaran bertahap (misal $t_0 = 0$ dan $t_1 = t_s$):
+      \item \textbf{Interval 1 ($0 \le t < t_s$):}
+      \begin{equation*}
+        v_C(t) = V_{\text{target},1} + [v_C(0) - V_{\text{target},1}] e^{-t/\tau_1}
+      \end{equation*}
+      \item Evaluasi nilai batas: $v_C(t_s^-) = v_C(t_s^+)$ (\textbf{Prinsip Kontinuitas}).
+      \item \textbf{Interval 2 ($t \ge t_s$):}
+      \begin{equation*}
+        v_C(t) = V_{\text{target},2} + [v_C(t_s) - V_{\text{target},2}] e^{-\frac{t - t_s}{\tau_2}}
+      \end{equation*}
+    \end{itemize}
+
+    \column{0.44\textwidth}
+    \begin{center}
+      \resizebox{\linewidth}{!}{%
+      \begin{tikzpicture}[scale=0.85]
+        \draw[->] (0,0) -- (4.5,0) node[right] {$t$};
+        \draw[->] (0,0) -- (0,3.2) node[above] {$v_C(t)$};
+        \draw[dashed, gray] (2,0) node[below] {$t_s$} -- (2,2.3);
+        % Fase Pengisian
+        \draw[domain=0:2, smooth, blue!90!black, very thick] plot ({\x}, {3*(1 - exp(-\x))});
+        % Fase Pengosongan
+        \draw[domain=2:4.2, smooth, red!85!black, very thick] plot ({\x}, {2.3*exp(-1.2*(\x - 2))});
+        \node[blue!90!black, font=\tiny] at (1, 1.8) {Pengisian $\tau_1$};
+        \node[red!85!black, font=\tiny] at (3.2, 1.5) {Pengosongan $\tau_2$};
+      \end{tikzpicture}%
+      }
+    \end{center}
+  \end{columns}
+\end{frame}
+
+% FRAME 7: Hukum Pendinginan Newton dalam Sistem Tenaga
+\begin{frame}{Dinamika Termal Sistem Tenaga: Hukum Pendinginan Newton}
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \textbf{Kesetimbangan Termal Transformator Daya:}
+    \begin{itemize}
+      \item Laju akumulasi panas di dalam tangki trafo sama dengan total daya rugi ($P_{\text{loss}} = I^2 R + P_{\text{core}}$) dikurangi laju pelepasan kalor ke udara ambien:
+      \begin{equation}
+        q_{\text{akumulasi}} = q_{\text{masuk}} - q_{\text{lepas}}
+      \end{equation}
+      \item Akumulasi panas: $q_{\text{akumulasi}} = C_{\text{th}} \frac{dT(t)}{dt}$
+      \item Pelepasan kalor konveksi: $q_{\text{lepas}} = \frac{T(t) - T_{\text{amb}}}{R_{\text{th}}}$
+    \end{itemize}
+
+    \column{0.44\textwidth}
+    \begin{block}{PDB Termal Orde 1 Standar Trafo}
+      \begin{equation}
+        C_{\text{th}} \frac{dT}{dt} + \frac{1}{R_{\text{th}}} (T - T_{\text{amb}}) = P_{\text{loss}}
+      \end{equation}
+      Solusi kenaikan suhu transien:
+      \begin{equation*}
+        \mathbf{T(t) = T_{\text{amb}} + P_{\text{loss}} R_{\text{th}} \left(1 - e^{-\frac{t}{\tau_{\text{th}}}}\right)}
+      \end{equation*}
+      dengan $\mathbf{\tau_{\text{th}} = R_{\text{th}} C_{\text{th}}}$ [detik atau jam].
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% FRAME 8: Analogi Rangkaian Termal Trafo
+\begin{frame}{Model Rangkaian Termal Ekivalen Transformator Daya}
+  \begin{columns}
+    \column{0.5\textwidth}
+    \begin{center}
+      \resizebox{\linewidth}{!}{%
+      \begin{circuitikz}[scale=1.1, american]
+        \draw (0,0) to[I, l=$P_{\text{loss}}$] (0,2.5)
+              -- (1.8,2.5)
+              to[C, l=$C_{\text{th}}$, v=$T(t)$] (1.8,0)
+              -- (0,0);
+        \draw (1.8,2.5) -- (3.4,2.5)
+              to[R, l=$R_{\text{th}}$] (3.4,0.8)
+              to[battery2, l=$T_{\text{amb}}$] (3.4,0)
+              -- (1.8,0);
+      \end{circuitikz}%
+      }
+    \end{center}
+    \vspace{-0.2cm}
+    \begin{center}
+      \footnotesize Model Termal Orde Satu (Analogi Elektrik-Termal R-C).
+    \end{center}
+
+    \column{0.5\textwidth}
+    \begin{block}{Karakteristik Skala Waktu Termal}
+      \begin{itemize}
+        \item \textbf{Minyak Radiator:} Konstanta waktu termal lokal $\approx 5\text{ s.d. } 15\text{ menit}$.
+        \item \textbf{Massa Inti \& Belitan Besi:} Konstanta waktu termal global $\approx 2\text{ s.d. } 4\text{ jam}$.
+        \item Keterlambatan respon termal ini memungkinkan trafo memikul \textbf{beban lebih darurat} (\textit{emergency overload}) dalam durasi terbatas tanpa bahaya overheating seketika.
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% FRAME 9: Standar Penuaan Insulasi Trafo (IEEE Std C57.91)
+\begin{frame}{Standar Industri: Penuaan Insulasi Trafo (IEEE Std C57.91)}
+  \begin{columns}[c]
+    \column{0.55\textwidth}
+    \textbf{Hukum Penuaan Kimiawi Kertas Isolasi (Arrhenius):}
+    \begin{itemize}
+      \item Umur pakai transformator ditentukan oleh degradasi kertas isolasi belitan.
+      \item Faktor laju penuaan relatif (\textit{Aging Acceleration Factor} / $F_{AA}$):
+      \begin{equation*}
+        \mathbf{F_{AA} = \exp\left[ \frac{15000}{383} - \frac{15000}{\Theta_H + 273} \right]}
+      \end{equation*}
+      di mana $\Theta_H$ adalah temperatur titik terpanas (\textit{hotspot temperature}) [$^\circ$C].
+      \item \textbf{Aturan Praktis}: Kenaikan suhu hotspot sebesar $+6^\circ\text{C}$ menggandakan laju degradasi isolasi ($2\times$ lebih cepat aus).
+    \end{itemize}
+
+    \column{0.45\textwidth}
+    \begin{alertblock}{Batas Operasi Gardu Induk PLN}
+      \begin{itemize}
+        \item Suhu Ambien Nominal: $30^\circ\text{C}$
+        \item Batas Alarm Minyak Atas: $85^\circ\text{C}$
+        \item Batas Trip Pemutus (CB): $95^\circ\text{C}$
+        \item Batas Hotspot Darurat: $110^\circ\text{C}$ ($F_{AA} \approx 1{,}0$)
+      \end{itemize}
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% FRAME 10: Worked Example 1 - Inductive Kickback
+\begin{frame}{Contoh Soal 1 (Worked Example): Inductive Kickback Koil}
+  \textbf{Kasus Industri:} Koil kontaktor magnetik panel DC memiliki $L = 2{,}5\text{ H}$ dan $R = 50\,\Omega$, dicatu $V_0 = 24\text{ V}$. Sakelar dibuka mendadak dan busur api memutus arus dalam $\Delta t = 2\,\mu\text{s}$.
+  \vspace{0.15cm}
+
+  \begin{columns}[t]
+    \column{0.5\textwidth}
+    \textbf{1. Arus Tunak Awal \& Konstanta Waktu:}
+    \begin{align*}
+      I_0 &= \frac{V_0}{R} = \frac{24\text{ V}}{50\,\Omega} = \mathbf{0{,}48\text{ A}} \\
+      \tau &= \frac{L}{R} = \frac{2{,}5\text{ H}}{50\,\Omega} = \mathbf{50\text{ ms}}
+    \end{align*}
+    \textbf{2. Lonjakan Tegangan Balik Tanpa Dioda:}
+    \begin{equation*}
+      |v_L| = L \left| \frac{\Delta i}{\Delta t} \right| = 2{,}5 \times \frac{0{,}48}{2 \times 10^{-6}} = \mathbf{600.000\text{ Volt!}}
+    \end{equation*}
+
+    \column{0.5\textwidth}
+    \textbf{3. Tegangan Sakelar dengan Dioda Flyback:}
+    Jika dipasang dioda silikon freewheeling ($V_F = 0{,}7\text{ V}$):
+    \begin{equation*}
+      V_{\text{sakelar, max}} = V_0 + V_F = 24 + 0{,}7 = \mathbf{24{,}7\text{ V}}
+    \end{equation*}
+    Transistor MOSFET ($V_{\text{rated}} = 100\text{ V}$) \textbf{aman total}!
+    \vspace{0.15cm}
+
+    \textbf{4. Energi Medan Magnet yang Dilepas:}
+    \begin{equation*}
+      E_L = \frac{1}{2} L I_0^2 = \frac{1}{2}(2{,}5)(0{,}48)^2 = \mathbf{0{,}288\text{ Joule}}
+    \end{equation*}
+  \end{columns}
+\end{frame}
+
+% FRAME 11: Worked Example 2 - Dinamika Termal Trafo
+\begin{frame}{Contoh Soal 2 (Worked Example): Manajemen Termal Trafo 60 MVA}
+  \textbf{Kasus Gardu Induk PLN:} Trafo 60 MVA memiliki $C_{\text{th}} = 3{,}6 \times 10^6\text{ J}/^\circ\text{C}$, $R_{\text{th}} = 1{,}25 \times 10^{-4}\;^\circ\text{C}/\text{W}$. Suhu ambien $T_{\text{amb}} = 30^\circ\text{C}$, suhu awal $T_0 = 55^\circ\text{C}$. Lonjakan beban puncak menimbulkan rugi-rugi $P_{\text{loss}} = 480\text{ kW}$.
+  \vspace{0.15cm}
+
+  \begin{columns}[t]
+    \column{0.5\textwidth}
+    \textbf{1. Konstanta Waktu Termal Trafo:}
+    \begin{align*}
+      \tau_{\text{th}} &= R_{\text{th}} C_{\text{th}} = (1{,}25 \times 10^{-4})(3{,}6 \times 10^6) \\
+                       &= 450\text{ detik} = \mathbf{7{,}5\text{ menit}}
+    \end{align*}
+    \textbf{2. Temperatur Tunak Akhir ($t \to \infty$):}
+    \begin{align*}
+      T_{\text{ss}} &= T_{\text{amb}} + P_{\text{loss}} R_{\text{th}} \\
+                    &= 30^\circ\text{C} + (480.000)(1{,}25 \times 10^{-4}) = \mathbf{90^\circ\text{C}}
+    \end{align*}
+    Trafo melebihi alarm ($85^\circ\text{C}$) namun di bawah trip ($95^\circ\text{C}$).
+
+    \column{0.5\textwidth}
+    \textbf{3. Waktu Menuju Batas Alarm ($T = 85^\circ\text{C}$):}
+    \begin{equation*}
+      T(t) = 90 - (90 - 55) e^{-t/\tau_{\text{th}}} = 90 - 35 e^{-t/7{,}5}
+    \end{equation*}
+    Masukkan batas alarm $T = 85^\circ\text{C}$:
+    \begin{align*}
+      85 &= 90 - 35 e^{-t/7{,}5} \implies 35 e^{-t/7{,}5} = 5 \\
+      e^{-t/7{,}5} &= \frac{5}{35} = \frac{1}{7} \implies \frac{t}{7{,}5} = \ln(7) = 1{,}946 \\
+      t_{\text{alarm}} &= 7{,}5 \times 1{,}946 = \mathbf{14{,}6\text{ menit}}
+    \end{align*}
+    Operator memiliki waktu \textbf{14,6 menit} untuk manuver beban!
+  \end{columns}
+\end{frame}
+
+% FRAME 12: Praktikum Komputasi Julia
+% FRAME 13: Praktikum Komputasi Julia
+\begin{frame}[fragile]{Praktikum Komputasi Julia: Dinamika Termal Trafo}
+  \begin{columns}[t]
+    \column{0.50\textwidth}
+    \begin{block}{Skrip Julia (\texttt{DifferentialEquations.jl})}
+\begin{lstlisting}[style=juliastyle]
+using DifferentialEquations, Plots
+
+const theta_amb = 30.0
+tau_oil, tau_w = 3.0, 0.15 # jam
+d_to, d_h = 45.0, 25.0
+
+f_thermal(u, p, t) = [
+  (theta_amb + d_to - u[1]) / tau_oil,
+  (u[1] + d_h - u[2]) / tau_w
+]
+prob = ODEProblem(f_thermal, [30.0, 30.0], (0.0, 10.0))
+sol = solve(prob, Tsit5())
+\end{lstlisting}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{alertblock}{Visualisasi Termal IEEE C57.91}
+      \centering
+      \includegraphics[width=\linewidth, height=0.38\textheight, keepaspectratio]{figures/slides/plot_ch3.png}
+    \end{alertblock}
+    \vspace{-0.1cm}
+    \begin{exampleblock}{Intisari Dinamika Termal}
+      \tiny
+      Hotspot kawat winding $\theta_h$ melonjak cepat ($\tau_w = 9\text{ menit}$), sedangkan minyak atas $\theta_{to}$ naik lambat ($\tau_{\text{oil}} = 3\text{ jam}$). Batas aman $110^\circ\text{C}$ wajib dipantau relai.
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+% FRAME 13: Verifikasi Simulasi Julia
+\begin{frame}{Verifikasi Hasil Simulasi \& Analisis Kestabilan Termal}
+  \begin{columns}
+    \column{0.55\textwidth}
+    \begin{center}
+      \resizebox{\linewidth}{!}{%
+      \begin{tikzpicture}[scale=0.9]
+        \draw[->] (0,0) -- (5.5,0) node[right] {$t\text{ [menit]}$};
+        \draw[->] (0,0) -- (0,4.2) node[above] {$T(t)\text{ [$^\circ$C]}$};
+        % Garis referensi
+        \draw[dashed, red] (0,3.5) -- (5.2,3.5) node[right, font=\tiny] {Trip $95^\circ\text{C}$};
+        \draw[dashed, orange] (0,3.0) -- (5.2,3.0) node[right, font=\tiny] {Alarm $85^\circ\text{C}$};
+        \draw[dashed, black] (0,3.25) -- (5.2,3.25) node[right, font=\tiny] {Tunak $90^\circ\text{C}$};
+        % Kurva Suhu
+        \draw[domain=0:5.2, smooth, blue!90!black, ultra thick] plot ({\x}, {3.25 - 1.75*exp(-\x/1.25)});
+        \fill[black] (0,1.5) circle (2pt) node[left] {$55^\circ\text{C}$};
+        % Titik Alarm
+        \draw[dashed, gray] (2.43,0) node[below] {$14{,}6\text{ m}$} -- (2.43,3.0);
+        \fill[orange] (2.43,3.0) circle (2.5pt);
+      \end{tikzpicture}%
+      }
+    \end{center}
+
+    \column{0.45\textwidth}
+    \begin{block}{Kesimpulan Rekayasa Operator PLN}
+      \begin{enumerate}
+        \item \textbf{Akurasi Prediksi Waktu:} Simulasi numerik mengonfirmasi alarm berbunyi pada menit ke-$14{,}6$.
+        \item \textbf{Margin Keamanan Trip:}
+        Karena $T_{\text{ss}} = 90^\circ\text{C} < 95^\circ\text{C}$, trafo \textbf{tidak akan trip mendadak}, namun beroperasi dalam kondisi degradasi insulasi dipercepat.
+      \end{enumerate}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% FRAME 14: Kuis & Tantangan Bloom C1-C6
+% FRAME 14: Kuis & Tantangan Bloom C1-C6
+\begin{frame}{Kuis Konseptual Interaktif \& Evaluasi Bloom (C1--C6)}
+  \begin{columns}[t]
+    \column{0.52\textwidth}
+    \begin{alertblock}{Peer Instruction: Uji Miskonsepsi Fisik}
+      \footnotesize
+      \textbf{Kasus Rekayasa:} Trafo 60 MVA dibebani lebih mendadak $150\%$. Mengapa temperatur minyak atas lambat naik sedangkan hotspot kawat tembaga langsung melonjak dalam hitungan menit?
+      \vspace{0.05cm}
+      \begin{itemize}\setlength{\itemsep}{1pt}
+        \item \textbf{[A]} Viskositas minyak isolasi trafo sangat tinggi.
+        \item \textbf{[B]} Kapasitas kalor massa minyak puluhan ton sangat masif ($\tau_{\text{oil}} \gg \tau_w$), sedangkan massa kawat kecil!
+        \item \textbf{[C]} Sirkulasi minyak terhenti saat beban lebih.
+        \item \textbf{[D]} Resistansi tembaga menyusut saat dipanaskan.
+      \end{itemize}
+    \end{alertblock}
+
+    \column{0.46\textwidth}
+    \begin{block}{Tantangan Analisis \& Desain (C4--C6)}
+      \footnotesize
+      \begin{itemize}\setlength{\itemsep}{2pt}
+        \item \textbf{C4 (Analisis):} Hitung laju degradasi isolasi selulosa kertas jika suhu hotspot bertahan pada $120^\circ\text{C}$.
+        \item \textbf{C5 (Evaluasi):} Evaluasi efektivitas dioda freewheeling meredam inductive kickback relay PMT.
+        \item \textbf{C6 (Desain):} Rancang tunda waktu relai termal 49 agar trafo trip sebelum hotspot menyentuh $140^\circ\text{C}$!
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% FRAME 15: Rangkuman & Penutup
+\begin{frame}{Rangkuman Inti Perkuliahan \& Referensi}
+  \begin{exampleblock}{Intisari Perkuliahan Minggu 3}
+    \begin{itemize}
+      \item Pemutusan arus induktif tanpa perlindungan menghasilkan lonjakan tegangan ekstrem (\textit{inductive kickback}); dioda freewheeling meredamnya secara efektif.
+      \item Pensaklaran multi-interval dipecahkan dengan menerapkan prinsip kontinuitas variabel keadaan pada setiap batas interval waktu.
+      \item Analogi termal elektrik memungkinkan prediksi laju kenaikan suhu dan penuaan insulasi transformator daya sesuai standar IEEE Std C57.91.
+    \end{itemize}
+  \end{exampleblock}
+  \vspace{0.2cm}
+  \begin{center}
+    \small \textbf{Buku Acuan Utama:} \\
+    E. Kreyszig, \textit{Advanced Engineering Mathematics} | IEEE Std C57.91 (Transformer Thermal Loading). \\
+    \vspace{0.3cm}
+    \textbf{Tautan Modul \& Bahan Ajar}: \url{https://www.ndaratha.my.id/persamaan-diferensial/}
+  \end{center}
 \end{frame}
 
 \end{document}

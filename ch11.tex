@@ -4,129 +4,530 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
 \usepackage{amsmath,amssymb}
+\usepackage{listings}
+\lstdefinestyle{juliastyle}{language=Julia,basicstyle=\ttfamily\tiny,keywordstyle=\bfseries\color{unibblue},commentstyle=\color{gray}\itshape,stringstyle=\color{unibgreen},backgroundcolor=\color{softgray},frame=single,rulecolor=\color{unibblue!30},breaklines=true,breakatwhitespace=true,showstringspaces=false,tabsize=2,numbers=none}
+\usepackage{booktabs}
 
 % --- Custom Colors ---
-\definecolor{unibblue}{RGB}{0,51,102}
-\definecolor{unibgold}{RGB}{212,175,55}
-\definecolor{unibgreen}{RGB}{0,128,0}
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{softgray}{RGB}{245, 247, 250}
 
 \setbeamercolor{palette primary}{bg=unibblue,fg=white}
 \setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
 \setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
 \setbeamercolor{structure}{fg=unibblue}
-\setbeamercolor{block title}{bg=unibblue!85,fg=white}
-\setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{titlelike}{parent=structure,bg=unibblue,fg=white}
+\setbeamercolor{block title}{bg=unibblue!90,fg=white}
+\setbeamercolor{block body}{bg=unibblue!8,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!95,fg=black}
 \setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!90,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
 
-\title{Persamaan Diferensial}
-\subtitle{Minggu 11: Persamaan Gelombang 1D pada Saluran Transmisi Elektromagnetik}
-\author{Novalio Daratha \& Muhammad Arfan}
-\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date[\today]{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% Listings setup for Julia
+\lstdefinelanguage{Julia}{
+  keywords={abstract,break,case,catch,const,continue,do,else,elseif,end,export,false,for,function,global,if,import,let,local,macro,module,mutable,primitive,quote,return,struct,true,try,type,using,var,while},
+  sensitive=true,
+  comment=[l]{\#},
+  string=[b]"
+}
+\lstset{
+  language=Julia,
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{blue!80!black}\bfseries,
+  commentstyle=\color{green!50!black}\itshape,
+  stringstyle=\color{red!80!black},
+  breaklines=true,
+  numbers=none,
+  frame=single,
+  backgroundcolor=\color{gray!5},
+  aboveskip=2pt,
+  belowskip=2pt
+}
+
+\title[Persamaan Diferensial (Minggu 11)]{Persamaan Diferensial}
+\subtitle{Minggu 11: Persamaan Gelombang 1D \& Telegrafer Saluran Transmisi: Solusi d'Alembert, Refleksi Beban, VSWR, dan Surja Petir Gardu Induk IEC 60071}
+\author[Novalio \& Arfan (UNIB)]{Ir. Novalio Daratha, S.T., M.Sc., Ph.D. \& Muhammad Arfan, S.T., M.T.}
+\institute[Teknik Elektro UNIB]{Program Studi S1 Teknik Elektro, Jurusan Teknik Elektro \& Informatika\\Fakultas Teknik, Universitas Bengkulu}
+\date[2026]{Semester Genap 2026}
 
 \begin{document}
 
-\begin{frame}
+% -------------------------------------------------------------
+% FRAME 1: Title Frame
+% -------------------------------------------------------------
+\begin{frame}[plain]
   \titlepage
 \end{frame}
 
-\begin{frame}{Capaian Pembelajaran (CPMK 4)}
-  \begin{itemize}
-    \item \textbf{CPMK 4.1:} Menurunkan Persamaan Gelombang 1D dari persamaan Telegraf pada saluran transmisi.
-    \item \textbf{CPMK 4.2:} Menyelesaikan persamaan gelombang menggunakan Solusi Perjalanan Gelombang d'Alembert.
-    \item \textbf{CPMK 4.3:} Menganalisis gelombang berdiri dan fenomena refleksi pada ujung saluran.
-    \item \textbf{CPMK 4.4:} Mengamati simulasi numerik perambatan gelombang FDTD menggunakan Julia.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Daftar Isi}
-  \tableofcontents
-\end{frame}
-
-\section{Penurunan dari Rangkaian Saluran Transmisi}
-\begin{frame}{Persamaan Telegraf (Lossless Line)}
-  Tinjau segmen saluran transmisi mikro sepanjang $\Delta x$ dengan induktansi $L'$ dan kapasitansi $C'$ per meter:
-  $$ \frac{\partial v}{\partial x} = -L' \frac{\partial i}{\partial t} \quad \text{(Hukum Faraday/KVL)} $$
-  $$ \frac{\partial i}{\partial x} = -C' \frac{\partial v}{\partial t} \quad \text{(Hukum Arus Maxwell/KCL)} $$
-  \pause
-  Turunkan persamaan tegangan terhadap $x$ dan persamaan arus terhadap $t$:
-  $$ \frac{\partial^2 v}{\partial x^2} = -L' \frac{\partial^2 i}{\partial x \partial t} = -L' \frac{\partial}{\partial t}\left(-C'\frac{\partial v}{\partial t}\right) = L'C' \frac{\partial^2 v}{\partial t^2} $$
-  \pause
-  \begin{alertblock}{Persamaan Gelombang 1D Standar}
-    $$ {\color{unibblue} \frac{\partial^2 v}{\partial t^2} = c^2 \frac{\partial^2 v}{\partial x^2}}, \quad c = \frac{1}{\sqrt{L'C'}} \quad \text{(Kecepatan Rambat Gelombang)} $$
-  \end{alertblock}
-\end{frame}
-
-\section{Solusi d'Alembert: Gelombang Berjalan}
-\begin{frame}{Formulasi Solusi d'Alembert}
-  \begin{block}{Teorema d'Alembert}
-    Solusi umum dari $\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}$ adalah superposisi dari dua gelombang yang merambat berlawanan arah:
-    $$ {\color{unibblue} u(x,t) = f(x - ct) + g(x + ct)} $$
+% -------------------------------------------------------------
+% FRAME 2: Sub-CPMK OBE Bloom Taxonomy C1-C6
+% -------------------------------------------------------------
+\begin{frame}{Sub-CPMK Taksonomi Bloom (Minggu 11)}
+  \begin{block}{Sub-Capaian Pembelajaran Mata Kuliah (Sub-CPMK 6)}
+    Setelah menyelesaikan pembelajaran pada modul Minggu 11 ini, mahasiswa mampu:
     \begin{itemize}
-      \item $f(x - ct)$: Gelombang datang (\textit{forward traveling wave}) merambat ke arah $+x$.
-      \item $g(x + ct)$: Gelombang pantul (\textit{backward traveling wave}) merambat ke arah $-x$.
+      \item \textbf{C1 (Mengingat):} Menyatakan bentuk umum persamaan gelombang 1D, persamaan telegrafer ($L', C'$), $v_p$, dan $Z_0$.
+      \item \textbf{C2 (Memahami):} Menjelaskan makna fisis solusi d'Alembert ($x \pm vt$) dan pembentukan gelombang berdiri.
+      \item \textbf{C3 (Menerapkan):} Menghitung koefisien refleksi $\Gamma_L$ dan rasio gelombang berdiri (VSWR) pada berbagai terminasi.
+      \item \textbf{C4 (Menganalisis):} Menganalisis perambatan surja petir tegangan tinggi pada antarmuka kawat udara ke kabel tanah.
+      \item \textbf{C5 (Mengevaluasi):} Menilai proteksi tegangan lebih isolasi gardu induk berdasarkan \textbf{IEC 60071-1} \& \textbf{IEEE C62.22}.
+      \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan simulasi \textbf{Julia} untuk visualisasi gelombang datang, pantul, dan interferensi.
     \end{itemize}
   \end{block}
-  \pause
-  Jika diberikan profil awal $u(x,0) = \phi(x)$ dan kecepatan awal $\frac{\partial u}{\partial t}(x,0) = 0$:
-  $$ u(x,t) = \frac{1}{2}\left[ \phi(x - ct) + \phi(x + ct) \right] $$
 \end{frame}
 
-\section{Refleksi Gelombang pada Ujung Saluran}
-\begin{frame}{Kondisi Batas Saluran Transmisi}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
-      \begin{block}{Ujung Hubung Singkat ($x = L$ Ground)}
+% -------------------------------------------------------------
+% FRAME 3: Peta Kurikulum & Saluran Transmisi Terdistribusi
+% -------------------------------------------------------------
+\begin{frame}{Peta Kurikulum: Batas Rangkaian Terpusat vs Terdistribusi}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Kapan KVL/KCL Biasa Tidak Berlaku?}
+        \small
         \begin{itemize}
-          \item Tegangan $v(L,t) = 0$ (Batas Dirichlet).
-          \item Koefisien Refleksi: $\Gamma = -1$.
-          \item Gelombang pantul berbalik polaritas (pergeseran fase $180^\circ$).
+          \item Pada frekuensi rendah ($50\text{ Hz}$), panjang gelombang $\lambda = c/f = 6.000\text{ km}$. Sirkuit laboratorium ($\ell \sim 1\text{ m}$) mematuhi parameter terpusat.
+          \item Namun pada surja petir (frekuensi ekivalen $\sim 1\text{ MHz}$, $\lambda = 300\text{ m}$) atau pulsa digital pita lebar, panjang saluran transmisi $\ell \gg \lambda / 10$.
+          \item Fasa tegangan bervariasi di sepanjang kawat!
         \end{itemize}
       \end{block}
     \end{column}
-    \begin{column}{0.5\textwidth}
-      \pause
-      \begin{block}{Ujung Terbuka ($x = L$ Open)}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Konsekuensi Fisik Saluran Terdistribusi}
+        \small
         \begin{itemize}
-          \item Arus $i(L,t) = 0 \implies \frac{\partial v}{\partial x}(L,t) = 0$ (Batas Neumann).
-          \item Koefisien Refleksi: $\Gamma = +1$.
-          \item Gelombang pantul sefase (tegangan berlipat ganda).
+          \item Sinyal merambat dengan kecepatan berhingga $v_p \le c$.
+          \item Muncul fenomena waktu tunda transit: $t_d = \ell / v_p$.
+          \item Terjadi pantulan gelombang jika ujung saluran tidak tersuai (\textit{unmatched termination}).
+          \item Diformulasikan secara eksak oleh \textbf{Persamaan Telegrafer}!
         \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \vspace{0.05cm}
+  \begin{exampleblock}{Prinsip Gelombang Elektromagnetik Transversal (TEM)}
+    \small
+    Energi tidak merambat di dalam inti tembaga, melainkan mengalir di ruang dielektrik antara kedua konduktor melalui medan listrik $\mathbf{E}$ dan medan magnet $\mathbf{H}$.
+  \end{exampleblock}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 4: Model Elemen Mikro dx & Persamaan Telegrafer
+% -------------------------------------------------------------
+\begin{frame}{Penurunan Model Elemen Mikro $\Delta x$ Saluran Transmisi}
+  Tinjau segmen saluran mikro $\Delta x$ dengan parameter terdistribusi $L'$ (H/m) dan $C'$ (F/m):
+  \vspace{0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Hukum Tegangan Kirchhoff (KVL)}
+        \small
+        Jatuh tegangan pada induktansi seri:
+        \begin{equation*}
+          v(x+\Delta x, t) - v(x, t) = -L' \Delta x \frac{\partial i(x, t)}{\partial t}
+        \end{equation*}
+        Bagi dengan $\Delta x \to 0$ (Hukum Faraday):
+        \begin{equation*}
+          \mathbf{\frac{\partial v}{\partial x} = -L' \frac{\partial i}{\partial t}}
+        \end{equation*}
       \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Hukum Arus Kirchhoff (KCL)}
+        \small
+        Arus bocor melalui kapasitansi paralel:
+        \begin{equation*}
+          i(x+\Delta x, t) - i(x, t) = -C' \Delta x \frac{\partial v(x+\Delta x, t)}{\partial t}
+        \end{equation*}
+        Bagi dengan $\Delta x \to 0$ (Arus Pergeseran Maxwell):
+        \begin{equation*}
+          \mathbf{\frac{\partial i}{\partial x} = -C' \frac{\partial v}{\partial t}}
+        \end{equation*}
+      \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-\section{Praktikum Julia \& Kuis}
-\begin{frame}{Simulasi Julia: Perambatan Gelombang 1D}
-  \begin{block}{Metode FDTD (Finite Difference Time Domain)}
-    $$ u_i^{n+1} = 2(1 - r^2)u_i^n + r^2(u_{i+1}^n + u_{i-1}^n) - u_i^{n-1}, \quad r = \frac{c \Delta t}{\Delta x} \le 1 $$
-    \begin{itemize}
-      \item Memvisualisasikan pemecahan pulsa Gauss menjadi 2 gelombang simetris d'Alembert.
-      \item Menghasilkan diagram spatiotemporal *heatmap* 2D.
-    \end{itemize}
-  \end{block}
+% -------------------------------------------------------------
+% FRAME 5: Reduksi ke Persamaan Gelombang 1D
+% -------------------------------------------------------------
+\begin{frame}{Eliminasi Silang Menuju Persamaan Gelombang 1D}
+  Dua persamaan telegrafer orde 1 berkopel dapat diubah menjadi satu PDP orde 2 murni:
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Eliminasi Arus $i(x, t)$}
+        \small
+        Diferensialkan pers. tegangan thd $x$:
+        \begin{equation*}
+          \frac{\partial^2 v}{\partial x^2} = -L' \frac{\partial^2 i}{\partial x \partial t}
+        \end{equation*}
+        Substitusi $\frac{\partial i}{\partial x} = -C' \frac{\partial v}{\partial t}$:
+        \begin{equation*}
+          \frac{\partial^2 v}{\partial x^2} = -L' \frac{\partial}{\partial t}\left(-C'\frac{\partial v}{\partial t}\right) = L'C' \frac{\partial^2 v}{\partial t^2}
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Bentuk Kanonik Persamaan Gelombang}
+        \small
+        \begin{equation*}
+          \mathbf{\frac{\partial^2 v}{\partial x^2} = \frac{1}{v_p^2} \frac{\partial^2 v}{\partial t^2}}
+        \end{equation*}
+        dengan \textbf{Kecepatan Rambat Fasa}:
+        \begin{equation*}
+          \mathbf{v_p = \frac{1}{\sqrt{L'C'}} = \frac{c}{\sqrt{\mu_r \epsilon_r}}}
+        \end{equation*}
+        Pada kawat udara: $v_p \approx c = 3 \times 10^8\text{ m/s}$. Pada kabel dielektrik padat: $v_p \approx 2 \times 10^8\text{ m/s}$.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
-\begin{frame}{Kuis Interaktif 11}
-  \textbf{Soal:} Saluran kabel koaksial memiliki $L' = 0.25\ \mu\text{H/m}$ dan $C' = 100\text{ pF/m}$. Berapakah kecepatan rambat sinyal dan waktu tempuh untuk kabel sepanjang $300\text{ meter}$?
-  \pause
-  \begin{block}{Jawaban:}
-    \begin{enumerate}
-      \item $c = \frac{1}{\sqrt{0.25 \times 10^{-6} \times 100 \times 10^{-12}}} = \frac{1}{\sqrt{25 \times 10^{-18}}} = \frac{1}{5 \times 10^{-9}} = 2 \times 10^8\text{ m/s} = \frac{2}{3}c$ (kecepatan cahaya). \pause
-      \item Waktu tempuh: $t = \frac{300\text{ m}}{2 \times 10^8\text{ m/s}} = 1.5\ \mu\text{s} = 1500\text{ ns}$.
-    \end{enumerate}
+% -------------------------------------------------------------
+% FRAME 6: Solusi d'Alembert Gelombang Berjalan
+% -------------------------------------------------------------
+\begin{frame}{Solusi Perjalanan Gelombang d'Alembert}
+  \begin{block}{Teorema d'Alembert (1747)}
+    \small
+    Solusi umum dari $\frac{\partial^2 v}{\partial x^2} - \frac{1}{v_p^2} \frac{\partial^2 v}{\partial t^2} = 0$ adalah superposisi dari dua gelombang sembarang yang mempertahankan bentuknya:
+    \begin{equation*}
+      \mathbf{v(x, t) = f(x - v_p t) + g(x + v_p t) = v^+(x - v_p t) + v^-(x + v_p t)}
+    \end{equation*}
   \end{block}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Gelombang Maju: $v^+(x - v_p t)$}
+        \small
+        \begin{itemize}
+          \item Merambat ke arah $+x$ (dari sumber menuju beban).
+          \item Nilai gelombang konstan sepanjang garis karakteristik: $x - v_p t = \text{konstan}$.
+          \item Membawa daya aktif dari generator ke beban.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Gelombang Pantul: $v^-(x + v_p t)$}
+        \small
+        \begin{itemize}
+          \item Merambat ke arah $-x$ (dari beban kembali ke sumber).
+          \item Garis karakteristik: $x + v_p t = \text{konstan}$.
+          \item Timbul akibat diskontinuitas impedansi pada ujung saluran transmisi.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
-\begin{frame}{Rangkuman}
-  \begin{enumerate}
-    \item Gelombang tegangan dan arus pada saluran transmisi merupakan konsekuensi langsung dari hukum Maxwell.
-    \item Kecepatan rambat hanya bergantung pada karakteristik geometris dan material dielektrik ($L', C'$).
-    \item Analisis d'Alembert dan FDTD menjadi instrumen esensial dalam desain transmisi data berkecepatan tinggi.
-  \end{enumerate}
+% -------------------------------------------------------------
+% FRAME 7: Impedansi Karakteristik Saluran Transmisi
+% -------------------------------------------------------------
+\begin{frame}{Impedansi Karakteristik $Z_0$ \& Rasio Gelombang Arus}
+  \begin{block}{Definisi Fisis Impedansi Karakteristik}
+    \small
+    Rasio antara gelombang tegangan berjalan maju terhadap gelombang arus berjalan maju pada sembarang titik saluran:
+    \begin{equation*}
+      \mathbf{Z_0 = \frac{v^+(x, t)}{i^+(x, t)} = \sqrt{\frac{L'}{C'}}} \quad [\Omega]
+    \end{equation*}
+  \end{block}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pembalikan Tanda pada Arus Pantul}
+        \small
+        Karena daya gelombang mundur mengalir ke arah $-x$:
+        \begin{equation*}
+          \frac{v^-(x, t)}{i^-(x, t)} = -Z_0 \implies \mathbf{i^-(x, t) = -\frac{v^-(x, t)}{Z_0}}
+        \end{equation*}
+        Tegangan total adalah jumlahan fasa ($v^+ + v^-$), sedangkan arus total adalah pengurangan ($i^+ - i^-$).
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Nilai Tipikal Standar Industri}
+        \small
+        \begin{itemize}
+          \item \textbf{Saluran Udara (SUTT 150 kV):} $Z_0 \approx 350 - 450\,\Omega$.
+          \item \textbf{Kabel Tanah XLPE:} $Z_0 \approx 30 - 50\,\Omega$.
+          \item \textbf{Kabel Koaksial RG-58:} $Z_0 = 50\,\Omega$ (RF \& Lab).
+          \item \textbf{Kabel Antena TV RG-6:} $Z_0 = 75\,\Omega$.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 8: Skematik Rangkaian Telegrafer dx & Antarmuka
+% -------------------------------------------------------------
+\begin{frame}{Skematik Rangkaian Terdistribusi \& Antarmuka Saluran}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Rangkaian Ekivalen Segmen Mikro $\Delta x$}
+        \centering
+        \resizebox{\linewidth}{!}{%
+        \begin{circuitikz}[scale=0.85]
+          \draw (0, 2) to[short, o-] (0.5, 2)
+                to[R, l^=$R'\Delta x$] (2.0, 2)
+                to[L, l^=$L'\Delta x$] (3.8, 2)
+                to[short, -o] (4.8, 2);
+          \draw (3.8, 2) to[C, l_=$C'\Delta x$] (3.8, 0);
+          \draw (0, 0) to[short, o-o] (4.8, 0);
+          \node[left, font=\scriptsize] at (0, 2) {$v(x,t)$};
+          \node[right, font=\scriptsize] at (4.8, 2) {$v(x+\Delta x,t)$};
+          \draw[->, thick, unibblue] (0.2, 2.3) -- (1.0, 2.3) node[midway, above, font=\tiny] {$i(x,t)$};
+        \end{circuitikz}
+        }
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Diskontinuitas Antarmuka SUTT ke Kabel Tanah}
+        \centering
+        \resizebox{\linewidth}{!}{%
+        \begin{tikzpicture}[>=stealth, scale=0.85]
+          \draw[thick, unibblue] (0, 1.5) -- (2.5, 1.5);
+          \draw[thick, unibblue] (0, 0.5) -- (2.5, 0.5);
+          \node at (1.25, 1.0) {\scriptsize SUTT $Z_1 = 400\,\Omega$};
+          \draw[line width=2pt, red!80!black] (2.5, 0.2) -- (2.5, 1.8);
+          \draw[thick, fill=gray!20] (2.5, 0.5) rectangle (5.0, 1.5);
+          \node at (3.75, 1.0) {\scriptsize Kabel $Z_2 = 40\,\Omega$};
+          \draw[->, very thick, red!80!black] (0.8, 1.8) -- (2.0, 1.8) node[midway, above, font=\tiny] {$V^+$};
+          \draw[<-, very thick, orange] (0.8, 0.2) -- (2.0, 0.2) node[midway, below, font=\tiny] {$V^- = \Gamma V^+$};
+        \end{tikzpicture}
+        }
+        \small
+        $\Gamma_{12} = \frac{40 - 400}{40 + 400} = -0{,}818$, transmisi $\tau_{12} = 1 + \Gamma_{12} = 0{,}182$.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 9: Contoh Soal Terhitung Langkah demi Langkah
+% -------------------------------------------------------------
+\begin{frame}{Contoh Terhitung: Solusi d'Alembert Impuls Awal}
+  \begin{exampleblock}{Masalah: Pulsa awal $v(x, 0) = \frac{100}{1 + x^2}\text{ [V]}$ dan $\left.\frac{\partial v}{\partial t}\right|_{t=0} = 0$ pada $v_p = 2 \times 10^8\text{ m/s}$}
+    Tentukan ekspresi gelombang berjalan eksak $v(x, t)$ dan sketsa perilaku fisik perambatannya!
+  \end{exampleblock}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Penurunan Rumus Integral d'Alembert}
+        \begin{align*}
+          v(x, t) &= \frac{\phi(x - v_p t) + \phi(x + v_p t)}{2} \\
+                  &\quad + \frac{1}{2v_p}\int_{x-v_p t}^{x+v_p t} \psi(\xi)\,d\xi
+        \end{align*}
+        Karena kecepatan awal $\psi(\xi) = 0$, suku integral nol!
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Solusi Eksak \& Perilaku Gelombang}
+        \small
+        Substitusi fungsi profil awal $\phi(x)$:
+        \begin{align*}
+          v(x, t) &= \frac{50}{1 + (x - 2\times 10^8 t)^2} \\
+                  &\quad + \frac{50}{1 + (x + 2\times 10^8 t)^2} \quad \text{[V]}
+        \end{align*}
+        \textbf{Interpretasi Fisik:}
+        Pulsa mula-mula $100\text{ V}$ terbelah menjadi dua pulsa simetris masing-masing $50\text{ V}$ yang merambat saling menjauhi titik asal!
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 10: Refleksi Gelombang pada Beban
+% -------------------------------------------------------------
+\begin{frame}{Refleksi Gelombang pada Terminasi Beban $Z_L$}
+  Tegangan dan arus pada ujung beban ($x = L$) harus memenuhi Hukum Ohm: $v(L, t) = Z_L \cdot i(L, t)$.
+  \begin{alertblock}{Koefisien Refleksi Beban (\textit{Load Reflection Coefficient})}
+    \begin{equation*}
+      \mathbf{\Gamma_L = \frac{V^-}{V^+} = \frac{Z_L - Z_0}{Z_L + Z_0}} \quad (-1 \le \Gamma_L \le +1)
+    \end{equation*}
+  \end{alertblock}
+  \begin{columns}[t]
+    \begin{column}{0.31\textwidth}
+      \begin{block}{Beban Tersuai ($Z_L = Z_0$)}
+        \small
+        $\Gamma_L = 0, \quad V^- = 0$\\
+        Seluruh energi gelombang diserap sempurna oleh beban tanpa pantulan.\\
+        \textit{Ideal untuk telekomunikasi!}
+      \end{block}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{exampleblock}{Ujung Terbuka ($Z_L = \infty$)}
+        \small
+        $\Gamma_L = +1, \quad V^- = +V^+$\\
+        Tegangan berlipat ganda: $V_{\text{beban}} = 2 V^+$, arus terhenti nol ($I_{\text{beban}} = 0$).\\
+        \textit{Bahaya surja petir!}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{alertblock}{Hubung Singkat ($Z_L = 0$)}
+        \small
+        $\Gamma_L = -1, \quad V^- = -V^+$\\
+        Tegangan lenyap nol ($V = 0$), arus berlipat ganda: $I_{\text{beban}} = 2 I^+$.\\
+        \textit{Pembalikan polaritas!}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 11: Gelombang Berdiri & VSWR
+% -------------------------------------------------------------
+\begin{frame}{Gelombang Berdiri (\textit{Standing Waves}) \& VSWR}
+  Superposisi gelombang datang dan pantul kontinu menghasilkan pola interferensi stasioner:
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Tegangan Ekstrem pada Saluran}
+        \small
+        \begin{itemize}
+          \item \textbf{Tegangan Maksimum ($V_{\text{max}}$):} Interferensi konstruktif:
+          \begin{equation*}
+            V_{\text{max}} = |V^+| (1 + |\Gamma_L|)
+          \end{equation*}
+          \item \textbf{Tegangan Minimum ($V_{\text{min}}$):} Interferensi destruktif:
+          \begin{equation*}
+            V_{\text{min}} = |V^+| (1 - |\Gamma_L|)
+          \end{equation*}
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Voltage Standing Wave Ratio (VSWR)}
+        \small
+        Parameter kualitas transmisi daya:
+        \begin{equation*}
+          \mathbf{\text{VSWR} = \frac{V_{\text{max}}}{V_{\text{min}}} = \frac{1 + |\Gamma_L|}{1 - |\Gamma_L|}} \quad (1 \le \text{VSWR} < \infty)
+        \end{equation*}
+        \begin{itemize}
+          \item $\text{VSWR} = 1{,}0$: Penyesuaian sempurna (tanpa daya pantul).
+          \item $\text{VSWR} > 2{,}0$: Bahaya kerusakan pemancar/insulasi.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 12: Standar Industri: Surja Petir SUTT 150 kV
+% -------------------------------------------------------------
+\begin{frame}{Standar Industri: Surja Petir \& Koordinasi Isolasi IEC 60071}
+  \begin{block}{Fenomena Pelipatgandaan Tegangan pada Terminal Trafo Tenaga}
+    Ketika kawat SUTT 150 kV disambar petir $30\text{ kA}$, pulsa $V^+ = \frac{1}{2} Z_0 I_p \approx 6\text{ MV}$ merambat ke gardu induk.
+  \end{block}
+  \vspace{0.1cm}
+  \begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{lccc}
+      \toprule
+      \textbf{Titik Transmisi} & \textbf{Impedansi $Z_0$} & \textbf{Koefisien Refleksi $\Gamma$} & \textbf{Dampak Tegangan} \\
+      \midrule
+      SUTT Udara & $Z_1 = 400\,\Omega$ & -- & Tegangan surja datang $V^+$ \\
+      Pintu Masuk Kabel Tanah & $Z_2 = 40\,\Omega$ & $\Gamma_{12} = -0{,}818$ & Tegangan terpangkas menjadi $18{,}2\%$ \\
+      Terminal Bushing Trafo & $Z_3 = 2.000\,\Omega$ & $\Gamma_{\text{trafo}} = +0{,}961$ & Terjadi pelipatgandaan hingga $\approx 2 \times$ \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{exampleblock}{Regulasi Standar IEC 60071-1 \& IEEE C62.22}
+    \small
+    Wajib memasang \textbf{Metal-Oxide Surge Arrester (MOSA/ZnO)} sedekat mungkin ($< 5\text{ m}$) dengan bushing trafo untuk memotong lonjakan tegangan di bawah rating \textit{Basic Lightning Impulse Insulation Level} (BIL 650 kV).
+  \end{exampleblock}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 13: Simulasi Komputasi Julia
+% -------------------------------------------------------------
+% FRAME 13: Praktikum Komputasi Julia
+\begin{frame}[fragile]{Praktikum Komputasi Julia: Gelombang Telegrafer Transmisi}
+  \begin{columns}[t]
+    \column{0.50\textwidth}
+    \begin{block}{Skrip Julia: Pantulan Surja d'Alembert}
+\begin{lstlisting}[style=juliastyle]
+using Plots
+
+z = range(0, 100, length=400) # Saluran 100 km
+v_inc = @. exp(-((z - 30.0) / 8.0)^2)
+v_ref_open = @. exp(-((z - 70.0) / 8.0)^2)
+v_ref_short = @. -exp(-((z - 70.0) / 8.0)^2)
+
+plot(z, v_inc, lw=2, color=:blue, label="Datang v+")
+plot!(z, v_ref_open, lw=2, color=:green, label="Pantul Open (Gamma=+1)")
+plot!(z, v_ref_short, lw=2, ls=:dash, color=:red, label="Pantul Short (Gamma=-1)")
+\end{lstlisting}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{alertblock}{Visualisasi Surja Transmisi}
+      \centering
+      \includegraphics[width=\linewidth, height=0.38\textheight, keepaspectratio]{figures/slides/plot_ch11.png}
+    \end{alertblock}
+    \vspace{-0.1cm}
+    \begin{exampleblock}{Intisari Gelombang Berjalan}
+      \tiny
+      Surja merambat dengan kecepatan $v \approx c$. Pada ujung saluran terbuka ($\Gamma_L = +1$), pantulan sefasa melipatgandakan tegangan ($2\text{ pu}$); pada hubung singkat ($\Gamma_L = -1$), pantulan berbalik fasa.
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 14: Kuis Tantangan Bloom Berjenjang
+% -------------------------------------------------------------
+% FRAME 14: Kuis & Tantangan Bloom C1-C6
+\begin{frame}{Kuis Konseptual Interaktif \& Evaluasi Bloom (C1--C6)}
+  \begin{columns}[t]
+    \column{0.52\textwidth}
+    \begin{alertblock}{Peer Instruction: Uji Miskonsepsi Fisik}
+      \footnotesize
+      \textbf{Kasus Rekayasa:} Saluran transmisi $150\text{ kV}$ memiliki ujung terbuka (*open circuit*, $Z_L \to \infty$). Ketika surja petir $V^+$ menabrak ujung saluran tersebut, tegangan sesaat pada isolator ujung saluran menjadi:
+      \vspace{0.05cm}
+      \begin{itemize}\setlength{\itemsep}{1pt}
+        \item \textbf{[A]} Nol karena arus tidak dapat mengalir ke luar kawat.
+        \item \textbf{[B]} **Dua kali lipat** ($2V^+$) akibat pemantulan sefasa penuh ($\Gamma_L = +1$)!
+        \item \textbf{[C]} Setengahnya ($V^+/2$) karena pembagian tegangan.
+        \item \textbf{[D]} Berkurang drastis terserap ke udara bebas.
+      \end{itemize}
+    \end{alertblock}
+
+    \column{0.46\textwidth}
+    \begin{block}{Tantangan Analisis \& Desain (C4--C6)}
+      \footnotesize
+      \begin{itemize}\setlength{\itemsep}{2pt}
+        \item \textbf{C4 (Analisis):} Susun diagram kisi Bewley untuk melacak pantulan berulang surja pada saluran transmisi terhubung trafo.
+        \item \textbf{C5 (Evaluasi):} Evaluasi nilai Voltage Standing Wave Ratio (VSWR) pada ketidakcocokan beban $Z_L \ne Z_0$.
+        \item \textbf{C6 (Desain):} Rancang koordinasi isolasi lightning arrester (LA) IEC 60071-1 agar tegangan pantul tidak merusak trafo!
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 15: Rangkuman Eksekutif & Jembatan ke Minggu 12
+% -------------------------------------------------------------
+\begin{frame}{Rangkuman Eksekutif \& Jembatan ke Minggu 12}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Rangkuman Inti Minggu 11}
+        \begin{itemize}
+          \item \textbf{Persamaan Telegrafer:} KVL \& KCL pada elemen mikro $\Delta x \implies$ Pers. Gelombang 1D.
+          \item \textbf{Solusi d'Alembert:} Superposisi gelombang maju ($x - vt$) dan mundur ($x + vt$).
+          \item \textbf{Refleksi \& VSWR:} Bergantung pada ketidaksesuaian impedansi beban $\Gamma_L = \frac{Z_L - Z_0}{Z_L + Z_0}$.
+          \item \textbf{Standar:} Proteksi surja petir gardu induk sesuai \textbf{IEC 60071-1}.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pratinjau Minggu 12: Persamaan Panas Kabel}
+        \begin{itemize}
+          \item Dari gelombang elektromagnetik hiperbolik menuju difusi panas parabolik: $\frac{\partial T}{\partial t} = \alpha \frac{\partial^2 T}{\partial x^2}$.
+          \item \textbf{Manajemen Termal Kabel Bawah Tanah:} Rugi Joule konduktor, permitivitas isolasi, dan konduktivitas termal tanah.
+          \item Perhitungan kuat hantar arus (\textit{ampacity}) kabel daya sesuai standar internasional \textbf{IEC 60287}.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \end{document}

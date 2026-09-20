@@ -1,102 +1,668 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 6: Transformasi Laplace Dasar \& Teorema Geser}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
+\newtheorem{theorem}{Teorema}[section]
 
-\title{Catatan Kuliah Persamaan Diferensial\\Minggu 6: Transformasi Laplace Dasar}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 6}\\[0.3cm]
+\textbf{\LARGE TRANSFORMASI LAPLACE DASAR: PEMETAAN DOMAIN WAKTU KE DOMAIN FREKUENSI KOMPLEKS $s$, SIFAT LINIERITAS, FUNGSI KHUSUS HEAVISIDE \& DIRAC, TEOREMA PERGESERAN, SERTA TRANSFORMASI TURUNAN PDB}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
 
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 4)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 6 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Menyatakan definisi integral unilateral Transformasi Laplace, syarat keberadaan fungsi bereksponensial teratur (\textit{exponential order}), serta pasangan transformasi baku fungsi elementer ($1, t^n, e^{at}, \sin\omega t, \cos\omega t$).
+    \item \textbf{C2 (Memahami):} Menjelaskan interpretasi fisis pemetaan dari domain waktu riil $t$ ke domain frekuensi kompleks $s = \sigma + j\omega$, wilayah konvergensi (\textit{Region of Convergence} / ROC), serta peran fungsi tangga Heaviside $u(t)$ dan fungsi impuls Dirac $\delta(t)$ dalam memodelkan pensaklaran dan surja petir.
+    \item \textbf{C3 (Menerapkan):} Menghitung transformasi Laplace dari berbagai fungsi gelombang diskontinu menggunakan Teorema Pergeseran Pertama (translasi sumbu-$s$) dan Teorema Pergeseran Kedua (translasi sumbu-$t$).
+    \item \textbf{C4 (Menganalisis):} Mentransformasikan operator turunan PDB orde 1 dan orde 2 menjadi persamaan aljabar linier pada domain $s$, serta menganalisis bagaimana syarat awal IVP $y(0)$ dan $y'(0)$ terintegrasi secara otomatis tanpa memerlukan penentuan konstanta integrasi terpisah.
+    \item \textbf{C5 (Mengevaluasi):} Mengevaluasi model matematis gelombang impuls tegangan tinggi standar industri (IEC 60060-1 / IEEE Std 4: surja petir $1{,}2/50\,\mu\text{s}$) pada domain kompleks $s$ dan menganalisis dampaknya terhadap ketahanan insulasi peralatan gardu induk PLN.
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program komputasi berbasis \textbf{Julia} (\texttt{DifferentialEquations.jl} \& \texttt{Plots.jl}) untuk memvisualisasikan medan kutub-nol (\textit{pole-zero map}) pada bidang-$s$ dan respon impuls transien sistem.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
 
 \newpage
 
-\section{Pendahuluan}
-Transformasi Laplace adalah alat matematis yang sangat berharga untuk menyelesaikan persamaan diferensial, khususnya pada sistem yang melibatkan gaya yang berupa fungsi diskontinyu, sinyal impuls, atau untuk mencari respon sistem. Metode ini mentransformasikan persamaan diferensial (domain waktu) menjadi persamaan aljabar (domain kompleks atau frekuensi $s$). Hal ini mempermudah penyelesaian, layaknya kita mengubah operasi perkalian rumit dengan logaritma.
+\section{Peta Konsep \& Posisi Modul dalam Kurikulum}
 
-\section{Materi Utama}
-\subsection{Definisi Transformasi Laplace}
-\begin{definition}
-Misalkan $f(t)$ adalah fungsi yang didefinisikan untuk $t \ge 0$. Transformasi Laplace dari $f(t)$, dinotasikan dengan $\mathcal{L}\{f(t)\}$ atau $F(s)$, didefinisikan sebagai integral tak wajar:
+Pada Minggu 1 hingga Minggu 5, kita telah mempelajari metode-metode klasik domain waktu untuk menyelesaikan PDB orde 1 dan orde 2 (pemisahan variabel, faktor pengintegrasi, persamaan karakteristik, dan koefisien tak tentu). Meskipun sangat andal untuk fungsi kontinu sederhana, metode klasik tersebut menghadapi hambatan berat ketika diterapkan pada sistem rekayasa modern yang melibatkan:
+\begin{itemize}[leftmargin=*]
+    \item Sakelar yang membuka dan menutup secara tiba-tiba (fungsi diskontinu berundak / \textit{step function}),
+    \item Sambaran petir atau pelepasan muatan elektrostatik kilat (fungsi impuls Dirac / \textit{impulse function}),
+    \item Sinyal pulsa kontrol modulasi lebar pulsa (PWM inverter).
+\end{itemize}
+
+Untuk mengatasi keterbatasan tersebut, diperkenalkanlah \textbf{Metode Operasional Transformasi Laplace}. Metode ini bertindak sebagai jembatan matematika yang mengubah persoalan diferensial-integral yang rumit di domain waktu ($t$) menjadi persamaan aljabar linier biasa di domain frekuensi kompleks ($s$).
+
+Posisi strategis Modul Minggu 6 di dalam kurikulum disajikan pada Gambar~\ref{fig:peta_jalan_pd_w6}.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.45cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    doneblock/.style={rectangle, draw=green!60!black, fill=green!10, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[doneblock] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[doneblock, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[doneblock, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[doneblock, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[doneblock, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[highlight, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[block, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Solusi PDB Domain $s$};
+    \node[midblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[block, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[block, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[block, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[block, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[block, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[block, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan dengan penekanan pada Modul Minggu 6.}
+\label{fig:peta_jalan_pd_w6}
+\end{figure}
+
+\section{Pendahuluan \& Filosofi Fisika: Konsep Frekuensi Kompleks \texorpdfstring{$s$}{s}}
+
+Dalam rekayasa elektro, kita sangat akrab dengan frekuensi sudut osilasi murni $\omega$ (satuan rad/s) yang merepresentasikan gelombang sinusoidal bolak-balik beramplitudo konstan ($\cos\omega t$ atau $\sin\omega t$). Di sisi lain, pada analisis transien (Minggu 1--5), kita menjumpai faktor peluruhan eksponensial murni $\sigma$ (satuan Np/s) yang merepresentasikan redaman energi ($e^{-\sigma t}$).
+
+Pierre-Simon Laplace (1749--1827) dan kemudian disederhanakan secara brilian untuk rekayasa elektro oleh Oliver Heaviside (1850--1925) menggabungkan kedua fenomena ini ke dalam satu variabel terpadu yang disebut \textbf{Frekuensi Kompleks} (\textit{Complex Frequency}):
 \begin{equation}
-\mathcal{L}\{f(t)\} = F(s) = \int_{0}^{\infty} e^{-st} f(t) dt
+    s = \sigma + j\omega
+    \label{eq:complex_frequency}
 \end{equation}
-asalkan integral tersebut konvergen (memiliki nilai batas berhingga). Variabel $s$ merupakan parameter riil atau kompleks.
+di mana:
+\begin{itemize}[leftmargin=*]
+    \item Bagian riil $\sigma = \text{Re}\{s\}$ mengatur laju pertumbuhan atau peluruhan eksponensial amplitudo (\textit{damping factor}).
+    \item Bagian imajiner $\omega = \text{Im}\{s\}$ mengatur laju osilasi sudut sinusoidal (\textit{angular frequency}).
+\end{itemize}
+
+Dengan mengalikan sinyal domain waktu $f(t)$ dengan faktor peredam $e^{-st} = e^{-\sigma t} e^{-j\omega t}$, bahkan fungsi-fungsi yang secara matematis tidak konvergen pada transformasi Fourier biasa dapat dijinakkan dan diintegrasikan secara analitis.
+
+\section{Definisi Formal, Syarat Eksistensi \& Wilayah Konvergensi (ROC)}
+
+\subsection{Definisi Integral Laplace Unilateral}
+
+\begin{definition}[Transformasi Laplace Unilateral]
+Misalkan $f(t)$ adalah fungsi bernilai riil yang terdefinisi untuk seluruh waktu non-negatif $t \ge 0$. \textbf{Transformasi Laplace} dari $f(t)$, yang dinotasikan dengan $\mathcal{L}\{f(t)\}$ atau $F(s)$, didefinisikan oleh integral tak wajar (\textit{improper integral}):
+\begin{equation}
+    \mathcal{L}\{f(t)\} = F(s) = \int_{0^-}^{\infty} f(t) e^{-st} \, dt = \lim_{T \to \infty} \int_{0^-}^{T} f(t) e^{-st} \, dt
+    \label{eq:laplace_def}
+\end{equation}
+Batas bawah $0^-$ digunakan secara khusus dalam rekayasa elektro untuk menangkap secara utuh fenomena impuls Dirac dan kondisi awal tepat sebelum aksi pensaklaran ($t = 0$).
 \end{definition}
 
-\textbf{Contoh Pencarian Transformasi Laplace dari Definisi:}
-Mari kita cari $\mathcal{L}\{1\}$.
-$$ \mathcal{L}\{1\} = \int_{0}^{\infty} e^{-st} (1) dt = \lim_{b \to \infty} \int_{0}^{b} e^{-st} dt = \lim_{b \to \infty} \left[ -\frac{1}{s} e^{-st} \right]_0^b = \lim_{b \to \infty} \left( -\frac{1}{s} e^{-sb} + \frac{1}{s} e^0 \right) = \frac{1}{s} $$
-Integral konvergen jika $s > 0$.
+\subsection{Teorema Eksistensi \& Syarat Kecukupan}
 
-\textbf{Tabel Transformasi Laplace Dasar:}
-Beberapa transformasi fungsi dasar yang umum dijumpai:
-\begin{itemize}
-    \item $\mathcal{L}\{1\} = \frac{1}{s}, \quad s > 0$
-    \item $\mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}, \quad s > 0$
-    \item $\mathcal{L}\{e^{at}\} = \frac{1}{s-a}, \quad s > a$
-    \item $\mathcal{L}\{\sin(\omega t)\} = \frac{\omega}{s^2 + \omega^2}, \quad s > 0$
-    \item $\mathcal{L}\{\cos(\omega t)\} = \frac{s}{s^2 + \omega^2}, \quad s > 0$
-\end{itemize}
+Tidak semua fungsi matematika memiliki transformasi Laplace. Integral pada persamaan~\eqref{eq:laplace_def} dijamin konvergen apabila memenuhi dua syarat kecukupan berikut:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Kontinu Bagian demi Bagian (\textit{Piecewise Continuous}):} Fungsi $f(t)$ hanya memiliki sejumlah berhingga lonjakan diskontinuitas pada sembarang interval tertutup $[0, T]$.
+    \item \textbf{Bereksponensial Teratur (\textit{Exponential Order}):} Terdapat konstanta riil positif $M > 0$, $\gamma$, dan $t_0$ sedemikian rupa sehingga:
+    \begin{equation}
+        |f(t)| \le M e^{\gamma t}, \quad \text{untuk seluruh } t \ge t_0
+        \label{eq:exponential_order}
+    \end{equation}
+    Kondisi ini memastikan bahwa fungsi $f(t)$ tidak tumbuh lebih cepat daripada fungsi eksponensial. Fungsi seperti $e^{t^2}$ atau $\tan(t)$ tidak memiliki transformasi Laplace karena melanggar syarat ini.
+\end{enumerate}
+
+\subsection{Wilayah Konvergensi (\textit{Region of Convergence} / ROC)}
+
+Integral Laplace konvergen pada setengah bidang kanan (\textit{right-half plane}) dari bidang kompleks $s$:
+\begin{equation}
+    \text{ROC} = \{ s \in \mathbb{C} \mid \text{Re}\{s\} = \sigma > \gamma \}
+\end{equation}
+Garis $\sigma = \gamma$ disebut sumbu absis konvergensi.
+
+\section{Penurunan Pasangan Transformasi Laplace Fungsi Elementer}
+
+Mari kita turunkan pasangan transformasi fungsi dasar dari definisi prinsip pertama:
+
+\subsection{Fungsi Konstanta Satuan: \texorpdfstring{$f(t) = 1$}{f(t) = 1}}
+\begin{equation*}
+    \mathcal{L}\{1\} = \int_0^\infty 1 \cdot e^{-st} dt = \lim_{T \to \infty} \left[ -\frac{1}{s} e^{-st} \right]_0^T = \lim_{T \to \infty} \left( -\frac{1}{s} e^{-sT} + \frac{1}{s} e^0 \right)
+\end{equation*}
+Jika $\text{Re}\{s\} > 0$, maka $\lim_{T \to \infty} e^{-sT} = 0$, sehingga:
+\begin{equation}
+    \mathcal{L}\{1\} = \frac{1}{s}, \quad \text{untuk } \text{Re}\{s\} > 0
+    \label{eq:lt_one}
+\end{equation}
+
+\subsection{Fungsi Eksponensial: \texorpdfstring{$f(t) = e^{at}$}{f(t) = exp(at)}}
+\begin{equation*}
+    \mathcal{L}\{e^{at}\} = \int_0^\infty e^{at} e^{-st} dt = \int_0^\infty e^{-(s - a)t} dt = \left[ -\frac{1}{s - a} e^{-(s - a)t} \right]_0^\infty
+\end{equation*}
+Untuk $\text{Re}\{s\} > a$:
+\begin{equation}
+    \mathcal{L}\{e^{at}\} = \frac{1}{s - a}, \quad \text{untuk } \text{Re}\{s\} > a
+    \label{eq:lt_exp}
+\end{equation}
+
+\subsection{Fungsi Pangkat / Ramp: \texorpdfstring{$f(t) = t^n$}{f(t) = t\textasciicircum n} (\texorpdfstring{$n \in \mathbb{N}$}{n in N})}
+Gunakan teknik integrasi parsial: $\int u \, dv = u v - \int v \, du$. Misalkan $u = t^n$ dan $dv = e^{-st} dt \implies du = n t^{n-1} dt$, $v = -\frac{1}{s} e^{-st}$:
+\begin{equation*}
+    \mathcal{L}\{t^n\} = \left[ -\frac{t^n}{s} e^{-st} \right]_0^\infty + \frac{n}{s} \int_0^\infty t^{n-1} e^{-st} dt = 0 + \frac{n}{s} \mathcal{L}\{t^{n-1}\}
+\end{equation*}
+Melalui relasi rekursif berulang hingga $\mathcal{L}\{1\} = \frac{1}{s}$:
+\begin{equation}
+    \mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}, \quad \text{untuk } \text{Re}\{s\} > 0
+    \label{eq:lt_power}
+\end{equation}
+Secara khusus, untuk fungsi ramp linier $f(t) = t$ ($n=1$): $\mathcal{L}\{t\} = \frac{1}{s^2}$.
+
+\subsection{Fungsi Sinusoidal: \texorpdfstring{$f(t) = \cos(\omega t)$}{f(t) = cos(omega t)} dan \texorpdfstring{$f(t) = \sin(\omega t)$}{f(t) = sin(omega t)}}
+Gunakan Formula Euler yang elegan: $e^{j\omega t} = \cos(\omega t) + j \sin(\omega t)$.
+Berdasarkan sifat linieritas dan hasil persamaan~\eqref{eq:lt_exp} dengan $a = j\omega$:
+\begin{equation*}
+    \mathcal{L}\{e^{j\omega t}\} = \frac{1}{s - j\omega}
+\end{equation*}
+Rasionalkan penyebut dengan mengalikan sekawan kompleks $(s + j\omega)$:
+\begin{equation*}
+    \frac{1}{s - j\omega} \cdot \frac{s + j\omega}{s + j\omega} = \frac{s + j\omega}{s^2 - (j\omega)^2} = \frac{s + j\omega}{s^2 + \omega^2} = \frac{s}{s^2 + \omega^2} + j \frac{\omega}{s^2 + \omega^2}
+\end{equation*}
+Samakan bagian riil dan bagian imajiner pada kedua sisi:
+\begin{align}
+    \mathcal{L}\{\cos(\omega t)\} &= \frac{s}{s^2 + \omega^2}, \quad \text{untuk } \text{Re}\{s\} > 0 \label{eq:lt_cos} \\
+    \mathcal{L}\{\sin(\omega t)\} &= \frac{\omega}{s^2 + \omega^2}, \quad \text{untuk } \text{Re}\{s\} > 0 \label{eq:lt_sin}
+\end{align}
+
+\subsection{Tabel Pasangan Transformasi Laplace Baku}
+
+Tabel~\ref{tab:laplace_pairs} merangkum pasangan transformasi Laplace fundamental yang wajib dikuasai oleh mahasiswa teknik elektro.
+
+\begin{table}[htbp]
+\centering
+\caption{Pasangan Transformasi Laplace Baku Fungsi Elementer.}
+\label{tab:laplace_pairs}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+\textbf{Nama Fungsi} & \textbf{Domain Waktu $f(t)$ ($t \ge 0$)} & \textbf{Domain Frekuensi Kompleks $F(s)$} \\ \midrule
+Impuls Satuan Dirac & $\delta(t)$ & $1$ \\
+Tangga Satuan Heaviside & $u(t)$ atau $1$ & $\frac{1}{s}$ \\
+Ramp Linier & $t$ & $\frac{1}{s^2}$ \\
+Pangkat Polinomial & $t^n$ ($n \in \mathbb{N}$) & $\frac{n!}{s^{n+1}}$ \\
+Eksponensial & $e^{at}$ & $\frac{1}{s - a}$ \\
+Sinus Murni & $\sin(\omega t)$ & $\frac{\omega}{s^2 + \omega^2}$ \\
+Kosinus Murni & $\cos(\omega t)$ & $\frac{s}{s^2 + \omega^2}$ \\
+Sinus Teredam & $e^{-at} \sin(\omega t)$ & $\frac{\omega}{(s + a)^2 + \omega^2}$ \\
+Kosinus Teredam & $e^{-at} \cos(\omega t)$ & $\frac{s + a}{(s + a)^2 + \omega^2}$ \\
+Sinus Hiperbolik & $\sinh(at)$ & $\frac{a}{s^2 - a^2}$ \\
+Kosinus Hiperbolik & $\cosh(at)$ & $\frac{s}{s^2 - a^2}$ \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\section{Fungsi Khusus Rekayasa: Tangga Heaviside \& Impuls Dirac}
+
+\subsection{Fungsi Tangga Satuan Heaviside: Pemodelan Aksi Pensaklaran}
+
+Dalam sirkuit nyata, sumber tegangan sering kali dinyalakan atau dimatikan pada waktu tertentu $t = a$. Peristiwa pensaklaran ini dimodelkan secara matematis oleh \textbf{Fungsi Tangga Heaviside} (\textit{Unit Step Function}):
+\begin{equation}
+    u(t - a) = \begin{cases} 0, & t < a \\ 1, & t \ge a \end{cases}
+    \label{eq:heaviside_def}
+\end{equation}
+Sebuah sinyal pulsa persegi dengan durasi dari $t = a$ hingga $t = b$ dapat dibentuk melalui pengurangan dua fungsi Heaviside:
+\begin{equation}
+    p(t) = u(t - a) - u(t - b)
+    \label{eq:rectangular_pulse}
+\end{equation}
+
+\subsection{Fungsi Impuls Dirac: Pemodelan Surja Petir \& Impuls Transien}
+
+Fenomena transien ekstrem seperti sambaran petir pada saluran transmisi atau lucutan elektrostatik menyuntikkan energi raksasa dalam durasi waktu yang mendekati nol ($\Delta t \to 0$). Fenomena ini dimodelkan oleh \textbf{Fungsi Delta Dirac} (\textit{Dirac Delta Function}):
+\begin{equation}
+    \delta(t - a) = 0 \text{ untuk } t \neq a, \quad \text{dan} \quad \int_{-\infty}^\infty \delta(t - a) dt = 1
+    \label{eq:dirac_def}
+\end{equation}
+Sifat penyaringan (\textit{sifting property}) fungsi Dirac:
+\begin{equation}
+    \int_{-\infty}^\infty f(t) \delta(t - a) dt = f(a)
+    \label{eq:sifting_prop}
+\end{equation}
+Transformasi Laplace dari fungsi impuls Dirac pada $t = 0$ adalah:
+\begin{equation}
+    \mathcal{L}\{\delta(t)\} = \int_{0^-}^\infty \delta(t) e^{-st} dt = e^{-s(0)} = 1
+    \label{eq:lt_dirac}
+\end{equation}
+
+\section{Teorema-Teorema Operasional Fundamental}
 
 \subsection{Sifat Linieritas}
-Transformasi Laplace bersifat linier. Artinya, untuk dua fungsi sembarang $f(t)$ dan $g(t)$ serta konstanta $c_1, c_2$:
+Untuk sembarang konstanta $c_1, c_2 \in \mathbb{C}$:
 \begin{equation}
-\mathcal{L}\{c_1 f(t) + c_2 g(t)\} = c_1 \mathcal{L}\{f(t)\} + c_2 \mathcal{L}\{g(t)\}
+    \mathcal{L}\{c_1 f_1(t) + c_2 f_2(t)\} = c_1 F_1(s) + c_2 F_2(s)
 \end{equation}
-\begin{example}
-Tentukan $\mathcal{L}\{3e^{2t} - 5\cos(4t)\}$.\\
-\textbf{Solusi:}
-$\mathcal{L}\{3e^{2t} - 5\cos(4t)\} = 3\mathcal{L}\{e^{2t}\} - 5\mathcal{L}\{\cos(4t)\} = 3\left(\frac{1}{s-2}\right) - 5\left(\frac{s}{s^2 + 16}\right)$.
+
+\subsection{Teorema Pergeseran Pertama (Translasi pada Sumbu-\texorpdfstring{$s$}{s})}
+
+\begin{theorem}[Pergeseran Sumbu-$s$ / Frekuensi]
+Jika $\mathcal{L}\{f(t)\} = F(s)$, maka perkalian dengan fungsi eksponensial di domain waktu menghasilkan pergeseran pada variabel frekuensi kompleks $s$:
+\begin{equation}
+    \mathcal{L}\{e^{at} f(t)\} = F(s - a)
+    \label{eq:first_shift_theorem}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Berdasarkan definisi integral Laplace:
+\begin{equation*}
+    \mathcal{L}\{e^{at} f(t)\} = \int_0^\infty \left[ e^{at} f(t) \right] e^{-st} dt = \int_0^\infty f(t) e^{-(s - a)t} dt = F(s - a)
+\end{equation*}
+Terbukti secara langsung.
+\end{proof}
+
+\subsection{Teorema Pergeseran Kedua (Translasi pada Sumbu-\texorpdfstring{$t$}{t} / Waktu)}
+
+\begin{theorem}[Pergeseran Sumbu-$t$ / Waktu Tunda]
+Jika $\mathcal{L}\{f(t)\} = F(s)$ dan $a > 0$, maka sinyal yang ditunda sebesar $a$ detik menghasilkan perkalian dengan faktor fase eksponensial pada domain $s$:
+\begin{equation}
+    \mathcal{L}\{f(t - a) u(t - a)\} = e^{-as} F(s)
+    \label{eq:second_shift_theorem}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Gunakan substitusi variabel integrasi $\tau = t - a \implies t = \tau + a$ dan $dt = d\tau$:
+\begin{align*}
+    \mathcal{L}\{f(t - a) u(t - a)\} &= \int_0^\infty f(t - a) u(t - a) e^{-st} dt = \int_a^\infty f(t - a) e^{-st} dt \\
+    &= \int_0^\infty f(\tau) e^{-s(\tau + a)} d\tau = e^{-as} \int_0^\infty f(\tau) e^{-s\tau} d\tau = e^{-as} F(s)
+\end{align*}
+Terbukti secara matematis.
+\end{proof}
+
+\section{Transformasi Turunan \& Integral: Menjinakkan PDB}
+
+Inilah mahakarya operasional dari Transformasi Laplace: mengubah operator kalkulus turunan ($\frac{d}{dt}$) menjadi operasi perkalian aljabar biasa dengan $s$.
+
+\subsection{Teorema Transformasi Turunan Pertama}
+
+\begin{theorem}[Transformasi Turunan Pertama]
+Jika $f(t)$ kontinu dan bereksponensial teratur, maka:
+\begin{equation}
+    \mathcal{L}\{f'(t)\} = s F(s) - f(0^-)
+    \label{eq:diff_theorem_1}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Terapkan teknik integrasi parsial: $u = e^{-st}$ dan $dv = f'(t) dt \implies du = -s e^{-st} dt$, $v = f(t)$:
+\begin{equation*}
+    \int_0^\infty f'(t) e^{-st} dt = \left[ f(t) e^{-st} \right]_0^\infty - \int_0^\infty f(t) (-s e^{-st}) dt = \left( 0 - f(0^-) \right) + s \int_0^\infty f(t) e^{-st} dt
+\end{equation*}
+\begin{equation*}
+    \mathcal{L}\{f'(t)\} = s F(s) - f(0^-)
+\end{equation*}
+Terbukti.
+\end{proof}
+
+\subsection{Teorema Transformasi Turunan Orde Tinggi}
+
+Dengan menerapkan Teorema~\ref{eq:diff_theorem_1} secara bertingkat:
+\begin{align}
+    \mathcal{L}\{f''(t)\} &= s \mathcal{L}\{f'(t)\} - f'(0^-) = s \left[ s F(s) - f(0^-) \right] - f'(0^-) \nonumber \\
+    &= s^2 F(s) - s f(0^-) - f'(0^-) \label{eq:diff_theorem_2}
+\end{align}
+Secara umum, untuk turunan ke-$n$:
+\begin{equation}
+    \mathcal{L}\{f^{(n)}(t)\} = s^n F(s) - s^{n-1} f(0^-) - s^{n-2} f'(0^-) - \dots - f^{(n-1)}(0^-)
+    \label{eq:diff_theorem_n}
+\end{equation}
+
+\subsection{Teorema Transformasi Integral}
+\begin{equation}
+    \mathcal{L}\left\{ \int_0^t f(\tau) d\tau \right\} = \frac{F(s)}{s}
+    \label{eq:integral_theorem}
+\end{equation}
+
+\section{Studi Kasus Industri: Pemodelan Surja Petir Standar IEC 60060-1 / IEEE Std 4}
+
+Dalam sistem proteksi isolasi tegangan tinggi gardu induk PLN, gelombang surja petir standar (\textit{standard lightning impulse voltage}) diuji menggunakan bentuk gelombang eksponensial ganda (\textit{double exponential}):
+\begin{equation}
+    v(t) = V_0 \left( e^{-\frac{t}{\tau_1}} - e^{-\frac{t}{\tau_2}} \right) u(t)
+    \label{eq:lightning_impulse_time}
+\end{equation}
+Standar internasional \textbf{IEC 60060-1} menetapkan parameter waktu muka (\textit{front time}) $T_1 = 1{,}2\,\mu\text{s}$ dan waktu paruh ekor (\textit{tail time}) $T_2 = 50\,\mu\text{s}$ (dikenal sebagai impuls $1{,}2/50\,\mu\text{s}$).
+
+Dengan menerapkan sifat linieritas dan transformasi eksponensial baku~\eqref{eq:lt_exp}, bentuk gelombang petir ini ditransformasikan ke domain $s$ secara langsung:
+\begin{equation}
+    V(s) = \mathcal{L}\{v(t)\} = V_0 \left( \frac{1}{s + \frac{1}{\tau_1}} - \frac{1}{s + \frac{1}{\tau_2}} \right) = V_0 \frac{\left(\frac{1}{\tau_2} - \frac{1}{\tau_1}\right)}{\left(s + \frac{1}{\tau_1}\right)\left(s + \frac{1}{\tau_2}\right)}
+    \label{eq:lightning_impulse_s}
+\end{equation}
+Persamaan aljabar~\eqref{eq:lightning_impulse_s} menunjukkan bahwa surja petir memiliki dua kutub riil pada sumbu negatif bidang-$s$: $p_1 = -1/\tau_1$ dan $p_2 = -1/\tau_2$. Persamaan ini mempermudah perhitungan respon tegangan tembus pada transformator daya tanpa harus menyelesaikan integral konvolusi waktu yang melelahkan.
+
+\section{Contoh Soal Terhitung Numerik Langkah demi Langkah}
+
+\begin{example}[\textbf{Transformasi Fungsi Gelombang Pulsa Pensaklaran Tergeser}]
+Sebuah generator surja menghasilkan pulsa tegangan persegi yang aktif pada $t = 2\text{ ms}$ dan mati pada $t = 6\text{ ms}$ dengan amplitudo $V_0 = 500\text{ Volt}$.
+\begin{enumerate}[label=(\alph*)]
+    \item Nyatakan fungsi tegangan $v(t)$ dalam suku-suku fungsi tangga Heaviside $u(t)$.
+    \item Tentukan transformasi Laplace $V(s)$ dari pulsa tegangan tersebut.
+\end{enumerate}
+
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item \textbf{Representasi fungsi dalam fungsi tangga Heaviside:}
+    Waktu aktif adalah $a = 2 \times 10^{-3}\text{ s}$ dan waktu padam $b = 6 \times 10^{-3}\text{ s}$:
+    \begin{equation*}
+        v(t) = 500 \left[ u(t - 0{,}002) - u(t - 0{,}006) \right]\text{ [Volt]}
+    \end{equation*}
+
+    \item \textbf{Transformasi Laplace dengan Teorema Translasi Waktu:} \\
+    Mengingat bahwa $\mathcal{L}\{u(t)\} = \frac{1}{s}$, kita terapkan teorema pergeseran kedua~\eqref{eq:second_shift_theorem}:
+    \begin{equation*}
+        \mathcal{L}\{u(t - a)\} = \frac{e^{-as}}{s}
+    \end{equation*}
+    Maka:
+    \begin{align*}
+        V(s) &= 500 \left( \frac{e^{-0{,}002 s}}{s} - \frac{e^{-0{,}006 s}}{s} \right) \\
+             &= \mathbf{\frac{500}{s} \left( e^{-0{,}002 s} - e^{-0{,}006 s} \right)} \quad \qed
+    \end{align*}
+\end{enumerate}
 \end{example}
 
-\subsection{Teorema Pergeseran (Translasi) Pertama}
-Teorema ini berguna ketika mencari transformasi Laplace dari fungsi yang dikalikan eksponensial.
-\begin{definition}[Teorema Pergeseran pada Sumbu-$s$]
-Jika $\mathcal{L}\{f(t)\} = F(s)$ ada untuk $s>c$, maka untuk konstanta riil $a$:
-\begin{equation}
-\mathcal{L}\{e^{at} f(t)\} = F(s-a)
-\end{equation}
-\end{definition}
+\begin{example}[\textbf{Penerapan Teorema Pergeseran Pertama pada Sinyal Teredam}]
+Tentukan transformasi Laplace dari fungsi gelombang eksitasi transien:
+\begin{equation*}
+    f(t) = t^2 e^{-3t} + e^{-2t} \cos(4t)
+\end{equation*}
 
-\begin{example}
-Tentukan $\mathcal{L}\{e^{3t} t^2\}$.\\
-\textbf{Solusi:}
-Kita tahu $\mathcal{L}\{t^2\} = \frac{2}{s^3} = F(s)$.
-Menurut Teorema Pergeseran, $\mathcal{L}\{e^{3t} t^2\} = F(s-3) = \frac{2}{(s-3)^3}$.
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Evaluasi suku pertama $f_1(t) = t^2 e^{-3t}$:}
+    Fungsi dasar adalah $g_1(t) = t^2$, dengan transformasi $\mathcal{L}\{t^2\} = \frac{2!}{s^3} = \frac{2}{s^3}$.
+    Berdasarkan Teorema Pergeseran Pertama dengan $a = -3$, gantikan setiap variabel $s$ dengan $(s - (-3)) = (s + 3)$:
+    \begin{equation*}
+        \mathcal{L}\{t^2 e^{-3t}\} = \frac{2}{(s + 3)^3}
+    \end{equation*}
+
+    \item \textbf{Evaluasi suku kedua $f_2(t) = e^{-2t} \cos(4t)$:}
+    Fungsi dasar adalah $g_2(t) = \cos(4t)$, dengan transformasi $\mathcal{L}\{\cos(4t)\} = \frac{s}{s^2 + 4^2} = \frac{s}{s^2 + 16}$.
+    Terapkan pergeseran frekuensi dengan $a = -2 \implies s \to (s + 2)$:
+    \begin{equation*}
+        \mathcal{L}\{e^{-2t} \cos(4t)\} = \frac{s + 2}{(s + 2)^2 + 16} = \frac{s + 2}{s^2 + 4s + 4 + 16} = \frac{s + 2}{s^2 + 4s + 20}
+    \end{equation*}
+
+    \item \textbf{Kombinasi Linier Hasil Akhir:}
+    \begin{equation*}
+        \mathbf{F(s) = \frac{2}{(s + 3)^3} + \frac{s + 2}{s^2 + 4s + 20}} \quad \qed
+    \end{equation*}
+\end{enumerate}
 \end{example}
 
-Teorema Pergeseran Pertama merepresentasikan perkalian domain waktu oleh $e^{at}$ menyebabkan pergeseran $a$ unit pada variabel $s$ di domain frekuensi (Laplace). Ini banyak dijumpai dalam bentuk redaman (damping) pada sistem dinamis elektro dan mekanik (misalnya faktor redaman $e^{-\alpha t}$).
+\begin{example}[\textbf{Konversi Masalah Nilai Awal PDB Orde 2 ke Domain \texorpdfstring{$s$}{s}}]
+Tinjau Masalah Nilai Awal (IVP) sirkuit RLC tereksitasi sumber tangga:
+\begin{equation*}
+    y''(t) + 4y'(t) + 13y(t) = 26 u(t), \quad \text{dengan kondisi awal } y(0^-) = 2, \quad y'(0^-) = -1
+\end{equation*}
+Transformasikan seluruh persamaan diferensial ke dalam persamaan aljabar domain $s$ dan tentukan ekspresi rasional tunggal $Y(s)$.
 
-\section{Ringkasan}
-Transformasi Laplace memetakan fungsi-fungsi waktu $f(t)$ menjadi fungsi aljabar $F(s)$. Transformasi ini membantu dalam mengubah masalah PDB yang rumit menjadi manipulasi aljabar pecahan. Kita telah mempelajari definisi dasar dari transformasi Laplace, tabel standar, serta sifat-sifat utamanya: linieritas dan Teorema Pergeseran.
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Terapkan Transformasi Laplace pada setiap suku PDB:}
+    \begin{equation*}
+        \mathcal{L}\{y''(t)\} + 4\mathcal{L}\{y'(t)\} + 13\mathcal{L}\{y(t)\} = 26\mathcal{L}\{u(t)\}
+    \end{equation*}
 
-\section{Referensi}
-\begin{itemize}
-    \item Zill, D. G. (2018). \textit{A First Course in Differential Equations with Modeling Applications}. Cengage Learning.
-    \item Lathi, B. P. (2005). \textit{Linear Systems and Signals}. Oxford University Press.
+    \item \textbf{Substitusikan teorema turunan dengan kondisi awal:}
+    \begin{align*}
+        \mathcal{L}\{y''(t)\} &= s^2 Y(s) - s y(0^-) - y'(0^-) = s^2 Y(s) - 2s - (-1) = s^2 Y(s) - 2s + 1 \\
+        \mathcal{L}\{y'(t)\}  &= s Y(s) - y(0^-) = s Y(s) - 2 \\
+        \mathcal{L}\{y(t)\}   &= Y(s) \\
+        \mathcal{L}\{26 u(t)\} &= \frac{26}{s}
+    \end{align*}
+
+    \item \textbf{Gabungkan ke dalam satu persamaan aljabar:}
+    \begin{equation*}
+        \left[ s^2 Y(s) - 2s + 1 \right] + 4\left[ s Y(s) - 2 \right] + 13 Y(s) = \frac{26}{s}
+    \end{equation*}
+
+    \item \textbf{Kelompokkan suku-suku $Y(s)$ dan pindahkan konstanta kondisi awal ke ruas kanan:}
+    \begin{align*}
+        \left( s^2 + 4s + 13 \right) Y(s) - 2s + 1 - 8 &= \frac{26}{s} \\
+        \left( s^2 + 4s + 13 \right) Y(s) - 2s - 7 &= \frac{26}{s} \\
+        \left( s^2 + 4s + 13 \right) Y(s) &= 2s + 7 + \frac{26}{s}
+    \end{align*}
+
+    \item \textbf{Samakan penyebut di ruas kanan:}
+    \begin{equation*}
+        2s + 7 + \frac{26}{s} = \frac{2s^2 + 7s + 26}{s}
+    \end{equation*}
+
+    \item \textbf{Ekstraksi Solusi Domain $s$:}
+    \begin{equation*}
+        \mathbf{Y(s) = \frac{2s^2 + 7s + 26}{s \left( s^2 + 4s + 13 \right)}} \quad \qed
+    \end{equation*}
+    \textit{Catatan Pedagogis:} Perhatikan betapa luar biasanya metode ini! Seluruh masalah diferensial orde dua lengkap dengan syarat awal berhasil dikonversi menjadi satu pecahan rasional aljabar murni tanpa perlu mencari fungsi komplemeter maupun menebak solusi partikular secara terpisah.
+\end{enumerate}
+\end{example}
+
+\section{Praktikum Komputasi Numerik Terbuka Berbasis Julia}
+
+\subsection{Skrip Komputasi: Pemetaan Bidang-\texorpdfstring{$s$}{s} \& Respon Impuls}
+
+Listing~\ref{lst:julia_laplace} menyajikan program Julia lengkap untuk menghitung lokasi kutub-nol (\textit{pole-zero map}) pada bidang kompleks $s$ dan memvisualisasikan respon impuls transien sistem.
+
+\begin{lstlisting}[style=juliastyle, caption={Analisis Bidang Kompleks s dan Respon Waktu Menggunakan Julia.}, label={lst:julia_laplace}]
+# =================================================================
+# PRAKTIKUM PERSAMAAN DIFERENSIAL - MINGGU 6
+# Analisis Bidang-s (Pole-Zero) & Respon Transien Laplace
+# Jurusan Teknik Elektro, Universitas Bengkulu
+# =================================================================
+
+using DifferentialEquations
+using Plots
+
+# -----------------------------------------------------------------
+# Analisis Sistem Orde 2: Y(s) = (2s^2 + 7s + 26) / [s*(s^2 + 4s + 13)]
+# Polinomial karakteristik: s^2 + 4s + 13 = 0
+# Akar-akar kutub kompleks: s = -2 +- 3j, dan s = 0 (sumber DC)
+# -----------------------------------------------------------------
+poles = [-2.0 + 3.0im, -2.0 - 3.0im, 0.0 + 0.0im]
+zeros_sys = [-7.0/4.0 + sqrt(complex(49 - 4*2*26))/(2*2), 
+             -7.0/4.0 - sqrt(complex(49 - 4*2*26))/(2*2)]
+
+println("=== ANALISIS BIDANG KOMPLEKS s ===")
+println("Kutub Sistem (Poles) : ", poles)
+println("Nol Sistem (Zeros)   : ", zeros_sys)
+
+# -----------------------------------------------------------------
+# Simulasi Domain Waktu menggunakan ODEProblem:
+# dy1/dt = y2
+# dy2/dt = 26 - 4*y2 - 13*y1
+# Syarat awal: y1(0) = 2, y2(0) = -1
+# -----------------------------------------------------------------
+function ivp_system!(dy, y, p, t)
+    dy[1] = y[2]
+    dy[2] = 26.0 - 4.0 * y[2] - 13.0 * y[1]
+end
+
+y0 = [2.0, -1.0]
+tspan = (0.0, 4.0)
+
+prob = ODEProblem(ivp_system!, y0, tspan)
+sol = solve(prob, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+t_eval = range(0.0, 4.0, length=300)
+y_num = [sol(t)[1] for t in t_eval]
+
+# -----------------------------------------------------------------
+# Visualisasi Grafik
+# -----------------------------------------------------------------
+# Plot 1: Bidang Kompleks s (Pole-Zero Map)
+p1 = scatter(real.(poles), imag.(poles), markershape=:xcross, markersize=8,
+             markercolor=:red, label="Kutub (Poles)", legend=:topright)
+scatter!(p1, real.(zeros_sys), imag.(zeros_sys), markershape=:circle,
+         markersize=7, markercolor=:blue, label="Nol (Zeros)")
+vline!(p1, [0.0], ls=:dash, color=:black, label=false)
+hline!(p1, [0.0], ls=:dash, color=:black, label=false)
+xlabel!(p1, "Bagian Riil sigma [Np/s]")
+ylabel!(p1, "Bagian Imajiner omega [rad/s]")
+title!(p1, "Peta Kutub-Nol Bidang Kompleks s")
+
+# Plot 2: Respon Waktu Lengkap y(t)
+p2 = plot(t_eval, y_num, lw=2.5, color=:darkblue, label="Respon Lengkap y(t)")
+hline!(p2, [2.0], ls=:dash, color=:green, label="Nilai Tunak (26/13 = 2)")
+xlabel!(p2, "Waktu t [detik]")
+ylabel!(p2, "Variabel Sistem y(t)")
+title!(p2, "Respon Transien Menuju Kondisi Tunak")
+
+plot(p1, p2, layout=(1,2), size=(900, 400))
+savefig("analisis_laplace_bidang_s.png")
+println("Simulasi selesai. Gambar disimpan ke analisis_laplace_bidang_s.png")
+\end{lstlisting}
+
+\section{Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{[C1 - Mengingat]} Tuliskan definisi formal integral satu sisi Transformasi Laplace serta sebutkan dua syarat kecukupan agar suatu fungsi memiliki transformasi Laplace!
+    
+    \item \textbf{[C2 - Memahami]} Jelaskan secara mendalam mengapa perkalian dengan fungsi eksponensial $e^{at}$ pada domain waktu menyebabkan pergeseran $s \to (s - a)$ pada domain frekuensi kompleks $s$!
+    
+    \item \textbf{[C3 - Menerapkan]} Tentukan transformasi Laplace dari fungsi waktu berikut:
+    \begin{equation*}
+        f(t) = 4 e^{2t} - 3 \sin(5t) + 2 t^3 e^{-t}
+    \end{equation*}
+    
+    \item \textbf{[C4 - Menganalisis]} Suatu gelombang tegangan segitiga periodik dipotong sehingga hanya aktif pada selang $1 \le t < 3$ detik dengan fungsi $v(t) = 10(t - 1) [u(t - 1) - u(t - 3)]$. Analisislah ekspresi transformasi Laplace $V(s)$ menggunakan Teorema Pergeseran Kedua!
+    
+    \item \textbf{[C5 - Mengevaluasi]} Pada sistem tenaga tegangan tinggi, transformator instrumen potensial (PT) sering menerima surja petir impuls $1{,}2/50\,\mu\text{s}$. Berikan evaluasi analitis mengapa lokasi kutub $s = -1/\tau_2$ yang sangat dekat dengan sumbu imajiner menyebabkan tegangan ekor surja petir meluruh jauh lebih lambat daripada waktu mukanya!
+    
+    \item \textbf{[C6 - Merancang]} Rancanglah sebuah skrip fungsi dalam bahasa \textbf{Julia} yang menerima koefisien diferensial PDB orde dua $(a, b, c)$ serta syarat awal $(y_0, y_0')$ dan menghasilkan secara simbolik matriks polinomial pembilang $P(s)$ dan penyebut $Q(s)$ dari solusi rasional $Y(s) = \frac{P(s)}{Q(s)}$.
+\end{enumerate}
+
+\section{Rangkuman \& Glosarium Istilah Teknis}
+
+\subsection{Rangkuman Inti}
+\begin{enumerate}[leftmargin=*]
+    \item Transformasi Laplace memetakan fungsi waktu nyata $t \ge 0$ ke variabel frekuensi kompleks $s = \sigma + j\omega$.
+    \item Transformasi ini secara otomatis mengintegrasikan kondisi awal Masalah Nilai Awal (IVP) ke dalam operasi aljabar linier melalui rumus turunan: $\mathcal{L}\{y'\} = s Y(s) - y(0^-)$ dan $\mathcal{L}\{y''\} = s^2 Y(s) - s y(0^-) - y'(0^-)$.
+    \item Aksi pensaklaran dan eksitasi pulsa dimodelkan secara modular melalui fungsi tangga Heaviside $u(t - a)$ dan Teorema Pergeseran Kedua: $\mathcal{L}\{f(t-a)u(t-a)\} = e^{-as} F(s)$.
+    \item Sinyal impuls kilat dan sambaran surja dimodelkan oleh fungsi delta Dirac $\delta(t)$ dengan nilai spektrum datar $\mathcal{L}\{\delta(t)\} = 1$.
+    \item Lokasi kutub-kutub pada bidang kompleks $s$ menentukan kestabilan alami dan ragam redaman sistem fisik.
+\end{enumerate}
+
+\subsection{Glosarium Istilah Teknis}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Frekuensi Kompleks ($s$):} Variabel independen domain Laplace $s = \sigma + j\omega$ yang memadukan faktor atenuasi redaman $\sigma$ dan frekuensi sudut osilasi $\omega$.
+    \item \textbf{Fungsi Tangga Heaviside ($u(t)$):} Fungsi diskontinu bernilai 0 untuk $t < 0$ dan bernilai 1 untuk $t \ge 0$, digunakan untuk memodelkan pensaklaran rangkaian listrik.
+    \item \textbf{Fungsi Delta Dirac ($\delta(t)$):} Fungsi distribusi singular yang bernilai nol di semua titik kecuali di titik nol di mana nilainya tak berhingga dengan luas integral bernilai satu.
+    \item \textbf{Wilayah Konvergensi (ROC):} Himpunan titik-titik pada bidang kompleks $s$ di mana integral Laplace konvergen menuju nilai berhingga.
+    \item \textbf{Teorema Pergeseran Pertama:} Aturan translasi frekuensi yang menyatakan bahwa modulasi eksponensial $e^{at}$ pada domain waktu menggeser fungsi domain frekuensi sebesar $s \to s - a$.
+    \item \textbf{Teorema Pergeseran Kedua:} Aturan translasi waktu yang menyatakan bahwa penundaan waktu $t \to t - a$ menghasilkan faktor pengali $e^{-as}$ pada domain Laplace.
 \end{itemize}
+
+\section{Referensi Standar Industri \& Buku Teks Acuan}
+\begin{enumerate}[leftmargin=*]
+    \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics} (10th ed.). Hoboken, NJ: John Wiley \& Sons.
+    \item Alexander, C. K., \& Sadiku, M. N. O. (2021). \textit{Fundamentals of Electric Circuits} (7th ed.). New York: McGraw-Hill Education.
+    \item Zill, D. G. (2018). \textit{A First Course in Differential Equations with Modeling Applications} (11th ed.). Boston: Cengage Learning.
+    \item IEEE Power and Energy Society. (2019). \textit{IEEE Std 4-2013: IEEE Standard for High-Voltage Testing Techniques}. New York: IEEE.
+    \item International Electrotechnical Commission. (2010). \textit{IEC 60060-1: High-voltage test techniques - Part 1: General definitions and test requirements}. Geneva: IEC.
+    \item Rackauckas, C., \& Nie, Q. (2017). DifferentialEquations.jl -- A Performant and Feature-Rich Ecosystem for Solving Differential Equations in Julia. \textit{Journal of Open Research Software}, 5(1), 15.
+\end{enumerate}
 
 \end{document}

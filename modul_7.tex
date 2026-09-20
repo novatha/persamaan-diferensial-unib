@@ -1,103 +1,841 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 7: Invers Laplace \& Analisis Rangkaian Domain $s$}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
+\newtheorem{theorem}{Teorema}[section]
 
-\title{Catatan Kuliah Persamaan Diferensial\\Minggu 7: Invers Laplace \& Solusi PDB dengan Laplace}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 7}\\[0.3cm]
+\textbf{\LARGE INVERS TRANSFORMASI LAPLACE, EKSPANSI PECAHAN PARSIAL, ANALISIS RANGKAIAN DOMAIN $s$, DAN TEOREMA NILAI AWAL/AKHIR}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
 
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 4)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 7 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Menyatakan definisi formal Invers Transformasi Laplace melalui integral kontur Bromwich, sifat kelinieran inversi, serta bentuk-bentuk kanonik pecahan parsial untuk kutub real sederhana, berulang, dan kompleks konjugat.
+    \item \textbf{C2 (Memahami):} Menjelaskan konsep impedansi dan admitansi operasional di domain frekuensi kompleks $s$, serta makna fisis pembentukan model sumber semu (\textit{fictitious initial-condition sources}) $L i(0^-)$ dan $v_C(0^-)/s$ yang merepresentasikan memori energi tersimpan pada elemen induktor dan kapasitor.
+    \item \textbf{C3 (Menerapkan):} Menghitung dekomposisi pecahan parsial fungsi aljabar rasional $F(s)$ menggunakan metode penutupan Heaviside (\textit{cover-up method}) dan derivasi bertingkat untuk mengembalikan fungsi ke domain waktu fisis $f(t)$.
+    \item \textbf{C4 (Menganalisis):} Menganalisis respon transien rangkaian dinamis linier orde tinggi secara simultan di domain $s$ menggunakan Hukum Kirchoff (KCL/KVL), serta memisahkan solusi total menjadi Respon Masukan-Nol (\textit{Zero-Input Response} / ZIR) dan Respon Keadaan-Nol (\textit{Zero-State Response} / ZSR).
+    \item \textbf{C5 (Mengevaluasi):} Mengevaluasi perilaku transien sesaat ($t \to 0^+$) dan keadaan tunak (\textit{steady-state}, $t \to \infty$) tanpa memerlukan inversi penuh menggunakan Teorema Nilai Awal (\textit{Initial Value Theorem} / IVT) dan Teorema Nilai Akhir (\textit{Final Value Theorem} / FVT) pada fenomena tegangan pemulihan transien (\textit{Transient Recovery Voltage} / TRV) pemutus tenaga tegangan tinggi (IEEE C37.011 / IEC 62271-100).
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program komputasi ilmiah terbuka berbasis \textbf{Julia} (\texttt{DifferentialEquations.jl} \& \texttt{Plots.jl}) untuk mensimulasikan dinamika transien sistem RLC orde dua berenergi awal dan memvalidasi kecocokan solusi analitis invers Laplace terhadap metode numerik adaptif.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
 
 \newpage
 
-\section{Pendahuluan}
-Setelah memahami bagaimana mengubah domain waktu menjadi frekuensi kompleks (domain $s$) dengan Transformasi Laplace, pada minggu ke-7 ini kita akan belajar bagaimana mengembalikannya (invers Transformasi Laplace). Dengan penguasaan Invers Laplace dan Transformasi Turunan, kita dapat dengan mudah menyelesaikan Persamaan Diferensial Biasa (PDB) serta mendefinisikan masalah nilai awal tanpa harus mencari solusi homogen dan partikular secara terpisah.
+\section{Peta Konsep \& Posisi Modul dalam Kurikulum}
 
-\section{Materi Utama}
-\subsection{Invers Transformasi Laplace}
-Jika $F(s)$ melambangkan transformasi Laplace dari $f(t)$, yaitu $\mathcal{L}\{f(t)\} = F(s)$, maka $f(t)$ disebut transformasi invers Laplace dari $F(s)$ dan dituliskan:
-\begin{equation}
-f(t) = \mathcal{L}^{-1}\{F(s)\}
-\end{equation}
+Modul Minggu 7 merupakan puncak kulminasi dari Paruh Pertama kurikulum Persamaan Diferensial (PDB dan Rangkaian Listrik). Setelah pada Minggu 6 kita mempelajari bagaimana mentransformasikan sinyal waktu dan operator turunan ke dalam ranah aljabar frekuensi kompleks $s$, kini kita menutup siklus operasional tersebut dengan mempelajari teknik rekonstruksi sinyal kembali ke ranah waktu fisis: \textbf{Invers Transformasi Laplace} ($\mathcal{L}^{-1}$).
 
-Sama seperti transformasi Laplace, transformasi Laplace Invers juga memiliki sifat linieritas:
-$$ \mathcal{L}^{-1}\{c_1 F(s) + c_2 G(s)\} = c_1 \mathcal{L}^{-1}\{F(s)\} + c_2 \mathcal{L}^{-1}\{G(s)\} $$
+Melalui penguasaan Invers Laplace dan konsep pemodelan rangkaian ekivalen domain $s$, mahasiswa Teknik Elektro tidak perlu lagi menurunkan persamaan diferensial orde tinggi di domain waktu menggunakan kalkulus yang melelahkan. Seluruh hukum dasar rangkaian (Hukum Ohm, KVL, KCL, Teorema Thevenin/Norton) dapat langsung diaplikasikan di domain $s$ layaknya menganalisis rangkaian arus searah (DC), di mana syarat awal energi terakomodasi secara otomatis sebagai sumber tegangan atau arus semu.
 
-Seringkali $F(s)$ tidak berada dalam bentuk di tabel secara langsung. Teknik Ekspansi Pecahan Parsial (Partial Fraction Expansion) digunakan untuk memecah $F(s)$ ke bentuk pecahan-pecahan sederhana.
+Posisi strategis Modul Minggu 7 disajikan pada diagram kurikulum Gambar~\ref{fig:peta_jalan_pd_w7}.
 
-\begin{example}
-Tentukan $\mathcal{L}^{-1} \left\{ \frac{s+1}{s^2-4s+3} \right\}$.
-\end{example}
-\textbf{Solusi:}
-Faktorkan penyebut: $s^2-4s+3 = (s-1)(s-3)$. Pecahan parsial:
-$$ \frac{s+1}{(s-1)(s-3)} = \frac{A}{s-1} + \frac{B}{s-3} $$
-$s+1 = A(s-3) + B(s-1)$
-Untuk $s=1 \implies 2 = -2A \implies A = -1$
-Untuk $s=3 \implies 4 = 2B \implies B = 2$
-Maka: $\mathcal{L}^{-1} \left\{ \frac{-1}{s-1} + \frac{2}{s-3} \right\} = -e^{t} + 2e^{3t}$.
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.45cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    doneblock/.style={rectangle, draw=green!60!black, fill=green!10, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[doneblock] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[doneblock, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[doneblock, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[doneblock, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[doneblock, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[doneblock, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[highlight, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Analisis Rangkaian Domain $s$};
+    \node[midblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[block, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[block, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[block, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[block, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[block, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[block, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan dengan penekanan pada Modul Minggu 7 sebagai penutup Paruh 1.}
+\label{fig:peta_jalan_pd_w7}
+\end{figure}
 
-\subsection{Transformasi Laplace dari Turunan}
-Salah satu kemampuan luar biasa Laplace Transform adalah mereduksi operasi diferensial kalkulus menjadi perkalian aljabar di domain $s$.
-\begin{itemize}
-    \item Transformasi Laplace turunan pertama: $\mathcal{L}\{y'(t)\} = sY(s) - y(0)$
-    \item Transformasi Laplace turunan kedua: $\mathcal{L}\{y''(t)\} = s^2Y(s) - s y(0) - y'(0)$
-    \item Secara umum: $\mathcal{L}\{y^{(n)}(t)\} = s^n Y(s) - s^{n-1}y(0) - s^{n-2}y'(0) - \dots - y^{(n-1)}(0)$
-\end{itemize}
-dimana $Y(s) = \mathcal{L}\{y(t)\}$. Syarat nilai awal secara eksplisit diikutsertakan di dalam persamaan.
+\section{Pendahuluan \& Filosofi Rekayasa: Dari Ranah Aljabar Kembali ke Ranah Waktu}
 
-\subsection{Menyelesaikan PDB Menggunakan Laplace}
-Prosedur umum:
-\begin{enumerate}
-    \item Terapkan Transformasi Laplace di kedua ruas PDB (serta aplikasikan syarat nilai awal).
-    \item Pecahkan persamaan aljabar yang terbentuk untuk mencari $Y(s)$.
-    \item Terapkan Transformasi Laplace Invers $\mathcal{L}^{-1}$ pada $Y(s)$ untuk mendapatkan $y(t)$.
+Pada proses pemecahan masalah keteknikan menggunakan kalkulus operasional, kita menempuh rute tiga langkah yang sangat sistematis:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Pemetaan Maju (\textit{Forward Transform}):} Masalah fisik nyata yang dinyatakan dalam bentuk persamaan diferensial integro-diferensial domain waktu dipetakan ke domain aljabar $s$ melalui Transformasi Laplace.
+    \item \textbf{Penyelesaian Aljabar (\textit{Algebraic Manipulation}):} Di domain $s$, operasi turunan berubah menjadi perkalian $s$ dan operasi integral berubah menjadi pembagian $s$. Kita menyelesaikan sistem persamaan aljabar linier secara simultan untuk memperoleh variabel respon target, misalnya $V(s)$ atau $I(s)$.
+    \item \textbf{Rekonstruksi Balik (\textit{Inverse Transform}):} Fungsi aljabar rasional $F(s)$ yang diperoleh harus dikembalikan ke dunia nyata menjadi fungsi waktu $f(t)$ agar rekayasawan dapat membaca bentuk gelombang tegangan, lonjakan arus transien, atau kestabilan sistem.
 \end{enumerate}
 
-\begin{example}
-Selesaikan PDB nilai awal berikut: $y'' - y' - 2y = 0$; dengan nilai awal $y(0)=1, y'(0)=0$.
-\end{example}
-\textbf{Solusi:}
-1. Ambil Laplace kedua sisi:
-$$ [s^2Y(s) - sy(0) - y'(0)] - [sY(s) - y(0)] - 2Y(s) = 0 $$
-$$ [s^2Y(s) - s(1) - 0] - [sY(s) - 1] - 2Y(s) = 0 $$
-2. Kumpulkan $Y(s)$:
-$$ (s^2 - s - 2)Y(s) - s + 1 = 0 \implies (s^2 - s - 2)Y(s) = s - 1 $$
-$$ Y(s) = \frac{s-1}{s^2-s-2} = \frac{s-1}{(s-2)(s+1)} $$
-Lakukan pecahan parsial: $\frac{s-1}{(s-2)(s+1)} = \frac{A}{s-2} + \frac{B}{s+1}$.
-Didapat $A=1/3, B=2/3$. Jadi $Y(s) = \frac{1/3}{s-2} + \frac{2/3}{s+1}$.
-3. Invers Laplace:
-$$ y(t) = \mathcal{L}^{-1} \left\{ \frac{1}{3} \frac{1}{s-2} + \frac{2}{3} \frac{1}{s+1} \right\} = \frac{1}{3}e^{2t} + \frac{2}{3}e^{-t} $$
+Tantangan utama pada tahap ketiga adalah bahwa hasil manipulasi aljabar sering kali berupa rasio polinomial berderajat tinggi:
+\begin{equation}
+    F(s) = \frac{N(s)}{D(s)} = \frac{b_m s^m + b_{m-1}s^{m-1} + \dots + b_1 s + b_0}{a_n s^n + a_{n-1}s^{n-1} + \dots + a_1 s + a_0}
+    \label{eq:rational_transfer}
+\end{equation}
+Bentuk rasional semacam ini umumnya tidak tertera langsung dalam tabel baku pasangan transformasi Laplace. Oleh karena itu, kita memerlukan jembatan aljabar yang memecah rasio kompleks tersebut menjadi penjumlahan suku-suku pecahan sederhana yang masing-masing berkorespondensi langsung dengan fungsi waktu elementer (eksponensial, sinus, kosinus, atau ramp). Teknik matematis inilah yang disebut \textbf{Ekspansi Pecahan Parsial} (\textit{Partial Fraction Expansion} / PFE).
 
-\section{Ringkasan}
-Metode Transformasi Laplace untuk PDB menggabungkan pemecahan PDB sekaligus syarat awalnya tanpa tahap mencari solusi umum. Proses utamanya mencakup transformasi domain waktu (PDB) ke ranah s (Aljabar), penyederhanaan aljabar menggunakan teknik Ekspansi Pecahan Parsial, dan diakhiri dengan Transformasi Laplace Invers. Metode ini menjadi senjata andalan mahasiswa kelistrikan dalam analisis sistem redaman sirkuit atau sistem kontrol dan respon transien.
+\section{Definisi Formal Invers Laplace \& Teorema Integral Bromwich}
 
-\section{Referensi}
-\begin{itemize}
-    \item Zill, D. G. (2018). \textit{A First Course in Differential Equations with Modeling Applications}. Cengage Learning.
-    \item Ogata, K. (2010). \textit{Modern Control Engineering}. Prentice Hall.
+\subsection{Definisi Formal Integral Kontur Bromwich}
+
+\begin{definition}[Invers Transformasi Laplace]
+Secara analitis murni, jika $F(s) = \mathcal{L}\{f(t)\}$ memiliki wilayah konvergensi (\textit{Region of Convergence}) pada setengah bidang $\text{Re}\{s\} > \gamma_0$, maka invers transformasi Laplace dari $F(s)$ dinotasikan dengan $\mathcal{L}^{-1}\{F(s)\} = f(t)$, dan ditentukan oleh \textbf{Integral Kontur Kompleks Bromwich} (\textit{Bromwich Inversion Integral}):
+\begin{equation}
+    f(t) = \mathcal{L}^{-1}\{F(s)\} = \frac{1}{2\pi j} \int_{\gamma - j\infty}^{\gamma + j\infty} F(s) e^{st} \, ds, \quad \text{untuk } t > 0
+    \label{eq:bromwich_integral}
+\end{equation}
+di mana garis integrasi vertikal $s = \gamma$ terletak di sebelah kanan seluruh titik singularitas (\textit{poles}) dari fungsi $F(s)$ di bidang kompleks $s$ ($\gamma > \gamma_0$).
+\end{definition}
+
+Berdasarkan Teorema Residu Cauchy dari analisis variabel kompleks, integral Bromwich~\eqref{eq:bromwich_integral} setara dengan penjumlahan residu pada semua kutub (\textit{poles}) dari fungsi $F(s)e^{st}$:
+\begin{equation}
+    f(t) = \sum \text{Residue} \left\{ F(s) e^{st} \right\}_{\text{pada seluruh kutub } p_k}
+    \label{eq:cauchy_residue}
+\end{equation}
+
+Meskipun integral kontur dan kalkulus residu memberikan landasan matematis yang sangat kuat, dalam praktik rekayasa elektro kita menggunakan pendekatan operasional yang jauh lebih praktis dan elegan: \textbf{Tabel Transformasi Baku yang dikombinasikan dengan Ekspansi Pecahan Parsial}.
+
+\subsection{Sifat Kelinieran Invers Transformasi Laplace}
+
+\begin{theorem}[Kelinieran Invers Laplace]
+Sama seperti transformasi maju, operator invers transformasi Laplace $\mathcal{L}^{-1}$ adalah operator linier. Jika $F_1(s)$ dan $F_2(s)$ memiliki invers berturut-turut $f_1(t)$ dan $f_2(t)$, serta $c_1, c_2$ adalah konstanta sebarang, maka:
+\begin{equation}
+    \mathcal{L}^{-1}\left\{ c_1 F_1(s) + c_2 F_2(s) \right\} = c_1 \mathcal{L}^{-1}\{F_1(s)\} + c_2 \mathcal{L}^{-1}\{F_2(s)\} = c_1 f_1(t) + c_2 f_2(t)
+    \label{eq:inverse_linearity}
+\end{equation}
+\end{theorem}
+
+Sifat inilah yang menjamin bahwa jika kita dapat memecah fungsi rasional rumit $F(s)$ menjadi penjumlahan pecahan-pecahan sederhana, kita cukup mencari invers dari tiap pecahan sederhana tersebut secara terpisah lalu menjumlahkannya.
+
+\section{Metode Ekspansi Pecahan Parsial (Partial Fraction Expansion)}
+
+Diberikan fungsi rasional sejati (\textit{strictly proper rational function}) $F(s) = \frac{N(s)}{D(s)}$ di mana derajat pembilang lebih kecil dari derajat penyebut ($\text{deg}(N) < \text{deg}(D) = n$). Jika pembilang memiliki derajat lebih besar atau sama ($\text{deg}(N) \ge \text{deg}(D)$), pembagian polinomial panjang harus dilakukan terlebih dahulu hingga menghasilkan suku polinomial murni ditambah fungsi rasional sejati.
+
+Akar-akar dari penyebut $D(s) = 0$ disebut sebagai \textbf{kutub-kutub} (\textit{poles}) dari $F(s)$. Terdapat tiga kasus mendasar bentuk kutub yang umum dijumpai:
+
+\subsection{Kasus 1: Kutub-Kutub Real Sederhana (Distinct Real Poles)}
+Jika penyebut $D(s)$ dapat difaktorkan menjadi perkalian faktor linier real yang saling berbeda:
+\begin{equation}
+    D(s) = (s - p_1)(s - p_2)\cdots(s - p_n)
+\end{equation}
+maka $F(s)$ dapat didekomposisi menjadi:
+\begin{equation}
+    F(s) = \frac{A_1}{s - p_1} + \frac{A_2}{s - p_2} + \dots + \frac{A_n}{s - p_n}
+    \label{eq:pfe_distinct}
+\end{equation}
+Koefisien residu $A_k$ dapat dihitung secara cepat menggunakan \textbf{Metode Penutupan Heaviside} (\textit{Heaviside Cover-up Method}):
+\begin{equation}
+    A_k = \lim_{s \to p_k} \left[ (s - p_k) F(s) \right] = \left. \frac{N(s)}{\frac{d}{ds}D(s)} \right|_{s = p_k}
+    \label{eq:heaviside_coverup}
+\end{equation}
+Dengan mengambil invers Laplace suku demi suku:
+\begin{equation}
+    f(t) = \mathcal{L}^{-1}\{F(s)\} = \sum_{k=1}^{n} A_k e^{p_k t} \, u(t)
+    \label{eq:inv_distinct}
+\end{equation}
+
+\subsection{Kasus 2: Kutub-Kutub Real Berulang (Repeated Real Poles)}
+Jika penyebut memiliki kutub berulang sebanyak $m$ kali pada $s = p_1$, yaitu faktor $(s - p_1)^m$, maka suku dekomposisi untuk kutub tersebut memiliki $m$ pecahan berderajat naik:
+\begin{equation}
+    F(s) = \frac{B_m}{(s - p_1)^m} + \frac{B_{m-1}}{(s - p_1)^{m-1}} + \dots + \frac{B_1}{s - p_1} + \sum \text{suku kutub lainnya}
+    \label{eq:pfe_repeated}
+\end{equation}
+Koefisien residu tertinggi $B_m$ diperoleh langsung dengan metode penutupan biasa:
+\begin{equation}
+    B_m = \lim_{s \to p_1} \left[ (s - p_1)^m F(s) \right]
+\end{equation}
+Sedangkan koefisien derajat yang lebih rendah dihitung dengan menggunakan operasi diferensiasi berantai:
+\begin{equation}
+    B_{m-k} = \frac{1}{k!} \lim_{s \to p_1} \frac{d^k}{ds^k} \left[ (s - p_1)^m F(s) \right], \quad k = 1, 2, \dots, m-1
+    \label{eq:repeated_diff_formula}
+\end{equation}
+Mengingat pasangan invers transformasi baku:
+\begin{equation}
+    \mathcal{L}^{-1}\left\{ \frac{1}{(s - p_1)^{k+1}} \right\} = \frac{t^k}{k!} e^{p_1 t} u(t)
+\end{equation}
+maka kemunculan kutub ganda selalu merepresentasikan sinyal waktu yang berinteraksi dengan polinomial waktu (misalnya $t e^{-\alpha t}$ pada sistem redaman kritis / \textit{critically damped}).
+
+\subsection{Kasus 3: Kutub Kompleks Konjugat (Complex Conjugate Poles)}
+Sistem rangkaian osilator, filter, dan jaringan redaman kurang (\textit{underdamped}) memiliki pasangan kutub kompleks konjugat $s = -\alpha \pm j\omega_d$. Faktor kuadratik tak tereduksi pada penyebut berbentuk:
+\begin{equation}
+    D_k(s) = (s + \alpha)^2 + \omega_d^2
+\end{equation}
+Bentuk pecahan parsial yang paling stabil secara numerik dan intuitif adalah membentuk pembilang berformat kombinasi sinus dan kosinus teredam:
+\begin{equation}
+    F_{\text{sub}}(s) = \frac{A(s + \alpha) + B \omega_d}{(s + \alpha)^2 + \omega_d^2}
+    \label{eq:complex_pfe_standard}
+\end{equation}
+Menggunakan Teorema Pergeseran Pertama (translasi frekuensi $s \to s + \alpha$):
+\begin{equation}
+    \mathcal{L}^{-1}\left\{ \frac{s + \alpha}{(s + \alpha)^2 + \omega_d^2} \right\} = e^{-\alpha t} \cos(\omega_d t) u(t)
+\end{equation}
+\begin{equation}
+    \mathcal{L}^{-1}\left\{ \frac{\omega_d}{(s + \alpha)^2 + \omega_d^2} \right\} = e^{-\alpha t} \sin(\omega_d t) u(t)
+\end{equation}
+Sehingga invers waktu fisisnya adalah:
+\begin{equation}
+    f_{\text{sub}}(t) = e^{-\alpha t} \left[ A \cos(\omega_d t) + B \sin(\omega_d t) \right] u(t)
+    \label{eq:complex_inv_time}
+\end{equation}
+
+\section{Pemodelan Fisis Rangkaian Listrik di Domain \texorpdfstring{$s$}{s}}
+
+Keunggulan terbesar Transformasi Laplace dalam rekayasa elektro adalah kemampuannya mentransformasikan elemen pasif rangkaian ($R, L, C$) beserta memori energi awalnya menjadi \textbf{komponen aljabar setara di domain $s$}.
+
+\subsection{Resistor Linier}
+Pada resistor ideal, hubungan tegangan dan arus murni seketika tanpa efek memori:
+\begin{equation}
+    v_R(t) = R \, i_R(t) \quad \xrightarrow{\quad \mathcal{L} \quad} \quad V_R(s) = R \, I_R(s)
+\end{equation}
+Impedansi operasional resistor adalah $Z_R(s) = R$, dan admitansinya adalah $Y_R(s) = 1/R = G$.
+
+\subsection{Induktor dengan Arus Awal}
+Hubungan konstitutif induktor dalam domain waktu adalah $v_L(t) = L \frac{di_L}{dt}$. Mengaplikasikan transformasi Laplace pada operasi turunan:
+\begin{equation}
+    V_L(s) = \mathcal{L}\left\{ L \frac{di_L}{dt} \right\} = L \left[ s I_L(s) - i_L(0^-) \right]
+\end{equation}
+Persamaan ini dapat dituliskan dalam dua model ekivalen yang sangat penting:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Model Seri (Ekivalen Thevenin):}
+    \begin{equation}
+        V_L(s) = sL \cdot I_L(s) - L \, i_L(0^-)
+        \label{eq:inductor_thevenin}
+    \end{equation}
+    Model ini memandang induktor sebagai sebuah impedansi pasif $Z_L(s) = sL$ yang terhubung seri dengan sumber tegangan semu impulsif bernilai konstan $L \, i_L(0^-)$ dengan polaritas yang melawan kenaikan arus.
+    \item \textbf{Model Paralel (Ekivalen Norton):}
+    Menyelesaikan persamaan untuk $I_L(s)$:
+    \begin{equation}
+        I_L(s) = \frac{V_L(s)}{sL} + \frac{i_L(0^-)}{s}
+        \label{eq:inductor_norton}
+    \end{equation}
+    Model ini memandang induktor sebagai admitansi pasif $Y_L(s) = \frac{1}{sL}$ yang terhubung paralel dengan sumber arus semu bernilai $\frac{i_L(0^-)}{s}$ yang mengalir searah dengan arus mula-mula.
+\end{enumerate}
+
+\subsection{Kapasitor dengan Tegangan Awal}
+Hubungan konstitutif kapasitor dalam domain waktu adalah $i_C(t) = C \frac{dv_C}{dt}$. Menerapkan transformasi Laplace:
+\begin{equation}
+    I_C(s) = C \left[ s V_C(s) - v_C(0^-) \right]
+\end{equation}
+Serupa dengan induktor, kita mendapatkan dua representasi sirkuit domain $s$:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Model Paralel (Ekivalen Norton):}
+    \begin{equation}
+        I_C(s) = sC \cdot V_C(s) - C \, v_C(0^-)
+        \label{eq:capacitor_norton}
+    \end{equation}
+    Kapasitor dimodelkan sebagai admitansi pasif $Y_C(s) = sC$ yang terhubung paralel dengan sumber arus semu konstan impulsif $C \, v_C(0^-)$ yang meninggalkan terminal positif.
+    \item \textbf{Model Seri (Ekivalen Thevenin):}
+    Menyelesaikan persamaan untuk $V_C(s)$:
+    \begin{equation}
+        V_C(s) = \frac{1}{sC} \cdot I_C(s) + \frac{v_C(0^-)}{s}
+        \label{eq:capacitor_thevenin}
+    \end{equation}
+    Kapasitor dimodelkan sebagai impedansi pasif $Z_C(s) = \frac{1}{sC}$ yang terhubung seri dengan sumber tegangan semu berundak $\frac{v_C(0^-)}{s}$ yang polaritasnya searah dengan orientasi tegangan mula-mula.
+\end{enumerate}
+
+Representasi visual sirkuit ekivalen domain $s$ disajikan pada Gambar~\ref{fig:s_domain_models}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.95, every node/.style={transform shape}]
+    % Induktor Thevenin
+    \draw (0,2.5) to[L, l={$sL$}] (2.5,2.5)
+          to[battery2, l_={$L i(0^-)$}] (4.5,2.5) -- (5.0,2.5);
+    \node[above] at (2.5,3.3) {\small\textbf{Induktor: Model Seri (Thevenin)}};
+    
+    % Kapasitor Thevenin
+    \draw (6.5,2.5) to[C, l={$\frac{1}{sC}$}] (9.0,2.5)
+          to[battery2, l_={$\frac{v(0^-)}{s}$}] (11.0,2.5) -- (11.5,2.5);
+    \node[above] at (9.0,3.3) {\small\textbf{Kapasitor: Model Seri (Thevenin)}};
+    
+    % Induktor Norton
+    \draw (0,0) -- (1.5,0) to[L, l={$sL$}] (1.5,-2) -- (0,-2);
+    \draw (1.5,0) -- (3.5,0) to[I, l_={$\frac{i(0^-)}{s}$}] (3.5,-2) -- (1.5,-2);
+    \draw (3.5,0) -- (5.0,0);
+    \draw (3.5,-2) -- (5.0,-2);
+    \node[above] at (2.5,0.4) {\small\textbf{Induktor: Model Paralel (Norton)}};
+    
+    % Kapasitor Norton
+    \draw (6.5,0) -- (8.0,0) to[C, l={$sC$}] (8.0,-2) -- (6.5,-2);
+    \draw (8.0,0) -- (10.0,0) to[I, l_={$C v(0^-)$}] (10.0,-2) -- (8.0,-2);
+    \draw (10.0,0) -- (11.5,0);
+    \draw (10.0,-2) -- (11.5,-2);
+    \node[above] at (9.0,0.4) {\small\textbf{Kapasitor: Model Paralel (Norton)}};
+\end{tikzpicture}
+\caption{Model ekivalen Thevenin dan Norton elemen penyimpan energi di domain frekuensi kompleks $s$.}
+\label{fig:s_domain_models}
+\end{figure}
+
+Tabel~\ref{tab:s_domain_summary} merangkum seluruh parameter elemen rangkaian di domain waktu dan domain frekuensi kompleks $s$.
+
+\begin{table}[htbp]
+\centering
+\caption{Ringkasan impedansi, admitansi, dan sumber semu elemen rangkaian di domain $s$.}
+\label{tab:s_domain_summary}
+\small
+\begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X}
+\toprule
+\textbf{Elemen} & \textbf{Hubungan $t$} & \textbf{Impedansi $Z(s)$} & \textbf{Sumber Seri Thevenin} & \textbf{Sumber Paralel Norton} \\
+\midrule
+Resistor ($R$) & $v = R i$ & $R$ & $0$ & $0$ \\
+Induktor ($L$) & $v = L \frac{di}{dt}$ & $sL$ & $-L i(0^-)$ & $+\frac{i(0^-)}{s}$ \\
+Kapasitor ($C$) & $i = C \frac{dv}{dt}$ & $\frac{1}{sC}$ & $+\frac{v(0^-)}{s}$ & $-C v(0^-)$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Solusi Rangkaian RLC Dinamis \& Dekomposisi Respon ZIR dan ZSR}
+
+Ketika kita menyusun persamaan simpul (KCL) atau persamaan jerat (KVL) langsung di domain $s$ menggunakan model ekivalen Gambar~\ref{fig:s_domain_models}, variabel luaran sistem, sebutlah $Y(s)$, secara alami terurai menjadi dua komponen ortogonal:
+\begin{equation}
+    Y(s) = \underbrace{Y_{\text{ZIR}}(s)}_{\text{Respon Masukan-Nol}} + \underbrace{Y_{\text{ZSR}}(s)}_{\text{Respon Keadaan-Nol}}
+    \label{eq:zir_zsr_split}
+\end{equation}
+di mana:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Respon Masukan-Nol (\textit{Zero-Input Response} / ZIR):} Respon transien murni yang bersumber semata-mata dari energi awal yang terperangkap di dalam induktor dan kapasitor ($i(0^-) \ne 0$, $v(0^-) \ne 0$), dengan mengasumsikan seluruh sumber eksitasi luar dinonaktifkan (\textit{deactivated} / $X(s) = 0$).
+    \item \textbf{Respon Keadaan-Nol (\textit{Zero-State Response} / ZSR):} Respon sistem yang dibangkitkan secara eksklusif oleh sumber masukan luar $X(s)$, dengan mengasumsikan seluruh elemen penyimpan energi berada dalam kondisi istirahat mula-mula tanpa energi awal ($i(0^-) = 0$, $v(0^-) = 0$).
 \end{itemize}
+
+Pada kondisi ZSR, hubungan antara masukan $X(s)$ dan luaran $Y_{\text{ZSR}}(s)$ dihubungkan oleh sebuah fungsi rasional fundamental yang disebut \textbf{Fungsi Transfer} (\textit{Transfer Function}) $H(s)$:
+\begin{equation}
+    H(s) \triangleq \left. \frac{Y(s)}{X(s)} \right|_{\text{kondisi awal} = 0}
+    \label{eq:transfer_function}
+\end{equation}
+Invers Laplace dari fungsi transfer merupakan respon impuls dari sistem:
+\begin{equation}
+    h(t) = \mathcal{L}^{-1}\{H(s)\}
+\end{equation}
+Sehingga respon sistem terhadap masukan sebarang $x(t)$ di domain waktu setara dengan integral konvolusi:
+\begin{equation}
+    y_{\text{ZSR}}(t) = x(t) * h(t) = \int_{0}^{t} x(\tau) h(t - \tau) \, d\tau
+\end{equation}
+
+Transformasi Laplace berhasil mengubah konvolusi integral domain waktu yang sangat rumit menjadi sekadar perkalian aljabar skalar di domain frekuensi kompleks: $Y_{\text{ZSR}}(s) = H(s) X(s)$.
+
+\section{Teorema Nilai Awal (IVT) dan Teorema Nilai Akhir (FVT)}
+
+Sering kali dalam analisis praktis, rekayasawan tidak memerlukan profil riwayat waktu transien secara detail untuk seluruh rentang waktu $0 \le t < \infty$. Kita sering kali hanya ingin mengetahui:
+\begin{enumerate}[leftmargin=*]
+    \item Berapakah lonjakan arus seketika tepat setelah sakelar ditutup ($t = 0^+$)?
+    \item Berapakah nilai tegangan akhir pada keadaan tunak setelah seluruh proses transien meluruh sempurna ($t \to \infty$)?
+\end{enumerate}
+Untuk menjawab pertanyaan tersebut tanpa harus melakukan ekspansi pecahan parsial dan invers Laplace yang panjang, kita menggunakan \textbf{Teorema Nilai Awal} (\textit{Initial Value Theorem}) dan \textbf{Teorema Nilai Akhir} (\textit{Final Value Theorem}).
+
+\subsection{Teorema Nilai Awal (Initial Value Theorem / IVT)}
+
+\begin{theorem}[Teorema Nilai Awal]
+Jika fungsi $f(t)$ dan turunan pertamanya $f'(t)$ memiliki transformasi Laplace $F(s)$, serta limit $\lim_{s \to \infty} s F(s)$ ada, maka nilai fungsi sesaat tepat setelah $t = 0$ ($t = 0^+$) diberikan oleh:
+\begin{equation}
+    f(0^+) = \lim_{t \to 0^+} f(t) = \lim_{s \to \infty} s F(s)
+    \label{eq:ivt_theorem}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Mulai dari transformasi Laplace dari turunan pertama:
+\begin{equation*}
+    \mathcal{L}\{f'(t)\} = \int_{0^-}^{\infty} f'(t) e^{-st} \, dt = s F(s) - f(0^-)
+\end{equation*}
+Ambil limit $s \to \infty$ pada kedua ruas:
+\begin{equation*}
+    \lim_{s \to \infty} \left[ s F(s) - f(0^-) \right] = \lim_{s \to \infty} \int_{0^-}^{\infty} f'(t) e^{-st} \, dt
+\end{equation*}
+Karena $e^{-st} \to 0$ saat $s \to \infty$ untuk seluruh $t > 0$, integral di ruas kanan mendekati nilai integral pada selang infinitesimal $t \in [0^-, 0^+]$:
+\begin{equation*}
+    \lim_{s \to \infty} \int_{0^-}^{\infty} f'(t) e^{-st} \, dt = \int_{0^-}^{0^+} f'(t) \, dt = f(0^+) - f(0^-)
+\end{equation*}
+Substitusi hasil ini ke persamaan semula:
+\begin{equation*}
+    \lim_{s \to \infty} s F(s) - f(0^-) = f(0^+) - f(0^-) \implies \lim_{s \to \infty} s F(s) = f(0^+) \qedhere
+\end{equation*}
+\end{proof}
+
+\subsection{Teorema Nilai Akhir (Final Value Theorem / FVT)}
+
+\begin{theorem}[Teorema Nilai Akhir]
+Jika fungsi $f(t)$ dan turunannya memiliki transformasi Laplace $F(s)$, dan \textbf{seluruh kutub dari fungsi $s F(s)$ terletak secara ketat di setengah bidang kiri} (\textit{Left-Half Plane} / LHP, $\text{Re}\{s\} < 0$), maka nilai keadaan tunak (\textit{steady-state}) saat $t \to \infty$ diberikan oleh:
+\begin{equation}
+    f(\infty) = \lim_{t \to \infty} f(t) = \lim_{s \to 0} s F(s)
+    \label{eq:fvt_theorem}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Mulai kembali dari definisi transformasi turunan:
+\begin{equation*}
+    \lim_{s \to 0} \left[ s F(s) - f(0^-) \right] = \lim_{s \to 0} \int_{0^-}^{\infty} f'(t) e^{-st} \, dt
+\end{equation*}
+Dengan menukar limit dan integral (dijamin valid karena syarat stabilitas kutub LHP):
+\begin{equation*}
+    \int_{0^-}^{\infty} f'(t) \left( \lim_{s \to 0} e^{-st} \right) \, dt = \int_{0^-}^{\infty} f'(t) \, dt = \lim_{t \to \infty} f(t) - f(0^-) = f(\infty) - f(0^-)
+\end{equation*}
+Sehingga:
+\begin{equation*}
+    \lim_{s \to 0} s F(s) - f(0^-) = f(\infty) - f(0^-) \implies \lim_{s \to 0} s F(s) = f(\infty) \qedhere
+\end{equation*}
+\end{proof}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=\textbf{Peringatan Kritis Aplikasi Teorema Nilai Akhir (FVT)}]
+\textbf{Perhatian:} Syarat bahwa seluruh kutub dari $sF(s)$ berada di $\text{Re}\{s\} < 0$ adalah \textbf{syarat mutlak}. Jika fungsi $f(t)$ mengandung osilasi sinusoidal murni tak teredam (kutub di sumbu imajiner $s = \pm j\omega$) atau sinyal tak stabil yang meledak (kutub di $\text{Re}\{s\} > 0$), maka limit $\lim_{t \to \infty} f(t)$ secara fisis \textbf{tidak ada}. Menerapkan rumus $\lim_{s \to 0} s F(s)$ secara membabi buta pada kasus tersebut akan menghasilkan nilai numerik palsu yang menyesatkan!
+\end{tcolorbox}
+
+\section{Studi Kasus Industri: Transient Recovery Voltage (TRV) pada Pemutus Tenaga Gardu Induk 150 kV PLN}
+
+\subsection{Konteks Masalah Rekayasa Transien Tenaga Listrik}
+Pada sistem transmisi tenaga listrik tegangan tinggi 150 kV PLN, salah satu manuver paling kritis adalah pemutusan arus gangguan hubung singkat oleh Pemutus Tenaga (\textit{Circuit Breaker} / CB). Ketika kontak mekanis pemutus tenaga mulai terpisah, terbentuk busur api listrik (\textit{electric arc}) yang sangat panas di antara kedua kontak. Pemadaman busur api hanya dapat terjadi saat arus bolak-balik melintasi titik nol alami (\textit{natural current zero}).
+
+Tepat pada detik busur api padam, tegangan sistem di sisi sumber transmisi tidak serta-merta kembali ke nilai nominal $50\text{ Hz}$ yang tenang. Karena adanya induktansi ekivalen transformator dan saluran ($L_s$) serta kapasitansi parasitik busbar dan bushing ($C_s$), terjadi fenomena peralihan frekuensi tinggi yang sangat dahsyat yang disebut \textbf{Transient Recovery Voltage (TRV)}. Fenomena ini diatur ketat dalam standar internasional \textbf{IEC 62271-100} dan \textbf{IEEE Std C37.011}.
+
+\subsection{Formulasi Rangkaian Transien TRV di Domain \texorpdfstring{$s$}{s}}
+Rangkaian ekivalen satu fasa saat pemutusan arus hubung singkat dapat dimodelkan sebagai rangkaian $LC$ paralel teredam oleh resistansi kebocoran $R_p$, yang dieksitasi oleh tegangan sumber bolak-balik puncak $V_m$ saat arus nol ($t = 0$):
+\begin{equation}
+    v_{\text{sumber}}(t) = V_m \cos(\omega_0 t) \approx V_m, \quad \text{untuk selang waktu mikrodetik transien}
+\end{equation}
+Beban induktif murni menyebabkan arus tertinggal $90^\circ$ di belakang tegangan, sehingga saat arus melintasi nol, tegangan sumber berada tepat pada puncaknya ($V_m$).
+
+Tegangan di seberang celah kontak pemutus tenaga $V_{\text{TRV}}(s)$ memenuhi persamaan pembagi tegangan operasional:
+\begin{equation}
+    V_{\text{TRV}}(s) = V_m \cdot \frac{Z_p(s)}{s L_s + Z_p(s)} \cdot \frac{1}{s}
+\end{equation}
+di mana $Z_p(s) = \frac{1}{s C_s}$. Tanpa redaman resistif ($R_p \to \infty$):
+\begin{equation}
+    V_{\text{TRV}}(s) = \frac{V_m}{s} \cdot \frac{\frac{1}{s C_s}}{s L_s + \frac{1}{s C_s}} = \frac{V_m}{s} \cdot \frac{1}{s^2 L_s C_s + 1} = \frac{V_m \omega_n^2}{s (s^2 + \omega_n^2)}
+    \label{eq:trv_laplace}
+\end{equation}
+di mana $\omega_n = \frac{1}{\sqrt{L_s C_s}}$ adalah frekuensi alami osilasi transien (biasanya berkisar antara puluhan kHz hingga ratusan kHz).
+
+\subsection{Inversi Analitis \& Laju Kenaikan Tegangan (RRRV)}
+Melakukan ekspansi pecahan parsial pada Persamaan~\eqref{eq:trv_laplace}:
+\begin{equation}
+    \frac{\omega_n^2}{s (s^2 + \omega_n^2)} = \frac{A}{s} + \frac{B s + C}{s^2 + \omega_n^2}
+\end{equation}
+Dengan metode penutupan Heaviside:
+\begin{equation*}
+    A = \left. \frac{\omega_n^2}{s^2 + \omega_n^2} \right|_{s = 0} = 1
+\end{equation*}
+Menyamakan penyebut:
+\begin{equation*}
+    \omega_n^2 = 1(s^2 + \omega_n^2) + (Bs + C)s = (1 + B)s^2 + Cs + \omega_n^2
+\end{equation*}
+Diperoleh $B = -1$ dan $C = 0$. Sehingga bentuk domain $s$ adalah:
+\begin{equation}
+    V_{\text{TRV}}(s) = V_m \left[ \frac{1}{s} - \frac{s}{s^2 + \omega_n^2} \right]
+\end{equation}
+Mengaplikasikan invers Transformasi Laplace:
+\begin{equation}
+    v_{\text{TRV}}(t) = V_m \left[ 1 - \cos(\omega_n t) \right] u(t)
+    \label{eq:trv_solution_time}
+\end{equation}
+
+\textbf{Interpretasi Rekayasa Listrik:}
+Persamaan~\eqref{eq:trv_solution_time} mengungkap dua bahaya mematikan bagi pemutus tenaga gardu induk:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Tegangan Puncak Dua Kali Lipat (\textit{Double Peak Amplitude}):} Pada saat $\omega_n t = \pi$ ($t = \pi \sqrt{L_s C_s}$), nilai kosinus bernilai $-1$, sehingga tegangan transien melonjak hingga:
+    \begin{equation}
+        v_{\text{TRV, maks}} = V_m [1 - (-1)] = 2 V_m
+    \end{equation}
+    Insulasi dielektrik media gas $\text{SF}_6$ atau ruang hampa (\textit{vacuum}) pada celah kontak harus mampu menahan tegangan dua kali lipat tegangan sistem puncak ini tanpa mengalami tembus tembus listrik (\textit{dielectric breakdown}).
+    \item \textbf{Laju Kenaikan Tegangan Pemulihan (\textit{Rate of Rise of Recovery Voltage} / RRRV):}
+    \begin{equation}
+        \text{RRRV} = \left. \frac{dv_{\text{TRV}}}{dt} \right|_{\text{maks}} = V_m \omega_n = \frac{V_m}{\sqrt{L_s C_s}}
+    \end{equation}
+    Jika RRRV melampaui laju pemulihan kekuatan dielektrik celah kontak pemutus tenaga ($dV_{\text{diel}}/dt$), maka busur api akan menyala kembali (\textit{re-ignition} atau \textit{re-strike}), yang dapat memicu ledakan katastrofik pada kubikel pemutus tenaga gardu induk PLN!
+\end{enumerate}
+
+\section{Contoh Soal Terhitung Numerik Langkah demi Langkah}
+
+\begin{example}[Inversi Pecahan Parsial dengan Kutub Real Berulang \& Berbeda]
+Tentukan invers transformasi Laplace $y(t) = \mathcal{L}^{-1}\{Y(s)\}$ dari fungsi aljabar rasional berikut:
+\begin{equation*}
+    Y(s) = \frac{2s^2 + 10s + 11}{(s + 1)(s + 2)^2}
+\end{equation*}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Identifikasi Derajat dan Pemfaktoran Kutub:}
+    Derajat pembilang adalah 2 dan penyebut adalah 3 ($\text{deg}(N) < \text{deg}(D)$), sehingga fungsi merupakan pecahan sejati. Terdapat satu kutub real sederhana pada $s = -1$ dan satu kutub real ganda ($m=2$) pada $s = -2$.
+    
+    \item \textbf{Formulasi Bentuk Pecahan Parsial:}
+    \begin{equation*}
+        Y(s) = \frac{A}{s + 1} + \frac{B_2}{(s + 2)^2} + \frac{B_1}{s + 2}
+    \end{equation*}
+    
+    \item \textbf{Perhitungan Koefisien Residu:}
+    \begin{itemize}[leftmargin=*]
+        \item Untuk kutub sederhana $s = -1$ (metode penutupan Heaviside):
+        \begin{align*}
+            A &= \left. (s + 1) Y(s) \right|_{s = -1} = \left. \frac{2s^2 + 10s + 11}{(s + 2)^2} \right|_{s = -1} \\
+              &= \frac{2(-1)^2 + 10(-1) + 11}{(-1 + 2)^2} = \frac{3}{1} = \mathbf{3}
+        \end{align*}
+        \item Untuk kutub ganda derajat tertinggi $B_2$ pada $s = -2$:
+        \begin{align*}
+            B_2 &= \left. (s + 2)^2 Y(s) \right|_{s = -2} = \left. \frac{2s^2 + 10s + 11}{s + 1} \right|_{s = -2} \\
+                &= \frac{2(-2)^2 + 10(-2) + 11}{-2 + 1} = \frac{-1}{-1} = \mathbf{1}
+        \end{align*}
+        \item Untuk koefisien derajat pertama $B_1$ pada $s = -2$ (menggunakan turunan):
+        \begin{align*}
+            B_1 &= \left. \frac{d}{ds} \left[ (s + 2)^2 Y(s) \right] \right|_{s = -2} = \left. \frac{d}{ds} \left( \frac{2s^2 + 10s + 11}{s + 1} \right) \right|_{s = -2} \\
+            &= \left. \frac{(4s + 10)(s + 1) - (2s^2 + 10s + 11)(1)}{(s + 1)^2} \right|_{s = -2} \\
+            &= \frac{[4(-2) + 10](-2 + 1) - [2(-2)^2 + 10(-2) + 11]}{(-2 + 1)^2} \\
+            &= \frac{(2)(-1) - (-1)}{(-1)^2} = \frac{-2 + 1}{1} = \mathbf{-1}
+        \end{align*}
+    \end{itemize}
+    
+    \item \textbf{Rekonstruksi Invers Domain Waktu:}
+    Menuliskan kembali $Y(s)$:
+    \begin{equation*}
+        Y(s) = \frac{3}{s + 1} + \frac{1}{(s + 2)^2} - \frac{1}{s + 2}
+    \end{equation*}
+    Menerapkan invers transformasi Laplace suku demi suku:
+    \begin{equation*}
+        y(t) = \mathbf{\left( 3 e^{-t} + t e^{-2t} - e^{-2t} \right) u(t)} \quad \qed
+    \end{equation*}
+\end{enumerate}
+
+\begin{example}[Solusi Lengkap Transien RLC Seri dengan Energi Awal di Domain $s$]
+Sebuah rangkaian RLC seri memiliki parameter: resistansi $R = 4\,\Omega$, induktansi $L = 1\text{ H}$, dan kapasitansi $C = 0{,}2\text{ F}$. Rangkaian memiliki kondisi awal arus induktor $i(0^-) = 2\text{ A}$ dan tegangan kapasitor $v_C(0^-) = 8\text{ V}$. Pada $t = 0$, rangkaian dihubungkan secara tiba-tiba ke sumber tegangan searah konstan $V_{\text{dc}} = 20\text{ V}$. Tentukan persamaan analitis arus transien $i(t)$ untuk $t \ge 0$ menggunakan analisis domain $s$.
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Konversi Parameter ke Nilai Impedansi Domain $s$:}
+    \begin{itemize}[leftmargin=*]
+        \item Resistor: $Z_R(s) = R = 4\,\Omega$
+        \item Induktor: $Z_L(s) = sL = s(1) = s$, dengan sumber tegangan semu Thevenin berlawanan arah: $L i(0^-) = 1 \times 2 = 2\text{ V}$
+        \item Kapasitor: $Z_C(s) = \frac{1}{sC} = \frac{1}{0{,}2s} = \frac{5}{s}$, dengan sumber tegangan semu Thevenin searah: $\frac{v_C(0^-)}{s} = \frac{8}{s}$
+        \item Sumber masukan luar tangga: $V_{\text{in}}(s) = \mathcal{L}\{20 u(t)\} = \frac{20}{s}$
+    \end{itemize}
+    
+    \item \textbf{Penyusunan Persamaan Hukum Kirchoff Tegangan (KVL) di Domain $s$:}
+    Menelusuri satu jerat tertutup searah jarum jam:
+    \begin{equation*}
+        V_{\text{in}}(s) - Z_R(s) I(s) - \left[ Z_L(s) I(s) - L i(0^-) \right] - \left[ Z_C(s) I(s) + \frac{v_C(0^-)}{s} \right] = 0
+    \end{equation*}
+    Substitusi nilai numerik:
+    \begin{equation*}
+        \frac{20}{s} - 4 I(s) - [s I(s) - 2] - \left[ \frac{5}{s} I(s) + \frac{8}{s} \right] = 0
+    \end{equation*}
+    
+    \item \textbf{Manipulasi Aljabar untuk Memisahkan Arus $I(s)$:}
+    Kelompokkan seluruh suku yang mengandung $I(s)$ di ruas kiri:
+    \begin{equation*}
+        I(s) \left( s + 4 + \frac{5}{s} \right) = \frac{20}{s} - \frac{8}{s} + 2 = \frac{12}{s} + 2 = \frac{2s + 12}{s}
+    \end{equation*}
+    Kalikan kedua ruas dengan $s$:
+    \begin{equation*}
+        (s^2 + 4s + 5) I(s) = 2s + 12 \implies I(s) = \frac{2s + 12}{s^2 + 4s + 5}
+    \end{equation*}
+    
+    \item \textbf{Analisis Kutub dan Penyelesaian Kompleks Konjugat:}
+    Akar-akar dari penyebut $s^2 + 4s + 5 = 0$:
+    \begin{equation*}
+        s_{1,2} = \frac{-4 \pm \sqrt{16 - 20}}{2} = -2 \pm j 1
+    \end{equation*}
+    Sistem berada pada kondisi \textbf{redaman kurang} (\textit{underdamped}) dengan faktor atenuasi $\alpha = 2$ dan frekuensi sudut teredam $\omega_d = 1\text{ rad/s}$.
+    
+    Melengkapkan kuadrat pada penyebut:
+    \begin{equation*}
+        s^2 + 4s + 5 = (s + 2)^2 + 1^2
+    \end{equation*}
+    Tulis pembilang dalam kombinasi basis $(s + 2)$ dan $\omega_d = 1$:
+    \begin{equation*}
+        2s + 12 = 2(s + 2) + 8 = 2(s + 2) + 8(1)
+    \end{equation*}
+    Maka ekspresi $I(s)$ menjadi:
+    \begin{equation*}
+        I(s) = 2 \cdot \frac{s + 2}{(s + 2)^2 + 1^2} + 8 \cdot \frac{1}{(s + 2)^2 + 1^2}
+    \end{equation*}
+    
+    \item \textbf{Invers Laplace Domain Waktu:}
+    \begin{equation*}
+        i(t) = \mathbf{e^{-2t} \left[ 2 \cos(t) + 8 \sin(t) \right] u(t)\text{ [A]}} \quad \qed
+    \end{equation*}
+    
+    \item \textbf{Verifikasi Cepat Menggunakan Teorema Nilai Awal (IVT):}
+    \begin{equation*}
+        i(0^+) = \lim_{s \to \infty} s I(s) = \lim_{s \to \infty} \frac{s(2s + 12)}{s^2 + 4s + 5} = \lim_{s \to \infty} \frac{2s^2 + 12s}{s^2 + 4s + 5} = 2\text{ A}
+    \end{equation*}
+    Hasil ini identik dengan syarat kontinuitas arus induktor $i(0^+) = i(0^-) = 2\text{ A}$.
+\end{enumerate}
+
+\begin{example}[Verifikasi Respon Keadaan Tunak dengan FVT \& Invers Sinyal Berpulsa]
+Suatu sistem kendali posisi motor servo di industri memiliki fungsi transfer loop tertutup:
+\begin{equation*}
+    H(s) = \frac{\Theta(s)}{V_{\text{in}}(s)} = \frac{10}{s^2 + 3s + 10}
+\end{equation*}
+Sistem dieksitasi oleh pulsa tegangan persegi dengan amplitudo $5\text{ V}$ dan durasi $T = 2\text{ detik}$, yaitu $v_{\text{in}}(t) = 5[u(t) - u(t - 2)]$.
+\begin{enumerate}[leftmargin=*]
+    \item Tentukan nilai posisi akhir keadaan tunak $\theta(\infty)$ jika masukan berupa tangga konstan $v_{\text{in}}(t) = 5 u(t)$ menggunakan FVT.
+    \item Tentukan solusi analitis posisi $\theta(t)$ terhadap pulsa durasi terbatas tersebut.
+\end{enumerate}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Evaluasi Keadaan Tunak Menggunakan FVT:}
+    Untuk masukan tangga $V_{\text{in}}(s) = \frac{5}{s}$:
+    \begin{equation*}
+        \Theta(s) = H(s) V_{\text{in}}(s) = \frac{10}{s^2 + 3s + 10} \cdot \frac{5}{s} = \frac{50}{s(s^2 + 3s + 10)}
+    \end{equation*}
+    Kutub-kutub dari penyebut adalah $s = 0$ dan akar dari $s^2 + 3s + 10 = 0$, yaitu $s = -1{,}5 \pm j 2{,}7839$. Karena seluruh kutub non-nol memiliki bagian riil negatif ($\text{Re}\{s\} = -1{,}5 < 0$), Teorema Nilai Akhir dapat diaplikasikan:
+    \begin{equation*}
+        \theta(\infty) = \lim_{s \to 0} s \Theta(s) = \lim_{s \to 0} \left[ s \cdot \frac{50}{s(s^2 + 3s + 10)} \right] = \frac{50}{0 + 0 + 10} = \mathbf{5\text{ radian}}
+    \end{equation*}
+    
+    \item \textbf{Solusi Respon Waktu terhadap Pulsa Terbatas:}
+    Didefinisikan respon terhadap tangga satuan $g(t) = \mathcal{L}^{-1}\left\{ \frac{H(s)}{s} \right\}$.
+    Faktorkan suku kuadratik: $(s + 1{,}5)^2 + (\sqrt{7{,}75})^2$, dengan $\omega_d = \sqrt{7{,}75} \approx 2{,}784\text{ rad/s}$.
+    \begin{equation*}
+        \frac{10}{s[(s + 1{,}5)^2 + 7{,}75]} = \frac{1}{s} - \frac{s + 3}{(s + 1{,}5)^2 + 7{,}75} = \frac{1}{s} - \frac{(s + 1{,}5) + 1{,}5}{(s + 1{,}5)^2 + 7{,}75}
+    \end{equation*}
+    Invers tangga satuan menghasilkan:
+    \begin{equation*}
+        g(t) = \left[ 1 - e^{-1{,}5 t} \left( \cos(2{,}784 t) + \frac{1{,}5}{2{,}784} \sin(2{,}784 t) \right) \right] u(t)
+    \end{equation*}
+    Karena masukan pulsa adalah $v_{\text{in}}(t) = 5 u(t) - 5 u(t - 2)$, berdasarkan sifat linieritas dan Teorema Pergeseran Waktu Kedua:
+    \begin{equation*}
+        \theta(t) = \mathbf{5 g(t) - 5 g(t - 2) u(t - 2)} \quad \qed
+    \end{equation*}
+\end{enumerate}
+
+\section{Praktikum Komputasi Numerik Terbuka Berbasis Julia}
+
+Pada bagian ini, kita mengimplementasikan simulasi komputasi numerik ilmiah berbasis bahasa pemrograman modern \textbf{Julia} (versi 1.12+). Program ini memodelkan dinamika transien rangkaian RLC berenergi awal (Contoh Soal 9.2) menggunakan pustaka \texttt{DifferentialEquations.jl}, membandingkan hasil simulasi numerik adaptif terhadap kurva analitis hasil Invers Transformasi Laplace, serta memverifikasi konvergensi Teorema Nilai Awal dan Akhir.
+
+\begin{lstlisting}[style=juliastyle, caption={Skrip Julia untuk simulasi transien RLC dan validasi Invers Laplace.}, label={lst:julia_rlc_laplace}]
+# -------------------------------------------------------------
+# MODUL 7: SIMULASI TRANSIEN RLC DAN VALIDASI INVERS LAPLACE
+# Persamaan Diferensial 2026 - Teknik Elektro UNIB
+# Pengampu: Ir. Novalio Daratha, Ph.D. & M. Arfan, M.T.
+# -------------------------------------------------------------
+
+using DifferentialEquations
+using Plots
+
+# 1. Definisi Parameter Fisik Rangkaian RLC
+const R = 4.0      # Resistansi (Ohm)
+const L = 1.0      # Induktansi (Henry)
+const C = 0.2      # Kapasitansi (Farad)
+const Vdc = 20.0   # Tegangan Sumber Tangga (Volt)
+
+# Kondisi Awal Energi Tersimpan
+const i0 = 2.0     # Arus Awal Induktor iL(0-) (Ampere)
+const vc0 = 8.0    # Tegangan Awal Kapasitor vC(0-) (Volt)
+
+# 2. Pemodelan Ruang Keadaan (State-Space) Domain Waktu
+# State vector u = [i_L, v_C]
+# du[1]/dt = di_L/dt = (Vdc - R*i_L - v_C) / L
+# du[2]/dt = dv_C/dt = i_L / C
+function rlc_transient!(du, u, p, t)
+    iL = u[1]
+    vC = u[2]
+    du[1] = (Vdc - R * iL - vC) / L
+    du[2] = iL / C
+end
+
+# Rentang waktu simulasi
+tspan = (0.0, 5.0)
+u0 = [i0, vc0]
+
+# Pembentukan dan Penyelesaian Masalah Nilai Awal (IVP)
+prob = ODEProblem(rlc_transient!, u0, tspan)
+sol = solve(prob, Tsit5(), reltol=1e-8, abstol=1e-10)
+
+# 3. Solusi Analitis Eksak Berbasis Invers Transformasi Laplace
+# i(t) = exp(-2t) * [2*cos(t) + 8*sin(t)]
+i_exact(t) = exp(-2.0 * t) * (2.0 * cos(t) + 8.0 * sin(t))
+
+# 4. Evaluasi Numerik dan Verifikasi IVT/FVT
+t_eval = range(0.0, 5.0, length=500)
+i_num = [sol(t)[1] for t in t_eval]
+i_ana = [i_exact(t) for t in t_eval]
+
+# Verifikasi Nilai Awal dan Akhir
+ivt_val = i_exact(0.0)
+println("=== HASIL EVALUASI TEOREMA NILAI AWAL & AKHIR ===")
+println("Nilai Awal Terhitung i(0+): ", ivt_val, " A (Eksak: 2.0 A)")
+println("Nilai Akhir t=5s        i(5):  ", i_exact(5.0), " A (Mendekati 0 A)")
+
+# 5. Visualisasi Grafik Komparasi Presisi Tinggi
+plot(t_eval, i_num, label="Simulasi Numerik (Tsit5)", lw=2.5, color=:blue,
+     xlabel="Waktu t [detik]", ylabel="Arus Induktor i(t) [Ampere]",
+     title="Dinamika Transien Arus RLC: Numerik vs Invers Laplace",
+     legend=:topright, grid=true, size=(800, 480))
+plot!(t_eval, i_ana, label="Solusi Analitis Invers Laplace", lw=1.5,
+      linestyle=:dash, color=:red)
+
+# Simpan hasil grafik
+savefig("simulasi_transien_rlc_modul7.png")
+println("Simulasi sukses selesai. Grafik disimpan sebagai simulasi_transien_rlc_modul7.png")
+\end{lstlisting}
+
+\section{Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}
+
+Untuk menguji penguasaan materi Modul Minggu 7 secara mendalam dan komprehensif, mahasiswa diwajibkan menyelesaikan bank soal evaluasi berikut:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} 
+    Sebutkan tiga jenis kutub penyebut dalam dekomposisi pecahan parsial fungsi aljabar rasional $F(s)$, serta tuliskan bentuk umum komponen fungsi waktu $f(t)$ yang dihasilkan oleh masing-masing jenis kutub tersebut!
+    
+    \item \textbf{C2 (Memahami):} 
+    Jelaskan secara fisis mengapa sumber semu pada model Thevenin induktor di domain $s$ berwujud sumber tegangan konstan impulsif $L i(0^-)$, sedangkan pada kapasitor berwujud sumber tegangan berundak $v_C(0^-)/s$. Hubungkan penjelasan Anda dengan konsep kontinuitas fluks magnetik dan muatan listrik!
+    
+    \item \textbf{C3 (Menerapkan):} 
+    Diberikan fungsi aljabar rasional pada domain frekuensi kompleks $s$:
+    \begin{equation*}
+        V(s) = \frac{4s^2 + 16s + 15}{(s + 3)(s^2 + 4s + 13)}
+    \end{equation*}
+    Hitung invers transformasi Laplace $v(t) = \mathcal{L}^{-1}\{V(s)\}$ menggunakan metode ekspansi pecahan parsial secara lengkap dan teliti!
+    
+    \item \textbf{C4 (Menganalisis):} 
+    Sebuah induktor $L = 0{,}5\text{ H}$ dengan arus awal $i(0^-) = 4\text{ A}$ dihubungkan paralel dengan kapasitor $C = 0{,}05\text{ F}$ yang memiliki tegangan awal $v_C(0^-) = 20\text{ V}$ pada $t = 0$. Tidak ada sumber luar yang terhubung.
+    \begin{enumerate}
+        \item Gambarkan rangkaian ekivalen domain $s$ menggunakan model admitansi paralel (Norton).
+        \item Analisis dan tentukan ekspresi tegangan transien bersama $v(t)$ pada kedua terminal elemen untuk $t \ge 0$.
+    \end{enumerate}
+    
+    \item \textbf{C5 (Mengevaluasi):} 
+    Suatu sistem dinamik memiliki luaran $Y(s) = \frac{s + 5}{s^2 + 25}$. Seorang mahasiswa menerapkan Teorema Nilai Akhir dan menyimpulkan bahwa $y(\infty) = \lim_{s \to 0} s Y(s) = \lim_{s \to 0} \frac{s(s+5)}{s^2 + 25} = 0$. Evaluasi keabsahan kesimpulan tersebut dan jelaskan kesalahan fundamental yang dilakukan mahasiswa tersebut ditinjau dari posisi kutub sistem!
+    
+    \item \textbf{C6 (Menciptakan/Merancang):} 
+    Pada gardu induk 150 kV PLN dengan induktansi hubung singkat $L_s = 20\text{ mH}$ dan kapasitansi liar busbar $C_s = 50\text{ nF}$, pemutus tenaga mengalami lonjakan TRV yang sangat berbahaya dengan frekuensi osilasi transien tinggi.
+    Rancanglah nilai resistansi peredam snubber $R_s$ yang harus dipasang paralel dengan kontak pemutus tenaga agar osilasi transien TRV teredam secara kritis (\textit{critically damped}), sehingga menghilangkan tegangan lebih puncak dua kali lipat ($2 V_m$)!
+\end{enumerate}
+
+\section{Rangkuman, Glosarium Istilah Teknis, dan Referensi Standar}
+
+\subsection{Rangkuman Inti Perkuliahan}
+\begin{enumerate}[leftmargin=*]
+    \item Invers Transformasi Laplace $\mathcal{L}^{-1}\{F(s)\}$ merupakan gerbang rekonstruksi dari solusi aljabar domain frekuensi kompleks $s$ kembali ke ranah waktu fisis $t$.
+    \item Metode Ekspansi Pecahan Parsial (PFE) mengubah rasio polinomial rasional $N(s)/D(s)$ menjadi penjumlahan suku-suku elementer yang kutub-kutubnya berkorespondensi langsung dengan spektrum sinyal fisis (eksponensial riil, polinomial teredam, atau gelombang sinus/kosinus teredam).
+    \item Pemodelan rangkaian di domain $s$ mengkonversi hukum kalkulus diferensial-integral menjadi hukum aljabar linier murni. Memori energi awal kapasitor dan induktor terakomodasi secara otomatis sebagai sumber semu Thevenin atau Norton.
+    \item Respon sistem terdekomposisi secara alami menjadi Respon Masukan-Nol (ZIR) akibat energi awal internal dan Respon Keadaan-Nol (ZSR) akibat eksitasi sumber luar.
+    \item Teorema Nilai Awal (IVT) dan Nilai Akhir (FVT) memberikan pintasan analitis yang sangat ampuh untuk menginspeksi nilai ekstrem $t \to 0^+$ dan $t \to \infty$ secara langsung tanpa perlu melakukan inversi pecahan parsial secara penuh.
+\end{enumerate}
+
+\subsection{Glosarium Istilah Teknis Rekayasa}
+\begin{description}[leftmargin=!,labelwidth=3.5cm]
+    \item[Bromwich Contour] Garis kontur integrasi kompleks pada bidang $s$ yang sejajar sumbu imajiner dan terletak di sebelah kanan seluruh singularitas.
+    \item[Cover-up Method] Teknik penutupan faktor penyebut oleh Oliver Heaviside untuk menghitung koefisien residu pecahan parsial secara langsung.
+    \item[ZIR / ZSR] \textit{Zero-Input Response} (respon tanpa sumber luar) dan \textit{Zero-State Response} (respon tanpa energi awal).
+    \item[Fictitious Source] Sumber tegangan atau arus semu yang merepresentasikan syarat awal memori energi pada elemen induktor atau kapasitor.
+    \item[TRV] \textit{Transient Recovery Voltage}; tegangan peralihan berfrekuensi tinggi yang muncul di seberang celah kontak pemutus tenaga sesaat setelah arus busur api padam.
+    \item[RRRV] \textit{Rate of Rise of Recovery Voltage}; laju kenaikan tegangan pemulihan transien per satuan waktu, dinyatakan dalam kV/$\mu$s.
+\end{description}
+
+\subsection{Referensi Standar Industri \& Akademis}
+\begin{enumerate}[leftmargin=*]
+    \item Zill, D. G. (2018). \textit{A First Course in Differential Equations with Modeling Applications} (11th ed.). Cengage Learning.
+    \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics} (10th ed.). John Wiley \& Sons.
+    \item Alexander, C. K., \& Sadiku, M. N. O. (2021). \textit{Fundamentals of Electric Circuits} (7th ed.). McGraw-Hill Education.
+    \item Hayt, W. H., Kemmerly, J. E., \& Durbin, S. M. (2019). \textit{Engineering Circuit Analysis} (9th ed.). McGraw-Hill Education.
+    \item IEEE Std C37.011-2019. \textit{IEEE Guide for the Application of Transient Recovery Voltage for AC High-Voltage Circuit Breakers}. IEEE Power and Energy Society.
+    \item IEC 62271-100:2021. \textit{High-voltage switchgear and controlgear -- Part 100: Alternating-current circuit-breakers}. International Electrotechnical Commission.
+\end{enumerate}
 
 \end{document}

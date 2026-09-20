@@ -1,90 +1,562 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 14: Fungsi Bessel \& Efek Kulit}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
+\newtheorem{theorem}{Teorema}[section]
 
-\title{Catatan Kuliah Persamaan Diferensial\\Minggu 14: Fungsi Khusus 1 (Persamaan Bessel \& Aplikasi Gelombang Silinder)}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 14}\\[0.3cm]
+\textbf{\LARGE PERSAMAAN DIFERENSIAL KOEFISIEN VARIABEL, METODE FROBENIUS, DAN FUNGSI BESSEL: RAGAM GELOMBANG SILINDRIS SERTA ANALISIS EFEK KULIT (SKIN EFFECT) KONDUKTOR DAYA}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
 
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 6)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 14 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Menyatakan bentuk baku Persamaan Diferensial Bessel orde $\nu$, metode deret Frobenius di sekitar titik singularitas regular, definisi Fungsi Bessel jenis pertama $J_\nu(x)$ dan jenis kedua $Y_\nu(x)$, serta perumusan kedalaman kulit (\textit{skin depth}) $\delta$.
+    \item \textbf{C2 (Memahami):} Menjelaskan alasan fisis munculnya persamaan diferensial dengan koefisien variabel pada sistem koordinat silindris, sifat ortogonalitas berbobot dari fungsi Bessel, serta fenomena desakan arus listrik AC ke permukaan konduktor (\textit{skin effect}) akibat induksi medan magnet internal.
+    \item \textbf{C3 (Menerapkan):} Menghitung nilai kedalaman penetrasi arus $\delta$ dan rasio resistansi efektif AC terhadap resistansi DC ($R_{\text{ac}}/R_{\text{dc}}$) pada berbagai frekuensi kerja dan material konduktor (tembaga, aluminium, kawat baja).
+    \item \textbf{C4 (Menganalisis):} Menganalisis frekuensi pancung (\textit{cut-off frequency}) ragam gelombang transversal elektrik (TE) dan transversal magnetik (TM) pada pemandu gelombang (\textit{circular waveguide}) menggunakan akar-akar nol fungsi Bessel $J_n(\alpha_{n,m}) = 0$.
+    \item \textbf{C5 (Mengevaluasi):} Mengevaluasi efisiensi energi dan pemilihan konstruksi konduktor pilin ACSR (\textit{Aluminum Conductor Steel Reinforced}) serta busbar berongga tubular pada transmisi 150 kV PLN berdasarkan standar internasional \textbf{IEC 61089} dan \textbf{IEEE Std 738}.
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program komputasi terbuka berbasis bahasa \textbf{Julia} (\texttt{Plots.jl}) untuk merekonstruksi kurva fungsi Bessel orde $0, 1, 2$ dan memvisualisasikan profil kerapatan arus radial di dalam konduktor silindris.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
 
 \newpage
 
-\section{Pendahuluan}
-Persoalan-persoalan teknik dengan geometri tabung/silinder (seperti waveguide silinder, kabel koaksial, atau perambatan sinyal pada serat optik) umumnya dimodelkan dalam koordinat silinder. Saat memecahkan Persamaan Gelombang atau Persamaan Helmholtz dalam sistem koordinat ini menggunakan pemisahan variabel, kita sering menemukan bentuk persamaan diferensial khusus yang dikenal sebagai Persamaan Bessel.
+\section{Peta Konsep \& Posisi Modul dalam Kurikulum}
 
-Modul ini membahas definisi Persamaan Bessel, solusinya (Fungsi Bessel), dan bagaimana fungsi ini digunakan dalam menggambarkan gelombang silinder di bidang rekayasa gelombang elektromagnetik.
+Sepanjang Minggu 1 hingga Minggu 13, seluruh persamaan diferensial yang kita kaji memiliki satu kesamaan: koefisien-koefisiennya berupa konstanta skalar tetap. Namun, alam semesta fisik tidak hanya berbentuk balok persegi atau garis lurus koordinat Kartesian. Banyak komponen rekayasa elektro yang paling fundamental berbentuk tabung, kawat berpenampang bulat, kabel koaksial, atau tabung pemandu gelombang (\textit{cylindrical waveguide}).
 
-\section{Materi Utama}
-\subsection{Persamaan Bessel}
-Persamaan diferensial Bessel berorde $\nu$ dituliskan sebagai:
+Ketika operator Laplacian ($\nabla^2$) ditransformasikan ke dalam koordinat silindris $(r, \phi, z)$, faktor kelengkungan ruang memunculkan suku metrik $1/r$ dan $1/r^2$. Akibatnya, persamaan diferensial spasial arah radial berubah menjadi **PDB dengan Koefisien Variabel**:
 \begin{equation}
-x^2 y'' + x y' + (x^2 - \nu^2)y = 0
+    r^2 \frac{d^2 R}{dr^2} + r \frac{dR}{dr} + (k^2 r^2 - \nu^2) R = 0
 \end{equation}
-dimana parameter $\nu$ merupakan bilangan riil tak negatif. Dalam banyak penerapan teknik elektro, parameter ini bernilai bilangan bulat $n$ ($n = 0, 1, 2, \dots$).
+Persamaan legendaris ini dikenal sebagai \textbf{Persamaan Diferensial Bessel}, dan solusinya, \textbf{Fungsi Bessel}, merupakan fungsi khusus (\textit{special functions}) paling penting dalam rekayasa gelombang elektromagnetik terdistribusi.
 
-Persamaan ini memiliki titik singular beraturan di $x = 0$, sehingga dapat diselesaikan menggunakan \textit{Metode Frobenius} dengan berasumsi $y(x) = \sum_{m=0}^\infty c_m x^{m+r}$.
+Posisi strategis Modul Minggu 14 disajikan pada Gambar~\ref{fig:peta_jalan_pd_w14}.
 
-\subsection{Fungsi Bessel Jenis Pertama, $J_\nu(x)$}
-Solusi utama Persamaan Bessel yang konvergen dan berhingga pada $x=0$ (untuk $\nu \ge 0$) disebut Fungsi Bessel jenis pertama, direpresentasikan sebagai $J_\nu(x)$:
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.45cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    doneblock/.style={rectangle, draw=green!60!black, fill=green!10, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[doneblock] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[doneblock, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[doneblock, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[doneblock, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[doneblock, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[doneblock, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[doneblock, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Analisis Rangkaian Domain $s$};
+    \node[doneblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[doneblock, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[doneblock, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[doneblock, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[doneblock, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[doneblock, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[highlight, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan dengan penekanan pada Modul Minggu 14.}
+\label{fig:peta_jalan_pd_w14}
+\end{figure}
+
+\section{Pendahuluan \& Filosofi Fisika: Asal Usul Geometris Fungsi Bessel}
+
+Ketika kita memodelkan perambatan medan gelombang atau potensial di dalam pipa konduktor atau serat optik silindris, kita menggunakan sistem koordinat tabung $(r, \phi, z)$. Operator Laplacian dalam koordinat ini adalah:
 \begin{equation}
-J_\nu(x) = \sum_{m=0}^{\infty} \frac{(-1)^m}{m! \Gamma(m + \nu + 1)} \left( \frac{x}{2} \right)^{2m+\nu}
+    \nabla^2 u = \frac{1}{r} \frac{\partial}{\partial r}\left( r \frac{\partial u}{\partial r} \right) + \frac{1}{r^2} \frac{\partial^2 u}{\partial \phi^2} + \frac{\partial^2 u}{\partial z^2} = \frac{\partial^2 u}{\partial r^2} + \frac{1}{r} \frac{\partial u}{\partial r} + \frac{1}{r^2} \frac{\partial^2 u}{\partial \phi^2} + \frac{\partial^2 u}{\partial z^2}
+    \label{eq:laplacian_cylindrical}
 \end{equation}
-Karakteristik fungsi $J_\nu(x)$ tampak menyerupai osilasi sinus dan kosinus namun amplitudonya meluruh seiring pertambahan $x$.
 
-\subsection{Fungsi Bessel Jenis Kedua, $Y_\nu(x)$}
-Solusi linear independen kedua dinamakan Fungsi Bessel jenis kedua (atau Fungsi Neumann), $Y_\nu(x)$. Fungsi ini membesar mendekati tak hingga ($\to -\infty$) saat $x \to 0$. Oleh karena itu, $Y_\nu(x)$ biasanya dieliminasi dari solusi fisis di mana medan di titik pusat silinder ($x=0$) harus bernilai terhingga.
+Perhatikan kemunculan faktor $1/r$ dan $1/r^2$. Faktor ini merepresentasikan perluasan luas selimut silinder ($2\pi r$) seiring bertambahnya jari-jari. Energi yang mengembang ke arah radial harus terdistribusi pada permukaan yang semakin membesar, sehingga amplitudo medan secara alami akan mengalami atenuasi geometris.
 
-Solusi umum persamaan Bessel:
+Saat kita menerapkan metode pemisahan variabel $u(r, \phi, z) = R(r)\Phi(\phi)Z(z)$ pada persamaan gelombang Helmholtz $(\nabla^2 + k^2)u = 0$, fungsi azimut $\Phi(\phi)$ harus berulang secara periodik setiap $2\pi$ ($\Phi(\phi + 2\pi) = \Phi(\phi)$), yang mewajibkan $\Phi''(\phi) + n^2 \Phi(\phi) = 0$ dengan $n$ bilangan bulat ($n = 0, 1, 2, \dots$). Persamaan diferensial spasial arah radial tereduksi menjadi:
 \begin{equation}
-y(x) = C_1 J_\nu(x) + C_2 Y_\nu(x)
+    r^2 \frac{d^2 R}{dr^2} + r \frac{dR}{dr} + (k_c^2 r^2 - n^2) R = 0
+    \label{eq:bessel_intro_eq}
+\end{equation}
+Dengan melakukan substitusi skala variabel tanpa dimensi $x = k_c r$, Persamaan~\eqref{eq:bessel_intro_eq} bertransformasi tepat menjadi \textbf{Persamaan Diferensial Bessel Standar}.
+
+\section{Metode Deret Frobenius \& Solusi Persamaan Bessel}
+
+Persamaan diferensial Bessel berorde $\nu \ge 0$ dinyatakan sebagai:
+\begin{equation}
+    x^2 y'' + x y' + (x^2 - \nu^2) y = 0
+    \label{eq:bessel_ode_standard}
+\end{equation}
+Bagi persamaan dengan $x^2$:
+\begin{equation}
+    y'' + \frac{1}{x} y' + \left(1 - \frac{\nu^2}{x^2}\right) y = 0
+\end{equation}
+Titik $x = 0$ merupakan \textbf{Titik Singular Beraturan} (\textit{Regular Singular Point}) karena koefisien $P(x) = 1/x$ dan $Q(x) = 1 - \nu^2/x^2$ tidak analitik di $x = 0$, namun perkalian $x P(x) = 1$ dan $x^2 Q(x) = x^2 - \nu^2$ analitik.
+
+\subsection{Metode Deret Frobenius}
+Berdasarkan Teorema Frobenius, solusi di sekitar titik singular beraturan dapat diasumsikan dalam bentuk deret kuasa yang diperluas:
+\begin{equation}
+    y(x) = x^r \sum_{m=0}^{\infty} c_m x^m = \sum_{m=0}^{\infty} c_m x^{m+r}, \quad c_0 \ne 0
+    \label{eq:frobenius_ansatz}
+\end{equation}
+Substitusikan turunan $y'$ dan $y''$ ke dalam Persamaan Bessel~\eqref{eq:bessel_ode_standard}:
+\begin{equation*}
+    \sum_{m=0}^{\infty} (m+r)(m+r-1) c_m x^{m+r} + \sum_{m=0}^{\infty} (m+r) c_m x^{m+r} + \sum_{m=0}^{\infty} c_m x^{m+r+2} - \nu^2 \sum_{m=0}^{\infty} c_m x^{m+r} = 0
+\end{equation*}
+Kelompokkan koefisien untuk pangkat terendah $x^r$ ($m = 0$):
+\begin{equation}
+    [r(r - 1) + r - \nu^2] c_0 = 0 \implies (r^2 - \nu^2) c_0 = 0
+\end{equation}
+Karena $c_0 \ne 0$, kita memperoleh \textbf{Persamaan Indicial} (\textit{Indicial Equation}):
+\begin{equation}
+    r^2 - \nu^2 = 0 \implies r_1 = +\nu, \quad r_2 = -\nu
+    \label{eq:indicial_roots}
 \end{equation}
 
-\subsection{Aplikasi: Gelombang dalam Waveguide Silinder}
-Tinjau perambatan medan listrik di dalam tabung konduktor silinder kosong dengan jari-jari $a$. Komponen longitudinal medan elektromagnetik, misalnya $E_z$ (pada mode TM), memenuhi Persamaan Helmholtz:
+\subsection{Fungsi Bessel Jenis Pertama: \texorpdfstring{$J_\nu(x)$}{J\_nu(x)}}
+Mengambil akar indicial terbesar $r = +\nu$ dan menyelesaikan relasi rekurensi untuk koefisien-koefisien genap (koefisien ganjil bernilai nol identik), kita memperoleh \textbf{Fungsi Bessel Jenis Pertama Berorde $\nu$}:
 \begin{equation}
-\nabla^2 E_z + k^2 E_z = 0
+    J_\nu(x) \triangleq \sum_{m=0}^{\infty} \frac{(-1)^m}{m! \, \Gamma(m + \nu + 1)} \left(\frac{x}{2}\right)^{2m + \nu}
+    \label{eq:bessel_j_series}
 \end{equation}
-Dalam koordinat silinder $(\rho, \phi, z)$, pemisahan variabel pada variabel radial $\rho$ menghasilkan persamaan yang ekuivalen dengan Persamaan Bessel:
+Untuk orde nol ($\nu = 0$, di mana $\Gamma(m+1) = m!$):
 \begin{equation}
-\rho^2 \frac{d^2 R}{d\rho^2} + \rho \frac{dR}{d\rho} + (k_c^2 \rho^2 - n^2)R = 0
+    J_0(x) = \sum_{m=0}^{\infty} \frac{(-1)^m}{(m!)^2} \left(\frac{x}{2}\right)^{2m} = 1 - \frac{x^2}{4} + \frac{x^4}{64} - \frac{x^6}{2304} + \dots
+    \label{eq:bessel_j0}
 \end{equation}
-dengan $k_c$ sebagai bilangan gelombang \textit{cut-off}. Solusinya berupa fungsi $J_n(k_c \rho)$. Medan harus bernilai nol di dinding konduktor ($\rho=a$), sehingga:
+Dan untuk orde satu ($\nu = 1$):
 \begin{equation}
-J_n(k_c a) = 0
+    J_1(x) = \frac{x}{2} - \frac{x^3}{16} + \frac{x^5}{384} - \dots
+    \label{eq:bessel_j1}
 \end{equation}
-Persamaan ini digunakan untuk menemukan frekuensi cut-off dari mode gelombang di dalam pandu gelombang silinder.
 
-\section{Ringkasan}
-Fungsi Bessel muncul secara alamiah ketika menyelesaikan masalah fisika dan teknik pada bidang dan volume berbentuk silinder. Dalam rekayasa elektromagnetik dan telekomunikasi optik, pemahaman Fungsi Bessel merupakan fondasi untuk merancang pandu gelombang (waveguides) dan menganalisis antena yang meradiasikan gelombang silinder.
+Perhatikan sifat fisis fundamental:
+\begin{equation}
+    J_0(0) = 1, \quad J_n(0) = 0 \quad (n \ge 1)
+\end{equation}
+Fungsi $J_\nu(x)$ berosilasi kuasi-periodik menyerupai gelombang kosinus teredam dengan amplitudo yang menyusut sebanding dengan $1/\sqrt{x}$ saat $x \to \infty$:
+\begin{equation}
+    J_\nu(x) \approx \sqrt{\frac{2}{\pi x}} \cos\left( x - \frac{\nu\pi}{2} - \frac{\pi}{4} \right), \quad \text{untuk } x \gg 1
+\end{equation}
 
-\section{Referensi}
-\begin{enumerate}
-    \item Balanis, C. A. (2012). \textit{Advanced Engineering Electromagnetics} (2nd ed.). Wiley.
-    \item Pozar, D. M. (2011). \textit{Microwave Engineering} (4th ed.). Wiley.
+\subsection{Fungsi Bessel Jenis Kedua: \texorpdfstring{$Y_\nu(x)$}{Y\_nu(x)} (Fungsi Neumann)}
+Solusi linier kedua yang independen didefinisikan oleh kombinasi:
+\begin{equation}
+    Y_\nu(x) \triangleq \frac{J_\nu(x) \cos(\nu\pi) - J_{-\nu}(x)}{\sin(\nu\pi)}
+    \label{eq:bessel_y_neumann}
+\end{equation}
+Karakteristik krusial dari Fungsi Neumann $Y_\nu(x)$ adalah ia \textbf{meledak menuju minus tak terhingga} di titik pusat:
+\begin{equation}
+    \lim_{x \to 0^+} Y_\nu(x) = -\infty
+    \label{eq:neumann_blowup}
+\end{equation}
+Dalam rekayasa elektro, jika domain fisik mencakup titik pusat silinder $r = 0$ (seperti inti kawat tembaga pejal), solusi $Y_\nu(x)$ \textbf{wajib dieliminasi secara fisik} ($C_2 = 0$) agar potensial atau medan listrik tidak bernilai tak terhingga di pusat konduktor!
+
+Maka solusi umum yang mencakup seluruh ruang adalah:
+\begin{equation}
+    y(x) = C_1 J_\nu(x) + C_2 Y_\nu(x)
+\end{equation}
+
+\section{Aplikasi Fundamental Rekayasa Elektro: Efek Kulit (Skin Effect) pada Konduktor AC}
+
+Salah satu aplikasi paling spektakuler dari persamaan diferensial Bessel dalam teknik elektro tenaga adalah penjelasan matematis mengenai \textbf{Efek Kulit} (\textit{Skin Effect}).
+
+\subsection{Latar Belakang Fisika: Desakan Arus AC ke Permukaan}
+Ketika konduktor silindris dialiri arus searah (DC), kerapatan arus $J$ terdistribusi seragam secara merata di seluruh penampang ($J = I/A$). Namun, ketika konduktor dialiri arus bolak-balik (AC) berfrekuensi $\omega$, perubahan fluks medan magnetik internal di dalam kawat membangkitkan gaya gerak listrik lawan (\textit{back-EMF}) akibat Hukum Induksi Faraday:
+\begin{equation}
+    \nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t}
+\end{equation}
+GGL induksi lawan ini bernilai paling kuat tepat di pusat inti silinder dan paling lemah di permukaan luar konduktor. Akibatnya, arus listrik tertolak keluar dan terkonsentrasi rapat di lapisan tipis permukaan terluar (\textit{skin}), meninggalkan bagian inti konduktor dalam kondisi hampir hampa arus!
+
+\subsection{Penurunan Persamaan Diferensial Kerapatan Arus}
+Dari Persamaan Maxwell di dalam medium konduktor linier ($\vec{J} = \sigma \vec{E}$, $\nabla \times \vec{H} = \vec{J}$, dan $\vec{B} = \mu \vec{H}$):
+\begin{equation}
+    \nabla \times (\nabla \times \vec{E}) = -\mu \frac{\partial}{\partial t} (\nabla \times \vec{H}) = -\mu \sigma \frac{\partial \vec{E}}{\partial t}
+\end{equation}
+Menggunakan identitas vektor $\nabla \times (\nabla \times \vec{E}) = \nabla(\nabla \cdot \vec{E}) - \nabla^2 \vec{E}$, dan mengingat $\nabla \cdot \vec{E} = 0$ di dalam logam netral:
+\begin{equation}
+    \nabla^2 \vec{E} = \mu \sigma \frac{\partial \vec{E}}{\partial t} \implies \nabla^2 \vec{J} = \mu \sigma \frac{\partial \vec{J}}{\partial t}
+    \label{eq:diffusion_current_vector}
+\end{equation}
+
+Untuk arus sinusoidal tunak berfrekuensi sudut $\omega$ yang mengalir ke arah aksial $\hat{a}_z$ ($J_z(r, t) = \text{Re}\{J_z(r) e^{j\omega t}\}$), turunan waktu berubah menjadi perkalian kompleks $\frac{\partial}{\partial t} \to j\omega$:
+\begin{equation}
+    \nabla^2 J_z(r) = j\omega\mu\sigma J_z(r)
+\end{equation}
+Dalam koordinat silindris dengan simetri azimut ($\partial/\partial\phi = 0$ dan $\partial/\partial z = 0$):
+\begin{equation}
+    \frac{d^2 J_z}{dr^2} + \frac{1}{r} \frac{dJ_z}{dr} - j\omega\mu\sigma J_z = 0
+    \label{eq:skin_effect_ode}
+\end{equation}
+
+Kalikan seluruh persamaan dengan $r^2$:
+\begin{equation}
+    r^2 \frac{d^2 J_z}{dr^2} + r \frac{dJ_z}{dr} + \left( -j\omega\mu\sigma r^2 \right) J_z = 0
+    \label{eq:skin_bessel_modified}
+\end{equation}
+Persamaan~\eqref{eq:skin_bessel_modified} adalah \textbf{Persamaan Bessel Orde Nol dengan Argumen Kompleks}!
+
+\subsection{Kedalaman Penetrasi Kulit (Skin Depth, \texorpdfstring{$\delta$}{delta})}
+Konstanta penyebaran kompleks didefinisikan sebagai:
+\begin{equation}
+    \gamma = \sqrt{j\omega\mu\sigma} = \sqrt{\frac{\omega\mu\sigma}{2}} + j\sqrt{\frac{\omega\mu\sigma}{2}} = \frac{1 + j}{\delta}
+\end{equation}
+di mana besaran riil $\delta$ disebut sebagai \textbf{Kedalaman Penetrasi Kulit} (\textit{Skin Depth}):
+\begin{equation}
+    \delta \triangleq \sqrt{\frac{2}{\omega\mu\sigma}} = \frac{1}{\sqrt{\pi f \mu \sigma}}\quad [\text{meter}]
+    \label{eq:skin_depth_formula}
+\end{equation}
+\textbf{Makna Fisis $\delta$:} Kedalaman kulit adalah jarak dari permukaan luar konduktor ke arah dalam di mana kerapatan arus AC telah meluruh menjadi $1/e \approx 36{,}8\%$ dari nilai kerapatan arus di permukaan luarnya.
+
+\subsection{Distribusi Rapat Arus \& Fungsi Kelvin}
+Solusi Persamaan~\eqref{eq:skin_bessel_modified} yang berhingga di pusat $r = 0$ dinyatakan menggunakan Fungsi Bessel orde nol:
+\begin{equation}
+    J_z(r) = J_{\text{permukaan}} \cdot \frac{J_0(j^{3/2} r / \delta)}{J_0(j^{3/2} a / \delta)} = J_{\text{permukaan}} \cdot \frac{\text{Ber}(r/\delta) + j\,\text{Bei}(r/\delta)}{\text{Ber}(a/\delta) + j\,\text{Bei}(a/\delta)}
+    \label{eq:kelvin_current_distribution}
+\end{equation}
+di mana $a$ adalah jari-jari luar kawat silindris, serta $\text{Ber}(x)$ (\textit{Bessel Real}) dan $\text{Bei}(x)$ (\textit{Bessel Imaginary}) adalah \textbf{Fungsi Kelvin}.
+
+\section{Studi Kasus Industri: Rugi-Rugi Daya AC pada Kawat Transmisi ACSR 150 kV PLN (Standar IEC 61089 \& IEEE Std 738)}
+
+\subsection{Dampak Efek Kulit pada Resistansi Efektif Saluran}
+Karena arus terkonsentrasi di permukaan terluar, luas penampang efektif konduktor yang aktif menyalurkan arus menyusut drastis. Akibatnya, \textbf{resistansi konduktor terhadap arus bolak-balik ($R_{\text{ac}}$) selalu lebih besar daripada resistansi terhadap arus searah ($R_{\text{dc}}$)}:
+\begin{equation}
+    R_{\text{ac}} = R_{\text{dc}} \cdot k_{\text{skin}}
+\end{equation}
+di mana faktor pengali efek kulit $k_{\text{skin}} > 1$. Peningkatan resistansi ini secara langsung melipatgandakan rugi-rugi disipasi daya transmisi ($P_{\text{loss}} = I^2 R_{\text{ac}}$) yang menghanguskan jutaan kilowatt-jam energi di seluruh jaringan transmisi PLN!
+
+\subsection{Inovasi Rekayasa: Konduktor ACSR \& Busbar Tubular}
+Memahami distribusi fungsi Bessel ini mendasari dua inovasi desain paling revolusioner dalam teknik elektro:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Kawat Konduktor ACSR (\textit{Aluminum Conductor Steel Reinforced}):}
+    Berdasarkan standar internasional \textbf{IEC 61089}, kawat transmisi SUTT 150 kV dan 500 kV PLN tidak menggunakan tembaga pejal, melainkan kawat komposit ACSR (seperti tipe \textit{Hawk} atau \textit{Dove}). Karena inti tengah konduktor hampir tidak dialiri arus akibat efek kulit, bagian inti tengah diisi oleh kawat baja kuat tarik tinggi (\textit{galvanized steel core}) untuk menahan beban mekanis bentangan menara, sedangkan lapisan terluar tempat arus menumpuk dilapisi oleh pilinan kawat aluminium murni berkonduktivitas tinggi!
+    \item \textbf{Busbar Gardu Induk Berongga (\textit{Tubular Busbar}):}
+    Pada rel gardu induk tegangan ekstra tinggi, konduktor dibuat dalam bentuk pipa silinder berongga (\textit{hollow tube}) tanpa inti dalam. Menghilangkan material logam di bagian tengah menghemat berton-ton bobot logam dan biaya tanpa mengurangi kapasitas hantar arus sama sekali!
+\end{enumerate}
+
+\section{Contoh Soal Terhitung Numerik Langkah demi Langkah}
+
+\begin{example}[Perhitungan Kedalaman Kulit Tembaga dan Aluminium]
+Sebuah sistem transmisi daya beroperasi pada frekuensi standar $f = 50\text{ Hz}$. Material yang digunakan memiliki parameter fisik:
+\begin{itemize}[leftmargin=*]
+    \item Tembaga murni: $\sigma_{\text{Cu}} = 5{,}8 \times 10^7\text{ S/m}$, permeabilitas $\mu = \mu_0 = 4\pi \times 10^{-7}\text{ H/m}$.
+    \item Aluminium transmisi: $\sigma_{\text{Al}} = 3{,}5 \times 10^7\text{ S/m}$, $\mu = \mu_0$.
+\end{itemize}
+\begin{enumerate}[leftmargin=*]
+    \item Hitung kedalaman kulit $\delta$ untuk tembaga dan aluminium pada frekuensi $50\text{ Hz}$.
+    \item Hitung kedalaman kulit pada tembaga jika frekuensi dinaikkan ke frekuensi radio telekomunikasi $f = 1\text{ MHz}$.
+\end{enumerate}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Kedalaman Kulit pada Frekuensi Daya $50\text{ Hz}$:}
+    \begin{itemize}[leftmargin=*]
+        \item Untuk Tembaga ($50\text{ Hz}$):
+        \begin{align*}
+            \delta_{\text{Cu}} &= \frac{1}{\sqrt{\pi f \mu_0 \sigma_{\text{Cu}}}} = \frac{1}{\sqrt{\pi (50)(4\pi \times 10^{-7})(5{,}8 \times 10^7)}} \\
+            &= \frac{1}{\sqrt{50 \times 4 \pi^2 \times 58}} = \frac{1}{\sqrt{114490}} = \frac{1}{338{,}36} \approx \mathbf{0{,}00922\text{ m} = 9{,}22\text{ mm}}
+        \end{align*}
+        \item Untuk Aluminium ($50\text{ Hz}$):
+        \begin{align*}
+            \delta_{\text{Al}} &= \frac{1}{\sqrt{\pi (50)(4\pi \times 10^{-7})(3{,}5 \times 10^7)}} = \frac{1}{\sqrt{50 \times 4 \pi^2 \times 35}} \\
+            &= \frac{1}{\sqrt{69087}} = \frac{1}{262{,}84} \approx \mathbf{0{,}01184\text{ m} = 11{,}84\text{ mm}}
+        \end{align*}
+    \end{itemize}
+    
+    \item \textbf{Kedalaman Kulit Tembaga pada Frekuensi Tinggi $1\text{ MHz}$ ($10^6\text{ Hz}$):}
+    Karena $\delta \propto 1/\sqrt{f}$:
+    \begin{align*}
+        \delta_{\text{Cu}}(1\text{ MHz}) &= \delta_{\text{Cu}}(50\text{ Hz}) \times \sqrt{\frac{50}{10^6}} \\
+        &= 9{,}22\text{ mm} \times \sqrt{5 \times 10^{-5}} = 9{,}22 \times 0{,}007071 \\
+        &\approx \mathbf{0{,}0652\text{ mm} = 65{,}2\,\mu\text{m}} \quad \qed
+    \end{align*}
+    Pada $1\text{ MHz}$, arus mengalir hanya pada lapisan setipis rambut manusia ($65\,\mu\text{m}$)!
+\end{enumerate}
+
+\begin{example}[Akar-Akar Nol Fungsi Bessel \& Frekuensi Pancung Pandu Gelombang]
+Sebuah pemandu gelombang silindris berongga terbuat dari tembaga memiliki jari-jari dalam $a = 2{,}5\text{ cm} = 0{,}025\text{ m}$. Mode gelombang Transversal Magnetik (TM) memiliki komponen medan aksial $E_z(r) \propto J_n(k_c r)$.
+Diketahui akar nol pertama dari fungsi Bessel orde nol adalah $\alpha_{0,1} = 2{,}405$ (yaitu $J_0(2{,}405) = 0$).
+\begin{enumerate}[leftmargin=*]
+    \item Tentukan bilangan gelombang pancung (\textit{cut-off wavenumber}) $k_c$ untuk ragam $\text{TM}_{01}$.
+    \item Hitung frekuensi pancung (\textit{cut-off frequency}) $f_c$ dari ragam tersebut di udara bebas ($c = 3 \times 10^8\text{ m/s}$).
+\end{enumerate}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Penentuan Bilangan Gelombang Pancung $k_c$:}
+    Syarat batas konduktor sempurna pada dinding silinder $r = a$ mengharuskan komponen medan listrik tangensial nol:
+    \begin{equation*}
+        E_z(a) = 0 \implies J_0(k_c a) = 0
+    \end{equation*}
+    Maka argumen harus sama dengan akar nol pertama:
+    \begin{equation*}
+        k_c a = \alpha_{0,1} \implies k_c = \frac{\alpha_{0,1}}{a} = \frac{2{,}405}{0{,}025} = \mathbf{96{,}2\text{ rad/m}}
+    \end{equation*}
+    
+    \item \textbf{Perhitungan Frekuensi Pancung $f_c$:}
+    Hubungan dispersi gelombang elektromagnetik:
+    \begin{equation*}
+        k_c = \frac{\omega_c}{c} = \frac{2\pi f_c}{c} \implies f_c = \frac{k_c c}{2\pi}
+    \end{equation*}
+    Substitusi nilai numerik:
+    \begin{equation*}
+        f_c = \frac{96{,}2 \times 3 \times 10^8}{2\pi} = \frac{2{,}886 \times 10^{10}}{6{,}2832} \approx \mathbf{4{,}593 \times 10^9\text{ Hz} = 4{,}593\text{ GHz}} \quad \qed
+    \end{equation*}
+    Sinyal microwave dengan frekuensi di bawah $4{,}593\text{ GHz}$ tidak dapat merambat melalui tabung tersebut dan akan teratenuasi secara eksponensial!
+\end{enumerate}
+
+\begin{example}[Rasio Resistansi AC terhadap DC pada Konduktor Silindris]
+Untuk kawat konduktor silindris dengan jari-jari $a$ di mana rasio $a/\delta > 4$, rasio resistansi efektif AC terhadap resistansi DC dapat diaproksimasi dengan formula asimtotik:
+\begin{equation*}
+    \frac{R_{\text{ac}}}{R_{\text{dc}}} \approx \frac{a}{2\delta} + 0{,}25
+\end{equation*}
+Jika sebuah kabel kawat tembaga pejal berdiameter $d = 2\text{ cm}$ ($a = 10\text{ mm}$) dialiri arus AC berfrekuensi $f = 1\text{ kHz}$ ($\delta = 2{,}06\text{ mm}$):
+\begin{enumerate}[leftmargin=*]
+    \item Hitung rasio peningkatan resistansi $R_{\text{ac}}/R_{\text{dc}}$!
+    \item Hitung persentase peningkatan rugi-rugi daya Joule pada konduktor tersebut untuk arus RMS yang sama!
+\end{enumerate}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item Rasio jari-jari terhadap kedalaman kulit:
+    \begin{equation*}
+        \frac{a}{\delta} = \frac{10\text{ mm}}{2{,}06\text{ mm}} \approx 4{,}854 > 4 \quad (\text{Aproksimasi Valid!})
+    \end{equation*}
+    Rasio resistansi AC terhadap DC:
+    \begin{equation*}
+        \frac{R_{\text{ac}}}{R_{\text{dc}}} = \frac{4{,}854}{2} + 0{,}25 = 2{,}427 + 0{,}25 = \mathbf{2{,}677}
+    \end{equation*}
+    Resistansi kawat meningkat hampir 2,7 kali lipat dibandingkan resistansi DC!
+    
+    \item Persentase peningkatan rugi-rugi daya ($P = I^2 R$):
+    \begin{equation*}
+        \Delta P_{\%} = \left( \frac{R_{\text{ac}} - R_{\text{dc}}}{R_{\text{dc}}} \right) \times 100\% = (2{,}677 - 1) \times 100\% = \mathbf{167{,}7\%} \quad \qed
+    \end{equation*}
+\end{enumerate}
+
+\section{Praktikum Komputasi Numerik Terbuka Berbasis Julia}
+
+Program Julia berikut mengimplementasikan perhitungan deret fungsi Bessel jenis pertama $J_0(x), J_1(x), J_2(x)$ serta memodelkan kurva kerapatan arus radial ternormalisasi $J_z(r)/J_{\text{permukaan}}$ di dalam penampang kawat silindris untuk mendemonstrasikan fenomena *skin effect* menggunakan pustaka visualisasi \texttt{Plots.jl}.
+
+\begin{lstlisting}[style=juliastyle, caption={Skrip Julia perhitungan Fungsi Bessel dan simulasi distribusi rapat arus efek kulit.}, label={lst:julia_bessel_skin}]
+# -------------------------------------------------------------
+# MODUL 14: SIMULASI FUNGSI BESSEL DAN EFEK KULIT (SKIN EFFECT)
+# Persamaan Diferensial 2026 - Teknik Elektro UNIB
+# Pengampu: Ir. Novalio Daratha, Ph.D. & M. Arfan, M.T.
+# -------------------------------------------------------------
+
+using Plots
+
+# 1. Implementasi Deret Frobenius Fungsi Bessel Orde Nol J0(x)
+function bessel_j0(x; n_terms=30)
+    val = 0.0
+    for m in 0:n_terms
+        term = ((-1.0)^m / (factorial(big(m))^2)) * (x / 2.0)^(2m)
+        val += Float64(term)
+    end
+    return val
+end
+
+# Implementasi Fungsi Bessel Orde Satu J1(x)
+function bessel_j1(x; n_terms=30)
+    val = 0.0
+    for m in 0:n_terms
+        term = ((-1.0)^m / (factorial(big(m)) * factorial(big(m+1)))) * (x / 2.0)^(2m+1)
+        val += Float64(term)
+    end
+    return val
+end
+
+# 2. Plotting Karakteristik Fungsi Bessel J0(x) dan J1(x)
+x_span = range(0.0, 15.0, length=300)
+j0_vals = [bessel_j0(x) for x in x_span]
+j1_vals = [bessel_j1(x) for x in x_span]
+
+p1 = plot(x_span, j0_vals, label="J_0(x) [Bessel Orde 0]", lw=2.0, color=:blue,
+          xlabel="Argumen x", ylabel="Amplitudo Fungsi",
+          title="Karakteristik Osilasi Kuasi-Periodik Fungsi Bessel",
+          legend=:topright, grid=true)
+plot!(p1, x_span, j1_vals, label="J_1(x) [Bessel Orde 1]", lw=2.0, color=:red)
+hline!(p1, [0.0], linestyle=:dash, color=:black, label=false)
+
+# 3. Model Distribusi Rapat Arus Efek Kulit di Dalam Kawat Silindris
+# Profil rasio arus radial: J(r)/J_surf ~= exp(-(a - r)/delta)
+const a_wire = 10.0      # Jari-jari kawat (mm)
+r_grid = range(0.0, a_wire, length=200)
+
+deltas = [1.0, 2.5, 5.0, 15.0]  # Berbagai nilai skin depth (mm)
+colors = [:red, :orange, :blue, :green]
+
+p2 = plot(xlabel="Jari-Jari Radial r [mm]", ylabel="Rasio Rapat Arus J(r) / J_permukaan",
+          title="Distribusi Desakan Arus Efek Kulit (Skin Effect)",
+          legend=:topleft, grid=true)
+
+for (i, d_val) in enumerate(deltas)
+    j_profile = [exp(-(a_wire - r) / d_val) for r in r_grid]
+    lbl = "delta = $(d_val) mm " * ((d_val < 5.0) ? "(Frekuensi Tinggi)" : "(Frekuensi Rendah)")
+    plot!(p2, r_grid, j_profile, label=lbl, lw=2.0, color=colors[i])
+end
+
+# Gabungkan kedua grafik
+plot_comb = plot(p1, p2, layout=(2, 1), size=(800, 700))
+savefig("bessel_skin_effect_modul14.png")
+println("Simulasi sukses. Grafik disimpan sebagai bessel_skin_effect_modul14.png")
+\end{lstlisting}
+
+\section{Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} 
+    Tuliskan persamaan indicial dari Persamaan Diferensial Bessel $x^2 y'' + x y' + (x^2 - \nu^2)y = 0$ dan sebutkan kedua akar indicialnya!
+    
+    \item \textbf{C2 (Memahami):} 
+    Jelaskan mengapa Fungsi Bessel jenis kedua $Y_\nu(x)$ selalu dibuang ($C_2 = 0$) pada pemodelan gelombang dan medan di dalam media silinder pejal yang mencakup titik sumbu pusat $r = 0$!
+    
+    \item \textbf{C3 (Menerapkan):} 
+    Sebuah konduktor busbar gardu induk berbahan aluminium ($\sigma = 3{,}5 \times 10^7\text{ S/m}$) memiliki jari-jari luar $a = 20\text{ mm}$. Hitung kedalaman kulit $\delta$ pada frekuensi $50\text{ Hz}$ dan hitung rasio $R_{\text{ac}}/R_{\text{dc}}$ menggunakan formula aproksimasi asimtotik!
+    
+    \item \textbf{C4 (Menganalisis):} 
+    Buktikan bahwa turunan pertama dari fungsi Bessel orde nol memenuhi relasi diferensial $J_0'(x) = -J_1(x)$ menggunakan ekspansi deret kuasa Frobenius!
+    
+    \item \textbf{C5 (Mengevaluasi):} 
+    Sebuah kawat tembaga pejal berdiameter $5\text{ cm}$ direncanakan untuk digunakan sebagai busbar transmisi 50 Hz berarus 2.000 A. Berdasarkan pemahaman Anda mengenai kedalaman penetrasi kulit pada tembaga ($\delta \approx 9{,}2\text{ mm}$), evaluasi efisiensi penggunaan material tembaga pejal tersebut dan jelaskan mengapa desain pipa tubular berongga jauh lebih unggul secara teknis dan ekonomis!
+    
+    \item \textbf{C6 (Menciptakan/Merancang):} 
+    Rancanglah radius dalam ($r_i$) dan radius luar ($r_o$) dari busbar tubular berongga berbahan aluminium untuk sistem gardu induk 150 kV pada frekuensi $50\text{ Hz}$, sedemikian rupa sehingga ketebalan dinding busbar ($t = r_o - r_i$) tepat sama dengan satu kedalaman penetrasi kulit ($\delta$), dengan luas penampang konduktor efektif $A_{\text{eff}} = 800\text{ mm}^2$!
+\end{enumerate}
+
+\section{Rangkuman, Glosarium Istilah Teknis, dan Referensi Standar}
+
+\subsection{Rangkuman Inti Perkuliahan}
+\begin{enumerate}[leftmargin=*]
+    \item Transformasi Laplacian ke dalam koordinat silindris melahirkan suku kelengkungan metrik $1/r$, yang mengubah persamaan medan menjadi PDB dengan koefisien variabel (Persamaan Bessel).
+    \item Metode Frobenius memecahkan PDB di sekitar titik singular beraturan $x = 0$, menghasilkan Fungsi Bessel Jenis Pertama $J_\nu(x)$ yang berhingga di titik asal dan Fungsi Neumann $Y_\nu(x)$ yang singular di titik asal.
+    \item Pada frekuensi bolak-balik (AC), interaksi Hukum Faraday dan Ampere mendesak arus listrik ke lapisan terluar konduktor silindris (\textit{Skin Effect}).
+    \item Kedalaman kulit $\delta = 1/\sqrt{\pi f \mu \sigma}$ mengecil seiring peningkatan frekuensi, memicu kenaikan resistansi efektif AC ($R_{\text{ac}} > R_{\text{dc}}$).
+    \item Standar industri IEC 61089 dan IEEE Std 738 mengoptimalkan desain konduktor transmisi daya melalui penggunaan kawat pilin ACSR dan busbar tubular berongga untuk meminimalkan rugi-rugi daya efek kulit.
+\end{enumerate}
+
+\subsection{Glosarium Istilah Teknis Rekayasa}
+\begin{description}[leftmargin=!,labelwidth=3.5cm]
+    \item[Frobenius Method] Teknik penyelesaian PDB linier koefisien variabel menggunakan deret kuasa dengan pangkat riil $x^{m+r}$.
+    \item[Bessel Function] Fungsi khusus solusi Persamaan Bessel yang merepresentasikan ragam osilasi spasial bergeometri silindris.
+    \item[Skin Depth ($\delta$)] Kedalaman penetrasi arus bolak-balik di mana kerapatan arus meluruh menjadi $1/e$ dari nilai permukaannya.
+    \item[ACSR] \textit{Aluminum Conductor Steel Reinforced}; kawat transmisi daya dengan inti baja dan lapisan luar pilinan aluminium.
+    \item[Kelvin Functions] Fungsi khusus $\text{Ber}(x)$ dan $\text{Bei}(x)$ yang merupakan bagian riil dan imajiner dari fungsi Bessel berargumen kompleks.
+\end{description}
+
+\subsection{Referensi Standar Industri \& Akademis}
+\begin{enumerate}[leftmargin=*]
+    \item Hayt, W. H., \& Buck, J. A. (2019). \textit{Engineering Electromagnetics} (9th ed.). McGraw-Hill Education.
+    \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics} (10th ed.). John Wiley \& Sons.
+    \item Balanis, C. A. (2012). \textit{Advanced Engineering Electromagnetics} (2nd ed.). John Wiley \& Sons.
+    \item IEC 61089:1991+AMD1:1997. \textit{Round wire concentric lay overhead electrical stranded conductors}. International Electrotechnical Commission.
+    \item IEEE Std 738-2012. \textit{IEEE Standard for Calculating the Current-Temperature of Bare Overhead Conductors}. IEEE Power and Energy Society.
 \end{enumerate}
 
 \end{document}

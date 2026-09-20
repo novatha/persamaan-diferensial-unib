@@ -10,3 +10,18 @@ __pycache__/
 *.toc
 *.nav
 *.snm
+*.vrb
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Video files (too large for standard git)
+*.mp4
+
+# Sensitive credentials
+client_secrets.json
+token.json
+
+# Scratch directories
+scratch/
+.tempmediaStorage/

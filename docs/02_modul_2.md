@@ -1,5 +1,16 @@
 # Catatan Kuliah Persamaan Diferensial - Minggu 2: Persamaan Diferensial Biasa Orde 1
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 8px; margin: 1.5rem 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+  <iframe src="https://www.youtube-nocookie.com/embed/r5nFrD9DkOE" title="Video Perkuliahan Minggu 02 - Persamaan Diferensial | Teknik Elektro UNIB" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+</div>
+
+???+ info "📥 Pusat Unduhan Berkas Pembelajaran Minggu 2"
+    - 📽️ [**Slide Presentasi Beamer (PDF)**](files/ch2.pdf)
+    - 📄 [**Diktat / Modul Belajar Lengkap (PDF)**](files/modul_2.pdf)
+    - 📝 [**Lembar Kerja Mahasiswa (Worksheet C1–C6)**](files/worksheet2.pdf)
+    - 📐 [**Problem Set Latihan Mandiri & Solusi**](files/problem_set2.pdf)
+    - 📺 [**Tautan Video YouTube Resmi (10:06)**](https://youtu.be/r5nFrD9DkOE)
+
 ## Pendahuluan
 Persamaan Diferensial Biasa (PDB) Orde 1 merupakan fondasi dalam mempelajari persamaan diferensial. Pada minggu ini, kita akan membahas berbagai teknik analitik, yang meliputi metode persamaan separabel, persamaan eksak, dan penggunaan faktor integrasi.
 

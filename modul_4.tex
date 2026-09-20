@@ -1,300 +1,849 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
-\usepackage[many]{tcolorbox}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\textit{Persamaan Diferensial - Teknik Elektro UNIB}}
-\fancyhead[R]{\textit{Minggu 4}}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 4: PDB Orde 2 Homogen \& Tangki LC}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
 \newtheorem{theorem}{Teorema}[section]
 
-\title{\textbf{Modul Pembelajaran Persamaan Diferensial}\\\large Minggu 4: Persamaan Diferensial Biasa Orde 2 Linier Homogen Koefisien Konstan}
-\author{\textbf{Novalio Daratha, Ph.D.} \& \textbf{Muhammad Arfan, M.T.}\\Program Studi Teknik Elektro, Fakultas Teknik, Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 4}\\[0.3cm]
+\textbf{\LARGE PERSAMAAN DIFERENSIAL BIASA ORDE 2 LINIER HOMOGEN KOEFISIEN KONSTAN: PERSAMAAN KARAKTERISTIK, DETERMINAN WRONSKIAN, TIGA RAGAM REDAMAN, OSILATOR TANGKI LC \& SIMULASI JULIA}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
 
-\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Capaian Pembelajaran Khusus (Sub-CPMK 4)]
-Setelah mempelajari modul ini, mahasiswa diharapkan mampu:
-\begin{enumerate}[noitemsep]
-    \item Menjelaskan struktur PDB linier orde 2 homogen dengan koefisien konstan.
-    \item Menguji kebebasan linier pasangan solusi basis menggunakan determinan Wronskian.
-    \item Membuktikan kemunculan suku $x e^{rx}$ pada akar kembar melalui Metode Reduksi Orde.
-    \item Menyelesaikan Masalah Nilai Awal (IVP) untuk 3 kasus diskriminan ($D > 0, D = 0, D < 0$).
-    \item Memodelkan osilasi alami pada sistem fisik rangkaian listrik LC murni tanpa redaman.
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 3)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 4 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Menyatakan bentuk umum PDB linier orde 2 homogen koefisien konstan, perumusan persamaan karakteristik kuadrat, dan formula determinan Wronskian.
+    \item \textbf{C2 (Memahami):} Menjelaskan prinsip superposisi linier, makna fisis kebebasan linier solusi basis ($W \neq 0$), serta interpretasi tiga ragam redaman (\textit{overdamped}, \textit{critically damped}, \textit{underdamped}) terhadap dinamika pertukaran energi medan magnetik induktor dan medan listrik kapasitor.
+    \item \textbf{C3 (Menerapkan):} Menurunkan solusi analitik langkah demi langkah untuk Masalah Nilai Awal (IVP) pada ketiga kasus diskriminan ($D > 0, D = 0, D < 0$), membuktikan kemunculan suku $x e^{rx}$ melalui metode reduksi orde d'Alembert, serta mengekstraksi nilai konstanta integrasi dari kondisi batas.
+    \item \textbf{C4 (Menganalisis):} Menganalisis parameter redaman rangkaian RLC seri bebas sumber: faktor redaman Neper $\alpha = \frac{R}{2L}$, frekuensi sudut alami $\omega_0 = \frac{1}{\sqrt{LC}}$, rasio redaman $\zeta = \frac{\alpha}{\omega_0}$, dan frekuensi osilasi teredam $\omega_d = \sqrt{\omega_0^2 - \alpha^2}$.
+    \item \textbf{C5 (Mengevaluasi):} Mengevaluasi kekekalan energi total pada tangki osilator LC murni ($R = 0$) frekuensi radio (RF) dan menganalisis trajektori lintasan ruang fasa (\textit{phase portrait}) untuk mengklasifikasikan kestabilan titik kesetimbangan (pusat eliptik, fokus stabil, dan simpul stabil).
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program simulasi komputasi numerik berbasis \textbf{Julia} (\texttt{DifferentialEquations.jl} \& \texttt{Plots.jl}) untuk membandingkan secara visual respon waktu ketiga ragam redaman dan merekonstruksi kurva ruang fasa dinamis.
 \end{enumerate}
 \end{tcolorbox}
 
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
+
 \newpage
 
-\section{Pendahuluan: Sistem Orde Dua dalam Rekayasa Elektro}
-Pada perkuliahan minggu sebelumnya, kita telah mempelajari sistem orde satu yang hanya memuat satu elemen penyimpan energi (seperti induktor pada rangkaian RL atau kapasitor pada rangkaian RC). Namun, mayoritas sistem kelistrikan industri bersifat **orde dua atau lebih tinggi** karena memuat dua elemen penyimpan energi yang saling bertukar medan, yaitu:
-\begin{itemize}
-    \item \textbf{Induktor ($L$):} menyimpan energi dalam bentuk medan magnetik ($E_L = \frac{1}{2} L i^2$).
-    \item \textbf{Kapasitor ($C$):} menyimpan energi dalam bentuk medan listrik ($E_C = \frac{1}{2} C v^2 = \frac{q^2}{2C}$).
+\section{Peta Konsep \& Posisi Modul dalam Kurikulum}
+
+Memasuki Minggu 4, perkuliahan Persamaan Diferensial melangkah ke ranah yang jauh lebih dinamis: sistem berorde dua. Apabila sistem orde satu pada Minggu 1--3 hanya melibatkan satu elemen penyimpan energi (hanya $L$ atau hanya $C$) sehingga respon waktunya murni bersifat relaksasi eksponensial monotonik, sistem orde dua memuat \textbf{dua elemen penyimpan energi independen} ($L$ dan $C$) yang saling berinteraksi.
+
+Pertukaran energi bolak-balik antara medan magnetik induktor ($\frac{1}{2} L i^2$) dan medan elektrostatik kapasitor ($\frac{1}{2} C v^2$) memicu fenomena baru yang sangat fundamental dalam rekayasa elektro: \textbf{osilasi dan gelombang}. Modul Minggu 4 meletakkan fondasi analitis untuk menganalisis osilasi bebas sebelum sistem tersebut dieksitasi oleh sumber tegangan bolak-balik (AC) pada Minggu 5.
+
+Posisi strategis Modul Minggu 4 di dalam keseluruhan kurikulum disajikan pada Gambar~\ref{fig:peta_jalan_pd_w4}.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.45cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    doneblock/.style={rectangle, draw=green!60!black, fill=green!10, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[doneblock] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[doneblock, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[doneblock, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[highlight, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[block, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[block, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[block, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Solusi PDB Domain $s$};
+    \node[midblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[block, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[block, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[block, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[block, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[block, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[block, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan dengan penekanan pada Modul Minggu 4.}
+\label{fig:peta_jalan_pd_w4}
+\end{figure}
+
+\section{Pendahuluan \& Filosofi Fisika: Pertukaran Energi Dua Medan}
+
+Dalam fisika rekayasa elektro, keberadaan turunan kedua terhadap waktu ($\frac{d^2}{dt^2}$) selalu merefleksikan keberadaan inersia dan pemulihan (\textit{restoration}):
+\begin{itemize}[leftmargin=*]
+    \item Pada mekanika, hukum kedua Newton $m \frac{d^2x}{dt^2} + k x = 0$ merepresentasikan osilasi massa-pegas, di mana massa $m$ menyimpan energi kinetik dan pegas $k$ menyimpan energi potensial elastis.
+    \item Pada elektroteknik, induktor $L$ bertindak persis seperti massa mekanik (inersia listrik yang menolak perubahan arus), sedangkan kapasitor $C$ bertindak seperti pegas elastis (elastisitas elektrostatik yang menyimpan muatan).
+    \item Resistor $R$ bertindak sebagai peredam gesekan (\textit{damping dashpot}) yang mendisipasikan energi elektromagnetik menjadi kalor Joule secara ireversibel.
 \end{itemize}
 
-Interaksi dinamis antara kedua elemen ini melahirkan persamaan diferensial yang melibatkan turunan kedua terhadap waktu ($\frac{d^2 i}{dt^2}$ atau $\frac{d^2 q}{dt^2}$). Sebelum menganalisis pengaruh sumber tegangan luar (sistem non-homogen pada Minggu 5), kita wajib menguasai perilaku alami (*natural response*) sistem melalui **PDB Linier Orde 2 Homogen**.
+Ketika sakelar ditutup pada rangkaian RLC seri bebas sumber, muatan pada pelat kapasitor mulai mengalir melalui induktor. Arus yang meningkat ini membangun medan magnetik di sekitar belitan induktor. Saat kapasitor telah kosong sepenuhnya ($v_C = 0$), arus listrik mencapai nilai puncak; seluruh energi elektrostatik telah berpindah menjadi energi medan magnetik. Selanjutnya, GGL lawan induktor terus mendorong arus mengalir, mengisi kembali pelat kapasitor dengan polaritas yang berlawanan. Jika tidak ada hambatan ($R = 0$), pertukaran energi ini akan berlangsung abadi dengan frekuensi sudut alami $\omega_0 = \frac{1}{\sqrt{LC}}$. Jika $R > 0$, resistor secara bertahap menyedot energi tersebut hingga seluruh osilasi padam.
 
----
+\section{Bentuk Standar, Prinsip Superposisi \& Determinan Wronskian}
 
-\section{Bentuk Standar \& Prinsip Superposisi}
+\subsection{Bentuk Standar PDB Linier Orde 2 Homogen}
 
 \begin{definition}[PDB Linier Orde 2 Homogen Koefisien Konstan]
-Bentuk umum PDB linier orde 2 dengan koefisien konstan dinyatakan oleh:
+Bentuk umum PDB linier orde 2 koefisien konstan tanpa suku pemaksa eksternal dinyatakan oleh:
 \begin{equation}
-a \frac{d^2y}{dx^2} + b \frac{dy}{dx} + c y = 0 \quad \iff \quad a y'' + b y' + c y = 0
+    a \frac{d^2y}{dx^2} + b \frac{dy}{dx} + c y = 0 \quad \iff \quad a y'' + b y' + c y = 0
+    \label{eq:ode2_standard}
 \end{equation}
 di mana $a, b, c \in \mathbb{R}$ adalah konstanta riil dengan $a \neq 0$.
 \end{definition}
 
-\begin{theorem}[Prinsip Superposisi Linier]
-Jika $y_1(x)$ dan $y_2(x)$ adalah dua solusi bebas dari persamaan homogen $a y'' + b y' + c y = 0$, maka sembarang kombinasi linier:
+Jika persamaan~\eqref{eq:ode2_standard} dibagi dengan koefisien penuntun $a$, diperoleh bentuk monik:
 \begin{equation}
-y(x) = C_1 y_1(x) + C_2 y_2(x)
+    y'' + p y' + q y = 0, \quad \text{dengan } p = \frac{b}{a}, \quad q = \frac{c}{a}
+    \label{eq:ode2_monic}
 \end{equation}
-juga merupakan solusi dari persamaan tersebut untuk sembarang konstanta $C_1, C_2 \in \mathbb{R}$.
+
+\subsection{Prinsip Superposisi \& Kebebasan Linier}
+
+\begin{theorem}[Prinsip Superposisi Linier]
+Jika $y_1(x)$ dan $y_2(x)$ masing-masing merupakan solusi dari PDB linier homogen~\eqref{eq:ode2_standard}, maka sembarang kombinasi linier:
+\begin{equation}
+    y(x) = C_1 y_1(x) + C_2 y_2(x)
+    \label{eq:superposition}
+\end{equation}
+juga merupakan solusi dari persamaan tersebut untuk sembarang konstanta riil $C_1$ dan $C_2$.
 \end{theorem}
 
-\subsection{Uji Kebebasan Linier: Determinan Wronskian}
-Dua buah fungsi $y_1(x)$ dan $y_2(x)$ dikatakan **bebas linier** (*linearly independent*) pada suatu interval $I$ jika tidak ada konstanta $k$ sehingga $y_1(x) = k y_2(x)$. Untuk membuktikan kebebasan linier secara matematis, digunakan **Determinan Wronskian**:
-\begin{equation}
-W(y_1, y_2)(x) = \begin{vmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x) \end{vmatrix} = y_1(x) y_2'(x) - y_1'(x) y_2(x)
-\end{equation}
-\begin{itemize}
-    \item Jika $W(y_1, y_2) \neq 0$ untuk setiap $x \in I$, maka $y_1$ dan $y_2$ membentuk **Himpunan Solusi Fundamental** (*Fundamental Set of Solutions*), dan solusi umum $y = C_1 y_1 + C_2 y_2$ dijamin mampu memenuhi sembarang kondisi awal (IVP).
-    \item Jika $W(y_1, y_2) = 0$, kedua fungsi bergantung linier dan tidak dapat membentuk solusi umum.
-\end{itemize}
+\begin{proof}
+Substitusikan $y(x) = C_1 y_1 + C_2 y_2$ ke ruas kiri operator diferensial linear $\mathcal{L}[y] = a y'' + b y' + c y$:
+\begin{align*}
+    \mathcal{L}[C_1 y_1 + C_2 y_2] &= a(C_1 y_1'' + C_2 y_2'') + b(C_1 y_1' + C_2 y_2') + c(C_1 y_1 + C_2 y_2) \\
+    &= C_1 (a y_1'' + b y_1' + c y_1) + C_2 (a y_2'' + b y_2' + c y_2) \\
+    &= C_1 \cdot 0 + C_2 \cdot 0 = 0
+\end{align*}
+Terbukti bahwa kombinasi linier memenuhi persamaan diferensial.
+\end{proof}
 
----
-
-\section{Persamaan Karakteristik \& Tiga Ragam Solusi}
-Untuk menyelesaikan $a y'' + b y' + c y = 0$, kita mengasumsikan solusi eksponensial $y = e^{rx}$. Mengingat sifat turunan fungsi eksponensial $y' = r e^{rx}$ dan $y'' = r^2 e^{rx}$, substitusi ke dalam PDB menghasilkan:
+Agar kombinasi linier~\eqref{eq:superposition} menjadi \textbf{Solusi Umum} (\textit{General Solution}) yang mampu memenuhi sembarang Masalah Nilai Awal dengan dua kondisi batas:
 \begin{equation}
-a (r^2 e^{rx}) + b (r e^{rx}) + c (e^{rx}) = e^{rx}(a r^2 + b r + c) = 0
+    y(x_0) = y_0 \quad \text{dan} \quad y'(x_0) = y_0'
+    \label{eq:ivp2_conditions}
 \end{equation}
-Karena fungsi eksponensial $e^{rx} \neq 0$ untuk seluruh $x \in \mathbb{R}$, syarat agar persamaan bernilai nol adalah:
+maka $y_1(x)$ dan $y_2(x)$ harus saling \textbf{bebas linier} (\textit{linearly independent}).
+
+\subsection{Uji Determinan Wronskian \& Teorema Abel}
+
+\begin{definition}[Determinan Wronskian]
+Untuk dua fungsi terdiferensialkan $y_1(x)$ dan $y_2(x)$, \textbf{Determinan Wronskian} didefinisikan sebagai:
 \begin{equation}
-a r^2 + b r + c = 0 \quad \text{(Persamaan Karakteristik / Polinomial Pembantu)}
+    W(y_1, y_2)(x) = \begin{vmatrix} y_1(x) & y_2(x) \\ y_1'(x) & y_2'(x) \end{vmatrix} = y_1(x) y_2'(x) - y_2(x) y_1'(x)
+    \label{eq:wronskian_def}
+\end{equation}
+\end{definition}
+
+Tinjau sistem persamaan aljabar linear untuk menentukan konstanta $C_1$ dan $C_2$ pada titik $x_0$:
+\begin{align}
+    C_1 y_1(x_0) + C_2 y_2(x_0) &= y_0 \\
+    C_1 y_1'(x_0) + C_2 y_2'(x_0) &= y_0'
+\end{align}
+Berdasarkan Aturan Cramer, solusi tunggal untuk $(C_1, C_2)$ ada jika dan hanya jika determinan matriks koefisien tidak sama dengan nol:
+\begin{equation}
+    \det \begin{bmatrix} y_1(x_0) & y_2(x_0) \\ y_1'(x_0) & y_2'(x_0) \end{bmatrix} = W(y_1, y_2)(x_0) \neq 0
 \end{equation}
 
-Akar-akar dari persamaan kuadrat ini diberikan oleh rumus kuadratik:
+\begin{theorem}[Teorema Identitas Abel]
+Jika $y_1$ dan $y_2$ adalah solusi dari $y'' + p y' + q y = 0$, maka determinan Wronskian memenuhi hubungan diferensial orde satu:
 \begin{equation}
-r_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+    \frac{dW}{dx} + p W = 0 \implies W(x) = W(x_0) e^{-\int_{x_0}^x p \, dt} = W(x_0) e^{-p (x - x_0)}
+    \label{eq:abel_theorem}
 \end{equation}
-Bentuk solusi umum sangat bergantung pada nilai diskriminan $D = b^2 - 4ac$.
+\end{theorem}
 
----
+Konsekuensi mendasar dari Teorema Abel: Wronskian dari dua solusi PDB linier homogen koefisien konstan bernilai \textbf{nol di semua titik} (jika $W(x_0) = 0$) atau \textbf{tidak pernah nol di titik mana pun} (jika $W(x_0) \neq 0$). Jika $W \neq 0$, pasangan $\{y_1, y_2\}$ dinamakan \textbf{Himpunan Solusi Fundamental} (\textit{Fundamental Set of Solutions}).
 
-\subsection{Kasus 1: Diskriminan Positif ($D = b^2 - 4ac > 0$)}
-Pada kasus ini, persamaan karakteristik menghasilkan dua akar real berbeda ($r_1 \neq r_2$).
-Pasangan solusi basis adalah $y_1 = e^{r_1 x}$ dan $y_2 = e^{r_2 x}$.
-Wronskian dari pasangan ini adalah:
+\section{Persamaan Karakteristik \& Penurunan Tiga Kasus Diskriminan}
+
+Tinjau kembali PDB $a y'' + b y' + c y = 0$. Karena turunan fungsi eksponensial selalu sebanding dengan dirinya sendiri, kita mengasumsikan solusi coba-coba berbentuk:
 \begin{equation}
-W(e^{r_1 x}, e^{r_2 x}) = e^{r_1 x}(r_2 e^{r_2 x}) - (r_1 e^{r_1 x})e^{r_2 x} = (r_2 - r_1) e^{(r_1+r_2)x} \neq 0
+    y(x) = e^{rx} \implies y'(x) = r e^{rx}, \quad y''(x) = r^2 e^{rx}
 \end{equation}
-Karena $r_1 \neq r_2$, maka $W \neq 0$, membuktikan bahwa kedua solusi bebas linier.
-
-\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Bentuk Solusi Umum Kasus 1 (Akar Real Berbeda)]
+Substitusikan ke dalam PDB:
 \begin{equation}
-y(x) = C_1 e^{r_1 x} + C_2 e^{r_2 x}
+    a (r^2 e^{rx}) + b (r e^{rx}) + c (e^{rx}) = e^{rx} \left( a r^2 + b r + c \right) = 0
 \end{equation}
-\textit{Interpretasi Fisis:} Bersesuaian dengan sistem tanpa osilasi yang kembali ke titik kesetimbangan secara lambat (*Overdamped*).
+Karena $e^{rx} \neq 0$ untuk setiap nilai real $x$, persamaan hanya dapat bernilai nol jika dan hanya jika faktor aljabar bernilai nol:
+\begin{equation}
+    a r^2 + b r + c = 0 \quad \text{\textbf{(Persamaan Karakteristik / Polinomial Pembantu)}}
+    \label{eq:char_eq}
+\end{equation}
+Akar-akar kuadratik dari persamaan karakteristik diberikan oleh:
+\begin{equation}
+    r_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+    \label{eq:quadratic_roots}
+\end{equation}
+Bentuk analitis dan sifat fisik respon sistem ditentukan sepenuhnya oleh \textbf{Diskriminan} $D = b^2 - 4ac$.
+
+\subsection{Kasus 1: Diskriminan Positif (\texorpdfstring{$D = b^2 - 4ac > 0$}{D > 0}) -- Rezim Redaman Lebih (\textit{Overdamped})}
+
+Jika $D > 0$, persamaan karakteristik memiliki dua akar real yang berbeda ($r_1, r_2 \in \mathbb{R}$ dengan $r_1 \neq r_2$). Pasangan solusi basis adalah:
+\begin{equation}
+    y_1(x) = e^{r_1 x} \quad \text{dan} \quad y_2(x) = e^{r_2 x}
+\end{equation}
+Uji kebebasan linier menggunakan Wronskian:
+\begin{equation}
+    W(y_1, y_2) = e^{r_1 x}(r_2 e^{r_2 x}) - e^{r_2 x}(r_1 e^{r_1 x}) = (r_2 - r_1) e^{(r_1 + r_2)x}
+\end{equation}
+Karena $r_1 \neq r_2$ dan fungsi eksponensial selalu positif, maka $W(y_1, y_2) \neq 0$ di seluruh domain real.
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=\textbf{Solusi Umum Kasus 1 (Akar Real Berbeda)}]
+\begin{equation}
+    y(x) = C_1 e^{r_1 x} + C_2 e^{r_2 x}
+    \label{eq:sol_overdamped}
+\end{equation}
+\textit{Interpretasi Rekayasa:} Sistem mengalami redaman yang sangat kuat (\textit{overdamped}). Respon waktu tidak memiliki osilasi dan kembali ke posisi setimbang secara lambat akibat hambatan disipasi yang dominan.
 \end{tcolorbox}
 
-\begin{example}[Masalah Nilai Awal Kasus 1]
-Selesaikan Masalah Nilai Awal (IVP) berikut:
-$$ y'' - y' - 6y = 0, \quad y(0) = 5, \quad y'(0) = 0 $$
-\textbf{Langkah Penyelesaian:}
-\begin{enumerate}
-    \item \textbf{Susun Persamaan Karakteristik:}
-    $$ r^2 - r - 6 = 0 \implies (r - 3)(r + 2) = 0 \implies r_1 = 3, \quad r_2 = -2 $$
-    \item \textbf{Tuliskan Solusi Umum:}
-    $$ y(x) = C_1 e^{3x} + C_2 e^{-2x} $$
-    \item \textbf{Hitung Turunan Pertama:}
-    $$ y'(x) = 3C_1 e^{3x} - 2C_2 e^{-2x} $$
-    \item \textbf{Terapkan Kondisi Awal:}
-    $$ y(0) = C_1 + C_2 = 5 $$
-    $$ y'(0) = 3C_1 - 2C_2 = 0 \implies C_2 = \frac{3}{2} C_1 $$
-    Substitusi ke persamaan pertama:
-    $$ C_1 + \frac{3}{2} C_1 = 5 \implies \frac{5}{2} C_1 = 5 \implies C_1 = 2 \implies C_2 = 3 $$
-    \item \textbf{Solusi Khusus:}
-    $$ \mathbf{y(x) = 2e^{3x} + 3e^{-2x}} $$
+\subsection{Kasus 2: Diskriminan Nol (\texorpdfstring{$D = b^2 - 4ac = 0$}{D = 0}) -- Redaman Kritis (\textit{Critically Damped})}
+
+Jika $D = 0$, persamaan karakteristik menghasilkan sepasang akar kembar:
+\begin{equation}
+    r_1 = r_2 = r = -\frac{b}{2a}
+\end{equation}
+Dari akar kembar ini, kita baru memiliki satu solusi basis: $y_1(x) = e^{rx}$. Kita membutuhkan solusi kedua $y_2(x)$ yang bebas linier dari $y_1(x)$.
+
+\subsubsection{Penurunan Eksplisit Solusi Kedua melalui Metode Reduksi Orde}
+
+Asumsikan solusi kedua berbentuk perkalian suatu fungsi pengali $u(x)$ dengan solusi pertama $y_1(x)$:
+\begin{equation}
+    y_2(x) = u(x) y_1(x) = u(x) e^{rx}
+\end{equation}
+Hitung turunan pertama dan kedua dari $y_2(x)$ menggunakan aturan perkalian:
+\begin{align}
+    y_2'(x) &= u' e^{rx} + r u e^{rx} \\
+    y_2''(x) &= u'' e^{rx} + r u' e^{rx} + r u' e^{rx} + r^2 u e^{rx} = u'' e^{rx} + 2r u' e^{rx} + r^2 u e^{rx}
+\end{align}
+Substitusikan $y_2$, $y_2'$, dan $y_2''$ ke dalam PDB $a y_2'' + b y_2' + c y_2 = 0$:
+\begin{equation}
+    a \left( u'' + 2r u' + r^2 u \right) e^{rx} + b \left( u' + r u \right) e^{rx} + c \left( u \right) e^{rx} = 0
+\end{equation}
+Bagi kedua ruas dengan $e^{rx} \neq 0$ dan kelompokkan berdasarkan turunan $u$:
+\begin{equation}
+    a u'' + \left( 2ar + b \right) u' + \left( a r^2 + b r + c \right) u = 0
+    \label{eq:reduction_intermediate}
+\end{equation}
+Perhatikan dua sifat aljabar penting:
+\begin{enumerate}[leftmargin=*]
+    \item Koefisien dari $u'$ adalah $2ar + b$. Karena $r = -\frac{b}{2a}$, maka:
+    \begin{equation*}
+        2a\left(-\frac{b}{2a}\right) + b = -b + b = 0
+    \end{equation*}
+    \item Koefisien dari $u$ adalah $a r^2 + b r + c$. Karena $r$ adalah akar dari persamaan karakteristik, maka secara definisi:
+    \begin{equation*}
+        a r^2 + b r + c = 0
+    \end{equation*}
 \end{enumerate}
-\end{example}
+Substitusikan kedua hasil ini ke persamaan~\eqref{eq:reduction_intermediate}:
+\begin{equation}
+    a u''(x) = 0 \implies u''(x) = 0 \quad (\text{karena } a \neq 0)
+\end{equation}
+Integrasikan dua kali berturut-turut:
+\begin{align*}
+    u'(x) &= K_1 \\
+    u(x) &= K_1 x + K_2
+\end{align*}
+Dengan memilih konstanta fundamental $K_1 = 1$ dan $K_2 = 0$, diperoleh fungsi pengali:
+\begin{equation}
+    u(x) = x \implies y_2(x) = x e^{rx}
+    \label{eq:second_solution_repeated}
+\end{equation}
+Uji Wronskian dari pasangan $\{e^{rx}, x e^{rx}\}$:
+\begin{equation}
+    W(e^{rx}, x e^{rx}) = e^{rx} \left( e^{rx} + r x e^{rx} \right) - x e^{rx} \left( r e^{rx} \right) = e^{2rx} + r x e^{2rx} - r x e^{2rx} = e^{2rx} \neq 0
+\end{equation}
+Terbukti bahwa $\{e^{rx}, x e^{rx}\}$ membentuk himpunan solusi fundamental!
 
----
-
-\subsection{Kasus 2: Diskriminan Nol ($D = b^2 - 4ac = 0$)}
-Jika diskriminan bernilai nol, persamaan karakteristik menghasilkan sepasang **akar kembar real**:
-$$ r_1 = r_2 = r = -\frac{b}{2a} $$
-Dari akar ini, kita baru memiliki satu solusi basis: $y_1(x) = e^{rx}$. Kita memerlukan solusi kedua $y_2(x)$ yang bebas linier agar membentuk himpunan solusi fundamental.
-
-\begin{tcolorbox}[colback=yellow!10!white,colframe=orange!80!black,title=Penurunan: Mengapa Muncul Faktor Pengali $x$ (Metode Reduksi Orde)?]
-Misalkan solusi kedua berbentuk $y_2(x) = u(x) y_1(x) = u(x) e^{rx}$.\\
-Turunkan $y_2(x)$:
-$$ y_2' = u' e^{rx} + r u e^{rx} $$
-$$ y_2'' = u'' e^{rx} + 2r u' e^{rx} + r^2 u e^{rx} $$
-Substitusikan ke dalam PDB $a y_2'' + b y_2' + c y_2 = 0$:
-$$ a(u'' + 2r u' + r^2 u)e^{rx} + b(u' + r u)e^{rx} + c u e^{rx} = 0 $$
-Kumpulkan suku-suku berdasarkan turunan $u$:
-$$ e^{rx} \Big[ a u'' + (2ar + b)u' + (a r^2 + b r + c)u \Big] = 0 $$
-Perhatikan dua identitas penting:
-\begin{enumerate}
-    \item Karena $r = -\frac{b}{2a}$, maka $2ar + b = 2a\left(-\frac{b}{2a}\right) + b = 0$.
-    \item Karena $r$ adalah akar karakteristik, maka $a r^2 + b r + c = 0$.
-\end{enumerate}
-Sehingga persamaan tereduksi secara dramatis menjadi:
-$$ a u'' = 0 \implies u''(x) = 0 \quad (\text{karena } a \neq 0) $$
-Integrasikan dua kali terhadap $x$:
-$$ u'(x) = C \implies u(x) = C x + K $$
-Dengan mengambil konstanta sederhana $C = 1$ dan $K = 0$, diperoleh:
-$$ u(x) = x \implies \mathbf{y_2(x) = x e^{rx}} $$
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=\textbf{Solusi Umum Kasus 2 (Akar Real Kembar)}]
+\begin{equation}
+    y(x) = C_1 e^{rx} + C_2 x e^{rx} = \left( C_1 + C_2 x \right) e^{rx}
+    \label{eq:sol_critically_damped}
+\end{equation}
+\textit{Interpretasi Rekayasa:} Rezim \textbf{Redaman Kritis} (\textit{critically damped}). Ini adalah kondisi transisi emas dalam rekayasa: sistem kembali ke kondisi setimbang paling cepat tanpa pernah mengalami lewatan (\textit{overshoot}) maupun osilasi.
 \end{tcolorbox}
 
-\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Bentuk Solusi Umum Kasus 2 (Akar Real Kembar)]
+\subsection{Kasus 3: Diskriminan Negatif (\texorpdfstring{$D = b^2 - 4ac < 0$}{D < 0}) -- Rezim Kurang Teredam (\textit{Underdamped})}
+
+Jika $D < 0$, akar-akar karakteristik merupakan pasangan bilangan kompleks konjugat:
 \begin{equation}
-y(x) = C_1 e^{rx} + C_2 x e^{rx} = (C_1 + C_2 x) e^{rx}
+    r_{1,2} = -\alpha \pm j \beta, \quad \text{dengan } \alpha = \frac{b}{2a}, \quad \beta = \frac{\sqrt{4ac - b^2}}{2a}
+    \label{eq:complex_roots}
 \end{equation}
-\textit{Interpretasi Fisis:} Bersesuaian dengan sistem redaman kritis (*Critically Damped*) yang kembali ke titik netral paling cepat tanpa pernah berosilasi.
+Solusi formal dalam domain eksponensial kompleks adalah:
+\begin{equation}
+    y(x) = k_1 e^{(-\alpha + j\beta)x} + k_2 e^{(-\alpha - j\beta)x} = e^{-\alpha x} \left( k_1 e^{j\beta x} + k_2 e^{-j\beta x} \right)
+\end{equation}
+Terapkan \textbf{Identitas Euler} ($e^{\pm j\theta} = \cos\theta \pm j\sin\theta$):
+\begin{align*}
+    y(x) &= e^{-\alpha x} \left[ k_1 (\cos\beta x + j\sin\beta x) + k_2 (\cos\beta x - j\sin\beta x) \right] \\
+    &= e^{-\alpha x} \left[ (k_1 + k_2) \cos\beta x + j(k_1 - k_2) \sin\beta x \right]
+\end{align*}
+Definisikan konstanta riil baru:
+\begin{equation}
+    C_1 = k_1 + k_2 \quad \text{dan} \quad C_2 = j(k_1 - k_2)
+\end{equation}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=\textbf{Solusi Umum Kasus 3 (Akar Kompleks Konjugat)}]
+\begin{equation}
+    y(x) = e^{-\alpha x} \left( C_1 \cos\beta x + C_2 \sin\beta x \right)
+    \label{eq:sol_underdamped}
+\end{equation}
+Bentuk alternatif amplitudo-fasa:
+\begin{equation}
+    y(x) = A e^{-\alpha x} \cos(\beta x - \phi), \quad \text{dengan } A = \sqrt{C_1^2 + C_2^2}, \quad \phi = \arctan\left(\frac{C_2}{C_1}\right)
+\end{equation}
+\textit{Interpretasi Rekayasa:} Rezim \textbf{Kurang Teredam} (\textit{underdamped}). Terjadi osilasi sinusoidal teredam dengan frekuensi sudut $\beta$, di mana selubung amplitudonya meluruh secara eksponensial dengan konstanta atenuasi $\alpha$.
 \end{tcolorbox}
 
-\begin{example}[Masalah Nilai Awal Kasus 2]
-Selesaikan IVP: $y'' + 6y' + 9y = 0$, dengan $y(0) = 2$ dan $y'(0) = -1$.
-\begin{enumerate}
-    \item Persamaan karakteristik: $r^2 + 6r + 9 = (r + 3)^2 = 0 \implies r = -3$ (akar kembar).
-    \item Solusi umum: $y(x) = (C_1 + C_2 x)e^{-3x}$.
-    \item Turunan: $y'(x) = C_2 e^{-3x} - 3(C_1 + C_2 x)e^{-3x}$.
-    \item Kondisi awal:
-    $$ y(0) = C_1 = 2 $$
-    $$ y'(0) = C_2 - 3C_1 = -1 \implies C_2 - 3(2) = -1 \implies C_2 = 5 $$
-    \item Solusi khusus: $\mathbf{y(x) = (2 + 5x)e^{-3x}}$.
-\end{enumerate}
-\end{example}
+\section{Aplikasi Rekayasa Elektro: Rangkaian RLC Seri Bebas Sumber}
 
----
+\subsection{Pemodelan Fisis dari Hukum Kirchhoff}
 
-\subsection{Kasus 3: Diskriminan Negatif ($D = b^2 - 4ac < 0$)}
-Jika diskriminan negatif, akar-akar karakteristik berupa pasangan **bilangan kompleks konjugat**:
-\begin{equation}
-r_{1,2} = \alpha \pm j\beta, \quad \text{dengan } \alpha = -\frac{b}{2a}, \quad \beta = \frac{\sqrt{4ac - b^2}}{2a}
-\end{equation}
-Solusi formal dalam domain kompleks adalah:
-$$ y(x) = c_1 e^{(\alpha + j\beta)x} + c_2 e^{(\alpha - j\beta)x} = e^{\alpha x} \left( c_1 e^{j\beta x} + c_2 e^{-j\beta x} \right) $$
-Menggunakan **Formula Euler** ($e^{j\theta} = \cos\theta + j\sin\theta$ dan $e^{-j\theta} = \cos\theta - j\sin\theta$):
-$$ y(x) = e^{\alpha x} \left[ c_1(\cos\beta x + j\sin\beta x) + c_2(\cos\beta x - j\sin\beta x) \right] $$
-$$ y(x) = e^{\alpha x} \left[ (c_1 + c_2)\cos\beta x + j(c_1 - c_2)\sin\beta x \right] $$
-Agar solusi bernilai riil untuk fenomena fisik rekayasa nyata, kita mendefinisikan konstanta riil baru:
-$$ C_1 = c_1 + c_2 \quad \text{dan} \quad C_2 = j(c_1 - c_2) $$
-sehingga bilangan imajiner $j$ melebur secara alami ke dalam konstanta riil $C_2$.
+Tinjau rangkaian seri pada Gambar~\ref{fig:rlc_series_free} yang terdiri atas resistor $R$, induktor $L$, dan kapasitor $C$ yang sebelumnya telah menyimpan energi dan membentuk loop tertutup pada $t = 0$.
 
-\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Bentuk Solusi Umum Kasus 3 (Akar Kompleks Konjugat)]
-\begin{equation}
-y(x) = e^{\alpha x} \left( C_1 \cos(\beta x) + C_2 \sin(\beta x) \right)
-\end{equation}
-\textit{Interpretasi Fisis:} Bersesuaian dengan sistem osilasi teredam (*Underdamped*), di mana $\alpha$ mengatur laju peluruhan amplutido dan $\beta$ mengatur frekuensi osilasi sudut.
-\end{tcolorbox}
-
-\begin{example}[Masalah Nilai Awal Kasus 3]
-Tentukan solusi dari: $y'' + 4y' + 13y = 0$, $y(0) = 3$, $y'(0) = 2$.
-\begin{enumerate}
-    \item Karakteristik: $r^2 + 4r + 13 = 0 \implies r = \frac{-4 \pm \sqrt{16 - 52}}{2} = \frac{-4 \pm \sqrt{-36}}{2} = -2 \pm 3j$.
-    \item Parameter: $\alpha = -2, \beta = 3$.
-    \item Solusi umum: $y(x) = e^{-2x}(C_1 \cos 3x + C_2 \sin 3x)$.
-    \item Turunan:
-    $$ y'(x) = -2e^{-2x}(C_1 \cos 3x + C_2 \sin 3x) + e^{-2x}(-3C_1 \sin 3x + 3C_2 \cos 3x) $$
-    \item Masukkan kondisi awal:
-    $$ y(0) = C_1 = 3 $$
-    $$ y'(0) = -2C_1 + 3C_2 = 2 \implies -2(3) + 3C_2 = 2 \implies 3C_2 = 8 \implies C_2 = \frac{8}{3} $$
-    \item Solusi khusus: $\mathbf{y(x) = e^{-2x}\left( 3\cos 3x + \frac{8}{3}\sin 3x \right)}$.
-\end{enumerate}
-\end{example}
-
----
-
-\section{Aplikasi Fisik: Rangkaian Osilator LC Murni}
-
-Tinjau sebuah rangkaian tertutup yang terdiri atas induktor ideal $L$ (Henry) dan kapasitor ideal $C$ (Farad) tanpa adanya hambatan resistor ($R = 0$). Rangkaian ini dikenal sebagai **Tangki Osilator Frekuensi Radio (*RF Tank Circuit*)**.
-
-\subsection{Penurunan Model dari Hukum Kirchhoff (KVL)}
-Berdasarkan Hukum Tegangan Kirchhoff (KVL), jumlah tegangan dalam loop tertutup bernilai nol:
-\begin{equation}
-v_L(t) + v_C(t) = 0
-\end{equation}
-Mengingat hubungan arus dan muatan listrik:
-$$ i(t) = \frac{dq}{dt}, \quad v_L = L \frac{di}{dt} = L \frac{d^2q}{dt^2}, \quad v_C = \frac{q}{C} $$
-Substitusikan ke persamaan KVL:
-\begin{equation}
-L \frac{d^2q}{dt^2} + \frac{1}{C} q(t) = 0 \quad \iff \quad \frac{d^2q}{dt^2} + \omega_0^2 q(t) = 0
-\end{equation}
-di mana $\omega_0 = \frac{1}{\sqrt{LC}}$ adalah **frekuensi sudut resonansi alami** (*undamped natural resonant angular frequency*) dalam satuan rad/s.
-
-\subsection{Solusi Muatan dan Arus Listrik}
-Persamaan karakteristik: $r^2 + \omega_0^2 = 0 \implies r = \pm j\omega_0$.
-Karena $\alpha = 0$ dan $\beta = \omega_0$, maka solusi muatan pada kapasitor adalah osilasi harmonik abadi:
-\begin{equation}
-q(t) = C_1 \cos(\omega_0 t) + C_2 \sin(\omega_0 t)
-\end{equation}
-Arus listrik yang mengalir dalam loop:
-\begin{equation}
-i(t) = \frac{dq}{dt} = -\omega_0 C_1 \sin(\omega_0 t) + \omega_0 C_2 \cos(\omega_0 t)
-\end{equation}
-
-\subsection{Kekekalan Energi Total Rangkaian}
-Energi total sistem pada sembarang waktu $t$ adalah jumlah energi magnetik induktor dan energi elektrostatik kapasitor:
-\begin{equation}
-E_{\text{total}}(t) = E_L(t) + E_C(t) = \frac{1}{2} L [i(t)]^2 + \frac{1}{2C} [q(t)]^2
-\end{equation}
-Jika kita masukkan solusi $q(t) = Q_0 \cos(\omega_0 t)$ (asumsi muatan awal $Q_0$ dan arus awal $i(0) = 0$), maka $i(t) = -\omega_0 Q_0 \sin(\omega_0 t)$:
-$$ E_{\text{total}} = \frac{1}{2} L \left(-\frac{1}{\sqrt{LC}} Q_0 \sin\omega_0 t\right)^2 + \frac{1}{2C} (Q_0 \cos\omega_0 t)^2 $$
-$$ E_{\text{total}} = \frac{Q_0^2}{2C} \sin^2(\omega_0 t) + \frac{Q_0^2}{2C} \cos^2(\omega_0 t) = \frac{Q_0^2}{2C} (\sin^2\omega_0 t + \cos^2\omega_0 t) = \mathbf{\frac{Q_0^2}{2C} = \text{Konstan}} $$
-Persamaan ini membuktikan secara analitik bahwa energi berpindah secara kontinu bolak-balik antara kapasitor dan induktor tanpa ada energi yang terdisipasi (hilang menjadi panas).
-
----
-
-\section{Rangkuman Komparatif}
-\begin{table}[h!]
+\begin{figure}[htbp]
 \centering
-\small
-\begin{tabular}{@{}llll@{}}
+\begin{circuitikz}[scale=1.0, american]
+    \draw (0,0) to[R, l={$R$}, v={$v_R(t)$}] (3,0)
+          to[L, l={$L$}, v={$v_L(t)$}, i={$i(t)$}] (6,0)
+          -- (6,-2.5)
+          to[C, l={$C$}, v={$v_C(t)$}] (0,-2.5)
+          -- (0,0);
+\end{circuitikz}
+\caption{Rangkaian RLC seri bebas sumber (\textit{source-free series RLC circuit}).}
+\label{fig:rlc_series_free}
+\end{figure}
+
+Penerapan KVL pada loop tertutup menghasilkan:
+\begin{equation}
+    v_R(t) + v_L(t) + v_C(t) = 0 \implies R i(t) + L \frac{di(t)}{dt} + v_C(t) = 0
+    \label{eq:rlc_kvl}
+\end{equation}
+Mengingat hubungan konstitutif arus kapasitor:
+\begin{equation}
+    i(t) = C \frac{dv_C(t)}{dt} \implies \frac{di(t)}{dt} = C \frac{d^2v_C(t)}{dt^2}
+    \label{eq:cap_diff_rel}
+\end{equation}
+Substitusikan persamaan~\eqref{eq:cap_diff_rel} ke dalam KVL~\eqref{eq:rlc_kvl}:
+\begin{equation}
+    R \left( C \frac{dv_C}{dt} \right) + L \left( C \frac{d^2v_C}{dt^2} \right) + v_C = 0 \implies L C \frac{d^2v_C}{dt^2} + R C \frac{dv_C}{dt} + v_C = 0
+\end{equation}
+Bagi kedua ruas dengan $LC$:
+\begin{equation}
+    \frac{d^2v_C(t)}{dt^2} + \frac{R}{L} \frac{dv_C(t)}{dt} + \frac{1}{LC} v_C(t) = 0
+    \label{eq:rlc_canonical}
+\end{equation}
+
+\subsection{Parameter Standar Rekayasa Sistem Orde Dua}
+
+Persamaan diferensial~\eqref{eq:rlc_canonical} dituliskan dalam bentuk baku rekayasa elektro:
+\begin{equation}
+    \frac{d^2v_C}{dt^2} + 2\alpha \frac{dv_C}{dt} + \omega_0^2 v_C = 0
+    \label{eq:rlc_standard_eng}
+\end{equation}
+di mana didefinisikan dua parameter fisis fundamental:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Frekuensi Sudut Alami Tanpa Redaman (\textit{Undamped Natural Resonant Frequency}):}
+    \begin{equation}
+        \omega_0 = \frac{1}{\sqrt{LC}} \quad \text{[rad/s]}
+        \label{eq:omega_zero}
+    \end{equation}
+    \item \textbf{Faktor Atenuasi Redaman Neper (\textit{Neper Damping Factor}):}
+    \begin{equation}
+        \alpha = \frac{R}{2L} \quad \text{[Np/s atau rad/s]}
+        \label{eq:alpha_rlc}
+    \end{equation}
+    \item \textbf{Rasio Redaman (\textit{Damping Ratio}, $\zeta$):}
+    \begin{equation}
+        \zeta = \frac{\alpha}{\omega_0} = \frac{R/2L}{1/\sqrt{LC}} = \frac{R}{2} \sqrt{\frac{C}{L}}
+        \label{eq:damping_ratio}
+    \end{equation}
+\end{enumerate}
+
+Persamaan karakteristik rangkaian menjadi:
+\begin{equation}
+    s^2 + 2\alpha s + \omega_0^2 = 0 \implies s_{1,2} = -\alpha \pm \sqrt{\alpha^2 - \omega_0^2}
+    \label{eq:char_roots_eng}
+\end{equation}
+
+Tabel~\ref{tab:damping_summary} merangkum korelasi antara parameter rangkaian, nilai akar, dan respon fisik sistem.
+
+\begin{table}[htbp]
+\centering
+\caption{Klasifikasi Tiga Ragam Redaman Rangkaian RLC Seri Bebas Sumber.}
+\label{tab:damping_summary}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllll}
 \toprule
-\textbf{Kriteria} & \textbf{Kasus 1 ($D > 0$)} & \textbf{Kasus 2 ($D = 0$)} & \textbf{Kasus 3 ($D < 0$)} \\ \midrule
-\textbf{Akar Karakteristik} & Real Berbeda ($r_1 \neq r_2$) & Real Kembar ($r_1 = r_2 = r$) & Kompleks Konjugat ($\alpha \pm j\beta$) \\
-\textbf{Solusi Basis} & $e^{r_1 x}, e^{r_2 x}$ & $e^{rx}, x e^{rx}$ & $e^{\alpha x}\cos\beta x, e^{\alpha x}\sin\beta x$ \\
-\textbf{Bentuk Solusi} & $y = C_1 e^{r_1 x} + C_2 e^{r_2 x}$ & $y = (C_1 + C_2 x)e^{rx}$ & $y = e^{\alpha x}(C_1 \cos\beta x + C_2 \sin\beta x)$ \\
-\textbf{Rezim Fisik} & *Overdamped* (Sangat Redam) & *Critically Damped* (Redam Kritis) & *Underdamped* (Kurang Redam) \\
-\textbf{Osilasi} & Tidak ada osilasi & Tidak ada osilasi & Ada osilasi sinusoidal \\
-\textbf{Kecepatan Redaman} & Paling lambat (ekivalen $R$ besar) & Tercepat mencapai nol & Meluruh perlahan jika $\alpha < 0$ \\ \bottomrule
-\end{tabular}
+\textbf{Kondisi Relatif} & \textbf{Rasio Redaman} & \textbf{Resistansi Kritis} & \textbf{Sifat Akar Karakteristik} & \textbf{Rezim Dinamika Transien} \\ \midrule
+$\alpha > \omega_0$ & $\zeta > 1$ & $R > 2\sqrt{L/C}$ & Real berbeda negatif: $s_1, s_2 < 0$ & \textit{Overdamped} (Lambat, non-osilatif) \\
+$\alpha = \omega_0$ & $\zeta = 1$ & $R = 2\sqrt{L/C}$ & Real kembar negatif: $s_1 = s_2 = -\alpha$ & \textit{Critically Damped} (Paling cepat tunak) \\
+$\alpha < \omega_0$ & $0 < \zeta < 1$ & $R < 2\sqrt{L/C}$ & Kompleks konjugat: $-\alpha \pm j\omega_d$ & \textit{Underdamped} (Osilasi sinusoidal meluruh) \\
+$\alpha = 0$ ($R = 0$) & $\zeta = 0$ & $R = 0$ & Imajiner murni: $\pm j\omega_0$ & \textit{Undamped} (Osilasi harmonik abadi LC) \\ \bottomrule
+\end{tabular}%
+}
 \end{table}
 
----
+\subsection{Kasus Khusus: Tangki Osilator LC Frekuensi Radio (RF Tank Circuit)}
 
-\section{Referensi}
-\begin{enumerate}
-    \item Erwin Kreyszig, \textit{Advanced Engineering Mathematics}, 10th Edition, John Wiley \& Sons, 2011.
-    \item Dennis G. Zill, \textit{A First Course in Differential Equations with Modeling Applications}, 11th Edition, Cengage Learning, 2018.
-    \item Charles K. Alexander \& Matthew N. O. Sadiku, \textit{Fundamentals of Electric Circuits}, 7th Edition, McGraw-Hill, 2021.
+Apabila resistansi kawat sangat kecil sehingga dapat diabaikan ($R = 0$), persamaan diferensial tereduksi menjadi:
+\begin{equation}
+    \frac{d^2 v_C}{dt^2} + \omega_0^2 v_C = 0 \implies v_C(t) = V_{\text{maks}} \cos(\omega_0 t + \phi)
+    \label{eq:lc_tank_solution}
+\end{equation}
+Arus yang bersirkulasi dalam tangki LC:
+\begin{equation}
+    i(t) = C \frac{dv_C}{dt} = -\omega_0 C V_{\text{maks}} \sin(\omega_0 t + \phi) = -I_{\text{maks}} \sin(\omega_0 t + \phi)
+\end{equation}
+Mengingat $I_{\text{maks}} = \omega_0 C V_{\text{maks}} = \frac{1}{\sqrt{LC}} C V_{\text{maks}} = \sqrt{\frac{C}{L}} V_{\text{maks}}$, energi total rangkaian pada sembarang waktu adalah:
+\begin{align}
+    E_{\text{total}}(t) &= E_C(t) + E_L(t) = \frac{1}{2} C [v_C(t)]^2 + \frac{1}{2} L [i(t)]^2 \nonumber \\
+    &= \frac{1}{2} C V_{\text{maks}}^2 \cos^2(\omega_0 t + \phi) + \frac{1}{2} L \left( \frac{C}{L} V_{\text{maks}}^2 \right) \sin^2(\omega_0 t + \phi) \nonumber \\
+    &= \frac{1}{2} C V_{\text{maks}}^2 \left[ \cos^2(\omega_0 t + \phi) + \sin^2(\omega_0 t + \phi) \right] = \frac{1}{2} C V_{\text{maks}}^2 = \text{Konstan!}
+    \label{eq:energy_conservation_lc}
+\end{align}
+Persamaan~\eqref{eq:energy_conservation_lc} membuktikan prinsip kekekalan energi: energi total bernilai konstan sepanjang masa karena tidak ada resistor yang mendisipasikan kalor Joule.
+
+\section{Analisis Ruang Fasa (\textit{Phase Portrait}) \& Klasifikasi Kestabilan}
+
+Dalam teori sistem dinamik linier, representasi grafis keadaan sistem sering dinyatakan dalam bidang koordinat fasa (\textit{phase plane}), di mana sumbu mendatar menyatakan variabel keadaan $x_1 = y(t)$ (misal muatan $q$ atau tegangan $v_C$) dan sumbu tegak menyatakan laju perubahannya $x_2 = y'(t) = \frac{dy}{dt}$ (misal arus $i$):
+\begin{equation}
+    \begin{bmatrix} x_1' \\ x_2' \end{bmatrix} = \begin{bmatrix} 0 & 1 \\ -\omega_0^2 & -2\alpha \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}
+    \label{eq:state_space_rlc}
+\end{equation}
+Titik asal $(0,0)$ merupakan satu-satunya titik ekuilibrium sistem. Karakteristik trajektori fasa bergantung pada nilai akar karakteristik:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Pusat Eliptik (\textit{Center Point}):} Terjadi pada rangkaian LC murni ($\alpha = 0$). Lintasan fasa berbentuk elips tertutup sempurna yang dikitari berulang-ulang tanpa akhir (osilasi stabil netral).
+    \item \textbf{Fokus Stabil (\textit{Stable Focus / Spiral Sink}):} Terjadi pada kondisi \textit{underdamped} ($0 < \alpha < \omega_0$). Lintasan fasa berupa kurva spiral yang memusar masuk menuju titik asal $(0,0)$ saat $t \to \infty$.
+    \item \textbf{Simpul Stabil (\textit{Stable Node}):} Terjadi pada kondisi \textit{overdamped} ($\alpha > \omega_0$) dan \textit{critically damped} ($\alpha = \omega_0$). Lintasan fasa meluncur langsung menuju titik asal tanpa memotong sumbu koordinat lebih dari satu kali.
+\end{enumerate}
+
+\section{Contoh Soal Terhitung Numerik Langkah demi Langkah}
+
+\begin{example}[\textbf{Penyelesaian Lengkap IVP Tiga Kasus Diskriminan}]
+Selesaikan ketiga Masalah Nilai Awal berikut dengan teliti:
+\begin{enumerate}[label=(\alph*)]
+    \item $y'' + 5y' + 4y = 0$, dengan $y(0) = 3$ dan $y'(0) = 0$.
+    \item $y'' + 4y' + 4y = 0$, dengan $y(0) = 1$ dan $y'(0) = 2$.
+    \item $y'' + 2y' + 10y = 0$, dengan $y(0) = 2$ dan $y'(0) = -2$.
+\end{enumerate}
+
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item \textbf{Kasus Real Berbeda ($D > 0$):}
+    Persamaan karakteristik:
+    \begin{equation*}
+        r^2 + 5r + 4 = 0 \implies (r + 1)(r + 4) = 0 \implies r_1 = -1, \quad r_2 = -4
+    \end{equation*}
+    Solusi umum dan turunannya:
+    \begin{align*}
+        y(x) &= C_1 e^{-x} + C_2 e^{-4x} \\
+        y'(x) &= -C_1 e^{-x} - 4C_2 e^{-4x}
+    \end{align*}
+    Substitusikan kondisi awal pada $x = 0$:
+    \begin{align*}
+        y(0) &= C_1 + C_2 = 3 \\
+        y'(0) &= -C_1 - 4C_2 = 0 \implies C_1 = -4C_2
+    \end{align*}
+    Substitusi ke persamaan pertama:
+    \begin{equation*}
+        -4C_2 + C_2 = 3 \implies -3C_2 = 3 \implies C_2 = -1 \implies C_1 = 4
+    \end{equation*}
+    Solusi khusus lengkap:
+    \begin{equation*}
+        \mathbf{y(x) = 4e^{-x} - e^{-4x}}
+    \end{equation*}
+
+    \item \textbf{Kasus Real Kembar ($D = 0$):}
+    Persamaan karakteristik:
+    \begin{equation*}
+        r^2 + 4r + 4 = 0 \implies (r + 2)^2 = 0 \implies r = -2\text{ (kembar)}
+    \end{equation*}
+    Solusi umum dan turunannya:
+    \begin{align*}
+        y(x) &= (C_1 + C_2 x) e^{-2x} \\
+        y'(x) &= C_2 e^{-2x} - 2(C_1 + C_2 x) e^{-2x} = (C_2 - 2C_1 - 2C_2 x) e^{-2x}
+    \end{align*}
+    Substitusikan kondisi awal pada $x = 0$:
+    \begin{align*}
+        y(0) &= C_1 = 1 \\
+        y'(0) &= C_2 - 2C_1 = 2 \implies C_2 - 2(1) = 2 \implies C_2 = 4
+    \end{align*}
+    Solusi khusus lengkap:
+    \begin{equation*}
+        \mathbf{y(x) = (1 + 4x) e^{-2x}}
+    \end{equation*}
+
+    \item \textbf{Kasus Kompleks Konjugat ($D < 0$):}
+    Persamaan karakteristik:
+    \begin{equation*}
+        r^2 + 2r + 10 = 0 \implies r = \frac{-2 \pm \sqrt{4 - 40}}{2} = \frac{-2 \pm \sqrt{-36}}{2} = -1 \pm 3j
+    \end{equation*}
+    Parameter atenuasi $\alpha = 1$ dan frekuensi sudut $\beta = 3$. Solusi umum:
+    \begin{equation*}
+        y(x) = e^{-x} \left( C_1 \cos 3x + C_2 \sin 3x \right)
+    \end{equation*}
+    Turunan pertama:
+    \begin{equation*}
+        y'(x) = -e^{-x} \left( C_1 \cos 3x + C_2 \sin 3x \right) + e^{-x} \left( -3C_1 \sin 3x + 3C_2 \cos 3x \right)
+    \end{equation*}
+    Substitusikan kondisi awal pada $x = 0$:
+    \begin{align*}
+        y(0) &= C_1 = 2 \\
+        y'(0) &= -C_1 + 3C_2 = -2 \implies -2 + 3C_2 = -2 \implies 3C_2 = 0 \implies C_2 = 0
+    \end{align*}
+    Solusi khusus lengkap:
+    \begin{equation*}
+        \mathbf{y(x) = 2 e^{-x} \cos 3x} \quad \qed
+    \end{equation*}
+\end{enumerate}
+\end{example}
+
+\begin{example}[\textbf{Analisis Transien Bebas Rangkaian RLC Seri Industri}]
+Sebuah rangkaian filter daya industri memiliki induktor $L = 0{,}5\text{ H}$ dan kapasitor $C = 20\,\mu\text{F}$. Kapasitor sebelumnya telah diisi muatan hingga mencapai tegangan $v_C(0) = 100\text{ V}$, dan sakelar ditutup pada $t = 0$ saat arus awal masih nol ($i(0) = 0$).
+\begin{enumerate}[label=(\alph*)]
+    \item Tentukan nilai resistansi kritis $R_{\text{kritis}}$ agar rangkaian berada pada kondisi redaman kritis.
+    \item Jika dipasang resistor $R = 250\,\Omega$, tentukan rezim redaman yang terjadi, frekuensi osilasi teredam $\omega_d$, dan persamaan tegangan kapasitor $v_C(t)$.
+    \item Tentukan waktu $t_1$ saat tegangan kapasitor melintasi nilai nol untuk pertama kalinya.
+\end{enumerate}
+
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item \textbf{Frekuensi alami dan resistansi kritis:}
+    \begin{equation*}
+        \omega_0 = \frac{1}{\sqrt{LC}} = \frac{1}{\sqrt{0{,}5 \times 20 \times 10^{-6}}} = \frac{1}{\sqrt{10^{-5}}} = \frac{1}{3{,}1623 \times 10^{-3}} \approx 316{,}23\text{ rad/s}
+    \end{equation*}
+    Resistansi kritis:
+    \begin{equation*}
+        R_{\text{kritis}} = 2 \sqrt{\frac{L}{C}} = 2 \sqrt{\frac{0{,}5}{20 \times 10^{-6}}} = 2 \sqrt{25.000} = 2 \times 158{,}11 = 316{,}23\,\Omega
+    \end{equation*}
+
+    \item \textbf{Analisis dengan $R = 250\,\Omega$:}
+    Karena $R = 250\,\Omega < R_{\text{kritis}} = 316{,}23\,\Omega$, maka sistem berada pada rezim \textbf{Kurang Teredam (\textit{Underdamped})}.
+    Faktor atenuasi:
+    \begin{equation*}
+        \alpha = \frac{R}{2L} = \frac{250}{2 \times 0{,}5} = 250\text{ Np/s}
+    \end{equation*}
+    Frekuensi sudut teredam:
+    \begin{equation*}
+        \omega_d = \sqrt{\omega_0^2 - \alpha^2} = \sqrt{(316{,}23)^2 - (250)^2} = \sqrt{100.000 - 62.500} = \sqrt{37.500} \approx 193{,}65\text{ rad/s}
+    \end{equation*}
+    Akar karakteristik: $s_{1,2} = -250 \pm j 193{,}65$. Solusi umum tegangan kapasitor:
+    \begin{equation*}
+        v_C(t) = e^{-250 t} \left( C_1 \cos(193{,}65 t) + C_2 \sin(193{,}65 t) \right)
+    \end{equation*}
+    Kondisi awal $v_C(0) = 100\text{ V} \implies C_1 = 100$.
+    Arus kapasitor pada $t = 0^+$ adalah nol:
+    \begin{equation*}
+        i(0) = C \left. \frac{dv_C}{dt} \right|_{t=0} = 0 \implies v_C'(0) = 0
+    \end{equation*}
+    Turunkan $v_C(t)$ dan evaluasi di $t = 0$:
+    \begin{align*}
+        v_C'(0) &= -\alpha C_1 + \omega_d C_2 = 0 \\
+        &\implies -250(100) + 193{,}65 C_2 = 0 \implies C_2 = \frac{25.000}{193{,}65} \approx 129{,}10
+    \end{align*}
+    Solusi tegangan kapasitor:
+    \begin{equation*}
+        \mathbf{v_C(t) = e^{-250 t} \left[ 100 \cos(193{,}65 t) + 129{,}10 \sin(193{,}65 t) \right]\text{ [Volt]}}
+    \end{equation*}
+
+    \item \textbf{Waktu saat tegangan bernilai nol ($v_C(t_1) = 0$):}
+    \begin{align*}
+        \tan(193{,}65 t_1) &= -\frac{100}{129{,}10} \approx -0{,}7746 \\
+        \implies 193{,}65 t_1 &= \pi - \arctan(0{,}7746) = 3{,}1416 - 0{,}6591 = 2{,}4825\text{ rad} \\
+        \implies t_1 &= \frac{2{,}4825}{193{,}65} \approx 0{,}01282\text{ s} = 12{,}82\text{ ms} \quad \qed
+    \end{align*}
+\end{enumerate}
+\end{example}
+
+\begin{example}[\textbf{Tangki Osilator LC Frekuensi Radio 1 MHz}]
+Sebuah pemancar radio menggunakan rangkaian tangki LC murni dengan induktansi $L = 25{,}33\,\mu\text{H}$ dan kapasitansi $C = 1\text{ nF}$. Kapasitor mula-mula menyimpan energi dengan tegangan $V_0 = 12\text{ V}$.
+\begin{enumerate}[label=(\alph*)]
+    \item Buktikan bahwa frekuensi resonansi alami rangkaian adalah mendekati $1\text{ MHz}$.
+    \item Tentukan persamaan arus listrik sesaat $i(t)$ yang bersirkulasi.
+    \item Hitung arus puncak maksimum yang mengalir melalui kawat induktor.
+\end{enumerate}
+
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item \textbf{Frekuensi resonansi sudut dan linier:}
+    \begin{align*}
+        \omega_0 = \frac{1}{\sqrt{L C}} &= \frac{1}{\sqrt{25{,}33 \times 10^{-6}\text{ H} \times 1 \times 10^{-9}\text{ F}}} \\
+        &= \frac{1}{\sqrt{2{,}533 \times 10^{-14}}} \approx 6{,}2832 \times 10^6\text{ rad/s}
+    \end{align*}
+    Frekuensi siklik (Hertz):
+    \begin{equation*}
+        f_0 = \frac{\omega_0}{2\pi} = \frac{6{,}2832 \times 10^6}{2 \times 3{,}14159} \approx 1{,}0000 \times 10^6\text{ Hz} = \mathbf{1{,}00\text{ MHz (Terbukti)}}
+    \end{equation*}
+
+    \item \textbf{Persamaan tegangan dan arus listrik sesaat:}
+    Dengan kondisi awal $v_C(0) = 12\text{ V}$ dan $i(0) = 0$:
+    \begin{equation*}
+        v_C(t) = 12 \cos(\omega_0 t)\text{ [Volt]}
+    \end{equation*}
+    Arus listrik yang mengalir:
+    \begin{align*}
+        i(t) &= C \frac{dv_C}{dt} = (10^{-9}\text{ F}) \times \left[ -12 \omega_0 \sin(\omega_0 t) \right] \\
+        &= \mathbf{-75{,}4 \sin(2\pi \times 10^6 t)\text{ [mA]}}
+    \end{align*}
+
+    \item \textbf{Arus puncak maksimum:}
+    \begin{align*}
+        I_{\text{maks}} &= V_0 \sqrt{\frac{C}{L}} = 12 \sqrt{\frac{1 \times 10^{-9}}{25{,}33 \times 10^{-6}}} \\
+        &= 12 \times 6{,}2832 \times 10^{-3} \approx \mathbf{75{,}4\text{ mA}} \quad \qed
+    \end{align*}
+\end{enumerate}
+\end{example}
+
+\section{Praktikum Komputasi Numerik Terbuka Berbasis Julia}
+
+\subsection{Skrip Komputasi: Komparasi Tiga Ragam Redaman \& Ruang Fasa}
+
+Listing~\ref{lst:julia_rlc_sim} menyajikan skrip lengkap menggunakan bahasa \textbf{Julia 1.12+} untuk memodelkan respon transien ketiga ragam redaman RLC dan merekonstruksi trajektori ruang fasa.
+
+\begin{lstlisting}[style=juliastyle, caption={Simulasi Tiga Ragam Redaman RLC dan Ruang Fasa dengan Julia.}, label={lst:julia_rlc_sim}]
+# =================================================================
+# PRAKTIKUM PERSAMAAN DIFERENSIAL - MINGGU 4
+# Simulasi Tiga Ragam Redaman RLC & Trajektori Ruang Fasa
+# Jurusan Teknik Elektro, Universitas Bengkulu
+# =================================================================
+
+using DifferentialEquations
+using Plots
+
+# -----------------------------------------------------------------
+# Model Ruang Keadaan Sistem Orde 2:
+# x1 = vc (tegangan kapasitor), x2 = dvc/dt
+# dx1/dt = x2
+# dx2/dt = -2*alpha*x2 - omega0^2*x1
+# -----------------------------------------------------------------
+function rlc_system!(dx, x, p, t)
+    alpha, omega0 = p
+    dx[1] = x[2]
+    dx[2] = -2.0 * alpha * x[2] - (omega0^2) * x[1]
+end
+
+# Parameter Fisis Rangkaian
+L = 0.5            # Induktansi [Henry]
+C = 20.0e-6        # Kapasitansi [Farad]
+omega0 = 1.0 / sqrt(L * C) # 316.23 rad/s
+R_kritis = 2.0 * sqrt(L / C) # 316.23 Ohm
+
+# Tiga Variasi Resistansi
+R_over   = 800.0   # Overdamped (R > R_kritis)
+R_crit   = R_kritis# Critically Damped (R = R_kritis)
+R_under  = 100.0   # Underdamped (R < R_kritis)
+
+alpha_over  = R_over  / (2.0 * L)
+alpha_crit  = R_crit  / (2.0 * L)
+alpha_under = R_under / (2.0 * L)
+
+x0 = [100.0, 0.0]  # Syarat awal: vc(0) = 100 V, dvc/dt(0) = 0
+tspan = (0.0, 0.05)# Simulasi 50 milidetik
+
+# Selesaikan untuk Ketiga Kasus
+prob_over = ODEProblem(rlc_system!, x0, tspan, [alpha_over, omega0])
+sol_over  = solve(prob_over, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+prob_crit = ODEProblem(rlc_system!, x0, tspan, [alpha_crit, omega0])
+sol_crit  = solve(prob_crit, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+prob_under = ODEProblem(rlc_system!, x0, tspan, [alpha_under, omega0])
+sol_under  = solve(prob_under, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+t_eval = range(0.0, 0.05, length=300)
+
+vc_over  = [sol_over(t)[1] for t in t_eval]
+vc_crit  = [sol_crit(t)[1] for t in t_eval]
+vc_under = [sol_under(t)[1] for t in t_eval]
+
+println("=== VALIDASI SIMULASI SISTEM ORDE 2 ===")
+println("Frekuensi alami (omega0) : ", omega0, " rad/s")
+println("Resistansi Kritis        : ", R_kritis, " Ohm")
+
+# -----------------------------------------------------------------
+# Visualisasi Grafik: Respon Waktu & Ruang Fasa
+# -----------------------------------------------------------------
+p1 = plot(t_eval .* 1000, vc_over, label="Overdamped (R=800)", lw=2, color=:blue)
+plot!(p1, t_eval .* 1000, vc_crit, label="Crit Damped (R=316)", lw=2.5, color=:green)
+plot!(p1, t_eval .* 1000, vc_under, label="Underdamped (R=100)", lw=2, color=:red)
+hline!(p1, [0.0], ls=:dash, color=:gray, label=false)
+xlabel!(p1, "Waktu t [milidetik]")
+ylabel!(p1, "Tegangan Kapasitor v_C(t) [Volt]")
+title!(p1, "Perbandingan Tiga Ragam Redaman RLC Seri")
+
+# Plot Ruang Fasa (Phase Portrait)
+p2 = plot([sol_under(t)[1] for t in t_eval], [sol_under(t)[2] for t in t_eval],
+          label="Underdamped (Spiral)", lw=2, color=:red)
+plot!(p2, [sol_over(t)[1] for t in t_eval], [sol_over(t)[2] for t in t_eval],
+          label="Overdamped (Simpul)", lw=2, color=:blue)
+xlabel!(p2, "Tegangan v_C [Volt]")
+ylabel!(p2, "Laju Perubahan dv_C/dt [V/s]")
+title!(p2, "Trajektori Ruang Fasa Menuju Ekuilibrium (0,0)")
+
+plot(p1, p2, layout=(2,1), size=(800, 700))
+savefig("respon_rlc_tiga_ragam.png")
+println("Simulasi selesai. Gambar tersimpan di respon_rlc_tiga_ragam.png")
+\end{lstlisting}
+
+\section{Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{[C1 - Mengingat]} Tuliskan persamaan karakteristik untuk PDB linier $2 y'' + 7 y' + 3 y = 0$ dan tentukan nilai determinan diskriminannya!
+    
+    \item \textbf{[C2 - Memahami]} Mengapa pada kondisi redaman kritis ($D = 0$), solusi basis kedua harus memuat faktor pengali $x$ sehingga berbentuk $y_2(x) = x e^{rx}$? Jelaskan mengapa fungsi $y_2(x) = e^{rx}$ saja tidak cukup untuk membentuk solusi umum!
+    
+    \item \textbf{[C3 - Menerapkan]} Selesaikan Masalah Nilai Awal berikut:
+    \begin{equation*}
+        y'' - 6y' + 25y = 0, \quad y(0) = 4, \quad y'(0) = 0
+    \end{equation*}
+    
+    \item \textbf{[C4 - Menganalisis]} Tinjau rangkaian RLC seri dengan parameter $L = 1\text{ H}$ dan $C = 0{,}25\text{ F}$. Tentukan rentang nilai resistansi $R$ agar sistem:
+    \begin{enumerate}[label=(\roman*)]
+        \item berosilasi dengan frekuensi sudut teredam $\omega_d > 1{,}5\text{ rad/s}$,
+        \item tidak mengalami osilasi sama sekali (\textit{overdamped}).
+    \end{enumerate}
+    
+    \item \textbf{[C5 - Mengevaluasi]} Pada sistem suspensi elektrik mobil listrik atau galvanometer analog, perancang sering kali memilih rasio redaman sedikit di bawah kritis ($\zeta \approx 0{,}707$) daripada redaman kritis murni ($\zeta = 1{,}0$). Berikan evaluasi analitis mengapa lewatan kecil ($<5\%$) dapat diterima demi mempercepat waktu naik (\textit{rise time}) sistem!
+    
+    \item \textbf{[C6 - Merancang]} Rancanglah sebuah algoritma program dalam bahasa \textbf{Julia} yang menerima input berupa matriks parameter $(R, L, C, V_0)$ dan secara otomatis:
+    \begin{enumerate}[label=(\roman*)]
+        \item mengklasifikasikan rezim redaman secara otomatis,
+        \item menghitung waktu puncak pertama (\textit{peak time}) dan persentase lewatan maksimum (\textit{maximum percentage overshoot}),
+        \item mengekspor plot lintasan ruang fasa $(v_C, i)$ ke format vektor PDF.
+    \end{enumerate}
+\end{enumerate}
+
+\section{Rangkuman \& Glosarium Istilah Teknis}
+
+\subsection{Rangkuman Inti}
+\begin{enumerate}[leftmargin=*]
+    \item Sistem orde dua dicirikan oleh interaksi dua elemen penyimpan energi independen ($L$ dan $C$) yang memicu dinamika pertukaran energi dan osilasi.
+    \item Solusi umum PDB linier orde 2 homogen koefisien konstan ditentukan oleh akar persamaan karakteristik kuadrat $a r^2 + b r + c = 0$.
+    \item Kebebasan linier pasangan solusi basis dijamin oleh determinan Wronskian yang tidak pernah nol ($W(y_1, y_2) \neq 0$).
+    \item Tiga ragam solusi mencerminkan tiga rezim redaman fisis:
+    \begin{itemize}
+        \item $D > 0$ ($\zeta > 1$): Redaman Lebih (\textit{Overdamped}) -- peluruhan murni tanpa osilasi.
+        \item $D = 0$ ($\zeta = 1$): Redaman Kritis (\textit{Critically Damped}) -- respon tercepat tanpa \textit{overshoot}.
+        \item $D < 0$ ($\zeta < 1$): Kurang Teredam (\textit{Underdamped}) -- osilasi sinusoidal dengan selubung meluruh.
+    \end{itemize}
+    \item Rangkaian tangki LC murni ($R = 0$) memiliki kekekalan energi sempurna dengan frekuensi resonansi alami $\omega_0 = \frac{1}{\sqrt{LC}}$.
+\end{enumerate}
+
+\subsection{Glosarium Istilah Teknis}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Determinan Wronskian:} Determinan matriks fungsi dan turunannya yang digunakan untuk menguji kebebasan linier solusi PDB.
+    \item \textbf{Redaman Neper ($\alpha$):} Laju peluruhan eksponensial per satuan waktu pada rangkaian RLC seri, didefinisikan sebagai $\alpha = \frac{R}{2L}$.
+    \item \textbf{Rasio Redaman ($\zeta$):} Perbandingan tak berdimensi antara faktor redaman aktual dan frekuensi alami: $\zeta = \frac{\alpha}{\omega_0}$.
+    \item \textbf{Frekuensi Sudut Teredam ($\omega_d$):} Frekuensi osilasi aktual dari sistem berosilasi teredam: $\omega_d = \sqrt{\omega_0^2 - \alpha^2}$.
+    \item \textbf{Tangki LC (Tank Circuit):} Kombinasi paralel atau seri induktor dan kapasitor yang digunakan untuk menala frekuensi resonansi pada sistem radio dan telekomunikasi.
+    \item \textbf{Ruang Fasa (Phase Portrait):} Representasi geometris dari lintasan keadaan sistem dalam bidang koordinat posisi-kecepatan atau tegangan-arus.
+\end{itemize}
+
+\section{Referensi Standar Industri \& Buku Teks Acuan}
+\begin{enumerate}[leftmargin=*]
+    \item Alexander, C. K., \& Sadiku, M. N. O. (2021). \textit{Fundamentals of Electric Circuits} (7th ed.). New York: McGraw-Hill Education.
+    \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics} (10th ed.). Hoboken, NJ: John Wiley \& Sons.
+    \item Zill, D. G. (2018). \textit{A First Course in Differential Equations with Modeling Applications} (11th ed.). Boston: Cengage Learning.
+    \item Ogata, K. (2010). \textit{Modern Control Engineering} (5th ed.). Boston: Prentice Hall.
+    \item IEEE Power and Energy Society. (2019). \textit{IEEE Std 4-2013: IEEE Standard for High-Voltage Testing Techniques}. New York: IEEE.
+    \item Rackauckas, C., \& Nie, Q. (2017). DifferentialEquations.jl -- A Performant and Feature-Rich Ecosystem for Solving Differential Equations in Julia. \textit{Journal of Open Research Software}, 5(1), 15.
 \end{enumerate}
 
 \end{document}

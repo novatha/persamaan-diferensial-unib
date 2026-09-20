@@ -1,91 +1,784 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 1: Pengantar \& Klasifikasi PD}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
+\newtheorem{theorem}{Teorema}[section]
 
-\title{Catatan Kuliah Persamaan Diferensial\\Minggu 1: Pengantar Persamaan Diferensial}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 1}\\[0.3cm]
+\textbf{\LARGE PENGANTAR PERSAMAAN DIFERENSIAL: KLASIFIKASI PDB/PDP, MASALAH NILAI AWAL (IVP), FISIKA DINAMIKA ENERGI RANGKAIAN ELEKTRIK \& KOMPUTASI NUMERIK BERBASIS JULIA}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
 
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 1)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 1 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Mendefinisikan persamaan diferensial, membedakan secara tegas antara Persamaan Diferensial Biasa (PDB) dan Persamaan Diferensial Parsial (PDP), serta mengidentifikasi orde, derajat, linieritas, dan sifat homogenitas suatu persamaan diferensial.
+    \item \textbf{C2 (Memahami):} Menjelaskan makna fisis laju perubahan seketika ($dx/dt$), perbedaan fundamental antara solusi umum (keluarga kurva integral kontinu) dan solusi khusus unik, serta peranan krusial Masalah Nilai Awal (\textit{Initial Value Problem} - IVP) dalam menentukan lintasan dinamika sistem fisik.
+    \item \textbf{C3 (Menerapkan):} Menyelesaikan persamaan diferensial biasa orde satu linier/separabel sederhana secara analitis dan menentukan nilai konstanta integrasi $C$ berdasarkan kondisi batas awal pada rangkaian transien listrik.
+    \item \textbf{C4 (Menganalisis):} Menurunkan model persamaan diferensial dari hukum-hukum fundamental fisika elektro (Hukum Kirchhoff Tegangan/Arus, Hukum Induksi Faraday $v_L = L \frac{di}{dt}$, dan Arus Perpindahan Kapasitor $i_C = C \frac{dv}{dt}$) serta membuktikan prinsip kontinuitas energi medan magnet dan medan listrik pada saat pensaklaran (\textit{switching}).
+    \item \textbf{C5 (Mengevaluasi):} Mengkaji keabsahan model matematis linier ideal terhadap fenomena non-linier riil (seperti saturasi magnetik inti besi induktor dan resistansi parasitik kapasitor) pada aplikasi jaringan kelistrikan modern.
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan skrip modular berbasis bahasa pemrograman ilmiah \textbf{Julia} (menggunakan pustaka \texttt{DifferentialEquations.jl} dan pemecah adaptif \texttt{Tsit5()}) untuk mensimulasikan respon transien arus pengisian induktor, memvalidasi solusi eksak analitik terhadap solusi numerik, serta memvisualisasikan kurva dinamika sistem.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
 
 \newpage
 
-\section{Pendahuluan}
-Persamaan Diferensial (PD) memegang peranan krusial dalam memodelkan berbagai fenomena fisik, terutama dalam disiplin ilmu Teknik Elektro. Secara umum, sistem dinamis, seperti rangkaian listrik, medan elektromagnetik, hingga sistem kendali, dapat direpresentasikan melalui suatu persamaan yang melibatkan fungsi beserta turunannya. Modul ini bertujuan untuk memberikan pemahaman dasar mengenai klasifikasi persamaan diferensial, pembedaan antara solusi umum dan solusi khusus, masalah nilai awal (Initial Value Problem - IVP), serta penerapannya secara dasar pada rangkaian listrik melalui Hukum Kirchhoff.
+\section{Peta Konsep dan Posisi Modul dalam Kurikulum Persamaan Diferensial}
 
-\section{Materi Utama}
+Mata kuliah Persamaan Diferensial di Jurusan Teknik Elektro dirancang secara khusus untuk membangun landasan analitik dan intuisi fisika yang kokoh bagi dua pilar utama rekayasa elektro: \textbf{Analisis Transien Rangkaian Listrik} (pada paruh pertama semester) dan \textbf{Teori Medan Elektromagnetika \& Perambatan Gelombang} (pada paruh kedua semester).
 
-\subsection{Klasifikasi Persamaan Diferensial: PDB dan PDP}
-Persamaan Diferensial dibagi menjadi dua kategori utama berdasarkan jumlah variabel bebas yang terlibat.
+Peta jalan pembelajaran 16 minggu disajikan secara sistematis pada Gambar~\ref{fig:peta_jalan_pd}.
 
-\begin{definition}[Persamaan Diferensial Biasa (PDB)]
-Persamaan Diferensial Biasa (PDB) adalah persamaan diferensial yang hanya mengandung turunan terhadap \textbf{satu} variabel bebas (misalnya waktu $t$).
+\begin{figure}[htbp]
+\centering
+\resizebox{0.96\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.9cm and 0.5cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, minimum width=3.2cm, minimum height=0.95cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, minimum width=3.4cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, minimum width=3.2cm, minimum height=0.95cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[highlight] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[block, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[block, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[block, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[block, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[block, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[block, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Solusi PDB Domain $s$};
+    \node[midblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[block, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[block, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[block, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[block, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[block, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[block, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan Persamaan Diferensial Teknik Elektro 2026.}
+\label{fig:peta_jalan_pd}
+\end{figure}
+
+Modul Minggu 1 ini meletakkan batu pertama pemahaman: bagaimana fenomena fisik yang dinamis dan berubah terhadap waktu diterjemahkan secara matematis ke dalam bahasa persamaan diferensial.
+
+
+\section{Pendahuluan \& Filosofi Dinamika dalam Rekayasa Elektro}
+
+\subsection{Mengapa Dunia Teknik Elektro Diatur oleh Persamaan Diferensial?}
+Dalam fisika dan rekayasa, fenomena alam jarang sekali bersifat statis. Arus listrik mengalir karena muatan bergerak, tegangan listrik timbul akibat akumulasi muatan atau perubahan fluks magnetik, dan gelombang elektromagnetik memancar karena medan listrik dan medan magnet saling menginduksi secara dinamis dalam ruang dan waktu.
+
+Hukum-hukum fundamental fisika tidak pernah menyatakan besaran fisik secara langsung, melainkan menyatakan \textbf{laju perubahan} (\textit{rate of change}) dari besaran tersebut:
+\begin{enumerate}
+    \item \textbf{Hukum Arus Kapasitor (Arus Perpindahan):}
+    Arus yang mengalir menembus kapasitor berbanding lurus dengan laju perubahan tegangan terhadap waktu:
+    \begin{equation}
+        i(t) = \frac{dq(t)}{dt} = C \frac{dv(t)}{dt}
+        \label{eq:capacitor_physics}
+    \end{equation}
+    Kapasitor tidak merespons nilai tegangan konstan DC (pada kondisi mantap DC, $\frac{dv}{dt} = 0 \implies i = 0$, kapasitor berlaku sebagai sirkuit terbuka), melainkan merespons \textbf{dinamika perubahan} tegangan.
+    
+    \item \textbf{Hukum Tegangan Induktor (Hukum Induksi Faraday):}
+    Gaya gerak listrik (GGL) lawan atau tegangan jatuh pada terminal induktor berbanding lurus dengan laju perubahan arus terhadap waktu:
+    \begin{equation}
+        v(t) = \frac{d\lambda(t)}{dt} = L \frac{di(t)}{dt}
+        \label{eq:inductor_physics}
+    \end{equation}
+    Induktor tidak memberikan tegangan jatuh pada arus konstan DC ($\frac{di}{dt} = 0 \implies v = 0$, berlaku sebagai hubung singkat), namun akan memunculkan tegangan induksi yang sangat tinggi ketika arus diputus secara tiba-tiba ($\frac{di}{dt} \to \infty$).
+    
+    \item \textbf{Hukum Kekekalan Energi pada Elemen Terpusat:}
+    Elemen resistor adalah elemen disipatif yang mengubah energi listrik menjadi energi kalor tak terbarukan dengan laju disipasi:
+    \begin{equation}
+        p_R(t) = v_R(t) \cdot i_R(t) = R \cdot i(t)^2
+    \end{equation}
+    Sebaliknya, induktor dan kapasitor adalah elemen penyimpan energi konservatif:
+    \begin{align}
+        E_L(t) &= \int_{-\infty}^t v_L(\tau) i_L(\tau) d\tau = \int_0^i L i' di' = \frac{1}{2} L i(t)^2 \quad \text{[Joule]} \\
+        E_C(t) &= \int_{-\infty}^t v_C(\tau) i_C(\tau) d\tau = \int_0^v C v' dv' = \frac{1}{2} C v(t)^2 \quad \text{[Joule]}
+    \end{align}
+\end{enumerate}
+
+Karena laju perubahan energi kinetik medan magnet ($\frac{dE_L}{dt}$) dan medan listrik ($\frac{dE_C}{dt}$) harus setimbang dengan daya yang dipasok oleh sumber dan diserap oleh resistor pada setiap sekon waktu, maka hubungan antar-komponen ini secara matematis \textbf{pasti menghasilkan persamaan diferensial}.
+
+
+\section{Taksonomi \& Klasifikasi Persamaan Diferensial}
+
+Untuk dapat menyelesaikan suatu persamaan diferensial dengan metode analitik maupun numerik yang tepat, seorang insinyur elektro harus mampu mengklasifikasikan persamaan tersebut berdasarkan empat atribut utama: \textbf{tipe}, \textbf{orde}, \textbf{derajat}, dan \textbf{linieritas}.
+
+\subsection{Persamaan Diferensial Biasa (PDB) vs Parsial (PDP)}
+
+\begin{definition}[Persamaan Diferensial Biasa -- \textit{Ordinary Differential Equation / ODE}]
+Persamaan Diferensial Biasa (PDB) adalah persamaan diferensial yang hanya memuat turunan dari satu atau lebih variabel terikat terhadap \textbf{satu variabel bebas tunggal}. Dalam analisis rangkaian listrik, variabel bebas ini umumnya adalah waktu $t$ (pada domain transien) atau posisi $x$ (pada saluran transmisi).
 \end{definition}
 
-Bentuk umum PDB:
-$$ F\left(x, y, \frac{dy}{dx}, \frac{d^2y}{dx^2}, \dots, \frac{d^ny}{dx^n}\right) = 0 $$
+Bentuk implisit umum PDB orde ke-$n$:
+\begin{equation}
+    F\left(t, y(t), \frac{dy}{dt}, \frac{d^2y}{dt^2}, \dots, \frac{d^ny}{dt^n}\right) = 0
+    \label{eq:implicit_ode}
+\end{equation}
 
-\begin{definition}[Persamaan Diferensial Parsial (PDP)]
-Persamaan Diferensial Parsial (PDP) adalah persamaan diferensial yang mengandung turunan parsial terhadap \textbf{dua atau lebih} variabel bebas.
+\begin{definition}[Persamaan Diferensial Parsial -- \textit{Partial Differential Equation / PDE}]
+Persamaan Diferensial Parsial (PDP) adalah persamaan diferensial yang memuat turunan parsial dari satu variabel terikat terhadap \textbf{dua atau lebih variabel bebas independen}.
 \end{definition}
 
-\subsection{Solusi Umum, Solusi Khusus, dan IVP}
+Contoh paling mendasar di bidang teknik elektro adalah distribusi tegangan $v(x,t)$ dan arus $i(x,t)$ pada kabel saluran transmisi daya atau kabel koaksial berfrekuensi tinggi, di mana nilai tegangan bergantung simultan pada jarak $x$ dari gardu pengirim dan waktu seketika $t$:
+\begin{equation}
+    \frac{\partial^2 v(x,t)}{\partial x^2} = L C \frac{\partial^2 v(x,t)}{\partial t^2} + (R C + G L) \frac{\partial v(x,t)}{\partial t} + R G v(x,t)
+    \label{eq:telegrapher_full}
+\end{equation}
+Persamaan~\eqref{eq:telegrapher_full} dikenal sebagai \textbf{Persamaan Telegrafer} (\textit{Telegrapher's Equation}) yang diturunkan oleh Oliver Heaviside pada tahun 1876.
+
+\subsection{Orde dan Derajat Persamaan Diferensial}
+
+\begin{definition}[Orde Persamaan Diferensial]
+Orde dari suatu persamaan diferensial ditentukan oleh \textbf{tingkat turunan tertinggi} yang muncul di dalam persamaan tersebut.
+\end{definition}
+
+\begin{definition}[Derajat Persamaan Diferensial]
+Derajat dari suatu persamaan diferensial adalah \textbf{pangkat aljabar tertinggi} dari turunan tingkat tertinggi tersebut, setelah persamaan dibebaskan dari bentuk pecahan atau tanda akar pada turunan-turunannya.
+\end{definition}
+
+Perhatikan perbandingan contoh pada Tabel~\ref{tab:orde_derajat}.
+
+\begin{table}[htbp]
+\centering
+\caption{Identifikasi orde dan derajat pada berbagai persamaan diferensial teknik elektro.}
+\label{tab:orde_derajat}
+\begin{tabularx}{\textwidth}{lXcc}
+\toprule
+\textbf{Persamaan Diferensial} & \textbf{Konteks Fisis Rekayasa} & \textbf{Orde} & \textbf{Derajat} \\ \midrule
+$L \frac{di}{dt} + R i = V_0$ & Pengisian transien induktor & 1 & 1 \\
+$L C \frac{d^2v}{dt^2} + R C \frac{dv}{dt} + v = V_s(t)$ & Osilasi transien rangkaian RLC seri & 2 & 1 \\
+$\left(\frac{d^2\theta}{dt^2}\right)^3 + \left(\frac{d\theta}{dt}\right)^4 = \sin\theta$ & Dinamika ayunan rotor generator non-linier & 2 & 3 \\
+$\sqrt{1 + \left(\frac{dy}{dx}\right)^2} = \alpha \frac{d^2y}{dx^2}$ & Kelengkungan mekanis kawat SUTT (Katenari) & 2 & 2 (setelah dikuadratkan) \\ \bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Linieritas: Konsep Operator Linier \& Prinsip Superposisi}
+
+Sifat linieritas adalah sifat yang paling mendasar dalam rekayasa sistem. Suatu PDB dikatakan \textbf{linier} jika variabel terikat $y$ dan seluruh turunannya ($y', y'', \dots, y^{(n)}$) hanya berderajat satu dan tidak saling dikalikan satu sama lain, serta tidak berada di dalam fungsi transenden (seperti $\sin(y), \cos(y), e^y, \ln(y)$).
+
+Bentuk umum PDB linier orde ke-$n$:
+\begin{equation}
+    a_n(t) \frac{d^ny}{dt^n} + a_{n-1}(t) \frac{d^{n-1}y}{dt^{n-1}} + \dots + a_1(t) \frac{dy}{dt} + a_0(t) y = g(t)
+    \label{eq:linear_ode}
+\end{equation}
+di mana koefisien-koefisien $a_i(t)$ dan suku pemaksa $g(t)$ hanya boleh merupakan fungsi dari variabel bebas $t$ atau konstanta skalar.
+
+\begin{tcolorbox}[colback=yellow!10!white,colframe=orange!80!black,title=\textbf{Prinsip Superposisi pada PDB Linier}]
+Jika operator diferensial linier didefinisikan sebagai $L[\cdot] = a_n(t)\frac{d^n}{dt^n} + \dots + a_0(t)$, maka berlaku sifat:
+\begin{equation}
+    L[c_1 y_1(t) + c_2 y_2(t)] = c_1 L[y_1(t)] + c_2 L[y_2(t)]
+\end{equation}
+Artinya, jika sistem dipasok oleh kombinasi sumber eksitasi $g(t) = c_1 g_1(t) + c_2 g_2(t)$, respon total sistem adalah penjumlahan langsung dari respon masing-masing sumber secara independen. Sifat ini \textbf{runtuh total} pada persamaan diferensial non-linier!
+\end{tcolorbox}
+
+\subsection{Homogenitas: Respons Alami vs Respons Paksa}
+Pada Persamaan~\eqref{eq:linear_ode}:
 \begin{itemize}
-    \item \textbf{Solusi Umum:} Solusi yang memuat konstanta sembarang ($C$).
-    \item \textbf{Solusi Khusus:} Solusi yang diperoleh dari solusi umum dengan memasukkan nilai \textit{Initial Value Problem} (IVP) atau kondisi awal.
+    \item Jika $g(t) = 0$, persamaan disebut \textbf{PDB Homogen}. Solusinya merepresentasikan \textbf{respons alami} (\textit{natural response} atau respons bebas) dari sistem, yaitu pelepasan energi yang tersimpan mula-mula di dalam induktor atau kapasitor tanpa ada catu daya luar.
+    \item Jika $g(t) \neq 0$, persamaan disebut \textbf{PDB Non-Homogen}. Solusinya memuat gabungan respons alami dan \textbf{respons paksa} (\textit{forced response}), yang dipicu oleh sumber tegangan/arus luar $g(t)$.
 \end{itemize}
 
-\begin{example}[Penyelesaian IVP Langkah-demi-Langkah]
-Tinjau PDB: $\frac{dy}{dt} = -2y$, dengan kondisi awal $y(0) = 5$.
-\\ \textbf{Langkah 1: Temukan Solusi Umum.} 
-Berdasarkan pengalaman, fungsi yang turunannya adalah kelipatan dirinya sendiri adalah eksponensial. Solusi umumnya: 
-$y(t) = C e^{-2t}$.
-\\ \textbf{Langkah 2: Terapkan Kondisi Awal.}
-Substitusi $t = 0$ dan $y = 5$:
-$5 = C e^{-2(0)} \implies 5 = C(1) \implies C = 5$.
-\\ \textbf{Langkah 3: Solusi Khusus.}
-Maka solusi khususnya adalah $y(t) = 5 e^{-2t}$.
+
+\section{Konsep Solusi: Solusi Umum, Solusi Khusus, dan Medan Arah}
+
+\subsection{Solusi Umum sebagai Keluarga Kurva Karakteristik}
+Ketika kita mengintegrasikan suatu persamaan diferensial biasa orde ke-$n$, proses integrasi akan memunculkan $n$ buah konstanta sembarang ($C_1, C_2, \dots, C_n$). Solusi yang masih memuat konstanta-konstanta ini dinamakan \textbf{Solusi Umum} (\textit{General Solution}).
+
+Secara geometris, solusi umum merepresentasikan \textbf{keluarga tak hingga dari kurva integral} di bidang koordinat $(t, y)$, di mana setiap kurva memiliki bentuk kelengkungan yang serupa namun bergeser posisinya bergantung pada nilai konstanta integrasi $C$.
+
+\subsection{Medan Arah (\textit{Slope Field / Direction Field})}
+Seringkali persamaan diferensial yang memodelkan sistem fisik nyata sangat sulit atau bahkan mustahil diselesaikan secara analitik tertutup. Namun, kita dapat memvisualisasikan seluruh perilaku dinamika sistem secara grafis menggunakan \textbf{Medan Arah} (\textit{Slope Field}).
+
+Tinjau PDB orde satu dalam bentuk eksplisit:
+\begin{equation}
+    \frac{dy}{dt} = f(t, y)
+    \label{eq:slope_def}
+\end{equation}
+Persamaan~\eqref{eq:slope_def} menyatakan bahwa pada setiap titik koordinat $(t, y)$ di bidang, gradien kemiringan garis singgung terhadap kurva solusi adalah tepat bernilai $f(t, y)$. Dengan menggambar segmen garis pendek dengan kemiringan $m = f(t, y)$ pada kisi-kisi titik, kita dapat melihat pola aliran lintasan partikel atau arus tanpa menghitung integral satu baris pun!
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.95]
+    % Sumbu
+    \draw[->, line width=1.1pt] (-0.5,0) -- (7,0) node[right]{$t$ (waktu)};
+    \draw[->, line width=1.1pt] (0,-0.5) -- (0,4.5) node[above]{$i(t)$ (arus)};
+    
+    % Garis asimtot mantap
+    \draw[dashed, red!80!black, line width=1.2pt] (0,3.5) -- (6.5,3.5) node[right, font=\footnotesize]{$I_{\text{ss}} = \frac{V_0}{R}$ (Asimtot Keadaan Mantap)};
+    
+    % Kurva Solusi Berbagai C
+    \draw[domain=0:6, samples=60, smooth, variable=\t, blue!80!black, line width=1.3pt] plot ({\t}, {3.5*(1 - exp(-\t/1.2))});
+    \node[blue!80!black, right, font=\footnotesize] at (5.5, 3.2) {$C = -I_{\text{ss}}$ (Mulai dari 0)};
+    
+    \draw[domain=0:6, samples=60, smooth, variable=\t, green!60!black, line width=1.2pt] plot ({\t}, {3.5 + (1.0 - 3.5)*exp(-\t/1.2)});
+    \node[green!60!black, right, font=\footnotesize] at (5.5, 2.3) {$C < 0$ (Mulai dari $1\text{ A}$)};
+    
+    \draw[domain=0:6, samples=60, smooth, variable=\t, purple!80!black, line width=1.2pt] plot ({\t}, {3.5 + (5.0 - 3.5)*exp(-\t/1.2)});
+    \node[purple!80!black, right, font=\footnotesize] at (5.5, 3.8) {$C > 0$ (Mulai dari $5\text{ A}$)};
+    
+    % Titik Awal
+    \filldraw[red] (0,0) circle (2pt) node[below left]{$i(0) = 0$};
+    \filldraw[red] (0,1.0) circle (2pt) node[left]{$i(0) = 1$};
+    \filldraw[red] (0,4.5*3.5/3.5) circle (0pt);
+\end{tikzpicture}
+\caption{Keluarga kurva integral dari solusi umum PDB pengisian arus induktor menuju keadaan mantap.}
+\label{fig:integral_curves}
+\end{figure}
+
+Perhatikan Gambar~\ref{fig:integral_curves}. Seluruh kurva solusi, dari mana pun nilai awal arus dimulai, akan berkonvergensi secara asimtotik menuju nilai keadaan mantap (\textit{steady-state}):
+\begin{equation}
+    I_{\text{ss}} = \lim_{t \to \infty} i(t) = \frac{V_0}{R}
+\end{equation}
+Titik konvergensi ini mencerminkan hukum alam fisika: induktor pada akhirnya menjadi kawat hubung singkat biasa setelah fluks magnetik jenuh dan laju perubahan arus berhenti ($\frac{di}{dt} = 0$).
+
+
+\section{Masalah Nilai Awal (\textit{Initial Value Problem} - IVP) \& Prinsip Fisika Kontinuitas Energi}
+
+\subsection{Formulasi Matematis Masalah Nilai Awal}
+Suatu persamaan diferensial orde $n$ yang dilengkapi dengan $n$ buah syarat awal pada satu titik waktu acuan yang sama ($t = t_0$) dinamakan \textbf{Masalah Nilai Awal} (\textit{Initial Value Problem} - IVP):
+\begin{equation}
+    \begin{cases}
+        \frac{d^ny}{dt^n} = f\left(t, y, y', \dots, y^{(n-1)}\right) \\
+        y(t_0) = y_0, \quad y'(t_0) = y_1, \quad \dots, \quad y^{(n-1)}(t_0) = y_{n-1}
+    \end{cases}
+    \label{eq:ivp_form}
+\end{equation}
+
+Syarat-syarat awal ini berfungsi untuk menetapkan secara tunggal nilai dari konstanta sembarang $C_1, \dots, C_n$, sehingga dari keluarga tak hingga kurva solusi umum, terpilih tepat \textbf{satu kurva solusi khusus} yang secara presisi menggambarkan realitas fisis sistem yang diamati.
+
+\subsection{Teorema Eksistensi dan Keunikan Picard-Lindelöf}
+Apakah setiap IVP pasti memiliki solusi, dan apakah solusi tersebut dijamin hanya ada satu?
+
+\begin{theorem}[Teorema Eksistensi \& Keunikan Picard-Lindelöf]
+Tinjau IVP orde satu:
+\begin{equation}
+    \frac{dy}{dt} = f(t, y), \quad y(t_0) = y_0
+\end{equation}
+Jika fungsi $f(t, y)$ dan turunan parsialnya $\frac{\partial f}{\partial y}$ keduanya kontinu pada suatu daerah persegi panjang tertutup $\mathcal{R} = \{ (t, y) \mid |t - t_0| \le a, |y - y_0| \le b \}$, maka terdapat selang waktu terbuka $I = (t_0 - h, t_0 + h)$ di mana terdapat \textbf{satu dan hanya satu} solusi kontinu $y(t)$ yang memenuhi IVP tersebut.
+\end{theorem}
+
+\subsection{Prinsip Fisika Kontinuitas Energi: Mengapa \texorpdfstring{$i_L(0^-) = i_L(0^+)$ dan $v_C(0^-) = v_C(0^+)$}{iL(0-) = iL(0+) dan vC(0-) = vC(0+)}?}
+Bagi seorang insinyur elektro, kondisi awal pada saat sakelar ditutup ($t = 0^+$) bukan sekadar angka matematis sembarang, melainkan ditentukan secara mutlak oleh \textbf{Hukum Kekekalan Energi Alam Semesta}:
+
+\begin{enumerate}
+    \item \textbf{Kontinuitas Arus Induktor:}
+    Energi yang tersimpan di dalam medan magnet induktor adalah:
+    \begin{equation}
+        E_L(t) = \frac{1}{2} L [i_L(t)]^2
+    \end{equation}
+    Daya listrik seketika adalah turunan waktu dari energi:
+    \begin{equation}
+        p_L(t) = \frac{dE_L}{dt} = L i_L(t) \frac{di_L(t)}{dt} = v_L(t) \cdot i_L(t)
+    \end{equation}
+    Jika arus induktor melompat secara diskontinu dari nilai $i_L(0^-)$ ke $i_L(0^+)$ dalam durasi waktu nol ($\Delta t \to 0$), maka laju perubahan arus bernilai tak hingga ($\frac{di_L}{dt} \to \infty$). Akibatnya, tegangan induktor $v_L(t)$ dan daya sesaat $p_L(t)$ harus bernilai \textbf{tak hingga ($\infty$ Watt)}!
+    
+    Karena tidak ada sumber daya di alam semesta yang memiliki daya tak hingga, maka \textbf{energi medan magnet tidak dapat berubah seketika}:
+    \begin{equation}
+        E_L(0^-) = E_L(0^+) \implies \frac{1}{2} L [i_L(0^-)]^2 = \frac{1}{2} L [i_L(0^+)]^2 \implies i_L(0^-) = i_L(0^+)
+        \label{eq:continuity_inductor}
+    \end{equation}
+    
+    \item \textbf{Kontinuitas Tegangan Kapasitor:}
+    Dengan analogi yang sama, energi medan listrik pada kapasitor adalah $E_C = \frac{1}{2} C [v_C(t)]^2$. Agar daya pengisian tidak tak hingga, \textbf{tegangan pada pelat kapasitor tidak dapat berubah seketika}:
+    \begin{equation}
+        v_C(0^-) = v_C(0^+)
+        \label{eq:continuity_capacitor}
+    \end{equation}
+\end{enumerate}
+
+Persamaan~\eqref{eq:continuity_inductor} dan \eqref{eq:continuity_capacitor} adalah fondasi hukum fisika tak terbantahkan yang selalu digunakan untuk menentukan nilai awal Masalah Nilai Awal (IVP) pada seluruh rangkaian transien listrik.
+
+
+\section{Pemodelan Fisis Rangkaian Elektrik dari Hukum-Hukum Kirchhoff}
+
+Mari kita turunkan formulasi matematis PDB dari diagram skematik rangkaian listrik secara \textit{first-principles}.
+
+\subsection{Pemodelan Rangkaian RL Seri: Pengisian Arus Induktor}
+Tinjau rangkaian loop tunggal yang memuat sumber tegangan DC $V_0$, sakelar $S$ yang ditutup pada $t = 0$, resistor linier $R$, dan induktor ideal $L$, sebagaimana diilustrasikan pada Gambar~\ref{fig:circuit_rl}.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1.1]
+    \draw (0,0) to[battery2, l=$V_0$, invert] (0,3)
+          to[normal open switch, l={$S (t=0)$}] (2,3)
+          to[R, l=$R$, v={$v_R(t)$}] (4.5,3)
+          to[L, l=$L$, v={$v_L(t)$}] (7,3)
+          -- (7,0) -- (0,0);
+    \draw[->, >=stealth, line width=1.1pt, headercolor] (3.5,1.5) arc (160:-160:0.6) node[midway, right=3pt, font=\small]{$i(t)$};
+\end{circuitikz}
+\caption{Skematik rangkaian transien RL seri eksitasi tegangan DC.}
+\label{fig:circuit_rl}
+\end{figure}
+
+Berdasarkan Hukum Tegangan Kirchhoff (KVL), jumlah aljabar tegangan mengelilingi loop tertutup sama dengan nol:
+\begin{equation}
+    -V_0 + v_R(t) + v_L(t) = 0 \implies v_R(t) + v_L(t) = V_0
+    \label{eq:kvl_rl}
+\end{equation}
+
+Substitusikan hukum konstitutif resistor ($v_R = R \cdot i$) dan induktor ($v_L = L \frac{di}{dt}$):
+\begin{equation}
+    L \frac{di(t)}{dt} + R i(t) = V_0
+    \label{eq:ode_rl_standard}
+\end{equation}
+
+Persamaan~\eqref{eq:ode_rl_standard} adalah \textbf{PDB Linier Orde 1 Non-Homogen Koefisien Konstan}.
+
+\subsubsection{Penurunan Solusi Analitik dengan Metode Pemisahan Variabel}
+Bagi kedua ruas dengan induktansi $L$:
+\begin{equation}
+    \frac{di}{dt} + \frac{R}{L} i = \frac{V_0}{L} \implies \frac{di}{dt} = \frac{V_0 - R i}{L}
+\end{equation}
+
+Pisahkan variabel arus $i$ ke ruas kiri dan waktu $t$ ke ruas kanan:
+\begin{equation}
+    \frac{di}{V_0 - R i} = \frac{1}{L} dt
+\end{equation}
+
+Integralkan kedua ruas:
+\begin{align}
+    \int \frac{di}{V_0 - R i} &= \int \frac{1}{L} dt \nonumber \\
+    -\frac{1}{R} \ln|V_0 - R i| &= \frac{t}{L} + C_1
+\end{align}
+di mana $C_1$ adalah konstanta integrasi sembarang. Kalikan kedua ruas dengan $-R$:
+\begin{equation}
+    \ln|V_0 - R i| = -\frac{R}{L} t - R C_1
+\end{equation}
+
+Ambil eksponensial natural pada kedua sisi:
+\begin{equation}
+    |V_0 - R i| = e^{-\frac{R}{L} t - R C_1} = e^{-R C_1} \cdot e^{-\frac{R}{L} t} = A e^{-\frac{R}{L} t}
+\end{equation}
+di mana $A = \pm e^{-R C_1}$ adalah konstanta baru. Selesaikan untuk $i(t)$:
+\begin{equation}
+    V_0 - R i(t) = A e^{-\frac{R}{L} t} \implies i(t) = \frac{V_0}{R} - \frac{A}{R} e^{-\frac{R}{L} t} = \frac{V_0}{R} + K e^{-\frac{R}{L} t}
+    \label{eq:general_sol_rl}
+\end{equation}
+Persamaan~\eqref{eq:general_sol_rl} adalah \textbf{Solusi Umum} pengisian arus rangkaian RL.
+
+\subsubsection{Penerapan Kondisi Awal \& Solusi Khusus Unik}
+Asumsikan sebelum sakelar ditutup ($t < 0$), induktor dalam keadaan kosong tanpa energi:
+\begin{equation}
+    i(0^-) = 0
+\end{equation}
+Berdasarkan prinsip kontinuitas arus induktor (Persamaan~\eqref{eq:continuity_inductor}), maka pada saat tepat setelah sakelar ditutup:
+\begin{equation}
+    i(0^+) = i(0^-) = 0
+\end{equation}
+
+Substitusikan kondisi awal $t = 0$ dan $i(0) = 0$ ke dalam solusi umum Persamaan~\eqref{eq:general_sol_rl}:
+\begin{equation}
+    0 = \frac{V_0}{R} + K e^0 \implies 0 = \frac{V_0}{R} + K \implies K = -\frac{V_0}{R}
+\end{equation}
+
+Substitusikan kembali nilai $K$ ke dalam solusi umum untuk memperoleh \textbf{Solusi Khusus}:
+\begin{equation}
+    i(t) = \frac{V_0}{R} - \frac{V_0}{R} e^{-\frac{R}{L} t} = \frac{V_0}{R} \left( 1 - e^{-\frac{t}{\tau}} \right)
+    \label{eq:particular_sol_rl}
+\end{equation}
+di mana konstanta waktu induktif didefinisikan sebagai:
+\begin{equation}
+    \tau = \frac{L}{R} \quad \text{[detik]}
+    \label{eq:time_constant_rl}
+\end{equation}
+
+\subsection{Dinamika Transien: Evaluasi Berbasis Kelipatan Konstanta Waktu \texorpdfstring{$\tau$}{tau}}
+Konstanta waktu $\tau = L/R$ adalah tolok ukur kecepatan respons transien rangkaian. Tabel~\ref{tab:transient_evolution} menyajikan persentase kenaikan arus menuju keadaan mantap pada setiap kelipatan $\tau$.
+
+\begin{table}[htbp]
+\centering
+\caption{Evolusi arus transien induktor terhadap konstanta waktu $\tau$.}
+\label{tab:transient_evolution}
+\begin{tabularx}{\textwidth}{cccX}
+\toprule
+\textbf{Waktu ($t$)} & \textbf{Faktor $e^{-t/\tau}$} & \textbf{Nilai Arus $i(t)$} & \textbf{Makna Fisik \& Status Operasional} \\ \midrule
+$0$ & $1{,}0000$ & $0{,}000 \times I_{\text{ss}}$ & Sakelar baru menutup; induktor menahan arus secara total ($v_L = V_0$). \\
+$1\tau$ & $0{,}3679$ & $0{,}6321 \times I_{\text{ss}}$ & Arus telah mencapai $63{,}2\%$ dari nilai mantapnya. \\
+$2\tau$ & $0{,}1353$ & $0{,}8647 \times I_{\text{ss}}$ & Arus telah melampaui $86{,}4\%$; transien mulai melambat. \\
+$3\tau$ & $0{,}0498$ & $0{,}9502 \times I_{\text{ss}}$ & Arus mencapai $95\%$; sistem mendekati saturasi linier. \\
+$4\tau$ & $0{,}0183$ & $0{,}9817 \times I_{\text{ss}}$ & Arus mencapai $98{,}2\%$. \\
+$5\tau$ & $0{,}0067$ & $0{,}9933 \times I_{\text{ss}}$ & Secara konvensi rekayasa, transien dianggap telah \textbf{selesai} ($>99\%$). \\ \bottomrule
+\end{tabularx}
+\end{table}
+
+
+\section{Studi Kasus Nyata: Transien Penyalaan Trafo Gardu Induk \& Arus Inrush}
+
+Dalam sistem transmisi daya nyata di Provinsi Bengkulu (seperti Gardu Induk Pulau Baai 150 kV atau Gardu Induk Curup), transformator daya memiliki induktansi magnetisasi $L_m$ yang sangat besar (dalam orde Henry) dan resistansi belitan tembaga $R$ yang relatif kecil (dalam orde Ohm atau mili-Ohm).
+
+Rasio resistansi terhadap induktansi menentukan konstanta waktu $X/R = \omega L / R$. Pada transformator daya besar:
+\begin{equation}
+    \frac{X}{R} \approx 20 - 40 \implies \tau = \frac{L}{R} = \frac{X/R}{\omega} = \frac{30}{2\pi \times 50} \approx 0{,}095\text{ detik} \approx 95\text{ ms}
+\end{equation}
+
+Konstanta waktu $95\text{ ms}$ berarti proses transien peluruhan arus asimetris membutuhkan waktu:
+\begin{equation}
+    t_{\text{settle}} \approx 5\tau \approx 5 \times 95\text{ ms} = 475\text{ ms} \approx 0{,}5\text{ detik}
+\end{equation}
+
+Selama setengah detik tersebut, inti besi transformator dapat mengalami kejenuhan (\textit{magnetic saturation}), memicu arus pemula transien (\textit{inrush current}) yang dapat mencapai \textbf{6 hingga 10 kali lipat arus nominal beban penuh}. Pemodelan persamaan diferensial transien ini menjadi rujukan wajib bagi insinyur proteksi PLN untuk menyetel relai diferensial transformator (\textit{relay 87T}) agar tidak salah trip (\textit{nuisance tripping}) saat gardu induk pertama kali diberi tegangan (\textit{energized}).
+
+
+\section{Contoh Soal Terhitung Langkah demi Langkah (\textit{Worked Numerical Examples})}
+
+\begin{example}[Klasifikasi Komprehensif Persamaan Diferensial]
+Klasifikasikan persamaan-persamaan diferensial berikut berdasarkan tipe (PDB/PDP), orde, derajat, dan linieritas:
+\begin{enumerate}
+    \item $5 \frac{d^2 i}{dt^2} + 20 \frac{di}{dt} + 500 i = 100 \cos(100\pi t)$
+    \item $\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = -\frac{\rho(x,y)}{\varepsilon_0}$
+    \item $L \frac{di}{dt} + R i^2 = V_0$
+    \item $\left( \frac{d^3 y}{dt^3} \right)^2 + t^2 \frac{dy}{dt} + y = e^t$
+\end{enumerate}
+
+\textbf{Solusi Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Persamaan 1:}
+    \begin{itemize}
+        \item Variabel bebas tunggal ($t$) $\implies$ \textbf{PDB}.
+        \item Turunan tertinggi adalah $\frac{d^2 i}{dt^2}$ $\implies$ \textbf{Orde 2}.
+        \item Pangkat dari turunan tertinggi adalah satu $\implies$ \textbf{Derajat 1}.
+        \item Koefisien adalah konstanta ($5, 20, 500$), variabel terikat $i$ dan seluruh turunannya berderajat 1 dan tidak ada perkalian antar-turunan $\implies$ \textbf{Linier} (Non-Homogen).
+    \end{itemize}
+    
+    \item \textbf{Persamaan 2:}
+    \begin{itemize}
+        \item Dua variabel bebas spasial ($x, y$) $\implies$ \textbf{PDP} (Persamaan Poisson 2D).
+        \item Turunan parsial tertinggi adalah turunan kedua $\implies$ \textbf{Orde 2}.
+        \item Pangkat turunan parsial tertinggi adalah satu $\implies$ \textbf{Derajat 1}.
+        \item Variabel terikat $V$ dan seluruh turunannya linier $\implies$ \textbf{Linier}.
+    \end{itemize}
+    
+    \item \textbf{Persamaan 3:}
+    \begin{itemize}
+        \item Variabel bebas tunggal ($t$) $\implies$ \textbf{PDB}.
+        \item Turunan tertinggi adalah $\frac{di}{dt}$ $\implies$ \textbf{Orde 1}, \textbf{Derajat 1}.
+        \item Terdapat suku non-linier $i^2$ (kuadrat dari variabel terikat) $\implies$ \textbf{Non-Linier}. (Model resistor tak linier / varistor).
+    \end{itemize}
+    
+    \item \textbf{Persamaan 4:}
+    \begin{itemize}
+        \item Variabel bebas tunggal ($t$) $\implies$ \textbf{PDB}.
+        \item Turunan tertinggi adalah $\frac{d^3 y}{dt^3}$ $\implies$ \textbf{Orde 3}.
+        \item Turunan tingkat ketiga berpangkat 2 $\implies$ \textbf{Derajat 2}.
+        \item Karena derajat $>1$, persamaan ini otomatis \textbf{Non-Linier}.
+    \end{itemize}
+\end{enumerate}
 \end{example}
 
-\subsection{Aplikasi Awal: Hukum Kirchhoff pada Rangkaian Listrik}
-\begin{example}[Rangkaian RL Seri]
-Tinjau sebuah rangkaian yang terdiri dari resistor $R$ dan induktor $L$ seri dengan sumber tegangan DC $V_0$. Hukum KVL menyatakan:
-$$ V_R + V_L = V_0 \implies R \cdot i(t) + L \frac{di(t)}{dt} = V_0 $$
-Persamaan ini adalah PDB orde 1 linear. 
+\begin{example}[Penyelesaian IVP Rangkaian RL Gardu Induk Industri]
+Sebuah rangkaian kendali solenoida pemutus tenaga (PMT / *Circuit Breaker*) di Gardu Induk memiliki resistansi kumparan $R = 2{,}5\ \Omega$ dan induktansi $L = 50\text{ mH} = 0{,}05\text{ H}$. Rangkaian dihubungkan ke sumber catu daya DC stasiun baterai $V_0 = 125\text{ V}$ pada saat $t = 0$. Arus awal sebelum penyaklaran adalah $i(0) = 0\text{ A}$.
 
-\textit{Catatan Komputasi:} Untuk melihat visualisasi grafis bagaimana arus $i(t)$ naik secara eksponensial terhadap waktu, silakan jalankan \texttt{Simulasi\_Transien\_RC\_RL.ipynb} di Jupyter Notebook Anda. Cobalah mengubah nilai $R$ dan $L$ pada \textit{slider} untuk melihat pengaruhnya terhadap konstanta waktu!
-\end{example}
+Tentukan:
+\begin{enumerate}
+    \item Konstanta waktu transien $\tau$ dari kumparan pemutus.
+    \item Persamaan analitik lengkap untuk arus sesaat $i(t)$.
+    \item Besar arus pada saat $t = 20\text{ ms}$ dan $t = 100\text{ ms}$.
+    \item Nilai arus keadaan mantap ($I_{\text{ss}}$) serta energi medan magnet yang tersimpan pada induktor saat keadaan mantap.
+\end{enumerate}
 
-\section{Ringkasan}
-Klasifikasi PD menjadi PDB dan PDP sangat bergantung pada jumlah variabel bebas. Selalu gunakan simulasi Python/Julia untuk memvalidasi pemahaman analitik Anda secara visual.
+\textbf{Solusi Langkah demi Langkah:}
 
-\section{Referensi}
+\textbf{Langkah 1: Menghitung Konstanta Waktu $\tau$}
+\begin{equation}
+    \tau = \frac{L}{R} = \frac{0{,}05\text{ H}}{2{,}5\ \Omega} = 0{,}02\text{ detik} = 20\text{ ms}
+\end{equation}
+
+\textbf{Langkah 2: Menentukan Persamaan Arus Khusus $i(t)$}
+Model KVL rangkaian adalah:
+\begin{equation}
+    0{,}05 \frac{di}{dt} + 2{,}5 i = 125
+\end{equation}
+Arus keadaan mantap adalah:
+\begin{equation}
+    I_{\text{ss}} = \frac{V_0}{R} = \frac{125\text{ V}}{2{,}5\ \Omega} = 50\text{ A}
+\end{equation}
+Berdasarkan rumus umum respon transien orde 1 (Persamaan~\eqref{eq:particular_sol_rl}):
+\begin{equation}
+    i(t) = I_{\text{ss}} (1 - e^{-t/\tau}) = 50 \left( 1 - e^{-\frac{t}{0{,}02}} \right) = 50 (1 - e^{-50t})\quad [\text{Ampere}]
+\end{equation}
+
+\textbf{Langkah 3: Evaluasi Arus pada $t = 20\text{ ms}$ dan $t = 100\text{ ms}$}
 \begin{itemize}
-    \item Erwin Kreyszig, \textit{Advanced Engineering Mathematics}.
-    \item \texttt{Simulasi\_Transien\_RC\_RL.ipynb} (Praktikum Komputasi).
+    \item Pada saat $t = 20\text{ ms} = 1\tau$:
+    \begin{equation}
+        i(20\text{ ms}) = 50 (1 - e^{-1}) = 50 (1 - 0{,}36788) = 50 \times 0{,}63212 = 31{,}61\text{ A}
+    \end{equation}
+    \item Pada saat $t = 100\text{ ms} = 5\tau$:
+    \begin{equation}
+        i(100\text{ ms}) = 50 (1 - e^{-5}) = 50 (1 - 0{,}00674) = 50 \times 0{,}99326 = 49{,}66\text{ A}
+    \end{equation}
+    Terbukti bahwa pada $t = 5\tau$, arus telah mencapai $>99\%$ nilai mantapnya.
 \end{itemize}
+
+\textbf{Langkah 4: Energi Medan Magnet Keadaan Mantap}
+Pada keadaan mantap, arus adalah $I_{\text{ss}} = 50\text{ A}$. Energi yang tersimpan di dalam medan magnet solenoida adalah:
+\begin{equation}
+    E_L = \frac{1}{2} L I_{\text{ss}}^2 = \frac{1}{2} \times 0{,}05\text{ H} \times (50\text{ A})^2 = 0{,}025 \times 2500 = 62{,}5\text{ Joule}
+\end{equation}
+\end{example}
+
+
+\section{Praktikum Komputasi Terbuka Berbasis Julia}
+
+Dalam dunia komputasi sains dan rekayasa modern, bahasa pemrograman \textbf{Julia} telah menjadi standar baru karena memecahkan masalah \textit{two-language problem} (menawarkan sintaks ekspresif semudah Python/MATLAB namun berkecepatan tinggi setara C/Fortran). Khusus untuk pemodelan persamaan diferensial, ekosistem \texttt{DifferentialEquations.jl} diakui secara internasional sebagai salah satu paket pemecah persamaan diferensial tercepat dan paling komprehensif di dunia ilmiah.
+
+Untuk memverifikasi solusi analitik dan mengamati dinamika transien secara visual, mahasiswa wajib menjalankan skrip modular berbasis \textbf{Julia} berikut.
+
+\begin{lstlisting}[style=juliastyle, caption={Skrip Julia: Simulasi Transien Rangkaian RL dan Verifikasi Numerik Menggunakan DifferentialEquations.jl.}]
+# =========================================================================
+# MODUL AJAR PERSAMAAN DIFERENSIAL - JURUSAN TEKNIK ELEKTRO UNIB
+# Praktikum Minggu 1: Respon Transien Rangkaian RL (Analitik vs Numerik)
+# Dosen: Ir. Novalio Daratha, S.T., M.Sc., Ph.D. & Muhammad Arfan, S.T., M.T.
+# Bahasa Pemrograman: Julia 1.12+ (DifferentialEquations.jl & Plots.jl)
+# =========================================================================
+
+using DifferentialEquations
+using Plots
+
+# 1. Parameter Fisik Sistem Rangkaian RL
+const V0  = 125.0       # Tegangan Sumber DC [Volt]
+const R   = 2.5         # Resistansi Kumparan [Ohm]
+const L   = 0.050       # Induktansi Kumparan [Henry]
+const tau = L / R       # Konstanta Waktu [detik] (20 ms)
+const Iss = V0 / R      # Arus Keadaan Mantap [Ampere] (50 A)
+
+println("="^65)
+println("  SIMULASI TRANSIEN RANGKAIAN RL BERBASIS JULIA")
+println("="^65)
+println("Tegangan Sumber (V0)   : $V0 Volt")
+println("Resistansi Kumparan (R): $R Ohm")
+println("Induktansi (L)         : $L Henry")
+println("Konstanta Waktu (tau)  : $tau detik ($(tau*1000) ms)")
+println("Arus Mantap (Iss)      : $Iss Ampere")
+println("-"^65)
+
+# 2. Formulasi Masalah Nilai Awal (IVP) untuk DifferentialEquations.jl
+# Bentuk PDB eksplisit: di/dt = f(i, p, t) = (V0 - R*i) / L
+function rl_ode!(di, i, p, t)
+    V0_val, R_val, L_val = p
+    di[1] = (V0_val - R_val * i[1]) / L_val
+end
+
+# Parameter sistem, Kondisi Awal i(0) = 0 A, dan Rentang Waktu (0 s.d. 6 tau)
+p = (V0, R, L)
+i0 = [0.0]
+tspan = (0.0, 6.0 * tau)
+
+# Definisi ODEProblem dan Penyelesaian dengan Algoritma Tsit5 (Tsitouras 5/4)
+prob = ODEProblem(rl_ode!, i0, tspan, p)
+sol = solve(prob, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+# 3. Solusi Eksak Analitik & Evaluasi Presisi Numerik
+t_eval = range(0.0, 6.0 * tau, length=500)
+i_exact = [Iss * (1.0 - exp(-t / tau)) for t in t_eval]
+v_induktor = [V0 * exp(-t / tau) for t in t_eval]
+
+# Interpolasi solusi numerik pada grid evaluasi
+i_num = [sol(t)[1] for t in t_eval]
+error_abs = abs.(i_exact .- i_num)
+max_error = maximum(error_abs)
+println("Maksimum Error Mutlak Numerik vs Analitik: $max_error Ampere")
+println("-"^65)
+
+# 4. Visualisasi Grafik Resolusi Tinggi
+p1 = plot(t_eval .* 1000, i_exact, label="Solusi Analitik Eksak",
+          lw=2.5, color=:blue, legend=:bottomright)
+scatter!(p1, sol.t .* 1000, [u[1] for u in sol.u],
+         label="Simulasi Tsit5() Numerik", ms=3.5, color=:red, shape=:circle)
+hline!(p1, [Iss], label="Keadaan Mantap (Iss = 50 A)",
+       ls=:dash, lw=1.2, color=:black)
+vline!(p1, [tau * 1000], label="1 tau = 20 ms (63.2%)",
+       ls=:dash, lw=1.2, color=:green)
+vline!(p1, [5 * tau * 1000], label="5 tau = 100 ms (99.3%)",
+       ls=:dash, lw=1.2, color=:purple)
+plot!(p1, title="Respon Transien Pengisian Arus Induktor: i(t) vs Waktu",
+      xlabel="Waktu (milidetik)", ylabel="Arus Induktor i(t) [Ampere]", grid=true)
+
+p2 = plot(t_eval .* 1000, v_induktor, label="Tegangan Induktor v_L(t)",
+          lw=2.0, color=:red, legend=:topright)
+plot!(p2, t_eval .* 1000, (i_exact.^2 .* R) ./ 1000,
+      label="Disipasi Daya Resistor [kW]", lw=2.0, color=:darkgreen)
+plot!(p2, title="Tegangan Induktor dan Disipasi Daya Termal",
+      xlabel="Waktu (milidetik)", ylabel="Tegangan [V] / Daya [kW]", grid=true)
+
+final_plot = plot(p1, p2, layout=(2, 1), size=(850, 650))
+savefig(final_plot, "simulasi_transien_rl_julia.png")
+println("Simulasi Julia selesai! File grafik disimpan.")
+\end{lstlisting}
+
+
+\section{Evaluasi \& Bank Soal Terstruktur (Taksonomi Bloom C1 s.d. C6)}
+
+Untuk menguji penguasaan materi secara menyeluruh, kerjakan soal-soal berjenjang kognitif berikut:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} 
+    Tentukan orde, derajat, dan linieritas dari persamaan diferensial berikut:
+    \begin{equation}
+        \frac{d^2 v}{dt^2} + 5 \left(\frac{dv}{dt}\right)^3 + 9 v = 0
+    \end{equation}
+    
+    \item \textbf{C2 (Memahami):}
+    Jelaskan mengapa pada saat sakelar dihubungkan ke sumber tegangan secara mendadak, sebuah induktor yang awalnya kosong bertindak sebagai \textbf{rangkaian terbuka} (\textit{open circuit}), sedangkan kapasitor yang awalnya kosong bertindak sebagai \textbf{hubung singkat} (\textit{short circuit}). Buktikan dengan meninjau rumus $v_L = L \frac{di}{dt}$ dan $i_C = C \frac{dv}{dt}$.
+    
+    \item \textbf{C3 (Menerapkan):}
+    Selesaikan Masalah Nilai Awal (IVP) berikut secara analitik:
+    \begin{equation}
+        \frac{dy}{dx} = \frac{x^2}{y}, \quad y(0) = -4
+    \end{equation}
+    Tentukan daerah asal (\textit{domain}) di mana solusi khusus ini bernilai riil dan valid!
+    
+    \item \textbf{C4 (Menganalisis):}
+    Sebuah rangkaian pengosongan RC terdiri dari kapasitor $C = 100\ \mu\text{F}$ yang telah terisi penuh hingga tegangan $V_0 = 240\text{ V}$. Pada $t = 0$, sakelar ditutup sehingga kapasitor membuang energinya ke resistor $R = 10\text{ k}\Omega$.
+    \begin{enumerate}
+        \item Rumuskan PDB yang mengatur tegangan kapasitor $v(t)$ untuk $t \ge 0$.
+        \item Buktikan bahwa energi total yang didisipasikan pada resistor dari $t = 0$ hingga $t \to \infty$ persis sama dengan energi elektrostatik mula-mula yang tersimpan pada kapasitor ($\frac{1}{2} C V_0^2$).
+    \end{enumerate}
+    
+    \item \textbf{C5 (Mengevaluasi):}
+    Pada transformator daya nyata, induktor memiliki inti besi feromagnetik yang kurva magnetisasinya non-linier ($B-H$ curve). Akibatnya, fluks magnetik dapat dimodelkan oleh $\lambda(i) = a \arctan(b i)$. Turunkan persamaan diferensial tegangan induktor non-linier $v_L = \frac{d\lambda}{dt}$, dan evaluasi apa yang terjadi pada bentuk gelombang arus jika tegangan eksitasi sinusoidal murni dipaksakan pada induktor jenuh tersebut!
+    
+    \item \textbf{C6 (Menciptakan/Perancangan Komputasi):}
+    Rancanglah suatu fungsi skrip di bahasa pemrograman \textbf{Julia} bernama \texttt{simulasi\_transien\_rc(R, C, V0)} yang secara otomatis menerima parameter $R, C, V_0$, mendefinisikan \texttt{ODEProblem} untuk pengisian kapasitor transien RC, menyelesaikan IVP menggunakan algoritma \texttt{Tsit5()}, dan memplot kurva tegangan $v_C(t)$ serta arus pengisian $i(t)$ lengkap dengan garis penanda $1\tau$ hingga $5\tau$!
+\end{enumerate}
+
+
+\section{Rangkuman \& Glosarium Istilah Teknis Persamaan Diferensial}
+
+\subsection{Rangkuman Konseptual}
+\begin{itemize}
+    \item \textbf{Persamaan Diferensial} adalah formulasi matematika tak tergantikan untuk mendeskripsikan dinamika laju perubahan energi, muatan, dan fluks dalam rekayasa elektro.
+    \item \textbf{PDB} hanya memuat satu variabel bebas (biasanya waktu $t$), sedangkan \textbf{PDP} memuat dua atau lebih variabel bebas (seperti waktu $t$ dan ruang $x, y, z$).
+    \item \textbf{Linieritas} menjamin berlakunya prinsip superposisi, yang memungkinkan analisis respon total sistem kompleks sebagai penjumlahan dari respon komponen-komponennya.
+    \item \textbf{Masalah Nilai Awal (IVP)} menetapkan nilai konstanta integrasi sembarang $C$ dari solusi umum menjadi kurva solusi khusus tunggal yang merefleksikan kontinuitas energi fisik sistem ($i_L(0^-) = i_L(0^+)$ dan $v_C(0^-) = v_C(0^+)$).
+    \item \textbf{Konstanta Waktu $\tau = L/R$} merepresentasikan skala waktu alami transien pengisian/pengosongan induktor, di mana pada $t = 5\tau$, respon sistem telah mencapai $>99\%$ dari keadaan mantap (\textit{steady state}).
+\end{itemize}
+
+\subsection{Glosarium Istilah}
+\begin{description}[leftmargin=3.5cm, style=nextline]
+    \item[PDB (ODE):] Persamaan diferensial yang hanya melibatkan turunan terhadap satu variabel bebas.
+    \item[PDP (PDE):] Persamaan diferensial yang melibatkan turunan parsial terhadap lebih dari satu variabel bebas.
+    \item[Orde:] Tingkat turunan paling tinggi yang terdapat dalam suatu persamaan diferensial.
+    \item[Derajat:] Pangkat aljabar dari turunan tingkat tertinggi setelah persamaan dirasionalkan.
+    \item[Linier:] Persamaan di mana variabel terikat dan seluruh turunannya berderajat satu dan tidak saling mengalikan.
+    \item[Superposisi:] Prinsip matematis di mana respon total dari gabungan stimulus sama dengan jumlah respon masing-masing stimulus.
+    \item[IVP:] Masalah nilai awal yang mensyaratkan kondisi sistem pada titik awal waktu $t = t_0$.
+    \item[Medan Arah:] Representasi grafis dari vektor gradien kemiringan garis singgung di setiap titik bidang solusi.
+    \item[Konstanta Waktu ($\tau$):] Durasi waktu yang dibutuhkan sistem orde satu untuk mencapai $(1 - e^{-1}) \approx 63{,}2\%$ dari perubahan totalnya.
+    \item[Keadaan Mantap:] Kondisi operasi sistem setelah seluruh fenomena transien alami meluruh mendekati nol ($t \to \infty$).
+\end{description}
+
+
+\section{Referensi Standar Industri \& Pustaka Rujukan}
+
+\begin{enumerate}[leftmargin=*]
+    \item Erwin Kreyszig, \textit{Advanced Engineering Mathematics}, 10th Edition, John Wiley \& Sons, 2020.
+    \item Dennis G. Zill, \textit{A First Course in Differential Equations with Modeling Applications}, 11th Edition, Cengage Learning, 2018.
+    \item William H. Hayt, Jack E. Kemmerly, Jamie D. Phillips, dan Steven M. Durbin, \textit{Engineering Circuit Analysis}, 9th Edition, McGraw-Hill Education, 2019.
+    \item Charles K. Alexander dan Matthew N.O. Sadiku, \textit{Fundamentals of Electric Circuits}, 7th Edition, McGraw-Hill, 2021.
+    \item J. Duncan Glover, Thomas J. Overbye, dan Mulukutla S. Sarma, \textit{Power System Analysis and Design}, 6th Edition, Cengage Learning, 2017.
+    \item IEEE Std C37.010-2016, \textit{IEEE Application Guide for AC High-Voltage Circuit Breakers Rated on a Symmetrical Current Basis}.
+    \item Peraturan Menteri Energi dan Sumber Daya Mineral Republik Indonesia Nomor 20 Tahun 2020 tentang \textit{Aturan Jaringan Sistem Tenaga Listrik (Grid Code)}.
+\end{enumerate}
 
 \end{document}

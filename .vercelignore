@@ -1,0 +1,27 @@
+# Ignore videos and media
+*.mp4
+portal/
+video_builder/
+
+# Ignore LaTeX auxiliary files
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Scratch, dev & caches
+scratch/
+.tempmediaStorage/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Credentials
+client_secrets.json
+token.json

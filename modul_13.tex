@@ -1,100 +1,625 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 13: Persamaan Laplace 2D \& Elektrostatika}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
+\newtheorem{theorem}{Teorema}[section]
 
-\title{Catatan Kuliah Persamaan Diferensial\\Minggu 13: Persamaan Laplace 2D (Distribusi Potensial Elektrostatik)}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 13}\\[0.3cm]
+\textbf{\LARGE PERSAMAAN LAPLACE \& POISSON DUA DIMENSI: DISTRIBUSI POTENSIAL ELEKTROSTATIK, TEOREMA NILAI RATA-RATA, GRADIEN MEDAN LISTRIK, RELAKSASI GAUSS-SEIDEL, DAN KORONA ISOLATOR TEGANGAN TINGGI}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
 
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 6)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 13 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Menyatakan bentuk skalar Persamaan Laplace ($\nabla^2 V = 0$) dan Persamaan Poisson ($\nabla^2 V = -\rho_v/\epsilon$) dalam sistem koordinat Kartesian, Teorema Ketunggalan (\textit{Uniqueness Theorem}), serta hubungan antara potensial skalar dan intensitas medan listrik ($\vec{E} = -\nabla V$).
+    \item \textbf{C2 (Memahami):} Menjelaskan konsekuensi fisis dari sifat elliptik Persamaan Laplace: Teorema Nilai Rata-rata (\textit{Mean Value Theorem}) dan Prinsip Nilai Ekstrem (\textit{Maximum/Minimum Principle}) yang menyatakan bahwa tegangan di dalam ruang tanpa muatan bebas tidak pernah memiliki titik puncak lokal melainkan terikat ketat oleh potensial elektroda batas.
+    \item \textbf{C3 (Menerapkan):} Menurunkan solusi analitis distribusi potensial elektrostatik $V(x, y)$ pada geometri palung dan kotak konduktor berbatas menggunakan metode pemisahan variabel produk dan ekspansi Deret Fourier sinus/kosinus.
+    \item \textbf{C4 (Menganalisis):} Menghitung vektor intensitas medan listrik $\vec{E}(x, y)$ dari gradien potensial, menentukan titik konsentrasi stres medan listrik tertinggi (\textit{electric field stress concentration}), serta menghitung kapasitansi sistem elektroda dari fluks muatan Gauss.
+    \item \textbf{C5 (Mengevaluasi):} Mengevaluasi batas medan kritis pelepasan muatan parsial (\textit{partial discharge}) dan timbulnya fenomena korona (\textit{corona inception gradient} Peek $\approx 30\text{ kV/cm}$) pada rantai isolator piringan saluran transmisi 150 kV PLN berdasarkan standar internasional \textbf{IEC 60060-1} dan \textbf{IEEE Std 4}.
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program komputasi numerik ilmiah berbasis bahasa \textbf{Julia} (\texttt{Plots.jl}) menggunakan metode beda hingga stensil lima-titik (\textit{Finite Difference Method} / Gauss-Seidel Relaxation) untuk memetakan garis-garis ekuipotensial dan vektor medan listrik secara visual.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
 
 \newpage
 
-\section{Pendahuluan}
-Dalam elektromagnetika, distribusi potensial listrik pada area yang tidak mengandung muatan bebas dapat dimodelkan menggunakan Persamaan Laplace. Ini adalah dasar penting untuk perancangan kapasitor, isolator tegangan tinggi, dan elektroda dalam berbagai peralatan teknik elektro.
+\section{Peta Konsep \& Posisi Modul dalam Kurikulum}
 
-Modul ini membahas Persamaan Laplace pada koordinat Kartesian 2 dimensi (2D). Kita akan menggunakan metode pemisahan variabel yang telah diperkenalkan sebelumnya untuk menentukan solusi potensial elektrostatik pada berbagai geometri berbatas.
+Modul Minggu 13 membawa kita memasuki kelas ketiga dari Persamaan Diferensial Parsial linier orde dua: \textbf{PDP Bertipe Elliptik} ($\Delta = B^2 - 4AC < 0$), yang direpresentasikan oleh \textbf{Persamaan Laplace} ($\nabla^2 V = 0$) dan \textbf{Persamaan Poisson} ($\nabla^2 V = -\rho_v/\epsilon$). 
 
-\section{Materi Utama}
-\subsection{Persamaan Laplace 2D}
-Persamaan Laplace adalah Persamaan Diferensial Parsial (PDP) eliptik, dituliskan sebagai $\nabla^2 u = 0$. Dalam koordinat Kartesian 2D, persamaan ini menjadi:
-\begin{equation}
-\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0
-\end{equation}
-dimana $u(x,y)$ menyatakan potensial elektrostatik (tegangan) pada titik $(x,y)$.
+Jika pada Minggu 11 (gelombang) dan Minggu 12 (panas) variabel terikat bergantung secara dinamis pada waktu ($t$), maka pada Persamaan Laplace variabel waktu sama sekali tidak muncul ($\partial/\partial t = 0$). Persamaan ini mengatur \textbf{kondisi kesetimbangan statis} (\textit{static equilibrium}) dari medan elektrostatika, medan gravitasi, dan aliran fluida potensial.
 
-\subsection{Metode Pemisahan Variabel}
-Misalkan solusi dapat dipisahkan menjadi perkalian dua fungsi dari variabel bebasnya:
+Bagi seorang insinyur Teknik Elektro, pemahaman tentang Persamaan Laplace adalah keterampilan mutlak untuk merancang peralatan tegangan tinggi (seperti transformator daya, kabel bawah tanah, isolator keramik/komposit, dan kapasitor bank), di mana distribusi medan listrik yang tidak seragam dapat memicu keruntuhan dielektrik (\textit{dielectric breakdown}) dan pelepasan muatan korona.
+
+Posisi strategis Modul Minggu 13 disajikan pada diagram kurikulum Gambar~\ref{fig:peta_jalan_pd_w13}.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.45cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    doneblock/.style={rectangle, draw=green!60!black, fill=green!10, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[doneblock] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[doneblock, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[doneblock, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[doneblock, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[doneblock, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[doneblock, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[doneblock, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Analisis Rangkaian Domain $s$};
+    \node[doneblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[doneblock, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[doneblock, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[doneblock, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[doneblock, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[highlight, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[block, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan dengan penekanan pada Modul Minggu 13.}
+\label{fig:peta_jalan_pd_w13}
+\end{figure}
+
+\section{Pendahuluan \& Filosofi Fisika: Dari Medan Konservatif ke Persamaan Laplace}
+
+Dalam elektrostatika murni, medan listrik $\vec{E}$ bersifat konservatif, yang berarti integral garis medan listrik sepanjang lintasan tertutup sebarang selalu bernilai nol (\textbf{Hukum Tegangan Kirchoff Ruang Bebas}):
 \begin{equation}
-u(x,y) = X(x)Y(y)
+    \oint_C \vec{E} \cdot d\vec{l} = 0 \iff \nabla \times \vec{E} = \vec{0}
+    \label{eq:conservative_e}
 \end{equation}
-Substitusi ke dalam Persamaan Laplace memberikan:
+Berdasarkan identitas kalkulus vektor, suatu medan vektor yang memiliki kurva (\textit{curl}) nol identik dapat dinyatakan secara tunggal sebagai gradien negatif dari suatu fungsi medan skalar yang disebut \textbf{Potensial Listrik} (\textit{Electric Potential}) $V$:
 \begin{equation}
-X''(x)Y(y) + X(x)Y''(y) = 0 \implies \frac{X''(x)}{X(x)} = -\frac{Y''(y)}{Y(y)} = -\lambda^2
+    \vec{E} = -\nabla V
+    \label{eq:e_grad_v}
 \end{equation}
-Konstanta pemisahan $-\lambda^2$ dipilih negatif agar fungsi pada salah satu arah (misalnya $X(x)$) bersifat osilatorik untuk memenuhi kondisi batas bernilai nol, sedangkan arah lainnya ($Y(y)$) eksponensial atau hiperbolik.
-Hal ini memberikan dua PDB:
+Tanda minus menjamin bahwa vektor medan listrik $\vec{E}$ selalu menunjuk dari potensial tinggi ke potensial rendah.
+
+Di sisi lain, hukum pertama dari 4 Persamaan Maxwell adalah \textbf{Hukum Gauss Diferensial}:
+\begin{equation}
+    \nabla \cdot \vec{D} = \rho_v \implies \nabla \cdot (\epsilon \vec{E}) = \rho_v
+    \label{eq:gauss_law_diff}
+\end{equation}
+di mana $\vec{D} = \epsilon \vec{E}$ adalah medan perpindahan listrik ($\text{C}/\text{m}^2$), $\epsilon$ adalah permitivitas dielektrik medium ($\text{F}/\text{m}$), dan $\rho_v$ adalah rapat muatan listrik bebas per satuan volume ($\text{C}/\text{m}^3$).
+
+Untuk medium dielektrik yang linier, homogen, dan isotropik ($\epsilon$ konstan), kita substitusikan Persamaan~\eqref{eq:e_grad_v} ke dalam Persamaan~\eqref{eq:gauss_law_diff}:
+\begin{equation}
+    \nabla \cdot (-\epsilon \nabla V) = \rho_v \implies \nabla \cdot (\nabla V) = -\frac{\rho_v}{\epsilon}
+\end{equation}
+Divergensi dari gradien suatu skalar didefinisikan sebagai operator diferensial orde dua \textbf{Laplacian} ($\nabla^2 \triangleq \nabla \cdot \nabla$). Persamaan ini menghasilkan:
+\begin{equation}
+    \nabla^2 V = -\frac{\rho_v}{\epsilon} \quad \text{(\textbf{Persamaan Poisson})}
+    \label{eq:poisson_equation}
+\end{equation}
+
+Dalam ruang isolasi dielektrik di antara elektroda-elektroda konduktor (misalnya di antara kabel fasa dan tanah, di dalam isolator transformator, atau di celah kapasitor), tidak terdapat muatan listrik bebas ($\rho_v = 0$). Maka Persamaan Poisson tereduksi menjadi \textbf{Persamaan Laplace}:
+\begin{equation}
+    \nabla^2 V = 0 \quad \text{(\textbf{Persamaan Laplace})}
+    \label{eq:laplace_equation}
+\end{equation}
+
+Dalam koordinat Kartesian dua dimensi ($x, y$), di mana medan diasumsikan seragam di sepanjang sumbu-$z$ ($\partial/\partial z = 0$), Persamaan Laplace dituliskan secara eksplisit sebagai:
+\begin{equation}
+    \frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0
+    \label{eq:laplace_2d_cartesian}
+\end{equation}
+
+\section{Karakteristik Unik Solusi Persamaan Laplace: Teorema Harmonis}
+
+Fungsi $V(x, y)$ yang memenuhi Persamaan Laplace $\nabla^2 V = 0$ di dalam suatu domain kontinu disebut sebagai \textbf{Fungsi Harmonik} (\textit{Harmonic Function}). Fungsi harmonik memiliki dua sifat fisis yang sangat mengagumkan:
+
+\subsection{1. Teorema Nilai Rata-Rata Gauss (Mean Value Theorem)}
+Nilai potensial $V$ pada sembarang titik $(x_0, y_0)$ tepat sama dengan nilai rata-rata potensial di sekeliling lingkaran konsentris berjari-jari $R$ yang berpusat di titik tersebut:
+\begin{equation}
+    V(x_0, y_0) = \frac{1}{2\pi} \int_{0}^{2\pi} V(x_0 + R\cos\theta, y_0 + R\sin\theta) \, d\theta
+    \label{eq:mean_value_theorem}
+\end{equation}
+\textbf{Makna Fisis:} Potensial di setiap titik ruang merupakan rata-rata tertimbang sempurna dari potensial di sekelilingnya. Tidak ada titik di dalam ruang bebas muatan yang dapat terisolasi secara anomali.
+
+\subsection{2. Prinsip Nilai Ekstrem (Maximum/Minimum Principle)}
+Sebagai konsekuensi langsung dari Teorema Nilai Rata-Rata: \textbf{Suatu fungsi harmonik tidak pernah memiliki nilai maksimum lokal atau minimum lokal di dalam interior domain}. Nilai potensial tertinggi dan terendah selalu berada secara eksklusif di permukaan batas penutup (\textit{boundary}).
+
+\textbf{Makna Rekayasa Elektro:} Jika kita merancang isolator yang berada di antara elektroda tegangan $150\text{ kV}$ dan elektroda tanah $0\text{ V}$, kita dijamin $100\%$ secara matematis bahwa tidak akan pernah ada titik misterius di dalam ruang isolasi yang tegangannya melonjak melebihi $150\text{ kV}$ atau merosot di bawah $0\text{ V}$!
+
+\subsection{3. Teorema Ketunggalan Solusi (Uniqueness Theorem)}
+\begin{theorem}[Teorema Ketunggalan Elektrostatika]
+Jika syarat batas potensial (Dirichlet) atau turunan normal medan (Neumann) ditentukan pada seluruh permukaan penutup dari suatu domain volume, maka solusi Persamaan Laplace $V(x, y)$ di dalam domain tersebut adalah \textbf{tunggal secara mutlak} (\textit{unique}).
+\end{theorem}
+Teorema ini menjamin bahwa metode apa pun yang kita gunakan untuk mencari solusi (baik metode analitis pemisahan variabel, metode bayangan cermin, maupun simulasi numerik komputer), jika hasilnya memenuhi syarat batas, maka solusi tersebut adalah satu-satunya solusi yang benar di alam semesta fisik!
+
+\section{Solusi Analitis Persamaan Laplace 2D Menggunakan Pemisahan Variabel}
+
+Mari kita selesaikan masalah rekayasa klasik: menentukan distribusi potensial di dalam palung logam konduktor berpenampang persegi panjang $0 \le x \le a$ dan $0 \le y \le b$, di mana tiga sisinya dihubungkan ke tanah ($V = 0$), sedangkan pelat penutup atas diberi potensial tegangan searah $V_0$, sebagaimana disajikan pada Gambar~\ref{fig:laplace_box_geometry}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Kotak pelat
+    \draw[thick, fill=blue!5] (0,0) rectangle (5,3.5);
+    
+    % Sisi-sisi ground
+    \draw[very thick, green!50!black] (0,0) -- (0,3.5) node[midway, left] {$V(0,y) = 0$};
+    \draw[very thick, green!50!black] (0,0) -- (5,0) node[midway, below] {$V(x,0) = 0$};
+    \draw[very thick, green!50!black] (5,0) -- (5,3.5) node[midway, right] {$V(a,y) = 0$};
+    
+    % Sisi atas potensial V0
+    \draw[very thick, red!80!black] (0,3.5) -- (5,3.5) node[midway, above] {$V(x,b) = V_0$};
+    
+    \node at (2.5,1.75) {\large $\nabla^2 V = 0$};
+    \draw[<->] (0,-0.6) -- (5,-0.6) node[midway, below] {$x = a$};
+    \draw[<->] (5.8,0) -- (5.8,3.5) node[midway, right] {$y = b$};
+\end{tikzpicture}
+\caption{Geometri palung konduktor berbatas dengan tiga sisi terhubung ke tanah dan sisi atas berpotensial $V_0$.}
+\label{fig:laplace_box_geometry}
+\end{figure}
+
+\subsection{Pemisahan Variabel Spasial Produk}
+Asumsikan solusi berbentuk produk fungsi ruang:
+\begin{equation}
+    V(x, y) = X(x) \cdot Y(y)
+\end{equation}
+Substitusikan ke Persamaan Laplace 2D~\eqref{eq:laplace_2d_cartesian}:
+\begin{equation}
+    X''(x) Y(y) + X(x) Y''(y) = 0 \implies \frac{X''(x)}{X(x)} = -\frac{Y''(y)}{Y(y)} = -\lambda^2
+\end{equation}
+Kita memilih konstanta pemisahan negatif ($-\lambda^2$) karena syarat batas pada arah sumbu-$x$ memiliki dua kondisi nol homogen ($V(0, y) = 0$ dan $V(a, y) = 0$), sehingga memerlukan fungsi eigen trigonometri yang dapat bernilai nol di dua titik berbeda.
+
+Diperoleh dua PDB terpisah:
 \begin{align}
-X''(x) + \lambda^2 X(x) &= 0 \\
-Y''(y) - \lambda^2 Y(y) &= 0
+    X''(x) + \lambda^2 X(x) &= 0 \label{eq:laplace_ode_x} \\
+    Y''(y) - \lambda^2 Y(y) &= 0 \label{eq:laplace_ode_y}
 \end{align}
 
-\subsection{Solusi pada Pelat Persegi Panjang}
-Misalkan kita memiliki sebuah pelat dielektrik persegi panjang pada daerah $0 \le x \le a$ dan $0 \le y \le b$. Kondisi batas elektrostatiknya adalah:
+\subsection{Penyelesaian PDB Arah \texorpdfstring{$x$}{x} (Fungsi Eigen Sinus)}
+Solusi umum Persamaan~\eqref{eq:laplace_ode_x} adalah:
+\begin{equation*}
+    X(x) = A \cos(\lambda x) + B \sin(\lambda x)
+\end{equation*}
+\begin{itemize}[leftmargin=*]
+    \item Syarat batas di $x = 0$: $X(0) = A(1) + B(0) = A = 0$.
+    \item Syarat batas di $x = a$: $X(a) = B \sin(\lambda a) = 0 \implies \lambda_n a = n\pi \implies \lambda_n = \frac{n\pi}{a}$ untuk $n = 1, 2, 3, \dots$.
+\end{itemize}
+Sehingga fungsi eigen spasial arah-$x$ adalah:
+\begin{equation}
+    X_n(x) = \sin\left(\frac{n\pi x}{a}\right)
+\end{equation}
+
+\subsection{Penyelesaian PDB Arah \texorpdfstring{$y$}{y} (Fungsi Hiperbolik)}
+Persamaan~\eqref{eq:laplace_ode_y} memiliki solusi dalam kombinasi fungsi hiperbolik:
+\begin{equation*}
+    Y_n(y) = C \cosh(\lambda_n y) + D \sinh(\lambda_n y)
+\end{equation*}
+Syarat batas di pelat bawah $y = 0$:
+\begin{equation*}
+    Y_n(0) = C \cosh(0) + D \sinh(0) = C(1) + D(0) = C = 0
+\end{equation*}
+Sehingga solusi arah-$y$ tereduksi menjadi:
+\begin{equation}
+    Y_n(y) = D \sinh\left(\frac{n\pi y}{a}\right)
+\end{equation}
+
+\subsection{Superposisi Deret Fourier dan Penentuan Koefisien}
+Solusi produk ragam ke-$n$ adalah:
+\begin{equation}
+    V_n(x, y) = \sin\left(\frac{n\pi x}{a}\right) \sinh\left(\frac{n\pi y}{a}\right)
+\end{equation}
+Menerapkan prinsip superposisi linier tak hingga:
+\begin{equation}
+    V(x, y) = \sum_{n=1}^{\infty} A_n \sin\left(\frac{n\pi x}{a}\right) \sinh\left(\frac{n\pi y}{a}\right)
+    \label{eq:laplace_superposition_sol}
+\end{equation}
+
+Satu-satunya syarat batas yang belum diterapkan adalah pada pelat penutup atas ($y = b$):
+\begin{equation}
+    V(x, b) = \sum_{n=1}^{\infty} \left[ A_n \sinh\left(\frac{n\pi b}{a}\right) \right] \sin\left(\frac{n\pi x}{a}\right) = V_0
+\end{equation}
+Persamaan ini tepat merupakan ekspansi Deret Fourier Sinus dari konstanta $V_0$. Koefisien Fourier dievaluasi melalui integral:
 \begin{align*}
-u(0,y) &= 0, \quad u(a,y) = 0 \\
-u(x,0) &= 0, \quad u(x,b) = f(x)
+    A_n \sinh\left(\frac{n\pi b}{a}\right) &= \frac{2}{a} \int_{0}^{a} V_0 \sin\left(\frac{n\pi x}{a}\right) dx = \frac{2V_0}{a} \left[ -\frac{\cos(n\pi x / a)}{n\pi / a} \right]_{0}^{a} \\
+    &= \frac{2V_0}{n\pi} [1 - \cos(n\pi)] = \begin{cases} \frac{4V_0}{n\pi}, & n = 1, 3, 5, \dots \\ 0, & n = 2, 4, 6, \dots \end{cases}
 \end{align*}
-(Ini merepresentasikan tiga sisi yang di-ground-kan dan satu sisi atas diberikan potensial $f(x)$).
-
-Dari batas pada sumbu-$x$, kita dapatkan $X(0)=0$ dan $X(a)=0$, sehingga solusinya:
+Sehingga koefisien $A_n$ ditentukan secara unik sebagai:
 \begin{equation}
-X_n(x) = \sin\left(\frac{n\pi x}{a}\right), \quad \text{dengan } \lambda_n = \frac{n\pi}{a}
-\end{equation}
-Untuk arah-$y$, dengan kondisi $Y(0)=0$:
-\begin{equation}
-Y_n(y) = \sinh\left(\frac{n\pi y}{a}\right)
+    A_n = \frac{4V_0}{n\pi \sinh\left(\frac{n\pi b}{a}\right)}, \quad n = 1, 3, 5, \dots
 \end{equation}
 
-Maka, solusi umumnya:
+Maka, \textbf{Solusi Eksak Analitis Distribusi Potensial Elektrostatika} adalah:
 \begin{equation}
-u(x,y) = \sum_{n=1}^{\infty} A_n \sin\left(\frac{n\pi x}{a}\right) \sinh\left(\frac{n\pi y}{a}\right)
-\end{equation}
-Koefisien $A_n$ ditentukan menggunakan batas $u(x,b) = f(x)$:
-\begin{equation}
-A_n \sinh\left(\frac{n\pi b}{a}\right) = \frac{2}{a} \int_{0}^{a} f(x) \sin\left(\frac{n\pi x}{a}\right) dx
+    V(x, y) = \mathbf{\frac{4V_0}{\pi} \sum_{k=1}^{\infty} \frac{1}{2k-1} \frac{\sinh\left(\frac{(2k-1)\pi y}{a}\right)}{\sinh\left(\frac{(2k-1)\pi b}{a}\right)} \sin\left(\frac{(2k-1)\pi x}{a}\right)}
+    \label{eq:laplace_final_analytical}
 \end{equation}
 
-\section{Ringkasan}
-Persamaan Laplace digunakan secara luas dalam persoalan keseimbangan statik (steady-state). Pada bidang teknik elektro, persamaan ini berfungsi menentukan distribusi potensial listrik dalam ruang kosong antar elektroda. Pendekatan pemisahan variabel memungkinkan kita memecahkan permasalahan ini dengan memanfaatkan deret Fourier dan fungsi hiperbolik (atau eksponensial) untuk memenuhi seluruh nilai batas yang ditetapkan.
+\section{Metode Komputasi Numerik Beda Hingga \& Relaksasi Gauss-Seidel}
 
-\section{Referensi}
-\begin{enumerate}
-    \item Cheng, D. K. (1989). \textit{Field and Wave Electromagnetics} (2nd ed.). Addison-Wesley.
-    \item Sadiku, M. N. O. (2014). \textit{Elements of Electromagnetics} (6th ed.). Oxford University Press.
+Untuk geometri elektroda yang rumit (seperti bentuk piringan isolator atau celah busbar gardu induk), solusi analitis pemisahan variabel sering kali sangat sulit atau mustahil diperoleh. Rekayasawan beralih ke metode komputasi numerik \textbf{Beda Hingga} (\textit{Finite Difference Method} / FDM).
+
+\subsection{Diskritisasi Stensil Lima Titik}
+Domain ruang didiskritisasi menjadi kisi-kisi teratur dengan jarak kisi seragam $\Delta x = \Delta y = h$. Menggunakan ekspansi deret Taylor terpusat untuk turunan kedua:
+\begin{align}
+    \frac{\partial^2 V}{\partial x^2} &\approx \frac{V_{i+1, j} - 2 V_{i,j} + V_{i-1, j}}{h^2} \\
+    \frac{\partial^2 V}{\partial y^2} &\approx \frac{V_{i, j+1} - 2 V_{i,j} + V_{i, j-1}}{h^2}
+\end{align}
+Substitusikan ke dalam Persamaan Laplace $\frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 0$:
+\begin{equation*}
+    \frac{V_{i+1, j} + V_{i-1, j} + V_{i, j+1} + V_{i, j-1} - 4 V_{i,j}}{h^2} = 0
+\end{equation*}
+Sederhanakan untuk memperoleh \textbf{Rumus Rata-Rata Stensil Lima Titik}:
+\begin{equation}
+    V_{i,j} = \frac{1}{4} \left( V_{i+1, j} + V_{i-1, j} + V_{i, j+1} + V_{i, j-1} \right)
+    \label{eq:five_point_stencil}
+\end{equation}
+Persamaan~\eqref{eq:five_point_stencil} adalah bentuk diskret langsung dari Teorema Nilai Rata-Rata Gauss! Potensial pada setiap titik kisi adalah tepat rata-rata aritmatika dari empat titik tetangga terdekatnya (kanan, kiri, atas, bawah).
+
+\subsection{Algoritma Iteratif Gauss-Seidel \& SOR}
+Pada algoritma relaksasi Gauss-Seidel, kita menebak nilai awal potensial pada seluruh titik interior kisi, lalu memperbarui nilai masing-masing titik secara berulang menggunakan nilai tetangga yang baru dihitung:
+\begin{equation}
+    V_{i,j}^{(k+1)} = \frac{1}{4} \left( V_{i+1, j}^{(k)} + V_{i-1, j}^{(k+1)} + V_{i, j+1}^{(k)} + V_{i, j-1}^{(k+1)} \right)
+\end{equation}
+Untuk mempercepat konvergensi hingga 10 kali lipat, digunakan teknik \textbf{Successive Over-Relaxation (SOR)} dengan faktor akselerasi $\omega \in (1, 2)$:
+\begin{equation}
+    V_{i,j}^{(k+1)} = (1 - \omega) V_{i,j}^{(k)} + \frac{\omega}{4} \left( V_{i+1, j}^{(k)} + V_{i-1, j}^{(k+1)} + V_{i, j+1}^{(k)} + V_{i, j-1}^{(k+1)} \right)
+\end{equation}
+Proses iterasi dihentikan ketika galat maksimum antar-iterasi lebih kecil dari toleransi yang ditetapkan ($\max |V^{(k+1)} - V^{(k)}| < \epsilon_{\text{tol}}$).
+
+\section{Studi Kasus Industri: Distribusi Medan Listrik pada Rantai Isolator 150 kV PLN \& Efek Korona}
+
+\subsection{Konteks Masalah Stres Dielektrik Saluran Transmisi}
+Pada Saluran Udara Tegangan Tinggi (SUTT) 150 kV PLN, kawat fasa bertegangan diisolasi dari menara tiang transmisi (yang terhubung ke tanah) oleh serangkaian piringan isolator porselen atau polimerik silikon (biasanya terdiri dari 9 hingga 10 piringan).
+
+Meskipun secara teoritis insinyur awam berharap tegangan $150/\sqrt{3} \approx 86{,}6\text{ kV}$ terbagi rata di antara ke-10 piringan isolator (yaitu sekitar $8{,}66\text{ kV}$ per piringan), kenyataan fisika elektrostatika sangat berbeda! Karena adanya \textbf{kapasitansi liar terhadap menara dan tanah} ($C_e$), distribusi potensial di sepanjang rantai isolator menjadi sangat tak linier, memenuhi persamaan diferensial medan Laplace. Piringan isolator pertama yang paling dekat dengan kawat fasa memikul tegangan tertinggi (hingga $25\%$ s.d. $30\%$ dari total tegangan fasa).
+
+\subsection{Gradien Kritis Medan Peek \& Fenomena Korona}
+Jika gradien intensitas medan listrik lokal ($|\vec{E}| = |-\nabla V|$) di permukaan tutup logam piringan atau kawat konduktor melampaui kekuatan dielektrik udara kering (\textbf{Batas Medan Kritis Peek}, $E_c \approx 30\text{ kV/cm} = 3\text{ MV/m}$ pada kondisi standar), udara di sekeliling konduktor akan terionisasi menjadi plasma konduktif. 
+
+Fenomena ini dikenal sebagai \textbf{Pelepasan Korona} (\textit{Corona Discharge}), yang ditandai dengan:
+\begin{itemize}[leftmargin=*]
+    \item Cahaya pendaran ungu (\textit{violet glow}) dan desis tajam di malam hari,
+    \item Pembangkitan gas ozon ($O_3$) dan asam nitrat yang merusak material logam isolator,
+    \item Rugi-rugi daya aktif saluran (\textit{corona power loss}) yang sangat boros,
+    \item Gangguan radiasi elektromagnetik frekuensi tinggi terhadap siaran radio dan telekomunikasi (\textit{Radio Interference} / RI).
+\end{itemize}
+Untuk meratakan distribusi potensial dan menurunkan gradien medan listrik maksimum agar berada di bawah batas kritis Peek, PLN memasang \textbf{Cincin Perata Medan} (\textit{Grading Ring} / \textit{Corona Ring}) di ujung kawat rantai isolator sesuai standar \textbf{IEC 60060-1}.
+
+\section{Contoh Soal Terhitung Numerik Langkah demi Langkah}
+
+\begin{example}[Evaluasi Potensial di Pusat Palung Logam]
+Berdasarkan geometri palung konduktor persegi panjang pada Persamaan~\eqref{eq:laplace_final_analytical} dengan dimensi bujur sangkar $a = b = 1\text{ meter}$ dan tegangan pelat atas $V_0 = 100\text{ Volt}$:
+\begin{enumerate}[leftmargin=*]
+    \item Hitung nilai pendekatan potensial elektrostatik di titik pusat kotak ($x = 0{,}5\text{ m}, y = 0{,}5\text{ m}$) menggunakan suku pertama ($k=1$) dan suku kedua ($k=2$) deret analitis!
+    \item Bandingkan hasil analitis tersebut dengan nilai teoretis Teorema Rata-Rata Simetri!
+\end{enumerate}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Evaluasi Suku Pertama ($k=1 \implies n=1$):}
+    \begin{align*}
+        V_1(0{,}5; 0{,}5) &= \frac{4(100)}{\pi(1)} \cdot \frac{\sinh(\pi \times 0{,}5)}{\sinh(\pi \times 1)} \cdot \sin(\pi \times 0{,}5) \\
+        &= \frac{400}{\pi} \cdot \frac{\sinh(\pi / 2)}{\sinh(\pi)} \cdot \sin\left(\frac{\pi}{2}\right)
+    \end{align*}
+    Nilai numerik fungsi hiperbolik: \\
+    $\sinh(\pi/2) \approx 2{,}3013$ dan $\sinh(\pi) \approx 11{,}5487$. Maka:
+    \begin{equation*}
+        V_1(0{,}5; 0{,}5) = \frac{400}{\pi} \cdot \frac{2{,}3013}{11{,}5487} \cdot (1) = 127{,}324 \times 0{,}19927 \approx \mathbf{25{,}37\text{ Volt}}
+    \end{equation*}
+    
+    \item \textbf{Evaluasi Suku Kedua ($k=2 \implies n=3$):}
+    \begin{align*}
+        V_3(0{,}5; 0{,}5) &= \frac{400}{3\pi} \cdot \frac{\sinh(3\pi \times 0{,}5)}{\sinh(3\pi \times 1)} \cdot \sin(3\pi \times 0{,}5) \\
+        &= \frac{400}{3\pi} \cdot \frac{\sinh(4{,}7124)}{\sinh(9{,}4248)} \cdot \sin\left(\frac{3\pi}{2}\right)
+    \end{align*}
+    Karena $\sinh(x) \approx \frac{1}{2}e^x$ untuk $x$ besar:
+    \begin{equation*}
+        \frac{\sinh(4{,}7124)}{\sinh(9{,}4248)} \approx \frac{e^{4{,}7124}}{e^{9{,}4248}} = e^{-4{,}7124} \approx 0{,}00898
+    \end{equation*}
+    Dan $\sin(3\pi/2) = -1$. Sehingga:
+    \begin{equation*}
+        V_3(0{,}5; 0{,}5) = 42{,}441 \times 0{,}00898 \times (-1) \approx \mathbf{-0{,}38\text{ Volt}}
+    \end{equation*}
+    
+    \item \textbf{Superposisi Dua Suku Pertama:}
+    \begin{equation*}
+        V(0{,}5; 0{,}5) \approx V_1 + V_3 = 25{,}37 - 0{,}38 = \mathbf{24{,}99\text{ Volt}} \approx \mathbf{25{,}0\text{ Volt}}
+    \end{equation*}
+    
+    \item \textbf{Verifikasi Prinsip Rata-Rata Simetri:}
+    Pada bujur sangkar dengan empat sisi identik, jika keempat sisinya diberi potensial $V_0$, maka potensial di seluruh titik di dalam kotak akan konstan seragam $V = V_0$. Berdasarkan prinsip superposisi, sebuah kotak dengan hanya satu sisi berpotensial $V_0$ dan tiga sisi lainnya ground harus memiliki potensial di titik pusat tepat seperempat dari total keempat sisi:
+    \begin{equation*}
+        V_{\text{pusat, eksak}} = \frac{V_0 + 0 + 0 + 0}{4} = \frac{100}{4} = \mathbf{25{,}00\text{ Volt}} \quad \qed
+    \end{equation*}
+    Perhitungan deret analitis kita terbukti konvergen dengan presisi luar biasa terhadap nilai eksak!
+\end{enumerate}
+
+\begin{example}[Perhitungan Intensitas Medan Listrik dari Gradien Potensial]
+Diberikan fungsi potensial elektrostatik 2D di dalam suatu media isolasi dielektrik kabel:
+\begin{equation*}
+    V(x, y) = 50 (x^2 - y^2) + 20x\text{ [Volt]}
+\end{equation*}
+\begin{enumerate}[leftmargin=*]
+    \item Buktikan bahwa medan potensial tersebut memenuhi Persamaan Laplace 2D!
+    \item Tentukan vektor intensitas medan listrik $\vec{E}(x, y)$ dan hitung besar magnitudonya di titik $(x = 2\text{ cm}, y = 1\text{ cm})$!
+\end{enumerate}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Verifikasi Persamaan Laplace:}
+    \begin{align*}
+        \frac{\partial V}{\partial x} &= 100x + 20 \implies \frac{\partial^2 V}{\partial x^2} = +100 \\
+        \frac{\partial V}{\partial y} &= -100y \implies \frac{\partial^2 V}{\partial y^2} = -100
+    \end{align*}
+    Jumlahkan kedua turunan kedua:
+    \begin{equation*}
+        \nabla^2 V = \frac{\partial^2 V}{\partial x^2} + \frac{\partial^2 V}{\partial y^2} = 100 + (-100) = \mathbf{0} \quad (\text{Terbukti Memenuhi Laplace!})
+    \end{equation*}
+    
+    \item \textbf{Penentuan Vektor Medan Listrik $\vec{E} = -\nabla V$:}
+    \begin{equation*}
+        \vec{E}(x, y) = -\left( \frac{\partial V}{\partial x}\hat{a}_x + \frac{\partial V}{\partial y}\hat{a}_y \right) = \mathbf{-(100x + 20)\hat{a}_x + 100y\hat{a}_y\text{ [V/m]}}
+    \end{equation*}
+    
+    \item \textbf{Evaluasi Numerik di Titik $(x = 0{,}02\text{ m}, y = 0{,}01\text{ m})$:}
+    \begin{align*}
+        E_x &= -(100(0{,}02) + 20) = -(2 + 20) = -22\text{ V/m} \\
+        E_y &= 100(0{,}01) = +1\text{ V/m}
+    \end{align*}
+    Besar magnitudo medan listrik total adalah:
+    \begin{equation*}
+        |\vec{E}| = \sqrt{E_x^2 + E_y^2} = \sqrt{(-22)^2 + 1^2} = \sqrt{484 + 1} = \sqrt{485} \approx \mathbf{22{,}02\text{ V/m}} \quad \qed
+    \end{equation*}
+\end{enumerate}
+
+\begin{example}[Iterasi Relaksasi Gauss-Seidel Beda Hingga pada Kisi 4-Titik]
+Tinjau sebuah pelat bujur sangkar yang didiskritisasi dengan kisi $4 \times 4$ sehingga memiliki 4 titik interior: $V_{1,1}, V_{2,1}, V_{1,2}, V_{2,2}$. Batas atas dijaga pada $100\text{ V}$, sedangkan ketiga batas lainnya (bawah, kiri, kanan) dijaga pada $0\text{ V}$.
+Lakukan satu siklus iterasi Gauss-Seidel lengkap dengan tebakan awal nol untuk seluruh titik interior!
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item Titik-titik interior diatur dalam urutan baris bawah ke atas:
+    $(1,1)$ kiri-bawah, $(2,1)$ kanan-bawah, $(1,2)$ kiri-atas, $(2,2)$ kanan-atas.
+    Tebakan awal: $V_{1,1}^{(0)} = V_{2,1}^{(0)} = V_{1,2}^{(0)} = V_{2,2}^{(0)} = 0$.
+    \item Perbarui $V_{1,1}$: tetangga kiri $= 0$, bawah $= 0$, kanan $= V_{2,1}=0$, atas $= V_{1,2}=0$.
+    \begin{equation*}
+        V_{1,1}^{(1)} = \frac{1}{4}(0 + 0 + 0 + 0) = \mathbf{0\text{ V}}
+    \end{equation*}
+    \item Perbarui $V_{2,1}$: tetangga kiri $= V_{1,1}^{(1)}=0$, bawah $= 0$, kanan $= 0$, atas $= V_{2,2}=0$.
+    \begin{equation*}
+        V_{2,1}^{(1)} = \frac{1}{4}(0 + 0 + 0 + 0) = \mathbf{0\text{ V}}
+    \end{equation*}
+    \item Perbarui $V_{1,2}$: tetangga kiri $= 0$, bawah $= V_{1,1}^{(1)}=0$, kanan $= V_{2,2}^{(0)}=0$, atas $= 100$ (batas atas).
+    \begin{equation*}
+        V_{1,2}^{(1)} = \frac{1}{4}(0 + 0 + 0 + 100) = \mathbf{25{,}0\text{ V}}
+    \end{equation*}
+    \item Perbarui $V_{2,2}$: tetangga kiri $= V_{1,2}^{(1)}=25{,}0$, bawah $= V_{2,1}^{(1)}=0$, kanan $= 0$, atas $= 100$ (batas atas).
+    \begin{equation*}
+        V_{2,2}^{(1)} = \frac{1}{4}(25{,}0 + 0 + 0 + 100) = \frac{125{,}0}{4} = \mathbf{31{,}25\text{ V}} \quad \qed
+    \end{equation*}
+\end{enumerate}
+
+\section{Praktikum Komputasi Numerik Terbuka Berbasis Julia}
+
+Program Julia berikut mengimplementasikan penyelesaian Persamaan Laplace 2D pada palung konduktor menggunakan algoritma iteratif beda hingga terakselerasi (Successive Over-Relaxation / SOR) pada kisi $50 \times 50$, serta memetakan kontur medan ekuipotensial secara 2D menggunakan paket \texttt{Plots.jl}.
+
+\begin{lstlisting}[style=juliastyle, caption={Skrip Julia penyelesaian Persamaan Laplace 2D dengan metode relaksasi SOR.}, label={lst:julia_laplace_sor}]
+# -------------------------------------------------------------
+# MODUL 13: SIMULASI LAPLACE 2D RELAKSASI BEDA HINGGA (SOR)
+# Persamaan Diferensial 2026 - Teknik Elektro UNIB
+# Pengampu: Ir. Novalio Daratha, Ph.D. & M. Arfan, M.T.
+# -------------------------------------------------------------
+
+using Plots
+
+# 1. Parameter Kisi Spasial 2D
+const Nx = 50                 # Jumlah sel kisi sumbu-x
+const Ny = 50                 # Jumlah sel kisi sumbu-y
+const V_top = 100.0           # Tegangan pelat atas (Volt)
+const max_iter = 2000         # Iterasi maksimum
+const tol = 1e-5              # Toleransi konvergensi galat
+const omega = 1.75            # Faktor akselerasi SOR (1.0 < omega < 2.0)
+
+# Inisialisasi Matriks Potensial V(x, y)
+V = zeros(Float64, Nx+1, Ny+1)
+
+# 2. Penerapan Syarat Batas Dirichlet
+# Batas atas y = Ny: V = 100 Volt
+for i in 1:(Nx+1)
+    V[i, Ny+1] = V_top
+end
+# Batas bawah y=1, batas kiri x=1, dan batas kanan x=Nx+1 tetap 0.0 V
+
+# 3. Loop Iteratif Relaksasi SOR
+iter = 0
+diff_max = 1.0
+
+while diff_max > tol && iter < max_iter
+    global diff_max = 0.0
+    global iter += 1
+    
+    for i in 2:Nx
+        for j in 2:Ny
+            # Rata-rata 4 tetangga stensil Laplace
+            V_avg = 0.25 * (V[i+1, j] + V[i-1, j] + V[i, j+1] + V[i, j-1])
+            # Pembaruan relaksasi terakselerasi SOR
+            V_new = (1.0 - omega) * V[i, j] + omega * V_avg
+            
+            err = abs(V_new - V[i, j])
+            if err > diff_max
+                diff_max = err
+            end
+            V[i, j] = V_new
+        end
+    end
+end
+
+println("Konvergensi tercapai pada iterasi ke-", iter, " dengan galat: ", diff_max)
+
+# 4. Visualisasi Kontur Garis Ekuipotensial 2D
+x_vals = range(0.0, 1.0, length=Nx+1)
+y_vals = range(0.0, 1.0, length=Ny+1)
+
+p = contour(x_vals, y_vals, V', levels=20, fill=true, c=:viridis,
+            xlabel="Posisi Horizontal x [m]", ylabel="Posisi Vertikal y [m]",
+            title="Peta Kontur Potensial Elektrostatik Laplace 2D (Volt)",
+            size=(700, 550), colorbar=true)
+
+# Simpan hasil grafik
+savefig("laplace_2d_sor_modul13.png")
+println("Simulasi sukses. Grafik disimpan sebagai laplace_2d_sor_modul13.png")
+\end{lstlisting}
+
+\section{Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} 
+    Tuliskan bentuk Persamaan Laplace dalam sistem koordinat Kartesian 3D dan sistem koordinat silindris 2D sumbu simetri!
+    
+    \item \textbf{C2 (Memahami):} 
+    Jelaskan implikasi fisis dari Teorema Nilai Rata-rata Gauss terhadap kemungkinan terjadinya penumpukan muatan atau jebakan muatan lokal di dalam media isolasi yang bebas muatan!
+    
+    \item \textbf{C3 (Menerapkan):} 
+    Sebuah kabel koaksial berpanjang $L$ memiliki jari-jari konduktor dalam $a = 1\text{ cm}$ dengan potensial $V(a) = 100\text{ V}$ dan jari-jari luar selubung ground $b = 3\text{ cm}$ dengan potensial $V(b) = 0\text{ V}$. Turunkan distribusi potensial radial $V(r)$ menggunakan Persamaan Laplace koordinat silindris 1D!
+    
+    \item \textbf{C4 (Menganalisis):} 
+    Berdasarkan hasil Soal C3, tentukan ekspresi vektor medan listrik $\vec{E}(r)$. Di manakah letak titik stres medan listrik tertinggi pada kabel koaksial tersebut? Hitung nilai maksimumnya!
+    
+    \item \textbf{C5 (Mengevaluasi):} 
+    Kekuatan dielektrik udara kering adalah $E_{\text{kritis}} = 30\text{ kV/cm}$. Jika sebuah elektroda silindris beradius $r_0 = 0{,}5\text{ cm}$ dipasang pada tegangan operasi $V = 50\text{ kV}$ di udara terbuka, evaluasi apakah elektroda tersebut akan menimbulkan pelepasan korona!
+    
+    \item \textbf{C6 (Menciptakan/Merancang):} 
+    Rancanglah geometri cincin perata medan (\textit{corona grading ring}) pada terminal tegangan tinggi transformator gardu induk 150 kV agar gradien stres medan listrik maksimum pada permukaan bushing porselen dapat direduksi minimal $30\%$ di bawah batas ambang korona! Buktikan efektivitas rancangan Anda secara matematis!
+\end{enumerate}
+
+\section{Rangkuman, Glosarium Istilah Teknis, dan Referensi Standar}
+
+\subsection{Rangkuman Inti Perkuliahan}
+\begin{enumerate}[leftmargin=*]
+    \item Persamaan Laplace $\nabla^2 V = 0$ mengatur distribusi medan potensial elektrostatik statis pada daerah tanpa muatan bebas.
+    \item Solusi Persamaan Laplace adalah fungsi harmonik yang mematuhi Teorema Nilai Rata-Rata dan Prinsip Nilai Ekstrem (nilai maksimum dan minimum selalu berada di permukaan batas konduktor).
+    \item Teorema Ketunggalan menjamin bahwa solusi yang memenuhi seluruh syarat batas adalah unik dan pasti benar.
+    \item Metode pemisahan variabel memadukan fungsi eigen trigonometri dan fungsi hiperbolik untuk memecahkan masalah nilai batas Dirichlet secara analitis.
+    \item Metode Beda Hingga (FDM) stensil 5-titik dan relaksasi Gauss-Seidel/SOR memungkinkan komputasi numerik distribusi potensial pada geometri industri yang rumit.
+    \item Konsentrasi medan listrik pada elektroda yang melebihi batas kritis Peek ($\approx 30\text{ kV/cm}$) memicu pelepasan korona (standar IEC 60060-1 dan IEEE Std 4).
+\end{enumerate}
+
+\subsection{Glosarium Istilah Teknis Rekayasa}
+\begin{description}[leftmargin=!,labelwidth=3.5cm]
+    \item[Harmonic Function] Fungsi skalar berkontinu yang memenuhi Persamaan Laplace ($\nabla^2 V = 0$).
+    \item[Uniqueness Theorem] Prinsip ketunggalan solusi medan elektrostatik untuk syarat batas yang terdefinisi lengkap.
+    \item[Corona Discharge] Pelepasan muatan listrik parsial pada gas udara di sekitar konduktor akibat ionisasi gradien medan tinggi.
+    \item[Peek's Law] Persamaan empiris penentu kuat medan kritis listrik permulaan terjadinya korona di udara bebas.
+    \item[SOR] \textit{Successive Over-Relaxation}; teknik akselerasi iteratif beda hingga untuk mempercepat konvergensi numerik.
+\end{description}
+
+\subsection{Referensi Standar Industri \& Akademis}
+\begin{enumerate}[leftmargin=*]
+    \item Hayt, W. H., \& Buck, J. A. (2019). \textit{Engineering Electromagnetics} (9th ed.). McGraw-Hill Education.
+    \item Sadiku, M. N. O. (2018). \textit{Elements of Electromagnetics} (7th ed.). Oxford University Press.
+    \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics} (10th ed.). John Wiley \& Sons.
+    \item IEEE Std 4-2013. \textit{IEEE Standard for High-Voltage Testing Techniques}. IEEE Power and Energy Society.
+    \item IEC 60060-1:2010. \textit{High-voltage test techniques -- Part 1: General definitions and test requirements}. International Electrotechnical Commission.
 \end{enumerate}
 
 \end{document}

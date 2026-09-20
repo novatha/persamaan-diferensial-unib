@@ -1,108 +1,746 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 5: PDB Orde 2 Non-Homogen \& RLC AC}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
+\newtheorem{theorem}{Teorema}[section]
 
-\title{Catatan Kuliah Persamaan Diferensial\\Minggu 5: PDB Orde 2 Non-Homogen (Metode Koefisien Tak Tentu) \& Aplikasi RLC Seri}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 5}\\[0.3cm]
+\textbf{\LARGE PERSAMAAN DIFERENSIAL BIASA ORDE 2 LINIER NON-HOMOGEN: METODE KOEFISIEN TAK TENTU, RESPON SINUSOIDAL AC, RESONANSI TEGANGAN FAKTOR-$Q$, FENOMENA BEAT \& SIMULASI JULIA}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
 
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 3)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 5 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Menyatakan struktur solusi lengkap PDB linier orde 2 non-homogen $y(x) = y_h(x) + y_p(x)$, aturan tabel tebakan koefisien tak tentu, serta aturan modifikasi perkalian $x^s$.
+    \item \textbf{C2 (Memahami):} Menjelaskan pemisahan fisis antara respon alami/transien ($y_h(t)$) yang meluruh menuju nol dan respon paksa keadaan mantap/tunak ($y_p(t)$) yang berosilasi selaras dengan sumber eksitasi luar.
+    \item \textbf{C3 (Menerapkan):} Menurunkan solusi partikular analitik $y_p(x)$ langkah demi langkah untuk fungsi pendorong polinomial, eksponensial, dan sinusoidal, serta menyelesaikan Masalah Nilai Awal (IVP) lengkap.
+    \item \textbf{C4 (Menganalisis):} Memodelkan respon transien dan keadaan mantap rangkaian RLC seri tereksitasi sumber AC bolak-balik $v_s(t) = V_m \cos(\omega t)$ serta menghitung impedansi kompleks, sudut fasa $\phi$, dan arus puncak $I_m$.
+    \item \textbf{C5 (Mengevaluasi):} Mengevaluasi fenomena resonansi seri, amplifikasi tegangan reaktif kapasitor sebesar faktor kualitas $Q$ ($v_C = Q V_m$), serta fenomena modulasi amplitudo layangan (\textit{beat frequency}) saat frekuensi eksitasi mendekati frekuensi alami ($\omega \approx \omega_0$).
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program simulasi komputasi numerik berbasis \textbf{Julia} (\texttt{DifferentialEquations.jl} \& \texttt{Plots.jl}) untuk memodelkan respon lengkap RLC AC, kurva respon frekuensi resonansi, dan fenomena beat secara interaktif.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
 
 \newpage
 
-\section{Pendahuluan}
-Pada minggu kelima ini, kita akan mempelajari Persamaan Diferensial Biasa (PDB) linier orde 2 non-homogen dengan koefisien konstan. Fokus utama kita adalah menemukan solusi partikular menggunakan metode Koefisien Tak Tentu. Setelah menguasai metode penyelesaian matematis ini, kita akan melihat bagaimana PDB orde 2 ini diaplikasikan pada analisis rangkaian listrik AC RLC seri, yang sangat fundamental di Teknik Elektro.
+\section{Peta Konsep \& Posisi Modul dalam Kurikulum}
 
-\section{Materi Utama}
-\subsection{Bentuk Umum PDB Orde 2 Non-Homogen}
-Bentuk umum dari PDB linier orde 2 dengan koefisien konstan non-homogen adalah:
-\begin{equation}
-a y'' + b y' + c y = f(x)
-\end{equation}
-dimana $a$, $b$, dan $c$ adalah konstanta riil ($a \neq 0$), dan fungsi di ruas kanan $f(x) \neq 0$ dikenal sebagai fungsi paksa (forcing function) atau fungsi input.
+Pada Minggu 4, kita telah menuntaskan analisis sistem bebas sumber (homogen), di mana rangkaian hanya merespons energi awal yang tersimpan di dalam kapasitor atau induktor. Pada Minggu 5, kita melangkah ke tahapan operasional riil di dunia industri kelistrikan: \textbf{sistem tereksitasi sumber luar} (\textit{forced/driven systems}).
 
-Solusi umum dari persamaan ini terdiri dari penjumlahan antara solusi umum PDB homogennya (sering disebut fungsi komplementer) dan solusi partikular PDB non-homogen tersebut:
+Sistem transmisi tenaga listrik, konverter daya elektronika, dan jaringan telekomunikasi senantiasa digerakkan oleh sumber tegangan bolak-balik (AC) sinusoidal atau pulsa periodik. Secara matematis, sistem ini dimodelkan oleh \textbf{PDB Linier Orde 2 Non-Homogen}. Solusi lengkapnya merupakan superposisi antara dinamika internal rangkaian (transien) dan karakteristik sumber pembangkit (kondisi tunak).
+
+Posisi strategis Modul Minggu 5 di dalam kurikulum disajikan pada Gambar~\ref{fig:peta_jalan_pd_w5}.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.45cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    doneblock/.style={rectangle, draw=green!60!black, fill=green!10, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[doneblock] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[doneblock, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[doneblock, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[doneblock, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[highlight, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[block, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[block, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Solusi PDB Domain $s$};
+    \node[midblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[block, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[block, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[block, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[block, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[block, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[block, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan dengan penekanan pada Modul Minggu 5.}
+\label{fig:peta_jalan_pd_w5}
+\end{figure}
+
+\section{Pendahuluan \& Filosofi Fisika: Respon Alami vs Respon Paksa}
+
+Dalam analisis sistem linier, respon total terhadap suatu eksitasi luar selalu terbagi menjadi dua komponen fisis yang berbeda sifat:
 \begin{equation}
-y(x) = y_h(x) + y_p(x)
+    \text{Respon Total } y(t) = \underbrace{y_{\text{natural}}(t)}_{\text{Respon Transien } (y_h)} + \underbrace{y_{\text{forced}}(t)}_{\text{Respon Kondisi Tunak } (y_p)}
+    \label{eq:physical_response_split}
 \end{equation}
-dimana:
-\begin{itemize}
-    \item $y_h(x)$ adalah solusi dari persamaan homogen $ay'' + by' + cy = 0$.
-    \item $y_p(x)$ adalah sembarang solusi partikular yang memenuhi $ay_p'' + by_p' + cy_p = f(x)$.
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Respon Alami / Transien ($y_h(t)$):} Ditentukan oleh karakteristik intrinsik sistem (nilai $R, L, C$) dan energi awal yang tersimpan. Karena setiap rangkaian fisik memiliki resistansi disipatif ($R > 0$), faktor atenuasi $\alpha = \frac{R}{2L} > 0$ menyebabkan seluruh suku eksponensial $e^{-\alpha t}$ meluruh secara asimtotik menuju nol ($y_h(t) \to 0$ saat $t \to \infty$). Oleh karena itu, $y_h(t)$ disebut \textbf{keadaan transien} (\textit{transient response}).
+    \item \textbf{Respon Paksa / Keadaan Tunak ($y_p(t)$):} Ditentukan oleh karakteristik sumber pemaksa eksternal (amplitudo $V_m$ dan frekuensi sudut $\omega$). Respon ini tidak pernah meluruh selama sumber terus menyuplai energi; sistem dipaksa berosilasi pada frekuensi sudut yang persis sama dengan frekuensi sumber eksitasi. Oleh sebab itu, $y_p(t)$ disebut \textbf{keadaan mantap} (\textit{steady-state response}).
 \end{itemize}
 
-\subsection{Metode Koefisien Tak Tentu}
-Metode Koefisien Tak Tentu adalah metode untuk menebak bentuk solusi partikular $y_p(x)$ berdasarkan bentuk dari fungsi ruas kanan $f(x)$. Metode ini efektif hanya jika fungsi $f(x)$ berbentuk polinomial, eksponensial, sinus, kosinus, atau perkalian dan penjumlahan dari bentuk-bentuk tersebut.
+\section{Bentuk Umum \& Struktur Teorema Solusi Non-Homogen}
 
-\textbf{Aturan Dasar Tebakan $y_p(x)$:}
-\begin{enumerate}
-    \item Jika $f(x) = P_n(x)$ (Polinomial derajat $n$), tebak $y_p(x) = A_n x^n + \dots + A_1 x + A_0$.
-    \item Jika $f(x) = k e^{\alpha x}$, tebak $y_p(x) = A e^{\alpha x}$.
-    \item Jika $f(x) = k \sin(\beta x)$ atau $k \cos(\beta x)$, tebak $y_p(x) = A \cos(\beta x) + B \sin(\beta x)$.
+\begin{definition}[PDB Linier Orde 2 Non-Homogen Koefisien Konstan]
+Bentuk umum PDB linier orde 2 koefisien konstan dengan fungsi pemaksa non-nol $g(x) \neq 0$ dinyatakan oleh:
+\begin{equation}
+    a \frac{d^2y}{dx^2} + b \frac{dy}{dx} + c y = g(x) \quad \iff \quad a y'' + b y' + c y = g(x)
+    \label{eq:nonhomo_standard}
+\end{equation}
+di mana $a, b, c \in \mathbb{R}$ adalah konstanta riil dengan $a \neq 0$, dan $g(x)$ adalah fungsi pendorong kontinu.
+\end{definition}
+
+\begin{theorem}[Struktur Solusi Lengkap]
+Jika $y_p(x)$ adalah suatu solusi partikular sembarang dari PDB non-homogen~\eqref{eq:nonhomo_standard}, dan $\{y_1(x), y_2(x)\}$ membentuk himpunan solusi fundamental dari persamaan homogen terkait ($a y'' + b y' + c y = 0$), maka solusi umum lengkap dari persamaan non-homogen diberikan oleh:
+\begin{equation}
+    y(x) = y_h(x) + y_p(x) = C_1 y_1(x) + C_2 y_2(x) + y_p(x)
+    \label{eq:complete_solution_structure}
+\end{equation}
+di mana $C_1$ dan $C_2$ adalah konstanta sembarang yang ditentukan oleh Masalah Nilai Awal.
+\end{theorem}
+
+\begin{proof}
+Misalkan $Y(x)$ adalah sembarang solusi lain dari PDB non-homogen~\eqref{eq:nonhomo_standard}, sehingga berlaku $\mathcal{L}[Y] = g(x)$. Karena $y_p(x)$ juga solusi, maka $\mathcal{L}[y_p] = g(x)$. Tinjau selisih $u(x) = Y(x) - y_p(x)$:
+\begin{equation*}
+    \mathcal{L}[u] = \mathcal{L}[Y - y_p] = \mathcal{L}[Y] - \mathcal{L}[y_p] = g(x) - g(x) = 0
+\end{equation*}
+Persamaan ini membuktikan bahwa selisih $u(x)$ merupakan solusi dari persamaan homogen! Berdasarkan teorema solusi fundamental, setiap solusi homogen dapat dituliskan secara unik sebagai $u(x) = C_1 y_1(x) + C_2 y_2(x)$. Maka:
+\begin{equation*}
+    Y(x) = u(x) + y_p(x) = C_1 y_1(x) + C_2 y_2(x) + y_p(x)
+\end{equation*}
+Terbukti secara matematis.
+\end{proof}
+
+\section{Metode Koefisien Tak Tentu (\textit{Method of Undetermined Coefficients})}
+
+Metode Koefisien Tak Tentu adalah algoritma analitik yang sangat efisien untuk mengonstruksi solusi partikular $y_p(x)$ ketika fungsi pendorong $g(x)$ merupakan fungsi elementer yang memiliki himpunan turunan berulang yang berhingga, yaitu:
+\begin{enumerate}[leftmargin=*]
+    \item Polinomial: $P_n(x) = a_n x^n + \dots + a_1 x + a_0$.
+    \item Eksponensial: $e^{\gamma x}$.
+    \item Sinusoidal: $\cos(\omega x)$ dan $\sin(\omega x)$.
+    \item Kombinasi perkalian dan penjumlahan linier dari bentuk-bentuk di atas.
 \end{enumerate}
 
-\textbf{Aturan Modifikasi:}
-Jika ada suku pada tebakan $y_p(x)$ yang merupakan bagian dari solusi homogen $y_h(x)$, maka kita kalikan tebakan $y_p(x)$ dengan $x^s$, di mana $s$ adalah bilangan bulat positif terkecil ($s=1$ atau $s=2$) sedemikian sehingga tidak ada suku pada $y_p(x)$ yang merupakan bagian dari $y_h(x)$.
+\subsection{Tabel Aturan Tebakan Dasar}
 
-\begin{example}
-Selesaikan PDB: $y'' - 3y' + 2y = 4e^{3x}$.
+Tabel~\ref{tab:undetermined_coefficients} merangkum bentuk tebakan baku $y_p(x)$ berdasarkan bentuk fungsi pemaksa $g(x)$.
+
+\begin{table}[htbp]
+\centering
+\caption{Bentuk Tebakan Standar Metode Koefisien Tak Tentu.}
+\label{tab:undetermined_coefficients}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{ll}
+\toprule
+\textbf{Bentuk Fungsi Pemaksa $g(x)$} & \textbf{Bentuk Tebakan Solusi Partikular $y_p(x)$} \\ \midrule
+Konstanta: $k$ & $A$ \\
+Polinomial derajat $n$: $a_n x^n + \dots + a_0$ & $A_n x^n + A_{n-1} x^{n-1} + \dots + A_1 x + A_0$ \\
+Eksponensial: $k e^{\gamma x}$ & $A e^{\gamma x}$ \\
+Sinusoidal: $k \cos(\omega x)$ atau $k \sin(\omega x)$ & $A \cos(\omega x) + B \sin(\omega x)$ \\
+Eksponensial-Polinomial: $P_n(x) e^{\gamma x}$ & $(A_n x^n + \dots + A_0) e^{\gamma x}$ \\
+Eksponensial-Sinusoidal: $e^{\gamma x}(k_1 \cos\omega x + k_2 \sin\omega x)$ & $e^{\gamma x} \left[ A \cos(\omega x) + B \sin(\omega x) \right]$ \\
+Polinomial-Sinusoidal: $P_n(x) \cos\omega x$ & $(A_n x^n + \dots + A_0)\cos\omega x + (B_n x^n + \dots + B_0)\sin\omega x$ \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Aturan Modifikasi Perkalian \texorpdfstring{$x^s$}{x\textasciicircum s} (Resonansi Matematis)}
+
+\begin{tcolorbox}[colback=yellow!8!white,colframe=orange!80!black,title=\textbf{Aturan Modifikasi Krusial (Resonansi Alami-Paksa)}]
+Apabila terdapat suku pada tebakan awal $y_p(x)$ yang \textbf{identik (berduplikasi)} dengan salah satu suku penyusun solusi komplementer/homogen $y_h(x)$, maka tebakan $y_p(x)$ wajib dikalikan dengan faktor:
+\begin{equation}
+    x^s
+\end{equation}
+di mana $s$ adalah bilangan bulat positif terkecil ($s = 1$ atau $s = 2$) yang menyebabkan \textbf{tidak ada lagi satu pun suku pada $y_p(x)$ yang beririsan dengan suku-suku pada $y_h(x)$}.
+\end{tcolorbox}
+
+\textbf{Alasan Fisis \& Matematis:}
+Jika kita memasukkan tebakan $y_p$ yang merupakan solusi dari persamaan homogen ke dalam operator diferensial $\mathcal{L}[y] = a y'' + b y' + c y$, maka ruas kiri akan menghasilkan nol secara mutlak ($\mathcal{L}[y_p] \equiv 0$). Akibatnya, persamaan $0 = g(x)$ menjadi kontradiksi dan koefisien tak tentu tidak akan pernah dapat dihitung. Pengalian dengan $x^s$ adalah manifestasi matematis dari fenomena \textbf{resonansi fisik}: ketika frekuensi gaya luar sama persis dengan frekuensi alami sistem, amplitudo osilasi tumbuh sebanding dengan waktu ($x$ atau $t$).
+
+\section{Aplikasi Rekayasa: Rangkaian RLC Seri AC \& Resonansi Tegangan}
+
+\subsection{Formulasi Matematis Rangkaian RLC AC}
+
+Tinjau rangkaian RLC seri pada Gambar~\ref{fig:rlc_ac_circuit} yang dihubungkan dengan sumber tegangan bolak-balik sinusoidal:
+\begin{equation}
+    v_s(t) = V_m \cos(\omega t)
+    \label{eq:ac_source}
+\end{equation}
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1.0, american]
+    \draw (0,0) to[sinusoidal voltage source, l={$v_s(t) = V_m \cos(\omega t)$}] (0,3)
+          to[R, l={$R$}, v={$v_R(t)$}] (3,3)
+          to[L, l={$L$}, v={$v_L(t)$}] (6,3)
+          to[C, l={$C$}, v={$v_C(t)$}, i={$i(t)$}] (6,0)
+          -- (0,0);
+\end{circuitikz}
+\caption{Rangkaian RLC seri tereksitasi sumber tegangan bolak-balik sinusoidal AC.}
+\label{fig:rlc_ac_circuit}
+\end{figure}
+
+Penerapan KVL pada loop tertutup menghasilkan:
+\begin{equation}
+    v_R(t) + v_L(t) + v_C(t) = v_s(t) \implies R i(t) + L \frac{di(t)}{dt} + \frac{1}{C} \int_0^t i(\tau) d\tau + v_C(0) = V_m \cos(\omega t)
+\end{equation}
+Diferensialkan seluruh persamaan terhadap waktu $t$:
+\begin{equation}
+    L \frac{d^2 i(t)}{dt^2} + R \frac{di(t)}{dt} + \frac{1}{C} i(t) = \frac{d}{dt}\left[ V_m \cos(\omega t) \right] = -\omega V_m \sin(\omega t)
+    \label{eq:rlc_current_ode}
+\end{equation}
+Bagi kedua ruas dengan induktansi $L$:
+\begin{equation}
+    \frac{d^2 i(t)}{dt^2} + \frac{R}{L} \frac{di(t)}{dt} + \frac{1}{LC} i(t) = -\frac{\omega V_m}{L} \sin(\omega t)
+    \label{eq:rlc_current_canonical}
+\end{equation}
+
+\subsection{Solusi Keadaan Mantap (\textit{Steady-State}) Melalui Koefisien Tak Tentu}
+
+Untuk mencari arus kondisi tunak $i_p(t)$, gunakan tebakan sinusoidal:
+\begin{equation}
+    i_p(t) = A \cos(\omega t) + B \sin(\omega t)
+    \label{eq:ip_guess}
+\end{equation}
+Turunan pertama dan kedua:
+\begin{align}
+    i_p'(t) &= -\omega A \sin(\omega t) + \omega B \cos(\omega t) \\
+    i_p''(t) &= -\omega^2 A \cos(\omega t) - \omega^2 B \sin(\omega t)
+\end{align}
+Substitusikan ke persamaan diferensial~\eqref{eq:rlc_current_ode}:
+\begin{align*}
+    L \left[ -\omega^2 A \cos\omega t - \omega^2 B \sin\omega t \right] &+ R \left[ \omega B \cos\omega t - \omega A \sin\omega t \right] \\
+    &+ \frac{1}{C} \left[ A \cos\omega t + B \sin\omega t \right] = -\omega V_m \sin(\omega t)
+\end{align*}
+Kelompokkan suku-suku berbasis $\cos(\omega t)$ dan $\sin(\omega t)$:
+\begin{align}
+    \left[ \left(\frac{1}{C} - \omega^2 L\right) A + \omega R B \right] \cos(\omega t) &+ \left[ -\omega R A + \left(\frac{1}{C} - \omega^2 L\right) B \right] \sin(\omega t) \nonumber \\
+    &= 0 \cdot \cos(\omega t) - \omega V_m \sin(\omega t)
+    \label{eq:harmonic_balance}
+\end{align}
+Bagi kedua persamaan dengan $\omega$, dan definisikan reaktansi induktif $X_L = \omega L$ serta reaktansi kapasitif $X_C = \frac{1}{\omega C}$. Selisih reaktansi total adalah $X = X_L - X_C = \omega L - \frac{1}{\omega C}$:
+\begin{align}
+    -X A + R B &= 0 \implies B = \frac{X}{R} A \label{eq:harm_1} \\
+    -R A - X B &= -V_m \implies R A + X B = V_m \label{eq:harm_2}
+\end{align}
+Substitusikan persamaan~\eqref{eq:harm_1} ke~\eqref{eq:harm_2}:
+\begin{equation}
+    R A + X \left( \frac{X}{R} A \right) = V_m \implies \frac{R^2 + X^2}{R} A = V_m \implies A = \frac{R V_m}{R^2 + X^2}
+\end{equation}
+Maka nilai $B$ adalah:
+\begin{equation}
+    B = \frac{X V_m}{R^2 + X^2}
+\end{equation}
+Besar impedansi rangkaian didefinisikan sebagai $Z = \sqrt{R^2 + X^2} = \sqrt{R^2 + \left(\omega L - \frac{1}{\omega C}\right)^2}$.
+Amplitudo arus puncak kondisi tunak adalah:
+\begin{equation}
+    I_m = \sqrt{A^2 + B^2} = \sqrt{\frac{R^2 V_m^2 + X^2 V_m^2}{(R^2 + X^2)^2}} = \frac{V_m \sqrt{R^2 + X^2}}{R^2 + X^2} = \frac{V_m}{\sqrt{R^2 + X^2}} = \frac{V_m}{Z}
+    \label{eq:ohms_law_ac}
+\end{equation}
+dan sudut fasa arus terhadap tegangan sumber:
+\begin{equation}
+    \tan\phi = \frac{X}{R} = \frac{\omega L - \frac{1}{\omega C}}{R} \implies i_p(t) = I_m \cos(\omega t - \phi)
+    \label{eq:current_phase_solution}
+\end{equation}
+Persamaan~\eqref{eq:ohms_law_ac} dan~\eqref{eq:current_phase_solution} merupakan pembuktian analitis murni dari Hukum Ohm AC dan konsep impedansi domain fasor yang diturunkan langsung dari prinsip dasar PDB non-homogen!
+
+\subsection{Resonansi Tegangan Seri \& Faktor Kualitas \texorpdfstring{$Q$}{Q}}
+
+Resonansi seri terjadi apabila reaktansi induktif meniadakan reaktansi kapasitif secara sempurna ($X_L = X_C$):
+\begin{equation}
+    \omega_0 L = \frac{1}{\omega_0 C} \implies \omega_0 = \frac{1}{\sqrt{LC}} \quad \text{[rad/s]}
+    \label{eq:resonance_frequency}
+\end{equation}
+Pada kondisi resonansi ($\omega = \omega_0$):
+\begin{enumerate}[leftmargin=*]
+    \item Reaktansi total bernilai nol ($X = 0$), sehingga impedansi rangkaian berada pada nilai \textbf{minimum mutlak}: $Z_{\text{min}} = R$.
+    \item Arus mencapai nilai \textbf{puncak maksimum}: $I_{\text{maks}} = \frac{V_m}{R}$.
+    \item Arus dan tegangan sumber berada dalam kondisi sefasa sempurna ($\phi = 0$, faktor daya $\cos\phi = 1$).
+\end{enumerate}
+
+\subsubsection{Bahaya Pelipatgandaan Tegangan Reaktif}
+Definisikan \textbf{Faktor Kualitas} (\textit{Quality Factor}, $Q$):
+\begin{equation}
+    Q = \frac{\omega_0 L}{R} = \frac{1}{\omega_0 R C} = \frac{1}{R} \sqrt{\frac{L}{C}}
+    \label{eq:quality_factor}
+\end{equation}
+Tegangan puncak pada kapasitor saat resonansi adalah:
+\begin{equation}
+    V_{C, \text{peak}} = I_{\text{maks}} \cdot X_C = \left( \frac{V_m}{R} \right) \left( \frac{1}{\omega_0 C} \right) = V_m \left( \frac{1}{\omega_0 R C} \right) = Q \cdot V_m
+    \label{eq:voltage_magnification}
+\end{equation}
+Demikian pula pada induktor: $V_{L, \text{peak}} = Q \cdot V_m$.
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!80!black,title=\textbf{Peringatan Rekayasa Industri: Bahaya Resonansi Tegangan}]
+Pada rangkaian penala telekomunikasi atau filter daya harmonisa dengan resistansi rendah ($R \ll 1\,\Omega$), nilai faktor kualitas dapat mencapai $Q = 20\text{ s.d. } 100$. Jika sumber eksitasi AC adalah $220\text{ V}$, tegangan pada pelat kapasitor dapat melonjak hingga:
+\begin{equation*}
+    V_C = Q \times 220\text{ V} = 50 \times 220\text{ V} = 11.000\text{ Volt (}11\text{ kV)!}
+\end{equation*}
+Lonjakan tegangan reaktif raksasa ini dapat memicu ledakan tembus dielektrik kapasitor (\textit{insulation flashover}) jika komponen tidak dirancang untuk menahan tegangan lebih resonansi.
+\end{tcolorbox}
+
+\section{Fenomena Layangan (\textit{Beats}) pada Redaman Sangat Kecil}
+
+Tinjau rangkaian LC murni ($R = 0$) yang dieksitasi oleh sumber frekuensi $\omega$ yang nilainya sangat dekat dengan frekuensi alami $\omega_0$ ($\omega \approx \omega_0$, namun $\omega \neq \omega_0$):
+\begin{equation}
+    y'' + \omega_0^2 y = F_0 \cos(\omega t), \quad \text{dengan syarat awal } y(0) = 0, \quad y'(0) = 0
+\end{equation}
+Solusi homogen: $y_h(t) = C_1 \cos\omega_0 t + C_2 \sin\omega_0 t$.
+Solusi partikular: tebak $y_p(t) = A \cos\omega t$. Turunkan dua kali: $y_p'' = -\omega^2 A \cos\omega t$. Substitusi ke PDB:
+\begin{equation}
+    -\omega^2 A \cos\omega t + \omega_0^2 A \cos\omega t = F_0 \cos\omega t \implies A = \frac{F_0}{\omega_0^2 - \omega^2}
+\end{equation}
+Solusi umum lengkap:
+\begin{equation}
+    y(t) = C_1 \cos\omega_0 t + C_2 \sin\omega_0 t + \frac{F_0}{\omega_0^2 - \omega^2} \cos\omega t
+\end{equation}
+Terapkan kondisi awal $y(0) = 0 \implies C_1 = -\frac{F_0}{\omega_0^2 - \omega^2}$, dan $y'(0) = 0 \implies C_2 = 0$:
+\begin{equation}
+    y(t) = \frac{F_0}{\omega_0^2 - \omega^2} \left( \cos\omega t - \cos\omega_0 t \right)
+\end{equation}
+Terapkan identitas trigonometri selisih kosinus: $\cos A - \cos B = -2 \sin\left(\frac{A+B}{2}\right) \sin\left(\frac{A-B}{2}\right) = 2 \sin\left(\frac{\omega_0 - \omega}{2} t\right) \sin\left(\frac{\omega_0 + \omega}{2} t\right)$:
+\begin{equation}
+    y(t) = \underbrace{\left[ \frac{2 F_0}{\omega_0^2 - \omega^2} \sin\left(\frac{\omega_0 - \omega}{2} t\right) \right]}_{\text{Selubung Modulasi Lambat (Beat)}} \cdot \underbrace{\sin\left(\frac{\omega_0 + \omega}{2} t\right)}_{\text{Gelombang Pembawa Cepat}}
+    \label{eq:beat_phenomenon}
+\end{equation}
+Frekuensi layangan (\textit{beat frequency}) adalah selisih frekuensi: $f_{\text{beat}} = |f_0 - f|$. Fenomena ini menjadi landasan prinsip penerima radio superheterodyne dan pemantauan getaran torsional poros generator sinkron PLTU.
+
+\section{Contoh Soal Terhitung Numerik Langkah demi Langkah}
+
+\begin{example}[\textbf{Penyelesaian PDB Non-Homogen dengan Aturan Modifikasi}]
+Tentukan solusi khusus dari Masalah Nilai Awal (IVP) berikut:
+\begin{equation*}
+    y'' - 4y' + 4y = 6x e^{2x}, \quad y(0) = 1, \quad y'(0) = 4
+\end{equation*}
+
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Solusi Homogen ($y_h$):}
+    Persamaan karakteristik:
+    \begin{equation*}
+        r^2 - 4r + 4 = 0 \implies (r - 2)^2 = 0 \implies r_1 = r_2 = 2\text{ (kembar)}
+    \end{equation*}
+    Maka solusi homogen adalah:
+    \begin{equation*}
+        y_h(x) = C_1 e^{2x} + C_2 x e^{2x}
+    \end{equation*}
+
+    \item \textbf{Konstruksi Tebakan Partikular dengan Aturan Modifikasi:}
+    Fungsi pemaksa adalah $g(x) = 6x e^{2x}$. Tebakan standar mula-mula adalah:
+    \begin{equation*}
+        y_{\text{tebak}} = (A x + B) e^{2x} = A x e^{2x} + B e^{2x}
+    \end{equation*}
+    Perhatikan:
+    \begin{itemize}
+        \item Suku $B e^{2x}$ berduplikasi dengan suku $C_1 e^{2x}$ pada $y_h$.
+        \item Suku $A x e^{2x}$ berduplikasi dengan suku $C_2 x e^{2x}$ pada $y_h$.
+    \end{itemize}
+    Oleh karena itu, kita wajib mengalikan dengan $x^2$ ($s = 2$):
+    \begin{equation*}
+        y_p(x) = x^2 (A x + B) e^{2x} = (A x^3 + B x^2) e^{2x}
+    \end{equation*}
+
+    \item \textbf{Diferensiasi Solusi Partikular:}
+    \begin{align*}
+        y_p' &= (3A x^2 + 2B x) e^{2x} + 2(A x^3 + B x^2) e^{2x} \\
+             &= \left[ 2A x^3 + (3A + 2B) x^2 + 2B x \right] e^{2x} \\
+        y_p'' &= \left[ 6A x^2 + 2(3A + 2B) x + 2B \right] e^{2x} + 2\left[ 2A x^3 + (3A + 2B) x^2 + 2B x \right] e^{2x} \\
+              &= \left[ 4A x^3 + (12A + 4B) x^2 + (6A + 8B) x + 2B \right] e^{2x}
+    \end{align*}
+
+    \item \textbf{Substitusi ke Operator PDB $y_p'' - 4y_p' + 4y_p = 6x e^{2x}$:}
+    Kumpulkan suku-suku berdasarkan pangkat $x$ di dalam kurung kurawal yang dikalikan $e^{2x}$:
+    \begin{itemize}
+        \item Koefisien $x^3$: $4A - 4(2A) + 4(A) = 4A - 8A + 4A = 0$ (tereliminasi identik).
+        \item Koefisien $x^2$: $(12A + 4B) - 4(3A + 2B) + 4(B) = 12A + 4B - 12A - 8B + 4B = 0$ (tereliminasi identik).
+        \item Koefisien $x$: $(6A + 8B) - 4(2B) + 4(0) = 6A + 8B - 8B = 6A$.
+        \item Koefisien konstanta: $2B - 4(0) + 4(0) = 2B$.
+    \end{itemize}
+    Maka persamaan tereduksi menjadi:
+    \begin{equation*}
+        (6A x + 2B) e^{2x} = 6x e^{2x}
+    \end{equation*}
+    Samakan koefisien kedua ruas:
+    \begin{align*}
+        6A = 6 &\implies A = 1 \\
+        2B = 0 &\implies B = 0
+    \end{align*}
+    Diperoleh solusi partikular yang sangat elegan:
+    \begin{equation*}
+        y_p(x) = x^3 e^{2x}
+    \end{equation*}
+
+    \item \textbf{Solusi Umum Lengkap:}
+    \begin{equation*}
+        y(x) = (C_1 + C_2 x) e^{2x} + x^3 e^{2x}
+    \end{equation*}
+
+    \item \textbf{Penerapan Masalah Nilai Awal:}
+    Kondisi $y(0) = 1$:
+    \begin{equation*}
+        y(0) = C_1 e^0 + 0 = 1 \implies C_1 = 1
+    \end{equation*}
+    Turunan pertama solusi umum:
+    \begin{equation*}
+        y'(x) = C_2 e^{2x} + 2(C_1 + C_2 x) e^{2x} + 3x^2 e^{2x} + 2x^3 e^{2x}
+    \end{equation*}
+    Kondisi $y'(0) = 4$:
+    \begin{equation*}
+        y'(0) = C_2 + 2C_1 = 4 \implies C_2 + 2(1) = 4 \implies C_2 = 2
+    \end{equation*}
+    Maka solusi khusus tunggal adalah:
+    \begin{equation*}
+        \mathbf{y(x) = (1 + 2x + x^3) e^{2x}} \quad \qed
+    \end{equation*}
+\end{enumerate}
 \end{example}
-\textbf{Penyelesaian:}
-\begin{itemize}
-    \item \textbf{Solusi Homogen ($y_h$):} Persamaan karakteristik: $r^2 - 3r + 2 = 0 \implies (r-1)(r-2) = 0 \implies r_1=1, r_2=2$. Solusi: $y_h(x) = C_1 e^x + C_2 e^{2x}$.
-    \item \textbf{Solusi Partikular ($y_p$):} Karena $f(x) = 4e^{3x}$ dan $e^{3x}$ bukan bagian dari $y_h$, kita tebak $y_p(x) = A e^{3x}$. Turunkan: $y_p' = 3A e^{3x}$, $y_p'' = 9A e^{3x}$. Substitusi ke PDB:
-    $$ 9A e^{3x} - 3(3A e^{3x}) + 2(A e^{3x}) = 4e^{3x} $$
-    $$ (9 - 9 + 2)A = 4 \implies 2A = 4 \implies A = 2 $$
-    Jadi $y_p(x) = 2e^{3x}$.
-    \item \textbf{Solusi Umum:} $y(x) = y_h(x) + y_p(x) = C_1 e^x + C_2 e^{2x} + 2e^{3x}$.
+
+\begin{example}[\textbf{Respon Arus dan Resonansi Rangkaian RLC Seri AC}]
+Sebuah sirkuit RLC seri memiliki parameter $R = 10\,\Omega$, $L = 0{,}1\text{ H}$, dan $C = 10\,\mu\text{F}$. Sirkuit dihubungkan ke generator sinusoidal $v_s(t) = 100 \cos(\omega t)\text{ Volt}$.
+\begin{enumerate}[label=(\alph*)]
+    \item Hitung frekuensi resonansi sudut $\omega_0$ dan faktor kualitas $Q$ rangkaian.
+    \item Jika frekuensi kerja generator disetel persis pada kondisi resonansi ($\omega = \omega_0$), tentukan persamaan arus tunak $i(t)$ dan tegangan puncak kapasitor $V_{C, \text{maks}}$.
+    \item Jika frekuensi generator diubah menjadi $\omega = 500\text{ rad/s}$, hitung impedansi total $Z$, arus puncak $I_m$, dan pergeseran sudut fasa $\phi$.
+\end{enumerate}
+
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item \textbf{Frekuensi resonansi sudut dan faktor kualitas:}
+    \begin{equation*}
+        \omega_0 = \frac{1}{\sqrt{LC}} = \frac{1}{\sqrt{0{,}1 \times 10 \times 10^{-6}}} = \frac{1}{\sqrt{10^{-6}}} = 1.000\text{ rad/s}
+    \end{equation*}
+    Faktor kualitas rangkaian:
+    \begin{equation*}
+        Q = \frac{\omega_0 L}{R} = \frac{1.000 \times 0{,}1}{10} = \frac{100}{10} = \mathbf{10}
+    \end{equation*}
+
+    \item \textbf{Kondisi Resonansi ($\omega = 1.000\text{ rad/s}$):}
+    Impedansi sirkuit murni resistif: $Z = R = 10\,\Omega$.
+    Arus puncak:
+    \begin{equation*}
+        I_{\text{maks}} = \frac{V_m}{R} = \frac{100\text{ V}}{10\,\Omega} = 10\text{ Ampere}
+    \end{equation*}
+    Karena sudut fasa $\phi = 0$, maka arus tunak adalah:
+    \begin{equation*}
+        \mathbf{i(t) = 10 \cos(1.000 t)\text{ [Ampere]}}
+    \end{equation*}
+    Tegangan puncak pada kapasitor mengalami pelipatgandaan faktor $Q$:
+    \begin{equation*}
+        V_{C, \text{maks}} = Q \times V_m = 10 \times 100\text{ V} = \mathbf{1.000\text{ Volt!}}
+    \end{equation*}
+    Tegangan kapasitor melonjak 10 kali lipat dari tegangan sumber!
+
+    \item \textbf{Kondisi Non-Resonansi ($\omega = 500\text{ rad/s}$):}
+    Reaktansi induktif: $X_L = \omega L = 500 \times 0{,}1 = 50\,\Omega$.
+    Reaktansi kapasitif: $X_C = \frac{1}{\omega C} = \frac{1}{500 \times 10 \times 10^{-6}} = \frac{1}{5 \times 10^{-3}} = 200\,\Omega$.
+    Reaktansi total: $X = X_L - X_C = 50 - 200 = -150\,\Omega$ (bersifat kapasitif).
+    Impedansi total:
+    \begin{equation*}
+        Z = \sqrt{R^2 + X^2} = \sqrt{10^2 + (-150)^2} = \sqrt{100 + 22.500} = \sqrt{22.600} \approx 150{,}33\,\Omega
+    \end{equation*}
+    Arus puncak:
+    \begin{equation*}
+        I_m = \frac{V_m}{Z} = \frac{100\text{ V}}{150{,}33\,\Omega} \approx \mathbf{0{,}665\text{ Ampere}}
+    \end{equation*}
+    Sudut fasa:
+    \begin{equation*}
+        \phi = \arctan\left(\frac{X}{R}\right) = \arctan\left(\frac{-150}{10}\right) = \arctan(-15) \approx -86{,}19^\circ = -1{,}504\text{ rad}
+    \end{equation*}
+    Maka persamaan arus sesaat adalah:
+    \begin{equation*}
+        i(t) = 0{,}665 \cos(500 t + 1{,}504\text{ rad})\text{ [A]} \quad \qed
+    \end{equation*}
+\end{enumerate}
+\end{example}
+
+\begin{example}[\textbf{Simulasi Resonansi Torsi Sub-Sinkron (SSR)}]
+Tinjau fenomena osilasi layangan pada sistem transmisi daya dengan frekuensi alami jaringan terkompensasi seri $\omega_0 = 314\text{ rad/s}$ ($50\text{ Hz}$) yang terganggu oleh arus harmonisa inter-sub-sinkron $\omega = 300\text{ rad/s}$ ($47{,}7\text{ Hz}$) dengan redaman yang sangat kecil ($R \approx 0$).
+Jika persamaan gerak simpangan muatan adalah $q'' + 314^2 q = 100 \cos(300 t)$ dengan $q(0) = 0$ dan $q'(0) = 0$:
+\begin{enumerate}[label=(\alph*)]
+    \item Turunkan persamaan gelombang layangan $q(t)$.
+    \item Hitung frekuensi siklik gelombang pembawa dan frekuensi siklik denyut layangan (\textit{beat frequency}).
+\end{enumerate}
+
+\paragraph{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item \textbf{Derivasi persamaan gelombang layangan:}
+    Gunakan formula layangan analitis~\eqref{eq:beat_phenomenon}:
+    \begin{equation*}
+        \omega_0^2 - \omega^2 = (314)^2 - (300)^2 = 98.596 - 90.000 = 8.596\text{ rad}^2/\text{s}^2
+    \end{equation*}
+    Amplitudo puncak layangan:
+    \begin{equation*}
+        A_{\text{beat}} = \frac{2 F_0}{\omega_0^2 - \omega^2} = \frac{2 \times 100}{8.596} \approx 0{,}02327\text{ Coulomb}
+    \end{equation*}
+    Frekuensi sudut selubung modulasi:
+    \begin{equation*}
+        \omega_{\text{mod}} = \frac{\omega_0 - \omega}{2} = \frac{314 - 300}{2} = 7\text{ rad/s}
+    \end{equation*}
+    Frekuensi sudut gelombang pembawa:
+    \begin{equation*}
+        \omega_{\text{carrier}} = \frac{\omega_0 + \omega}{2} = \frac{314 + 300}{2} = 307\text{ rad/s}
+    \end{equation*}
+    Maka solusi analitis lengkap gelombang layangan adalah:
+    \begin{equation*}
+        \mathbf{q(t) = 0{,}02327 \sin(7 t) \sin(307 t)\text{ [Coulomb]}}
+    \end{equation*}
+
+    \item \textbf{Frekuensi siklik:}
+    Frekuensi denyut layangan (\textit{beat frequency}):
+    \begin{equation*}
+        f_{\text{beat}} = \frac{|\omega_0 - \omega|}{2\pi} = \frac{14\text{ rad/s}}{2 \times 3{,}14159} \approx \mathbf{2{,}23\text{ Hz}}
+    \end{equation*}
+    Frekuensi gelombang pembawa:
+    \begin{equation*}
+        f_{\text{carrier}} = \frac{307\text{ rad/s}}{2\pi} \approx \mathbf{48{,}86\text{ Hz}} \quad \qed
+    \end{equation*}
+\end{enumerate}
+\end{example}
+
+\section{Praktikum Komputasi Numerik Terbuka Berbasis Julia}
+
+\subsection{Skrip Komputasi: Simulasi Transien RLC AC \& Resonansi Tegangan}
+
+Listing~\ref{lst:julia_rlc_ac} menyajikan kode program lengkap dalam bahasa **Julia 1.12+** menggunakan pustaka `DifferentialEquations.jl` dan `Plots.jl`.
+
+\begin{lstlisting}[style=juliastyle, caption={Simulasi Lengkap Transien RLC Seri AC dan Kurva Resonansi dengan Julia.}, label={lst:julia_rlc_ac}]
+# =================================================================
+# PRAKTIKUM PERSAMAAN DIFERENSIAL - MINGGU 5
+# Simulasi RLC Seri AC Sinusoidal & Kurva Resonansi
+# Jurusan Teknik Elektro, Universitas Bengkulu
+# =================================================================
+
+using DifferentialEquations
+using Plots
+
+# -----------------------------------------------------------------
+# Model PDB Orde 2 Non-Homogen:
+# x1 = q (muatan), x2 = dq/dt = i (arus listrik)
+# dx1/dt = x2
+# dx2/dt = (1/L) * [Vm*cos(omega*t) - R*x2 - (1/C)*x1]
+# -----------------------------------------------------------------
+function rlc_ac!(dx, x, p, t)
+    R, L, C, Vm, omega = p
+    dx[1] = x[2]
+    dx[2] = (Vm * cos(omega * t) - R * x[2] - (1.0 / C) * x[1]) / L
+end
+
+# Parameter Fisis Rangkaian
+R = 10.0           # Hambatan [Ohm]
+L = 0.1            # Induktansi [Henry]
+C = 10.0e-6        # Kapasitansi [Farad]
+Vm = 100.0         # Tegangan puncak generator AC [Volt]
+
+omega0 = 1.0 / sqrt(L * C) # 1000 rad/s (Resonansi)
+Q = (omega0 * L) / R       # Faktor Kualitas (Q = 10)
+
+println("=== PARAMETER RLC AC ===")
+println("Frekuensi sudut resonansi (omega0): ", omega0, " rad/s")
+println("Faktor Kualitas (Q)               : ", Q)
+println("Tegangan puncak kapasitor resonansi: ", Q * Vm, " Volt")
+
+# Simulasi 1: Respon Waktu pada Frekuensi Resonansi
+p_res = [R, L, C, Vm, omega0]
+x0 = [0.0, 0.0]    # Muatan dan arus awal bernilai nol
+tspan = (0.0, 0.04)# Simulasi selama 40 milidetik
+
+prob_res = ODEProblem(rlc_ac!, x0, tspan, p_res)
+sol_res = solve(prob_res, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+t_eval = range(0.0, 0.04, length=500)
+i_res = [sol_res(t)[2] for t in t_eval]
+vc_res = [sol_res(t)[1] / C for t in t_eval]
+
+# Simulasi 2: Kurva Respon Frekuensi Resonansi
+omega_sweep = range(200.0, 2000.0, length=200)
+I_steady = zeros(length(omega_sweep))
+
+for (idx, w) in enumerate(omega_sweep)
+    X = w * L - 1.0 / (w * C)
+    Z = sqrt(R^2 + X^2)
+    I_steady[idx] = Vm / Z
+end
+
+# -----------------------------------------------------------------
+# Visualisasi Grafik
+# -----------------------------------------------------------------
+p1 = plot(t_eval .* 1000, i_res, label="Arus i(t) [A]", lw=2, color=:blue)
+xlabel!(p1, "Waktu t [milidetik]")
+ylabel!(p1, "Arus [Ampere]")
+title!(p1, "Transien Arus RLC Seri pada Kondisi Resonansi")
+
+p2 = plot(t_eval .* 1000, vc_res, label="Tegangan Kapasitor v_C(t) [V]", lw=2, color=:red)
+hline!(p2, [Q * Vm, -Q * Vm], ls=:dash, color=:black, label="Batas Q*Vm (1000 V)")
+xlabel!(p2, "Waktu t [milidetik]")
+ylabel!(p2, "Tegangan Kapasitor [Volt]")
+title!(p2, "Amplifikasi Tegangan Reaktif Kapasitor (Faktor Q=10)")
+
+p3 = plot(omega_sweep, I_steady, label="Kurva Resonansi Arus", lw=2.5, color=:green)
+vline!(p3, [omega0], ls=:dash, color=:red, label="omega0 = 1000 rad/s")
+xlabel!(p3, "Frekuensi Sudut omega [rad/s]")
+ylabel!(p3, "Arus Puncak I_m [Ampere]")
+title!(p3, "Respon Frekuensi Arus Keadaan Mantap RLC Seri")
+
+plot(p1, p2, p3, layout=(3,1), size=(800, 900))
+savefig("respon_rlc_ac_resonansi.png")
+println("Simulasi selesai. Gambar tersimpan di respon_rlc_ac_resonansi.png")
+\end{lstlisting}
+
+\section{Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{[C1 - Mengingat]} Tuliskan bentuk tebakan awal solusi partikular $y_p(x)$ menggunakan metode koefisien tak tentu untuk PDB:
+    \begin{equation*}
+        y'' + 3y' + 2y = 4x^2 + e^{-x}
+    \end{equation*}
+    Perhatikan apakah ada suku yang memerlukan modifikasi $x^s$!
+    
+    \item \textbf{[C2 - Memahami]} Mengapa pada kondisi resonansi seri rangkaian RLC, impedansi total rangkaian mencapai nilai minimum sedangkan tegangan pada komponen reaktif dapat melonjak berkali-kali lipat dari tegangan sumber?
+    
+    \item \textbf{[C3 - Menerapkan]} Selesaikan PDB non-homogen berikut dengan cermat:
+    \begin{equation*}
+        y'' + 9y = 12 \cos(3x), \quad y(0) = 2, \quad y'(0) = 1
+    \end{equation*}
+    
+    \item \textbf{[C4 - Menganalisis]} Tinjau sirkuit RLC seri yang disuplai oleh sumber tegangan AC:
+    \begin{equation*}
+        v_s(t) = 220\sqrt{2} \cos(100\pi t)\text{ [Volt]} \quad (f = 50\text{ Hz})
+    \end{equation*}
+    Parameter rangkaian adalah $R = 5\,\Omega$, $L = 50\text{ mH}$, dan $C = 200\,\mu\text{F}$. Tentukan persamaan matematis respon arus transien lengkap $i(t)$ jika sakelar ditutup pada saat $t=0$.
+    
+    \item \textbf{[C5 - Mengevaluasi]} Pada sistem transmisi daya yang memiliki saluran kabel bawah tanah berkapasitansi tinggi, sering terjadi fenomena resonansi harmonisa kelima ($250\text{ Hz}$) yang dipicu oleh beban inverter non-linier industri. Berikan evaluasi analitis bagaimana perancangan filter pasif penolak harmonisa dapat menekan lonjakan tegangan harmonisa pada bus gardu induk!
+    
+    \item \textbf{[C6 - Merancang]} Rancanglah sebuah modul program dalam bahasa \textbf{Julia} yang menerima parameter input rangkaian $(R, L, C, V_m, \omega)$ dan menghitung secara otomatis:
+    \begin{enumerate}[label=(\roman*)]
+        \item frekuensi resonansi, faktor kualitas $Q$, dan lebar pita (\textit{bandwidth}) $\Delta \omega$,
+        \item daya aktif rata-rata ($P$), daya reaktif ($Q_{\text{reaktif}}$), dan faktor daya ($\cos\phi$),
+        \item animasi interaktif perambatan gelombang tegangan dan arus fase domain waktu.
+    \end{enumerate}
+\end{enumerate}
+
+\section{Rangkuman \& Glosarium Istilah Teknis}
+
+\subsection{Rangkuman Inti}
+\begin{enumerate}[leftmargin=*]
+    \item Solusi lengkap PDB non-homogen adalah penjumlahan solusi komplementer (transien) $y_h(x)$ dan solusi partikular (tunak) $y_p(x)$.
+    \item Metode Koefisien Tak Tentu menebak struktur fungsi partikular berdasarkan turunan fungsi pemaksa, dengan aturan modifikasi perkalian $x^s$ jika terjadi irisan dengan solusi homogen.
+    \item Pada rangkaian RLC AC sinusoidal, solusi partikular merepresentasikan arus keadaan mantap yang berosilasi pada frekuensi sumber dengan pergeseran sudut fasa $\phi = \arctan(X/R)$.
+    \item Fenomena resonansi seri terjadi pada $\omega_0 = 1/\sqrt{LC}$, di mana impedansi bernilai minimum $Z = R$ dan tegangan kapasitor mengalami amplifikasi sebesar $v_C = Q V_m$.
+    \item Fenomena layangan (\textit{beats}) timbul dari interaksi dua frekuensi yang berdekatan pada sistem beredaman sangat rendah, membentuk gelombang modulasi amplitudo periodik.
+\end{enumerate}
+
+\subsection{Glosarium Istilah Teknis}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Fungsi Pemaksa (Forcing Function):} Suku tak nol $g(t)$ di ruas kanan PDB yang merepresentasikan sumber energi atau eksitasi eksternal.
+    \item \textbf{Keadaan Mantap (Steady-State):} Kondisi operasi jangka panjang suatu sistem fisik setelah seluruh respon transien teredam sepenuhnya.
+    \item \textbf{Resonansi Seri:} Kondisi pada rangkaian RLC seri di mana reaktansi induktif dan kapasitif saling meniadakan ($X_L = X_C$), menghasilkan arus maksimum.
+    \item \textbf{Faktor Kualitas ($Q$):} Ukuran ketajaman resonansi dan rasio penyimpanan energi terhadap disipasi energi per siklus pada rangkaian reaktif.
+    \item \textbf{Fenomena Beat (Layangan):} Modulasi periodik amplitudo gelombang gabungan akibat interferensi dua frekuensi yang berselisih sangat kecil.
+    \item \textbf{Amplifikasi Tegangan Reaktif:} Gejala lonjakan tegangan pada induktor atau kapasitor saat resonansi yang nilainya melampaui tegangan sumber pembangkit.
 \end{itemize}
 
-\subsection{Aplikasi Rangkaian RLC Seri}
-Pada rangkaian listrik yang terdiri dari resistor ($R$), induktor ($L$), dan kapasitor ($C$) yang dihubungkan seri dengan sumber tegangan $E(t)$, Hukum Tegangan Kirchhoff (KVL) menyatakan:
-\begin{equation}
-V_L + V_R + V_C = E(t)
-\end{equation}
-Substitusi relasi tegangan-arus: $V_L = L \frac{di}{dt}$, $V_R = R i$, $V_C = \frac{q}{C}$, dimana arus $i = \frac{dq}{dt}$. Kita peroleh PDB orde 2 untuk muatan listrik $q(t)$:
-\begin{equation}
-L \frac{d^2q}{dt^2} + R \frac{dq}{dt} + \frac{1}{C} q = E(t)
-\end{equation}
-Jika kita diferensialkan terhadap waktu, kita juga bisa mendapatkan PDB untuk arus $i(t)$:
-\begin{equation}
-L \frac{d^2i}{dt^2} + R \frac{di}{dt} + \frac{1}{C} i = \frac{dE}{dt}
-\end{equation}
-Persamaan ini ekuivalen secara matematis dengan sistem pegas-massa mekanik yang teredam secara gaya paksa.
-Fungsi paksa $E(t)$ sering berbentuk sinusoidal (AC), misalnya $E(t) = E_0 \cos(\omega t)$. Metode Koefisien Tak Tentu dapat digunakan untuk menemukan respon keadaan mantap (steady-state) arus pada rangkaian tersebut (solusi partikular $i_p(t)$).
-
-\section{Ringkasan}
-Metode Koefisien Tak Tentu memberikan algoritma praktis untuk mencari solusi partikular PDB orde 2 non-homogen dengan fungsi pendorong yang spesifik. Dalam teknik elektro, persamaan diferensial ini adalah pondasi untuk menganalisis rangkaian AC dinamik, seperti rangkaian RLC. Solusi homogen memberikan respon sementara (transien), dan solusi partikular memberikan respon tetap (steady-state).
-
-\section{Referensi}
-\begin{itemize}
-    \item Zill, D. G. (2018). \textit{A First Course in Differential Equations with Modeling Applications}. Cengage Learning.
-    \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics}. John Wiley \& Sons.
-\end{itemize}
+\section{Referensi Standar Industri \& Buku Teks Acuan}
+\begin{enumerate}[leftmargin=*]
+    \item Alexander, C. K., \& Sadiku, M. N. O. (2021). \textit{Fundamentals of Electric Circuits} (7th ed.). New York: McGraw-Hill Education.
+    \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics} (10th ed.). Hoboken, NJ: John Wiley \& Sons.
+    \item Zill, D. G. (2018). \textit{A First Course in Differential Equations with Modeling Applications} (11th ed.). Boston: Cengage Learning.
+    \item IEEE Power and Energy Society. (2014). \textit{IEEE Std 519-2014: IEEE Recommended Practice and Requirements for Harmonic Control in Electric Power Systems}. New York: IEEE.
+    \item Hayt, W. H., Kemmerly, J. E., \& Durbin, S. M. (2019). \textit{Engineering Circuit Analysis} (9th ed.). New York: McGraw-Hill.
+    \item Rackauckas, C., \& Nie, Q. (2017). DifferentialEquations.jl -- A Performant and Feature-Rich Ecosystem for Solving Differential Equations in Julia. \textit{Journal of Open Research Software}, 5(1), 15.
+\end{enumerate}
 
 \end{document}

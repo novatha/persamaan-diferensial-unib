@@ -4,126 +4,532 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc,decorations.pathreplacing}
 \usepackage{amsmath,amssymb}
+\usepackage{circuitikz}
+\usepackage{listings}
+\lstdefinestyle{juliastyle}{language=Julia,basicstyle=\ttfamily\tiny,keywordstyle=\bfseries\color{unibblue},commentstyle=\color{gray}\itshape,stringstyle=\color{unibgreen},backgroundcolor=\color{softgray},frame=single,rulecolor=\color{unibblue!30},breaklines=true,breakatwhitespace=true,showstringspaces=false,tabsize=2,numbers=none}
+\usepackage{booktabs}
 
-% --- Custom Colors ---
-\definecolor{unibblue}{RGB}{0,51,102}
-\definecolor{unibgold}{RGB}{212,175,55}
-\definecolor{unibgreen}{RGB}{0,128,0}
+% --- Custom Institutional Colors (Universitas Bengkulu) ---
+\definecolor{unibblue}{RGB}{0, 32, 96}       % Biru Navy Utama
+\definecolor{unibgold}{RGB}{197, 160, 89}     % Emas / Gold
+\definecolor{unibgreen}{RGB}{34, 112, 60}     % Hijau
+\definecolor{softgray}{RGB}{245, 247, 250}
 
 \setbeamercolor{palette primary}{bg=unibblue,fg=white}
 \setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
 \setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
 \setbeamercolor{structure}{fg=unibblue}
-\setbeamercolor{block title}{bg=unibblue!85,fg=white}
-\setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{titlelike}{parent=structure,bg=unibblue,fg=white}
+\setbeamercolor{block title}{bg=unibblue!90,fg=white}
+\setbeamercolor{block body}{bg=unibblue!8,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!95,fg=black}
 \setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!90,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
 
-\title{Persamaan Diferensial}
-\subtitle{Minggu 15: Sintesis PDP dalam Persamaan Maxwell \& Panduan Team-Based Project}
-\author{Novalio Daratha \& Muhammad Arfan}
-\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date[\today]{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% --- Julia Syntax Highlighting Configuration ---
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,immutable,import,importall,if,in,%
+      macro,module,quote,return,true,try,type,typealias,using,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[m]"%
+  }[keywords,comments,strings]
+
+\lstset{
+    language=Julia,
+    basicstyle=\ttfamily\tiny,
+    keywordstyle=\bfseries\color{unibblue},
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{unibgreen},
+    backgroundcolor=\color{softgray},
+    frame=single,
+    rulecolor=\color{unibblue!30},
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    tabsize=2,
+    numbers=none
+}
+
+\title[Persamaan Diferensial (Minggu 15)]{Persamaan Diferensial}
+\subtitle{Minggu 15: Polinomial Legendre, 4 Persamaan Maxwell Diferensial, \& Sintesis Kurikulum}
+\author[Novalio \& Arfan (UNIB)]{Ir. Novalio Daratha, S.T., M.Sc., Ph.D. \& Muhammad Arfan, S.T., M.T.}
+\institute[Teknik Elektro UNIB]{Program Studi S1 Teknik Elektro, Jurusan Teknik Elektro \& Informatika\\Fakultas Teknik, Universitas Bengkulu}
+\date[2026]{Semester Genap 2026}
 
 \begin{document}
 
-\begin{frame}
+% -------------------------------------------------------------
+% FRAME 1: Title Slide
+% -------------------------------------------------------------
+\begin{frame}[plain]
   \titlepage
 \end{frame}
 
-\begin{frame}{Capaian Pembelajaran (CPMK 4 \& C6)}
-  \begin{itemize}
-    \item \textbf{CPMK 4.1:} Mengintegrasikan seluruh konsep PDB dan PDP ke dalam 4 Persamaan Maxwell fundamental.
-    \item \textbf{CPMK 4.2:} Menurunkan Persamaan Gelombang Elektromagnetik 3D ($\nabla^2 \mathbf{E} = \mu\varepsilon \frac{\partial^2 \mathbf{E}}{\partial t^2}$) dari hukum Faraday dan Ampere-Maxwell.
-    \item \textbf{CPMK 4.3:} Menghubungkan kecepatan gelombang elektromagnetik dengan konstanta ruang hampa ($c = 1/\sqrt{\mu_0\varepsilon_0}$).
-    \item \textbf{CPMK 4.4 (C6):} Menyajikan hasil sintesis pemodelan matematika dalam bentuk laporan dan presentasi *Team-Based Project*.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Daftar Isi}
-  \tableofcontents
-\end{frame}
-
-\section{Empat Persamaan Diferensial Maxwell}
-\begin{frame}{Empat Persamaan Maxwell dalam Bentuk Diferensial}
-  \begin{block}{1. Hukum Gauss untuk Medan Listrik}
-    $$ \nabla \cdot \mathbf{D} = \rho_v \quad \iff \quad \text{Muatan listrik adalah sumber divergensi medan listrik} $$
-  \end{block}
-  \pause
-  \begin{block}{2. Hukum Gauss untuk Medan Magnetik}
-    $$ \nabla \cdot \mathbf{B} = 0 \quad \iff \quad \text{Tidak ada monopol magnetik (garis medan magnet selalu kontinu/tertutup)} $$
-  \end{block}
-  \pause
-  \begin{block}{3. Hukum Induksi Faraday}
-    $$ \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t} \quad \iff \quad \text{Perubahan medan magnetik menghasilkan medan listrik pusaran} $$
-  \end{block}
-  \pause
-  \begin{block}{4. Hukum Ampere-Maxwell}
-    $$ \nabla \times \mathbf{H} = \mathbf{J} + \frac{\partial \mathbf{D}}{\partial t} \quad \iff \quad \text{Arus konduksi dan arus pergeseran menghasilkan medan magnetik} $$
-  \end{block}
-\end{frame}
-
-\section{Penurunan Persamaan Gelombang EM 3D}
-\begin{frame}{Dari Persamaan Maxwell ke Persamaan Gelombang 3D}
-  Pada ruang hampa bebas muatan ($\rho_v = 0, \mathbf{J} = 0$):
-  $$ \nabla \times \mathbf{E} = -\mu_0 \frac{\partial \mathbf{H}}{\partial t}, \quad \nabla \times \mathbf{H} = \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t} $$
-  \pause
-  Terapkan operator $\nabla \times (\nabla \times \mathbf{E})$ dan identitas vektor $\nabla \times (\nabla \times \mathbf{A}) = \nabla(\nabla \cdot \mathbf{A}) - \nabla^2 \mathbf{A}$:
-  $$ \nabla(\underbrace{\nabla \cdot \mathbf{E}}_{=0}) - \nabla^2 \mathbf{E} = -\mu_0 \frac{\partial}{\partial t}(\nabla \times \mathbf{H}) = -\mu_0 \frac{\partial}{\partial t}\left(\varepsilon_0 \frac{\partial \mathbf{E}}{\partial t}\right) $$
-  \pause
-  \begin{alertblock}{Persamaan Gelombang Elektromagnetik 3D}
-    $$ {\color{unibblue} \nabla^2 \mathbf{E} = \mu_0 \varepsilon_0 \frac{\partial^2 \mathbf{E}}{\partial t^2}} \quad \iff \quad \nabla^2 \mathbf{E} = \frac{1}{c^2} \frac{\partial^2 \mathbf{E}}{\partial t^2} $$
-    dengan $c = \frac{1}{\sqrt{\mu_0 \varepsilon_0}} \approx 3 \times 10^8\text{ m/s}$ (Kecepatan Cahaya).
-  \end{alertblock}
-\end{frame}
-
-\section{Panduan Team-Based Project}
-\begin{frame}{Pedoman Team-Based Project (Bobot 20\%)}
-  \begin{block}{Ketentuan Proyek Kelompok (3--4 Mahasiswa)}
-    Pilihlah salah satu topik pemodelan riil teknik elektro:
-    \begin{enumerate}
-      \item Analisis Stabilitas Transien Sistem Tenaga Listrik (*Swing Equation - Nonlinear ODE*).
-      \item Perambatan Sinyal Frekuensi Tinggi pada Jaringan 5G (*Telegrapher PDE*).
-      \item Distribusi Arus Efek Kulit pada Konduktor Tegangan Ekstra Tinggi (*Bessel ODE*).
-      \item Pemodelan Distribusi Medan Potensial Gardu Induk 2D (*Laplace PDE*).
-    \end{enumerate}
-  \end{block}
-  \pause
-  \begin{alertblock}{Format Luaran (Deliverables)}
+% -------------------------------------------------------------
+% FRAME 2: Capaian Pembelajaran (Sub-CPMK 15 -- OBE)
+% -------------------------------------------------------------
+\begin{frame}{Capaian Pembelajaran Modul (Sub-CPMK 15 -- OBE)}
+  \begin{block}{Kemampuan Akhir Mahasiswa (Taksonomi Bloom C1 s.d. C6)}
+    Setelah menyelesaikan modul perkuliahan ini, mahasiswa diharapkan mampu:
     \begin{itemize}
-      \item Laporan Ilmiah LaTeX (Maksimal 10 Halaman).
-      \item Kode Simulasi Komputasi Julia / Pluto Notebook.
-      \item Presentasi Slide Beamer (10 menit presentasi + 5 menit tanya jawab).
+      \item \textbf{C1 (Mengingat):} Menyebutkan bentuk diferensial dan integral dari 4 Persamaan Maxwell serta bentuk standar Persamaan Diferensial Legendre.
+      \item \textbf{C2 (Memahami):} Menjelaskan peran fisis arus pergeseran Maxwell $\partial \vec{D}/\partial t$ dalam menjaga kekekalan muatan kontinuitas listrik.
+      \item \textbf{C3 (Menerapkan):} Menurunkan solusi potensial elektrostatik $V(r, \theta)$ di luar bola konduktor netral dalam medan listrik seragam $E_0 \hat{a}_z$.
+      \item \textbf{C4 (Menganalisis):} Menurunkan persamaan gelombang EM 3D dari Persamaan Maxwell dan membuktikan kecepatan rambat $c = 1/\sqrt{\mu_0 \epsilon_0}$.
+      \item \textbf{C5 (Mengevaluasi):} Memvalidasi kesamaan arus konduksi $I_c$ dan arus pergeseran $I_d$ pada kapasitor serta batas paparan medan SUTET \textbf{IEEE C95.1}.
+      \item \textbf{C6 (Menciptakan/Sintesis):} Menyintesis peta konseptual unifikasi yang menghubungkan PDB, Laplace, Fourier, dan PDP menuju medan elektromagnetika lanjut.
     \end{itemize}
-  \end{alertblock}
+  \end{block}
 \end{frame}
 
-\begin{frame}{Rubrik Penilaian Team-Based Project}
-  \begin{table}[]
+% -------------------------------------------------------------
+% FRAME 3: Peta Kurikulum: Sintesis Rangkaian ke Medan
+% -------------------------------------------------------------
+\begin{frame}{Peta Kurikulum: Dari Parameter Terpusat ke Terdistribusi}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Paruh I: Parameter Terpusat (PDB)}
+        \small
+        \begin{itemize}
+          \item \textbf{W1--W3:} PDB Orde 1 (Transien $RL$, $RC$, Termal Trafo). Dimensi spasial diabaikan ($x \to 0$).
+          \item \textbf{W4--W5:} PDB Orde 2 (Osilasi $RLC$, Resonansi, Sub-synchronous Resonance SSR).
+          \item \textbf{W6--W7:} Transformasi Laplace \& Invers (Analisis domain-$s$, Aljabar transfer $H(s)$).
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Paruh II: Parameter Terdistribusi (PDP)}
+        \small
+        \begin{itemize}
+          \item \textbf{W9--W10:} Deret Fourier \& Pemisahan Variabel (Spektrum harmonisa THD).
+          \item \textbf{W11--W12:} Gelombang 1D (Telegrafer) \& Panas 1D (Kabel XLPE IEC 60287).
+          \item \textbf{W13--W15:} Laplace 2D/3D (FDM, Bessel Kulit, Legendre, 4 Persamaan Maxwell).
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \vspace{-0.05cm}
+  \begin{exampleblock}{Prinsip Unifikasi Maxwell}
+    \footnotesize
+    Hukum Kirchhoff (KVL/KCL) hanyalah aproksimasi frekuensi rendah ($l \ll \lambda$) dari 4 Persamaan Maxwell diferensial!
+  \end{exampleblock}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 4: Koordinat Bola & Persamaan Legendre
+% -------------------------------------------------------------
+\begin{frame}{Persamaan Laplace Koordinat Bola \& Persamaan Legendre}
+  Laplacian dalam koordinat bola simetri azimut ($\partial/\partial \phi = 0$):
+  \begin{equation*}
+    \nabla^2 V = \frac{1}{r^2}\frac{\partial}{\partial r}\left(r^2 \frac{\partial V}{\partial r}\right) + \frac{1}{r^2 \sin\theta}\frac{\partial}{\partial \theta}\left(\sin\theta \frac{\partial V}{\partial \theta}\right) = 0
+  \end{equation*}
+  \vspace{-0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Pemisahan Variabel $V(r, \theta) = R(r)\Theta(\theta)$}
+        \small
+        Substitusi menghasilkan konstanta pemisah $n(n+1)$:\\
+        1. Persamaan Radial:
+        \begin{equation*}
+          r^2 R'' + 2r R' - n(n+1)R = 0
+        \end{equation*}
+        Solusi: $R(r) = A_n r^n + B_n r^{-(n+1)}$.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Persamaan Diferensial Legendre}
+        \small
+        Dengan substitusi $x = \cos\theta$ (maka $dx = -\sin\theta\,d\theta$):
+        \begin{equation*}
+          \mathbf{(1 - x^2)\frac{d^2 \Theta}{dx^2} - 2x \frac{d\Theta}{dx} + n(n+1)\Theta = 0}
+        \end{equation*}
+        Solusi yang berhingga pada kutub ($x = \pm 1$) adalah \textbf{Polinomial Legendre} $P_n(x)$!
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 5: Polinomial Legendre P_n(x) & Sifat Ortogonalitas
+% -------------------------------------------------------------
+\begin{frame}{Polinomial Legendre $P_n(\cos\theta)$ \& Sifat Ortogonalitas}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Formula Rodrigues ($n \in \mathbb{Z}^+$)}
+        \small
+        \begin{equation*}
+          P_n(x) = \frac{1}{2^n n!} \frac{d^n}{dx^n}\left[(x^2 - 1)^n\right]
+        \end{equation*}
+        Empat orde pertama ($x = \cos\theta$):
+        \begin{itemize}
+          \item $P_0(x) = 1$ (Monopol)
+          \item $P_1(x) = x = \cos\theta$ (Dipol)
+          \item $P_2(x) = \frac{1}{2}(3x^2 - 1) = \frac{1}{2}(3\cos^2\theta - 1)$
+          \item $P_3(x) = \frac{1}{2}(5x^3 - 3x)$ (Oktopol)
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Teorema Ortogonalitas}
+        \small
+        Polinomial Legendre saling ortogonal pada interval $[-1, 1]$:
+        \begin{equation*}
+          \int_{-1}^{1} P_m(x) P_n(x)\,dx = \frac{2}{2n + 1} \delta_{mn}
+        \end{equation*}
+        \textbf{Solusi Umum Potensial Bola:}
+        \begin{equation*}
+          V(r, \theta) = \sum_{n=0}^{\infty} \left(A_n r^n + \frac{B_n}{r^{n+1}}\right) P_n(\cos\theta)
+        \end{equation*}
+        Digunakan untuk ekspansi multipol medan elektrostatika.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 6: Aplikasi: Bola Konduktor dalam Medan Seragam
+% -------------------------------------------------------------
+\begin{frame}{Aplikasi: Bola Konduktor dalam Medan Seragam $E_0 \hat{a}_z$}
+  \begin{exampleblock}{Masalah Nilai Batas Elektrostatik}
+    Bola konduktor netral berjari-jari $a$ diletakkan dalam medan luar seragam $\vec{E} = E_0 \hat{a}_z$. Tentukan $V(r, \theta)$!
+  \end{exampleblock}
+  \vspace{-0.05cm}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Syarat Batas Fisis}
+        \small
+        \begin{enumerate}
+          \item $V \to -E_0 z = -E_0 r\cos\theta$ saat $r \to \infty$ $\implies A_1 = -E_0$, $A_{n \ne 1} = 0$.
+          \item Permukaan bola ekuipotensial:\\
+          $V(a, \theta) = 0 \implies -E_0 a + \frac{B_1}{a^2} = 0 \implies B_1 = E_0 a^3$.
+        \end{enumerate}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Solusi Eksak Superposisi}
+        \small
+        \begin{equation*}
+          \mathbf{V(r, \theta) = -E_0 r\cos\theta + \frac{E_0 a^3}{r^2}\cos\theta}
+        \end{equation*}
+        \begin{itemize}
+          \item Suku 1: Medan luar tak terganggu.
+          \item Suku 2: Medan dipol induksi muatan terdistribusi pada permukaan bola!
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 7: Empat Persamaan Diferensial Maxwell
+% -------------------------------------------------------------
+\begin{frame}{Empat Persamaan Diferensial Maxwell}
+  Hukum fundamental kelistrikan dan kemagnetan dalam bentuk diferensial:
+  \vspace{0.05cm}
+  \begin{table}[h]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lll}
+      \toprule
+      \textbf{Hukum Fisika} & \textbf{Bentuk Diferensial} & \textbf{Makna Fisika Rekayasa Elektro} \\
+      \midrule
+      Hukum Gauss Listrik & $\nabla \cdot \vec{D} = \rho_v$ & Fluks listrik bersumber dari muatan bebas volume. \\
+      Hukum Gauss Magnet & $\nabla \cdot \vec{B} = 0$ & Ketiadaan monopol magnet; garis fluks selalu tertutup. \\
+      Hukum Faraday & $\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t}$ & Medan magnetik berubah waktu menimbulkan vorteks medan listrik (GGL). \\
+      Hukum Ampere-Maxwell & $\nabla \times \vec{H} = \vec{J} + \frac{\partial \vec{D}}{\partial t}$ & Arus konduksi \& \textbf{arus pergeseran} menimbulkan vorteks medan magnet. \\
+      \bottomrule
+    \end{tabular}%
+    }
+  \end{table}
+  \vspace{-0.1cm}
+  \begin{block}{Hubungan Konstitutif Material Linear Isotropis}
+    \centering
+    $\vec{D} = \epsilon \vec{E} = \epsilon_r \epsilon_0 \vec{E}, \quad \vec{B} = \mu \vec{H} = \mu_r \mu_0 \vec{H}, \quad \vec{J} = \sigma \vec{E}$ (Hukum Ohm Titik)
+  \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 8: Arus Pergeseran Maxwell (Displacement Current)
+% -------------------------------------------------------------
+\begin{frame}{Arus Pergeseran Maxwell (\textit{Displacement Current})}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Inkonsistensi Matematis Hukum Ampere Lama}
+        \small
+        Hukum Ampere statik: $\nabla \times \vec{H} = \vec{J}$.\\
+        Terapkan divergensi pada kedua ruas:
+        \begin{equation*}
+          \nabla \cdot (\nabla \times \vec{H}) \equiv 0 \implies \nabla \cdot \vec{J} = 0
+        \end{equation*}
+        Namun hukum kekekalan muatan menyatakan persamaan kontinuitas:
+        \begin{equation*}
+          \mathbf{\nabla \cdot \vec{J} = -\frac{\partial \rho_v}{\partial t} \ne 0 \quad (\text{Kontradiksi!})}
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Koreksi Cemerlang Maxwell}
+        \small
+        Substitusi Hukum Gauss $\rho_v = \nabla \cdot \vec{D}$:
+        \begin{equation*}
+          \nabla \cdot \vec{J} + \frac{\partial}{\partial t}(\nabla \cdot \vec{D}) = 0 \implies \nabla \cdot \left(\vec{J} + \frac{\partial \vec{D}}{\partial t}\right) = 0
+        \end{equation*}
+        Maxwell menambahkan suku \textbf{Rapat Arus Pergeseran}:
+        \begin{equation*}
+          \mathbf{\vec{J}_d = \frac{\partial \vec{D}}{\partial t} = \epsilon \frac{\partial \vec{E}}{\partial t}}
+        \end{equation*}
+        Medan listrik berubah waktu berlaku layaknya arus fisis!
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 9: Contoh Terhitung: Kesamaan Ic dan Id pada Kapasitor
+% -------------------------------------------------------------
+\begin{frame}{Contoh Terhitung: Kesamaan $I_c$ \& $I_d$ pada Kapasitor}
+  \begin{exampleblock}{Masalah: Kapasitor pelat sejajar luas $A$, jarak $d$, dielektrik $\epsilon$, diberi tegangan $v(t) = V_m \sin(\omega t)$}
+    Buktikan bahwa arus konduksi $i_c(t)$ pada kawat sama persis dengan arus pergeseran $i_d(t)$ di celah dielektrik!
+  \end{exampleblock}
+  \vspace{-0.05cm}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{1. Arus Konduksi pada Kawat Luar}
+        \small
+        Kapasitansi pelat: $C = \frac{\epsilon A}{d}$.\\
+        Arus konduksi pengisian kapasitor:
+        \begin{align*}
+          i_c(t) &= C \frac{dv}{dt} = \left(\frac{\epsilon A}{d}\right) \frac{d}{dt}\left[V_m \sin(\omega t)\right] \\
+          &= \mathbf{\frac{\epsilon A \omega V_m}{d} \cos(\omega t)}
+        \end{align*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{2. Arus Pergeseran di Celah Dielektrik}
+        \small
+        Medan listrik celah: $E(t) = \frac{v(t)}{d} = \frac{V_m}{d}\sin(\omega t)$.\\
+        Rapat fluks: $D(t) = \epsilon E(t) = \frac{\epsilon V_m}{d}\sin(\omega t)$.\\
+        Integralkan rapat arus pergeseran pada luas $A$:
+        \begin{align*}
+          i_d(t) &= \int_A \frac{\partial D}{\partial t} dA = A \cdot \frac{\partial D}{\partial t} \\
+          &= \mathbf{\frac{\epsilon A \omega V_m}{d} \cos(\omega t) \equiv i_c(t)} \quad \qed
+        \end{align*}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 10: Penurunan Persamaan Gelombang Elektromagnetik
+% -------------------------------------------------------------
+\begin{frame}{Penurunan Persamaan Gelombang Elektromagnetik 3D}
+  Tinjau ruang hampa tanpa muatan ($\rho_v = 0$) dan tanpa konduksi ($\vec{J} = 0$):
+  \vspace{-0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Operasi Curl terhadap Hukum Faraday}
+        \small
+        \begin{equation*}
+          \nabla \times (\nabla \times \vec{E}) = \nabla \times \left(-\mu_0 \frac{\partial \vec{H}}{\partial t}\right) = -\mu_0 \frac{\partial}{\partial t}(\nabla \times \vec{H})
+        \end{equation*}
+        Substitusi Ampere-Maxwell ($\nabla \times \vec{H} = \epsilon_0 \frac{\partial \vec{E}}{\partial t}$):
+        \begin{equation*}
+          \nabla \times (\nabla \times \vec{E}) = -\mu_0 \epsilon_0 \frac{\partial^2 \vec{E}}{\partial t^2}
+        \end{equation*}
+        Identitas Vektor Kalkulus:
+        \begin{equation*}
+          \nabla \times (\nabla \times \vec{E}) = \nabla(\underbrace{\nabla \cdot \vec{E}}_{=0}) - \nabla^2 \vec{E} = -\nabla^2 \vec{E}
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Persamaan Gelombang 3D \& Kecepatan Cahaya}
+        \small
+        Persamaan Diferensial Parsial Hiperbolik:
+        \begin{equation*}
+          \mathbf{\nabla^2 \vec{E} - \mu_0 \epsilon_0 \frac{\partial^2 \vec{E}}{\partial t^2} = 0}
+        \end{equation*}
+        Bandingkan dengan gelombang standar $\nabla^2 u - \frac{1}{v^2}\frac{\partial^2 u}{\partial t^2} = 0$:
+        \begin{align*}
+          c &= \frac{1}{\sqrt{\mu_0 \epsilon_0}} = \frac{1}{\sqrt{(4\pi \cdot 10^{-7})(8{,}854 \cdot 10^{-12})}} \\
+            &\approx \mathbf{2{,}998 \times 10^8\text{ m/s}} \quad (\text{Kecepatan Cahaya!})
+        \end{align*}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 11: Aliran Energi & Vektor Poynting
+% -------------------------------------------------------------
+\begin{frame}{Aliran Energi Gelombang \& Vektor Poynting}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Definisi Vektor Poynting $\vec{S}$}
+        \small
+        Laju perpindahan energi elektromagnetik per satuan luas ($\text{W/m}^2$):
+        \begin{equation*}
+          \mathbf{\vec{S} = \vec{E} \times \vec{H}}
+        \end{equation*}
+        Untuk gelombang datar harmonik waktu:
+        \begin{equation*}
+          \langle \vec{S} \rangle = \frac{1}{2} \text{Re}\{\vec{E} \times \vec{H}^*\} = \frac{|\vec{E}|^2}{2\eta} \hat{a}_k
+        \end{equation*}
+        Arah rambat energi tegak lurus terhadap bidang $\vec{E}$ dan $\vec{H}$.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Impedansi Intrinsik Medium $\eta$}
+        \small
+        Rasio amplitudo medan listrik terhadap magnet:
+        \begin{equation*}
+          \mathbf{\eta = \frac{|\vec{E}|}{|\vec{H}|} = \sqrt{\frac{\mu}{\epsilon}}}
+        \end{equation*}
+        Pada ruang bebas / udara ($\mu_0, \epsilon_0$):
+        \begin{equation*}
+          \mathbf{\eta_0 = \sqrt{\frac{\mu_0}{\epsilon_0}} \approx 120\pi \approx 376{,}73\,\Omega \approx 377\,\Omega}
+        \end{equation*}
+        Konstanta fundamental propagasi gelombang elektromagnetik.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 12: Standar Industri: Batas Paparan Medan SUTET 500 kV
+% -------------------------------------------------------------
+\begin{frame}{Standar Industri: Paparan Medan EM SUTET 500 kV}
+  \begin{block}{Regulasi Keselamatan Manusia terhadap Medan Elektromagnetik Lingkungan}
+    Berdasarkan standar \textbf{IEEE Std C95.1} dan Peraturan Menteri ESDM No. 18/2015 (mengadopsi rekomendasi WHO/ICNIRP):
+  \end{block}
+  \vspace{0.05cm}
+  \begin{table}[h]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{lccc}
+      \toprule
+      \textbf{Parameter Medan} & \textbf{Frekuensi Daya} & \textbf{Batas Aman Publik (WHO/ESDM)} & \textbf{Nilai Riil di Bawah SUTET 500 kV} \\
+      \midrule
+      Medan Listrik ($E$) & $50\text{ Hz}$ & $5\text{ kV/m}$ & $1{,}5\text{ s.d. }3{,}2\text{ kV/m}$ (Aman) \\
+      Medan Magnet ($B$) & $50\text{ Hz}$ & $100\,\mu\text{T} = 0{,}1\text{ mT}$ & $5\text{ s.d. }15\,\mu\text{T}$ (Sangat Aman) \\
+      Jarak Bebas Minimum & SUTET 500 kV & $8{,}5\text{ meter}$ dari konduktor terbawah & Dipatuhi pada jalur ROW PLN \\
+      \bottomrule
+    \end{tabular}%
+    }
+  \end{table}
+  \vspace{-0.1cm}
+  \begin{exampleblock}{Mitigasi Rekayasa pada Saluran Udara}
+    Penataan fasa ganda sirkuit ganda (\textit{low reactance phase arrangement}) memanfaatkan superposisi medan vektor diferensial untuk saling melemahkan medan bocor ke permukaan tanah.
+  \end{exampleblock}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 13: Praktikum Komputasi Julia: Polinomial & Gelombang
+% -------------------------------------------------------------
+% FRAME 13: Praktikum Komputasi Julia
+\begin{frame}[fragile]{Praktikum Komputasi Julia: Polinomial Legendre Koordinat Bola}
+  \begin{columns}[t]
+    \column{0.50\textwidth}
+    \begin{block}{Skrip Julia: Basis Polinomial Legendre}
+\begin{lstlisting}[style=juliastyle]
+using Plots
+
+theta = range(0, pi, length=300)
+x = cos.(theta)
+
+P0 = ones(size(x))
+P1 = x
+P2 = @. 0.5 * (3 * x^2 - 1)
+P3 = @. 0.5 * (5 * x^3 - 3 * x)
+
+plot(theta ./ pi, P0, ls=:dash, label="P0 (Monopol)")
+plot!(theta ./ pi, P1, lw=2, label="P1 (Dipol)")
+plot!(theta ./ pi, P2, lw=2, label="P2 (Kuadrupol)")
+plot!(theta ./ pi, P3, lw=2, color=:red, label="P3 (Oktopol)")
+\end{lstlisting}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{alertblock}{Visualisasi Basis Legendre Bola}
+      \centering
+      \includegraphics[width=\linewidth, height=0.38\textheight, keepaspectratio]{figures/slides/plot_ch15.png}
+    \end{alertblock}
+    \vspace{-0.1cm}
+    \begin{exampleblock}{Intisari Basis Bola}
+      \tiny
+      Polinomial Legendre $P_n(\cos\theta)$ adalah basis ortogonal solusi persamaan Laplace koordinat bola 3D. Orde $P_1$ merepresentasikan potensial dipol elektrostatik elektroda pembumian bola gardu induk.
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 14: Evaluasi & Bank Soal Taksonomi Bloom (C1-C6)
+% -------------------------------------------------------------
+% FRAME 14: Kuis & Tantangan Bloom C1-C6
+\begin{frame}{Kuis Konseptual Interaktif \& Evaluasi Bloom (C1--C6)}
+  \begin{columns}[t]
+    \column{0.52\textwidth}
+    \begin{alertblock}{Peer Instruction: Uji Miskonsepsi Fisik}
+      \footnotesize
+      \textbf{Kasus Rekayasa:} Maxwell menambahkan suku arus pergeseran $\vec{J}_d = \partial\vec{D}/\partial t$ pada Hukum Ampere. Jika suku ini diabaikan, hukum fisika fundamental mana yang langsung dilanggar pada celah kapasitor AC?
+      \vspace{0.05cm}
+      \begin{itemize}\setlength{\itemsep}{1pt}
+        \item \textbf{[A]} Hukum Pertama Termodinamika.
+        \item \textbf{[B]} **Hukum Kekekalan Muatan Listrik** (Persamaan Kontinuitas $\nabla \cdot \vec{J} + \frac{\partial \rho_v}{\partial t} = 0$)!
+        \item \textbf{[C]} Hukum Gravitasi Universal Newton.
+        \item \textbf{[D]} Hukum Pemantulan Gelombang Optik Snellius.
+      \end{itemize}
+    \end{alertblock}
+
+    \column{0.46\textwidth}
+    \begin{block}{Tantangan Analisis \& Desain (C4--C6)}
+      \footnotesize
+      \begin{itemize}\setlength{\itemsep}{2pt}
+        \item \textbf{C4 (Analisis):} Turunkan persamaan gelombang 3D $\nabla^2 \vec{E} - \mu\epsilon \frac{\partial^2 \vec{E}}{\partial t^2} = 0$ dari hukum Faraday dan Ampere-Maxwell.
+        \item \textbf{C5 (Evaluasi):} Evaluasi kerapatan daya Poynting rata-rata $\langle \vec{S} \rangle$ di bawah saluran SUTET 500 kV sesuai batas IEEE Std C95.1.
+        \item \textbf{C6 (Desain):} Rancang susunan fasa ganda sirkuit SUTET untuk memitigasi medan bocor ke permukaan tanah!
+      \end{itemize}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 15: Matriks Sintesis Akhir Kurikulum Persamaan Diferensial
+% -------------------------------------------------------------
+\begin{frame}{Matriks Sintesis Akhir Kurikulum Persamaan Diferensial}
+  \begin{table}[h]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{llll}
+      \toprule
+      \textbf{Metode Matematika} & \textbf{Jenis Persamaan} & \textbf{Fenomena Fisika Terkait} & \textbf{Aplikasi Rekayasa Elektro} \\
+      \midrule
+      Faktor Integrasi & PDB Orde 1 & Akumulasi muatan/fluks & Transien $RC$, $RL$, Pemanasan Trafo PLN \\
+      Karakteristik Euler & PDB Orde 2 Homogen & Pertukaran energi $L \leftrightarrow C$ & Resonansi $RLC$, Osilasi Damped \\
+      Transformasi Laplace & Aljabar Domain-$s$ & Respon impuls, undak, surja & Koordinasi Proteksi, TRV Pemutus Tenaga \\
+      Deret Fourier & Dekomposisi Harmonisa & Spektrum frekuensi non-sinusoidal & Distorsi Harmonisa Total (THD IEEE 519) \\
+      Pemisahan Variabel & PDP Gelombang 1D & Perambatan sinyal berkecepatan $v$ & Saluran Transmisi Telegrafer \& Surja Petir \\
+      FDM \& Relaksasi & PDP Difusi / Panas 1D & Disipasi termal konduksi konveksi & Daya Hantar Arus Kabel XLPE IEC 60287 \\
+      Fungsi Bessel & PDP Silindris Koef. Var. & Skin effect \& frekuensi pancung & Kawat ACSR IEC 61089, Pandu Gelombang \\
+      Polinomial Legendre & PDP Bola Koordinat 3D & Potensial multipol elektrostatik & Elektroda Pembumian Gardu Induk IEEE 605 \\
+      Persamaan Maxwell & Sistem PDP Vektor 3D & Gelombang elektromagnetik transversal & Radiasi Antena, SUTET 500 kV, Radar \\
+      \bottomrule
+    \end{tabular}%
+    }
+  \end{table}
+  \vspace{-0.1cm}
+  \begin{block}{Pesan Penutup Pengampu}
     \centering
     \small
-    \begin{tabular}{|l|c|l|}
-      \hline
-      \textbf{Kriteria Penilaian} & \textbf{Bobot} & \textbf{Deskripsi} \\ \hline
-      Ketepatan Pemodelan Fisik & 25\% & Penurunan PDB/PDP dari hukum dasar elektro. \\ \hline
-      Keakuratan Solusi Analitik & 25\% & Penurunan matematis langkah-demi-langkah. \\ \hline
-      Kualitas Simulasi Komputasi & 25\% & Validasi numerik menggunakan Julia / visualisasi grafik. \\ \hline
-      Kualitas Laporan \& Presentasi & 25\% & Sistematika penulisan LaTeX dan kejelasan presentasi. \\ \hline
-    \end{tabular}
-  \end{table}
-\end{frame}
-
-\begin{frame}{Penutup Mata Kuliah}
-  \begin{center}
-    {\Large \textbf{Selamat Mempersiapkan Ujian Akhir Semester (UAS)!}}\\
-    \vspace{0.8cm}
-    \textit{"Persamaan diferensial adalah bahasa alami untuk mendeskripsikan alam semesta dan seluruh inovasi teknologi rekayasa elektro."}\\
-    \vspace{1cm}
-    \textbf{Tim Dosen Pengampu:}\\
-    Novalio Daratha, Ph.D. \& Muhammad Arfan, M.T.\\
-    Program Studi Teknik Elektro, Universitas Bengkulu
-  \end{center}
+    \textbf{Selamat! Anda telah menguasai fondasi matematika tertinggi rekayasa elektro modern.}
+  \end{block}
 \end{frame}
 
 \end{document}

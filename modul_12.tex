@@ -1,101 +1,603 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 12: Persamaan Panas 1D \& Manajemen Termal Kabel}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
+\newtheorem{theorem}{Teorema}[section]
 
-\title{Catatan Kuliah Persamaan Diferensial\\Minggu 12: Persamaan Panas 1D (Difusi Termal pada Kabel)}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 12}\\[0.3cm]
+\textbf{\LARGE PERSAMAAN PANAS \& DIFUSI 1-DIMENSI: HUKUM FOURIER KONDUKSI, PEMANASAN JOULE INTERNAL, SOLUSI TRANSIEN KEADAAN TUNAK, SERTA MANAJEMEN TERMAL KABEL DAYA (AMPACITY)}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
 
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 6)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 12 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Menyatakan bentuk baku Persamaan Panas/Difusi 1D linier dengan dan tanpa sumber panas internal, definisi fisis difusivitas termal $\alpha = k/(\rho c)$, serta Hukum Fourier perpindahan panas konduksi.
+    \item \textbf{C2 (Memahami):} Menjelaskan mekanisme fisik konversi energi listrik menjadi energi kalor melalui pemanasan disipasi Joule ($I^2 R$) di dalam konduktor, serta membedakan perilaku transien relaksasi eksponensial terhadap profil temperatur keadaan tunak (\textit{steady-state}).
+    \item \textbf{C3 (Menerapkan):} Menurunkan solusi analitis distribusi temperatur ruang-waktu $u(x, t)$ pada konduktor listrik dengan syarat batas homogen dan non-homogen menggunakan metode dekomposisi $u(x, t) = u_{\text{ss}}(x) + u_{\text{tr}}(x, t)$.
+    \item \textbf{C4 (Menganalisis):} Menganalisis pengaruh variasi nilai eigen dan ragam harmonisa spasial terhadap konstanta waktu pendinginan alami konduktor kabel daya dan busbar gardu induk.
+    \item \textbf{C5 (Mengevaluasi):} Mengevaluasi batas kemampuan hantar arus (\textit{Ampacity}) kabel tanah berisolasi XLPE tegangan menengah 20 kV PLN agar tidak melampaui batas temperatur degradasi termal polimer ($90^\circ\text{C}$) berdasarkan standar internasional \textbf{IEC 60287} dan \textbf{IEEE Std 835}.
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program simulasi komputasi terbuka berbasis bahasa \textbf{Julia} (\texttt{DifferentialEquations.jl} \& \texttt{Plots.jl}) menggunakan metode beda hingga spasial (\textit{Method of Lines}) untuk mensimulasikan evolusi termal kabel bawah tanah berarus beban dinamis.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
 
 \newpage
 
-\section{Pendahuluan}
-Dalam rekayasa teknik elektro, analisis distribusi panas sangat penting terutama pada perancangan saluran transmisi dan kabel listrik. Arus listrik yang mengalir pada kabel akan menghasilkan panas akibat resistansi material konduktor (efek Joule). Panas yang dihasilkan harus dapat didisipasikan ke lingkungan untuk mencegah pelelehan atau kerusakan pada insulasi kabel.
+\section{Peta Konsep \& Posisi Modul dalam Kurikulum}
 
-Modul ini membahas Persamaan Panas (Heat Equation) satu dimensi, yaitu model matematika dari fenomena difusi termal. Kita akan memodelkan bagaimana suhu berubah seiring berjalannya waktu dan posisi di sepanjang kabel penghantar.
+Setelah pada Minggu 11 kita membedah fenomena gelombang hiperbolik (di mana energi merambat bolak-balik tanpa disipasi intrinsik pada saluran transmisi), kini pada Modul Minggu 12 kita mempelajari kelas kedua dari PDP linier orde dua: \textbf{PDP Bertipe Parabolik}, yang diwakili secara agung oleh \textbf{Persamaan Panas dan Difusi 1-Dimensi} (\textit{Heat and Diffusion Equation}).
 
-\section{Materi Utama}
-\subsection{Persamaan Panas 1 Dimensi}
-Persamaan panas satu dimensi merupakan persamaan diferensial parsial (PDP) parabolik yang menggambarkan distribusi panas pada suatu batang atau kabel seiring waktu. Persamaan ini dirumuskan sebagai:
+Dalam rekayasa teknik elektro, analisis termal bukanlah disiplin ilmu sekunder yang terpisah, melainkan faktor pembatas utama (\textit{bottleneck}) dari seluruh kapasitas penyaluran daya listrik. Setiap arus listrik yang melintasi konduktor tembaga atau aluminium tak terelakkan menghasilkan disipasi panas Joule ($I^2 R$). Panas ini harus didifusikan keluar melintasi lapisan insulasi dielektrik dan media tanah/udara. Jika laju difusi panas kalah cepat dibandingkan laju pembangkitan panas, temperatur konduktor akan melonjak melampaui batas ketahanan termal material insulasi, memicu degradasi dielektrik, penuaan dini kabel, dan kebakaran gardu listrik.
+
+Posisi strategis Modul Minggu 12 disajikan pada diagram alir Gambar~\ref{fig:peta_jalan_pd_w12}.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.45cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    doneblock/.style={rectangle, draw=green!60!black, fill=green!10, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[doneblock] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[doneblock, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[doneblock, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[doneblock, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[doneblock, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[doneblock, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[doneblock, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Analisis Rangkaian Domain $s$};
+    \node[doneblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[doneblock, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[doneblock, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[doneblock, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[highlight, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[block, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[block, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan dengan penekanan pada Modul Minggu 12.}
+\label{fig:peta_jalan_pd_w12}
+\end{figure}
+
+\section{Pendahuluan \& Filosofi Fisika: Pemanasan Joule dan Disipasi Termal}
+
+Dalam rekayasa tenaga listrik, kawat konduktor logam bukanlah superkonduktor sempurna; ia memiliki resistansi jenis listrik $\rho_e$ (untuk tembaga murni, $\rho_e \approx 1{,}72 \times 10^{-8}\,\Omega\cdot\text{m}$ pada $20^\circ\text{C}$). Ketika arus listrik dengan rapat arus $J = I/A$ (satuan $\text{A}/\text{m}^2$) mengalir di dalam inti konduktor, tumbukan mikroskopis antara elektron bebas dan ion-ion kisi kisi kristal logam mentransfer energi kinetik elektron menjadi vibrasi kisi termal. Laju disipasi kalor volumetrik yang dibangkitkan di dalam konduktor diberikan oleh \textbf{Hukum Joule Diferensial}:
 \begin{equation}
-\frac{\partial u}{\partial t} = \alpha^2 \frac{\partial^2 u}{\partial x^2}
+    \dot{q}_{\text{gen}} = \vec{J} \cdot \vec{E} = \rho_e J^2 = \frac{I^2 R'}{A}\quad \left[\frac{\text{W}}{\text{m}^3}\right]
+    \label{eq:joule_heat_gen}
 \end{equation}
-dimana:
-\begin{itemize}
-    \item $u(x,t)$ adalah temperatur pada posisi $x$ dan waktu $t$.
-    \item $\alpha^2 = \frac{k}{c \rho}$ adalah difusivitas termal material, dengan $k$ konduktivitas termal, $c$ kalor jenis, dan $\rho$ massa jenis.
+di mana $R'$ adalah resistansi saluran per satuan panjang ($\Omega/\text{m}$) dan $A$ adalah luas penampang konduktor ($\text{m}^2$).
+
+Panas yang dibangkitkan ini akan menaikkan temperatur konduktor $u(x, t)$ dan secara simultan berdifusi keluar menuju permukaan batas konduktor melalui proses konduksi termal, lalu dibuang ke lingkungan melalui konveksi udara atau tanah. Persamaan diferensial parsial yang mengendalikan interaksi dinamis antara laju penimbunan energi, konduksi difusif, dan pembangkitan panas internal inilah yang disebut sebagai **Persamaan Panas Terdistribusi**.
+
+\section{Penurunan Persamaan Difusi Termal dari Prinsip Pertama (First-Principles)}
+
+Mari kita turunkan persamaan pengatur temperatur pada batang konduktor silindris berpenampang seragam $A$ dengan meninjau volume kontrol diferensial sepanjang $\Delta x$ antara koordinat $x$ dan $x + \Delta x$, sebagaimana diilustrasikan pada Gambar~\ref{fig:heat_control_volume}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.9, every node/.style={transform shape}]
+    % Silinder volume kontrol
+    \draw[thick, fill=blue!10] (0,0) ellipse (0.4cm and 1.2cm);
+    \draw[thick] (0,1.2) -- (4,1.2);
+    \draw[thick] (0,-1.2) -- (4,-1.2);
+    \draw[thick, fill=blue!15] (4,0) ellipse (0.4cm and 1.2cm);
+    
+    % Fluks panas masuk dan keluar
+    \draw[->, very thick, red!80!black] (-1.8,0) -- (-0.1,0) node[midway, above] {$q(x,t)$};
+    \draw[->, very thick, red!80!black] (4.1,0) -- (5.8,0) node[midway, above] {$q(x+\Delta x,t)$};
+    
+    % Pembangkitan panas internal
+    \node at (2,0) {\textbf{$\dot{q}_{\text{gen}} A \Delta x$}};
+    \node[above] at (2,1.3) {\small Konduktor Tembaga ($k, \rho, c$)};
+    \draw[<->] (0,-1.5) -- (4,-1.5) node[midway, below] {$\Delta x$};
+\end{tikzpicture}
+\caption{Keseimbangan energi termal pada elemen volume kontrol konduktor berpanjang $\Delta x$.}
+\label{fig:heat_control_volume}
+\end{figure}
+
+\subsection{Hukum Fourier Konduksi Panas}
+Laju aliran panas konduksi yang melintasi penampang konduktor berbanding lurus dengan luas penampang $A$ dan gradien temperatur spasial negatif (\textbf{Hukum Fourier}):
+\begin{equation}
+    q(x, t) = -k A \frac{\partial u(x, t)}{\partial x}\quad [\text{Watt}]
+    \label{eq:fourier_heat_law}
+\end{equation}
+di mana $k$ adalah konduktivitas termal material konduktor ($\text{W}/(\text{m}\cdot\text{K})$). Tanda minus menandakan bahwa kalor secara alami selalu mengalir spontan dari daerah bertemperatur tinggi menuju temperatur yang lebih rendah.
+
+\subsection{Kekekalan Energi Termal (Hukum I Termodinamika)}
+Pada selang waktu diferensial $\Delta t$, prinsip kekekalan energi menyatakan bahwa laju akumulasi energi dalam volume kontrol setara dengan laju kalor neto yang masuk melalui batas ditambah laju pembangkitan panas internal:
+\begin{equation}
+    \rho c A \Delta x \frac{\partial u}{\partial t} = q(x, t) - q(x + \Delta x, t) + \dot{q}_{\text{gen}} A \Delta x
+    \label{eq:heat_energy_balance}
+\end{equation}
+di mana:
+\begin{itemize}[leftmargin=*]
+    \item $\rho$ adalah massa jenis massa konduktor ($\text{kg}/\text{m}^3$),
+    \item $c$ adalah kapasitas kalor jenis material ($\text{J}/(\text{kg}\cdot\text{K})$).
 \end{itemize}
 
-\subsection{Metode Pemisahan Variabel}
-Untuk menyelesaikan persamaan panas, kita menggunakan metode pemisahan variabel. Asumsikan solusi berbentuk:
+Substitusikan Hukum Fourier~\eqref{eq:fourier_heat_law} ke dalam suku aliran panas:
+\begin{equation*}
+    q(x, t) - q(x + \Delta x, t) = -kA \left. \frac{\partial u}{\partial x} \right|_{x} - \left( -kA \left. \frac{\partial u}{\partial x} \right|_{x+\Delta x} \right) = kA \left[ \left. \frac{\partial u}{\partial x} \right|_{x+\Delta x} - \left. \frac{\partial u}{\partial x} \right|_{x} \right]
+\end{equation*}
+Bagi kedua ruas Persamaan~\eqref{eq:heat_energy_balance} dengan $\rho c A \Delta x$ dan ambil limit $\Delta x \to 0$:
 \begin{equation}
-u(x,t) = X(x)T(t)
+    \frac{\partial u}{\partial t} = \frac{k}{\rho c} \lim_{\Delta x \to 0} \left[ \frac{\left.\frac{\partial u}{\partial x}\right|_{x+\Delta x} - \left.\frac{\partial u}{\partial x}\right|_{x}}{\Delta x} \right] + \frac{\dot{q}_{\text{gen}}}{\rho c}
 \end{equation}
-Substitusikan ke dalam persamaan panas:
+Limit pada suku pertama tepat merupakan definisi turunan parsial kedua terhadap ruang $\frac{\partial^2 u}{\partial x^2}$.
+
+Maka, kita memperoleh bentuk agung \textbf{Persamaan Panas/Difusi 1-Dimensi dengan Pembangkitan Kalor}:
 \begin{equation}
-X(x)T'(t) = \alpha^2 X''(x)T(t) \implies \frac{T'(t)}{\alpha^2 T(t)} = \frac{X''(x)}{X(x)} = -\lambda^2
+    \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2} + S
+    \label{eq:heat_eq_with_source}
 \end{equation}
-Hal ini menghasilkan dua persamaan diferensial biasa (PDB):
-\begin{align}
-X''(x) + \lambda^2 X(x) &= 0 \\
-T'(t) + \alpha^2 \lambda^2 T(t) &= 0
-\end{align}
-
-\subsection{Kondisi Batas dan Awal}
-Misalkan kita memiliki kabel dengan panjang $L$.
-\textbf{Kondisi Batas (Dirichlet):} Kabel dijaga pada suhu 0 di kedua ujungnya:
-$u(0,t) = 0$ dan $u(L,t) = 0$ untuk $t > 0$.
-
-\textbf{Kondisi Awal:} Suhu awal kabel pada $t=0$ adalah $f(x)$:
-$u(x,0) = f(x)$.
-
-Dari kondisi batas pada $X(x)$:
-$X(0) = 0 \implies C_1 = 0$, di mana $X(x) = C_1 \cos(\lambda x) + C_2 \sin(\lambda x)$.\\
-$X(L) = 0 \implies C_2 \sin(\lambda L) = 0 \implies \lambda L = n\pi \implies \lambda_n = \frac{n\pi}{L}$.
-
-Sehingga, $X_n(x) = \sin\left(\frac{n\pi x}{L}\right)$.
-Solusi untuk $T(t)$ adalah $T_n(t) = e^{-\alpha^2 \lambda_n^2 t}$.
-
-Solusi umum merupakan superposisi:
+di mana:
 \begin{equation}
-u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi x}{L}\right) e^{-\alpha^2 \left(\frac{n\pi}{L}\right)^2 t}
+    \alpha \triangleq \frac{k}{\rho c} \quad \left[\frac{\text{m}^2}{\text{s}}\right]
+    \label{eq:thermal_diffusivity}
 \end{equation}
-Koefisien $B_n$ dicari menggunakan deret sinus Fourier dari kondisi awal $f(x)$:
+disebut sebagai \textbf{Difusivitas Termal} (\textit{Thermal Diffusivity}) medium, dan $S = \frac{\dot{q}_{\text{gen}}}{\rho c}$ adalah suku sumber panas internal yang dinormalisasi ($\text{K}/\text{s}$).
+
+Jika tidak ada arus yang mengalir atau pembangkitan panas diabaikan ($\dot{q}_{\text{gen}} = 0$), persamaan tereduksi menjadi Persamaan Panas Homogen:
 \begin{equation}
-B_n = \frac{2}{L} \int_{0}^{L} f(x) \sin\left(\frac{n\pi x}{L}\right) dx
+    \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}
+    \label{eq:heat_eq_homo}
 \end{equation}
 
-\section{Ringkasan}
-Persamaan panas 1D adalah model penting untuk fenomena difusi. Dalam sistem elektro, persamaan ini digunakan untuk memprediksi perubahan suhu pada penghantar akibat aliran arus. Melalui metode pemisahan variabel dan deret Fourier, kita dapat menemukan solusi analitik dari persamaan panas dengan nilai awal dan batas tertentu. Solusi yang didapat menunjukkan peluruhan suhu secara eksponensial seiring waktu hingga mencapai keseimbangan (steady-state).
+\section{Solusi Masalah Nilai Batas Non-Homogen: Dekomposisi Tunak dan Transien}
 
-\section{Referensi}
-\begin{enumerate}
+Ketika suatu kabel dialiri arus konstan, suku sumber internal $S > 0$ dan syarat batas sering kali bernilai tidak nol (misalnya ujung-ujung kabel dijaga pada temperatur ambien $T_0$). Ini merupakan masalah non-homogen yang tidak dapat langsung dipecahkan dengan pemisahan variabel biasa.
+
+Teknik standar rekayasa yang sangat ampuh untuk mengatasi hal ini adalah \textbf{Metode Dekomposisi Solusi}:
+\begin{equation}
+    u(x, t) = u_{\text{ss}}(x) + u_{\text{tr}}(x, t)
+    \label{eq:steady_transient_decomp}
+\end{equation}
+di mana:
+\begin{itemize}[leftmargin=*]
+    \item $u_{\text{ss}}(x)$ adalah \textbf{Solusi Keadaan Tunak} (\textit{Steady-State Solution}) yang tercapai saat $t \to \infty$ ketika laju perubahan waktu berhenti ($\frac{\partial u}{\partial t} = 0$).
+    \item $u_{\text{tr}}(x, t)$ adalah \textbf{Solusi Transien} (\textit{Transient Solution}) yang meluruh secara eksponensial menuju nol seiring berjalannya waktu ($\lim_{t \to \infty} u_{\text{tr}}(x, t) = 0$).
+\end{itemize}
+
+\subsection{Penentuan Solusi Keadaan Tunak \texorpdfstring{$u_{\text{ss}}(x)$}{u-ss(x)}}
+Dengan menetapkan $\frac{\partial u_{\text{ss}}}{\partial t} = 0$ pada Persamaan~\eqref{eq:heat_eq_with_source}:
+\begin{equation}
+    0 = \alpha \frac{d^2 u_{\text{ss}}}{dx^2} + S \implies \frac{d^2 u_{\text{ss}}}{dx^2} = -\frac{S}{\alpha} = -\frac{\dot{q}_{\text{gen}}}{k}
+    \label{eq:steady_state_ode}
+\end{equation}
+Persamaan~\eqref{eq:steady_state_ode} adalah PDB biasa orde dua tak homogen yang sangat mudah diintegralkan dua kali:
+\begin{equation}
+    u_{\text{ss}}(x) = -\frac{\dot{q}_{\text{gen}}}{2k} x^2 + C_1 x + C_2
+    \label{eq:steady_parabola}
+\end{equation}
+Distribusi temperatur tunak di dalam konduktor yang memikul arus selalu berbentuk kurva parabola! Konstanta $C_1$ dan $C_2$ ditentukan oleh syarat batas pada kedua ujung $x = 0$ dan $x = L$.
+
+\subsection{Penentuan Solusi Transien \texorpdfstring{$u_{\text{tr}}(x, t)$}{u-tr(x, t)}}
+Substitusikan $u(x, t) = u_{\text{ss}}(x) + u_{\text{tr}}(x, t)$ kembali ke Persamaan~\eqref{eq:heat_eq_with_source}:
+\begin{equation*}
+    \frac{\partial (u_{\text{ss}} + u_{\text{tr}})}{\partial t} = \alpha \frac{\partial^2 (u_{\text{ss}} + u_{\text{tr}})}{\partial x^2} + S \implies \frac{\partial u_{\text{tr}}}{\partial t} = \alpha \frac{d^2 u_{\text{ss}}}{dx^2} + S + \alpha \frac{\partial^2 u_{\text{tr}}}{\partial x^2}
+\end{equation*}
+Karena berdasarkan Persamaan~\eqref{eq:steady_state_ode}, $\alpha \frac{d^2 u_{\text{ss}}}{dx^2} + S = 0$, suku-suku non-homogen saling meniadakan secara sempurna! Persamaan transien tereduksi menjadi \textbf{PDP Homogen Murni}:
+\begin{equation}
+    \frac{\partial u_{\text{tr}}}{\partial t} = \alpha \frac{\partial^2 u_{\text{tr}}}{\partial x^2}
+    \label{eq:transient_pde_homo}
+\end{equation}
+dengan syarat batas homogen:
+\begin{equation}
+    u_{\text{tr}}(0, t) = 0, \quad u_{\text{tr}}(L, t) = 0
+\end{equation}
+dan syarat awal transien yang disesuaikan:
+\begin{equation}
+    u_{\text{tr}}(x, 0) = u(x, 0) - u_{\text{ss}}(x) = f(x) - u_{\text{ss}}(x)
+    \label{eq:transient_initial_cond}
+\end{equation}
+
+Masalah transien homogen ini diselesaikan secara tuntas menggunakan metode pemisahan variabel dan Deret Fourier yang telah kita kuasai pada Modul 10!
+
+\section{Studi Kasus Industri: Kemampuan Hantar Arus (Ampacity) Kabel Daya 20 kV PLN (Standar IEC 60287 \& IEEE Std 835)}
+
+\subsection{Konteks Manajemen Termal Kabel Bawah Tanah}
+Dalam sistem distribusi tenaga listrik modern di kawasan perkotaan, PLN menggantikan saluran udara dengan kabel tanah berpenghantar tembaga dengan insulasi polimer ikatan silang (\textit{Cross-Linked Polyethylene} / XLPE) bertegangan operasi 20 kV.
+
+Parameter operasi paling kritis dari kabel bawah tanah adalah \textbf{Kemampuan Hantar Arus} (\textit{Current-Carrying Capacity} atau \textit{Ampacity}). Ketika arus beban $I$ mengalir secara kontinu, temperatur inti konduktor $T_c$ akan meningkat. Standar internasional \textbf{IEC 60287} dan \textbf{IEEE Std 835} menetapkan bahwa:
+\begin{itemize}[leftmargin=*]
+    \item Temperatur kontinu maksimum insulasi XLPE tidak boleh melampaui \textbf{$90^\circ\text{C}$}. Jika beroperasi di atas $90^\circ\text{C}$, rantai polimer isolasi akan mengalami degradasi termal dipercepat, menyebabkan fenomena tembus tembus listrik pohon air (\textit{water treeing}) dan hubung singkat tanah.
+    \item Pada kondisi darurat hubung singkat sesaat ($\le 5\text{ detik}$), temperatur maksimum diizinkan hingga \textbf{$250^\circ\text{C}$}.
+\end{itemize}
+
+\subsection{Pemodelan Termal Radial Silindris Kabel Tanah}
+Pada penampang melintang kabel silindris dengan jari-jari inti konduktor $r_c$ dan jari-jari luar selubung insulasi $r_i$, persamaan difusi panas dalam koordinat silindris pada kondisi tunak dinyatakan oleh:
+\begin{equation}
+    \frac{1}{r} \frac{d}{dr} \left( r \frac{du}{dr} \right) = 0, \quad r_c < r < r_i
+\end{equation}
+Integrasi persamaan ini menghasilkan profil temperatur logaritmik melintasi lapisan dielektrik:
+\begin{equation}
+    u(r) = T_c - \frac{T_c - T_s}{\ln(r_i / r_c)} \ln\left(\frac{r}{r_c}\right)
+\end{equation}
+di mana $T_s$ adalah temperatur selubung luar kabel. Resistansi termal insulasi silindris per satuan panjang kabel adalah:
+\begin{equation}
+    R_{\text{th, ins}} = \frac{\rho_{\text{th}}}{2\pi} \ln\left(\frac{r_i}{r_c}\right)\quad \left[\frac{\text{K}\cdot\text{m}}{\text{W}}\right]
+    \label{eq:thermal_res_ins}
+\end{equation}
+di mana $\rho_{\text{th}}$ adalah resistivitas termal material isolasi XLPE ($\approx 3{,}5\text{ K}\cdot\text{m}/\text{W}$).
+
+\subsection{Formulasi Arus Pengenal Maksimum (Ampacity)}
+Laju aliran panas kalor yang keluar per meter kabel pada kondisi keadaan tunak harus sama dengan laju rugi-rugi Joule yang dibangkitkan:
+\begin{equation}
+    \frac{T_c - T_{\text{amb}}}{R_{\text{th, total}}} = I^2 R'_{\text{ac}}(T_c)
+\end{equation}
+di mana $R_{\text{th, total}} = R_{\text{th, ins}} + R_{\text{th, tanah}}$ adalah resistansi termal total dari inti ke ambien tanah sekeliling, dan $R'_{\text{ac}}(T_c)$ adalah resistansi AC konduktor pada temperatur kerja maksimum $90^\circ\text{C}$.
+
+Maka rumus fundamental daya hantar arus nominal kabel menurut standar IEC 60287 adalah:
+\begin{equation}
+    I_{\text{maks}} = \sqrt{\frac{T_{\text{maks}} - T_{\text{amb}}}{R'_{\text{ac}}(T_{\text{maks}}) \cdot R_{\text{th, total}}}}
+    \label{eq:ampacity_iec}
+\end{equation}
+Persamaan~\eqref{eq:ampacity_iec} membuktikan secara matematis bahwa batas daya kabel tidak ditentukan oleh sifat listrik kawat semata, melainkan sepenuhnya dikendalikan oleh sifat difusi perpindahan panas lingkungan tempat kabel tersebut ditanam!
+
+\section{Contoh Soal Terhitung Numerik Langkah demi Langkah}
+
+\begin{example}[Difusi Panas Transien pada Konduktor Tembaga dengan Ujung Dingin]
+Sebuah batang konduktor tembaga berpanjang $L = 1\text{ meter}$ dengan difusivitas termal $\alpha = 1 \times 10^{-4}\text{ m}^2/\text{s}$ mula-mula memiliki distribusi temperatur homogen $u(x, 0) = 100^\circ\text{C}$ di seluruh panjangnya. Pada $t = 0$, kedua ujung batang tiba-tiba dicelupkan ke dalam penangas es sehingga temperaturnya dijaga tetap pada $0^\circ\text{C}$ ($u(0, t) = u(1, t) = 0$ untuk $t > 0$).
+\begin{enumerate}[leftmargin=*]
+    \item Tentukan solusi analitis lengkap temperatur $u(x, t)$ dalam bentuk deret Fourier.
+    \item Hitung waktu $t$ yang dibutuhkan agar temperatur di titik tengah batang ($x = 0{,}5\text{ m}$) turun menjadi $50^\circ\text{C}$ (gunakan pendekatan suku fundamental $n = 1$).
+\end{enumerate}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Formulasi Solusi Deret Fourier Sinus:}
+    Karena syarat batas adalah Dirichlet homogen di $x=0$ dan $x=L=1$, fungsi eigen spasial adalah $\sin(n\pi x)$ dan nilai eigen $\lambda_n = (n\pi)^2$. Solusi umumnya adalah:
+    \begin{equation*}
+        u(x, t) = \sum_{n=1}^{\infty} B_n \sin(n\pi x) e^{-\alpha n^2 \pi^2 t}
+    \end{equation*}
+    
+    \item \textbf{Perhitungan Koefisien Fourier $B_n$:}
+    \begin{align*}
+        B_n &= \frac{2}{L} \int_{0}^{L} f(x) \sin(n\pi x) \, dx = 2 \int_{0}^{1} 100 \sin(n\pi x) \, dx \\
+            &= 200 \left[ -\frac{\cos(n\pi x)}{n\pi} \right]_{0}^{1} = \frac{200}{n\pi} [1 - \cos(n\pi)]
+    \end{align*}
+    Untuk $n$ genap, $\cos(n\pi) = 1 \implies B_n = 0$.
+    Untuk $n$ ganjil ($n = 1, 3, 5, \dots$), $\cos(n\pi) = -1 \implies B_n = \frac{400}{n\pi}$.
+    
+    Sehingga solusi analitis lengkap adalah:
+    \begin{equation*}
+        u(x, t) = \mathbf{\frac{400}{\pi} \sum_{k=1}^{\infty} \frac{\sin((2k-1)\pi x)}{2k-1} \exp\left( -\alpha (2k-1)^2 \pi^2 t \right)}
+    \end{equation*}
+    
+    \item \textbf{Evaluasi Waktu Pendinginan di Titik Tengah ($x = 0{,}5\text{ m}$):}
+    Untuk titik tengah $x = 0{,}5$, $\sin(\pi / 2) = 1$. Menggunakan pendekatan suku pertama ($n = 1$):
+    \begin{equation*}
+        u(0{,}5, t) \approx \frac{400}{\pi} \sin\left(\frac{\pi}{2}\right) e^{-\alpha \pi^2 t} = \frac{400}{\pi} e^{-\alpha \pi^2 t}
+    \end{equation*}
+    Kita menginginkan $u(0{,}5, t) = 50^\circ\text{C}$:
+    \begin{equation*}
+        50 = \frac{400}{\pi} e^{-\alpha \pi^2 t} \implies e^{-\alpha \pi^2 t} = \frac{50 \pi}{400} = \frac{\pi}{8} \approx 0{,}3927
+    \end{equation*}
+    Ambil logaritma natural pada kedua ruas:
+    \begin{equation*}
+        -\alpha \pi^2 t = \ln(0{,}3927) \approx -0{,}9347 \implies t = \frac{0{,}9347}{\alpha \pi^2}
+    \end{equation*}
+    Substitusi nilai difusivitas tembaga $\alpha = 1 \times 10^{-4}\text{ m}^2/\text{s}$:
+    \begin{equation*}
+        t = \frac{0{,}9347}{(1 \times 10^{-4}) \pi^2} = \frac{0{,}9347}{9{,}8696 \times 10^{-4}} \approx \mathbf{947\text{ detik}} \approx \mathbf{15{,}78\text{ menit}} \quad \qed
+    \end{equation*}
+\end{enumerate}
+
+\begin{example}[Kawat Pemanas Listrik dengan Pembangkitan Panas Internal Joule]
+Sebuah kawat pemanas listrik berpanjang $L = 2\text{ meter}$ dengan konduktivitas termal $k = 40\text{ W}/(\text{m}\cdot\text{K})$ dialiri arus listrik sehingga membangkitkan panas Joule seragam sebesar $\dot{q}_{\text{gen}} = 8.000\text{ W}/\text{m}^3$. Kedua ujung kawat dijaga pada temperatur konstan $u(0, t) = 20^\circ\text{C}$ dan $u(2, t) = 20^\circ\text{C}$.
+\begin{enumerate}[leftmargin=*]
+    \item Tentukan persamaan analitis distribusi temperatur keadaan tunak $u_{\text{ss}}(x)$.
+    \item Tentukan temperatur maksimum pada kawat saat keadaan tunak tercapai dan tentukan posisinya!
+\end{enumerate}
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Penyusunan dan Integrasi PDB Keadaan Tunak:}
+    Pada kondisi tunak ($\partial u/\partial t = 0$), persamaan pengatur adalah:
+    \begin{equation*}
+        \frac{d^2 u_{\text{ss}}}{dx^2} = -\frac{\dot{q}_{\text{gen}}}{k} = -\frac{8000}{40} = -200
+    \end{equation*}
+    Integrasikan satu kali terhadap $x$:
+    \begin{equation*}
+        \frac{d u_{\text{ss}}}{dx} = -200 x + C_1
+    \end{equation*}
+    Integrasikan untuk kedua kalinya:
+    \begin{equation*}
+        u_{\text{ss}}(x) = -100 x^2 + C_1 x + C_2
+    \end{equation*}
+    
+    \item \textbf{Penerapan Syarat Batas:}
+    \begin{itemize}[leftmargin=*]
+        \item Di $x = 0$: $u_{\text{ss}}(0) = C_2 = 20 \implies C_2 = 20^\circ\text{C}$.
+        \item Di $x = 2$: $u_{\text{ss}}(2) = -100(2)^2 + C_1(2) + 20 = 20 \implies -400 + 2C_1 = 0 \implies C_1 = 200$.
+    \end{itemize}
+    Sehingga kurva temperatur keadaan tunak adalah:
+    \begin{equation*}
+        u_{\text{ss}}(x) = \mathbf{-100 x^2 + 200 x + 20\quad [^\circ\text{C}]}
+    \end{equation*}
+    
+    \item \textbf{Penentuan Temperatur Puncak Maksimum:}
+    Maksimum terjadi saat gradien spasial nol:
+    \begin{equation*}
+        \frac{d u_{\text{ss}}}{dx} = -200 x + 200 = 0 \implies x_{\text{puncak}} = \mathbf{1{,}0\text{ meter}} \quad (\text{tepat di pusat kawat})
+    \end{equation*}
+    Nilai temperatur puncak maksimum adalah:
+    \begin{equation*}
+        u_{\text{maks}} = u_{\text{ss}}(1) = -100(1)^2 + 200(1) + 20 = -100 + 200 + 20 = \mathbf{120^\circ\text{C}} \quad \qed
+    \end{equation*}
+\end{enumerate}
+
+\begin{example}[Batang Konduktor dengan Batas Neumann dan Dirichlet Campuran]
+Tentukan nilai eigen $\lambda_n$ dan bentuk fungsi eigen spasial $X_n(x)$ dari persamaan difusi panas pada batang berpanjang $L$, di mana ujung kiri diisolasi termal sempurna ($\left.\frac{\partial u}{\partial x}\right|_{x=0} = 0$) dan ujung kanan dijaga pada temperatur nol ($u(L, t) = 0$).
+\end{example}
+
+\noindent\textbf{Penyelesaian Langkah demi Langkah:}
+\begin{enumerate}[leftmargin=*]
+    \item PDB spasial: $X''(x) + k^2 X(x) = 0 \implies X(x) = A \cos(kx) + B \sin(kx)$.
+    Turunan pertamanya: $X'(x) = -k A \sin(kx) + k B \cos(kx)$.
+    \item Terapkan syarat batas Neumann di $x = 0$:
+    \begin{equation*}
+        X'(0) = k B = 0 \implies B = 0 \quad (\text{karena } k \ne 0 \text{ untuk solusi tak trivial})
+    \end{equation*}
+    Sehingga solusi spasial tereduksi menjadi fungsi kosinus murni: $X(x) = A \cos(kx)$.
+    \item Terapkan syarat batas Dirichlet di $x = L$:
+    \begin{equation*}
+        X(L) = A \cos(kL) = 0
+    \end{equation*}
+    Agar bernilai nol untuk $A \ne 0$, argumen kosinus harus merupakan kelipatan ganjil dari $\pi/2$:
+    \begin{equation*}
+        k L = \frac{(2n - 1)\pi}{2} \implies k_n = \frac{(2n - 1)\pi}{2L}, \quad n = 1, 2, 3, \dots
+    \end{equation*}
+    \item Maka, \textbf{Nilai-Nilai Eigen} sistem adalah:
+    \begin{equation*}
+        \lambda_n = k_n^2 = \mathbf{\left( \frac{(2n - 1)\pi}{2L} \right)^2}, \quad n = 1, 2, 3, \dots
+    \end{equation*}
+    dan \textbf{Fungsi-Fungsi Eigen Kuartal Gelombang} adalah:
+    \begin{equation*}
+        X_n(x) = \mathbf{\cos\left( \frac{(2n - 1)\pi x}{2L} \right)} \quad \qed
+    \end{equation*}
+\end{enumerate}
+
+\section{Praktikum Komputasi Numerik Terbuka Berbasis Julia}
+
+Program Julia berikut mensimulasikan dinamika transien difusi panas pada kawat pemanas listrik dengan pembangkitan panas Joule internal (Contoh Soal 9.2) menggunakan pustaka \texttt{DifferentialEquations.jl}. Persamaan diferensial parsial didiskritisasi di ruang spasial menggunakan metode garis (\textit{Method of Lines} / beda hingga spasial orde dua) dan diintegrasikan secara adaptif terhadap waktu.
+
+\begin{lstlisting}[style=juliastyle, caption={Skrip Julia simulasi difusi panas kabel listrik dengan pemanasan internal Joule.}, label={lst:julia_heat_internal}]
+# -------------------------------------------------------------
+# MODUL 12: SIMULASI TRANSIEN DIFUSI PANAS KABEL DENGAN SUMBER
+# Persamaan Diferensial 2026 - Teknik Elektro UNIB
+# Pengampu: Ir. Novalio Daratha, Ph.D. & M. Arfan, M.T.
+# -------------------------------------------------------------
+
+using DifferentialEquations
+using Plots
+
+# 1. Definisi Parameter Fisik Konduktor
+const L = 2.0                 # Panjang kawat (meter)
+const k_therm = 40.0          # Konduktivitas termal (W/(m*K))
+const rho_c = 3.6e6           # Kapasitas panas volumetrik rho*c (J/(m^3*K))
+const alpha = k_therm / rho_c # Difusivitas termal (m^2/s)
+const q_dot = 8000.0          # Laju pembangkitan panas Joule (W/m^3)
+const S = q_dot / rho_c       # Suku sumber ternormalisasi (K/s)
+
+# Parameter Syarat Batas
+const T_boundary = 20.0       # Temperatur ujung batas (deg C)
+
+# 2. Diskritisasi Spasial (Method of Lines)
+const N = 50                  # Jumlah sel kisi spasial
+const dx = L / N
+x_nodes = range(0.0, L, length=N+1)
+
+# Kondisi Awal: Seluruh kawat mula-mula pada suhu ambien 20 deg C
+u0 = fill(T_boundary, N-1)    # Variabel keadaan pada titik internal 1..N-1
+
+# Sistem PDB Semidiskret: du/dt = alpha * d^2u/dx^2 + S
+function heat_mol!(du, u, p, t)
+    # Titik internal pertama (bertetangga dengan batas x=0)
+    u_left = T_boundary
+    u_curr = u[1]
+    u_right = u[2]
+    du[1] = alpha * (u_right - 2.0 * u_curr + u_left) / (dx^2) + S
+    
+    # Titik-titik internal tengah
+    for i in 2:(N-2)
+        du[i] = alpha * (u[i+1] - 2.0 * u[i] + u[i-1]) / (dx^2) + S
+    end
+    
+    # Titik internal terakhir (bertetangga dengan batas x=L)
+    u_left = u[N-2]
+    u_curr = u[N-1]
+    u_right = T_boundary
+    du[N-1] = alpha * (u_right - 2.0 * u_curr + u_left) / (dx^2) + S
+end
+
+# 3. Penyelesaian Sistem PDB terhadap Waktu
+tspan = (0.0, 3600.0)         # Simulasi selama 1 jam (3600 detik)
+prob = ODEProblem(heat_mol!, u0, tspan)
+sol = solve(prob, TRBDF2(), reltol=1e-6, abstol=1e-8)
+
+# 4. Solusi Analitis Keadaan Tunak untuk Validasi
+u_ss_exact(x) = -100.0 * x^2 + 200.0 * x + 20.0
+
+# 5. Visualisasi Profil Temperatur pada Berbagai Waktu
+t_evals = [60.0, 300.0, 900.0, 1800.0, 3600.0]
+colors = [:blue, :cyan, :green, :orange, :red]
+
+p = plot(xlabel="Posisi Kawat x [meter]", ylabel="Temperatur u(x,t) [deg C]",
+         title="Evolusi Transien Pemanasan Joule Kawat Listrik",
+         legend=:topright, size=(800, 480), grid=true)
+
+# Plot kurva numerik transien
+for (idx, t_val) in enumerate(t_evals)
+    u_internal = sol(t_val)
+    u_full = [T_boundary; u_internal; T_boundary]
+    plot!(p, x_nodes, u_full, label="t = $(Int(t_val)) s", lw=2.0, color=colors[idx])
+end
+
+# Plot solusi eksak tunak (garis putus-putus hitam)
+u_ss_vals = [u_ss_exact(x) for x in x_nodes]
+plot!(p, x_nodes, u_ss_vals, label="Solusi Eksak Tunak (t -> inf)", lw=2.5,
+      linestyle=:dash, color=:black)
+
+# Simpan hasil grafik
+savefig("transien_termal_kabel_modul12.png")
+println("Simulasi selesai. Grafik disimpan sebagai transien_termal_kabel_modul12.png")
+\end{lstlisting}
+
+\section{Evaluasi \& Bank Soal Terstruktur Taksonomi Bloom (C1 s.d. C6)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} 
+    Tuliskan definisi difusivitas termal $\alpha$ dalam besaran konduktivitas termal $k$, massa jenis $\rho$, dan kapasitas kalor jenis $c$, serta sebutkan dimensi satuannya dalam sistem SI!
+    
+    \item \textbf{C2 (Memahami):} 
+    Jelaskan mengapa profil temperatur keadaan tunak di dalam konduktor listrik yang mengalirkan arus konstan selalu berbentuk parabola melengkung ke bawah, sedangkan pada batang tanpa arus berbentuk garis lurus linier!
+    
+    \item \textbf{C3 (Menerapkan):} 
+    Sebuah batang tembaga berpanjang $L = 0{,}5\text{ m}$ dengan $\alpha = 1 \times 10^{-4}\text{ m}^2/\text{s}$ kedua ujungnya diisolasi termal sempurna ($\left.\frac{\partial u}{\partial x}\right|_{0} = \left.\frac{\partial u}{\partial x}\right|_{L} = 0$). Distribusi temperatur awal adalah $u(x, 0) = 40 \cos(2\pi x / L) + 70$. Tentukan ekspresi temperatur $u(x, t)$ untuk seluruh $t \ge 0$!
+    
+    \item \textbf{C4 (Menganalisis):} 
+    Sebuah kabel daya bawah tanah mengalami lonjakan arus hubung singkat sehingga temperaturnya melonjak hingga $200^\circ\text{C}$. Jika konstanta waktu peluruhan termal ragam fundamental adalah $\tau_1 = 120\text{ detik}$, analisis berapa lama waktu yang diperlukan agar temperatur berlebih meluruh hingga tersisa $10\%$ dari nilai lonjakan awalnya!
+    
+    \item \textbf{C5 (Mengevaluasi):} 
+    Sebuah kabel 20 kV XLPE berpenampang $240\text{ mm}^2$ memiliki resistansi AC $R'_{\text{ac}} = 0{,}098\,\Omega/\text{km}$ dan resistansi termal total tanah $R_{\text{th}} = 1{,}2\text{ K}\cdot\text{m}/\text{W}$. Jika temperatur tanah ambien adalah $T_{\text{amb}} = 30^\circ\text{C}$ dan batas aman kontinu isolasi XLPE menurut IEC 60287 adalah $90^\circ\text{C}$, evaluasi apakah arus beban kontinu sebesar $I = 750\text{ A}$ aman untuk dioperasikan secara berkelanjutan!
+    
+    \item \textbf{C6 (Menciptakan/Merancang):} 
+    Rancanglah ketebalan lapisan tanah timbunan khusus berpasir termal rendah (\textit{thermal backfill} dengan $\rho_{\text{th, backfill}} = 0{,}8\text{ K}\cdot\text{m}/\text{W}$) di sekeliling parit kabel tanah PLN untuk meningkatkan batas arus nominal kabel pada Soal C5 sebesar minimal $15\%$ tanpa melampaui batas batas temperatur kritis $90^\circ\text{C}$!
+\end{enumerate}
+
+\section{Rangkuman, Glosarium Istilah Teknis, dan Referensi Standar}
+
+\subsection{Rangkuman Inti Perkuliahan}
+\begin{enumerate}[leftmargin=*]
+    \item Persamaan Panas/Difusi 1D merupakan PDP linier bertipe parabolik yang mengatur disipasi kalor spontan searah waktu.
+    \item Arus listrik memicu pemanasan volumetrik internal melalui disipasi Joule $\dot{q}_{\text{gen}} = I^2 R'/A$.
+    \item Masalah non-homogen dengan sumber panas internal dipecahkan secara elegan melalui metode dekomposisi $u(x, t) = u_{\text{ss}}(x) + u_{\text{tr}}(x, t)$, di mana komponen tunak berbentuk parabola dan komponen transien meluruh melalui superposisi Fourier.
+    \item Kemampuan hantar arus konduktor (\textit{Ampacity}) kabel daya dibatasi oleh batas degradasi polimer isolasi ($90^\circ\text{C}$ untuk XLPE menurut IEC 60287).
+    \item Laju pendinginan transien konduktor dikendalikan oleh nilai eigen spasial terkecil (ragam fundamental), di mana harmonisa spasial tinggi meluruh secara cepat sebanding dengan $n^2$.
+\end{enumerate}
+
+\subsection{Glosarium Istilah Teknis Rekayasa}
+\begin{description}[leftmargin=!,labelwidth=3.5cm]
+    \item[Thermal Diffusivity] Rasio antara kemampuan menghantarkan panas terhadap kemampuan menyimpan energi termal ($\alpha = k/(\rho c)$).
+    \item[Joule Heating] Pembangkitan energi termal akibat tumbukan elektron yang mengalir melintasi resistansi bahan konduktor.
+    \item[Ampacity] \textit{Current-Carrying Capacity}; arus listrik maksimum yang dapat dihantarkan konduktor secara terus-menerus tanpa melampaui batas batas termalnya.
+    \item[XLPE] \textit{Cross-Linked Polyethylene}; polimer isolasi kabel tegangan tinggi dengan ketahanan operasi kontinu hingga $90^\circ\text{C}$.
+    \item[Method of Lines] Teknik numerik diskritisasi ruang spasial menggunakan beda hingga untuk mengubah satu PDP menjadi sistem PDB simultan.
+\end{description}
+
+\subsection{Referensi Standar Industri \& Akademis}
+\begin{enumerate}[leftmargin=*]
+    \item Incropera, F. P., DeWitt, D. P., Bergman, T. L., \& Lavine, A. S. (2017). \textit{Fundamentals of Heat and Mass Transfer} (8th ed.). John Wiley \& Sons.
     \item Kreyszig, E. (2011). \textit{Advanced Engineering Mathematics} (10th ed.). John Wiley \& Sons.
-    \item Zill, D. G., \& Wright, W. S. (2012). \textit{Advanced Engineering Mathematics} (5th ed.). Jones \& Bartlett Learning.
+    \item IEC 60287-1-1:2023. \textit{Electric cables -- Calculation of the current rating -- Part 1-1: Current rating equations and calculation of losses}. International Electrotechnical Commission.
+    \item IEEE Std 835-1994 (R2012). \textit{IEEE Standard Power Cable Ampacity Tables}. IEEE Power and Energy Society.
+    \item Anders, G. J. (2005). \textit{Rating of Electric Power Cables in Unfavorable Thermal Environment}. John Wiley \& Sons / IEEE Press.
 \end{enumerate}
 
 \end{document}

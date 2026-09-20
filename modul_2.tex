@@ -1,90 +1,925 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[indonesian]{babel}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{booktabs}
-\usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{geometry}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm, headheight=15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\fancyhead[L]{\small\textbf{Persamaan Diferensial 2026} -- Teknik Elektro UNIB}
+\fancyhead[R]{\small Modul 2: PDB Orde 1 \& Rangkaian RC}
+\fancyfoot[C]{\thepage}
+
+% Pengaturan kode Julia
+\lstdefinelanguage{Julia}%
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,global,if,import,%
+      let,local,macro,module,mutable,primitive,quote,return,struct,%
+      true,try,type,using,var,while},%
+   sensitive=true,%
+   morecomment=[l]{\#},%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[b]',%
+   morestring=[b]"%
+  }[keywords,comments,strings]
+
+\lstdefinestyle{juliastyle}{
+    language=Julia,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue!80!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!80!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{gray!6},
+    captionpos=b,
+    xleftmargin=10pt,
+    tabsize=4
+}
+
+\definecolor{headercolor}{RGB}{0,51,102}
+\definecolor{accentcolor}{RGB}{0,102,204}
+\definecolor{shadecolor}{RGB}{245,248,253}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=headercolor,
+    citecolor=accentcolor,
+    urlcolor=blue
+}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definisi}[section]
-\newtheorem{example}{Contoh}[section]
+\newtheorem{example}{Contoh Soal}[section]
+\newtheorem{theorem}{Teorema}[section]
 
-\title{Catatan Kuliah Persamaan Diferensial\\Minggu 2: Persamaan Diferensial Biasa Orde 1}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+\title{\textbf{\Large MODUL AJAR KULIAH MINGGU 2}\\[0.3cm]
+\textbf{\LARGE METODOLOGI ANALITIK PERSAMAAN DIFERENSIAL BIASA ORDE 1: METODE SEPARABEL, PERSAMAAN EKSAK, FAKTOR PENGINTEGRASI, TRANSIEN RANGKAIAN RC \& SIMULASI JULIA}}
+\author{\textbf{Ir. Novalio Daratha, S.T., M.Sc., Ph.D.} \& \textbf{Muhammad Arfan, S.T., M.T.} \\ 
+Jurusan Teknik Elektro -- Fakultas Teknik \\ 
+Universitas Bengkulu}
+\date{Semester Genap 2026}
 
 \begin{document}
 
 \maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=headercolor,title=\textbf{Capaian Pembelajaran Khusus (Sub-CPMK 2)}]
+Setelah menyelesaikan pembelajaran pada Modul Ajar Minggu 2 ini, mahasiswa diharapkan mampu:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} Menyatakan bentuk umum PDB orde 1 separabel, bentuk diferensial $M(x,y)dx + N(x,y)dy = 0$, kriteria keeksakan Euler-Clairaut, serta formula penentuan faktor pengintegrasi $\mu(x)$ dan $\mu(y)$.
+    \item \textbf{C2 (Memahami):} Menjelaskan hubungan matematis-fisis antara sifat diferensial eksak dengan medan vektor konservatif ($\nabla \times \mathbf{E} = 0$), eksistensi fungsi potensial medan skalar $F(x,y)$, serta peran faktor pengintegrasi dalam mengonversi bentuk diferensial non-konservatif menjadi bentuk diferensial eksak.
+    \item \textbf{C3 (Menerapkan):} Menurunkan solusi analitik eksak untuk berbagai variasi PDB orde 1 (separabel, eksak, linier non-homogen) dan mengekstraksi nilai konstanta integrasi unik berdasarkan kondisi batas Masalah Nilai Awal (IVP).
+    \item \textbf{C4 (Menganalisis):} Memodelkan dinamika pengisian dan pengosongan kapasitor pada rangkaian transien RC dari prinsip dasar hukum KVL dan arus perpindahan ($i = C \frac{dv}{dt}$), serta menganalisis laju peluruhan tegangan terhadap konstanta waktu $\tau = RC$.
+    \item \textbf{C5 (Mengevaluasi):} Mengkaji secara analitis neraca kekekalan energi pengisian kapasitor (paradoks efisiensi 50\% disipasi panas Joule resistor) dan mengevaluasi efektivitas rangkaian peredam transien (\textit{snubber RC}) dalam menekan laju kenaikan tegangan transien ($dv/dt$) pada sakelar semikonduktor daya.
+    \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan program simulasi komputasi berbasis \textbf{Julia} (menggunakan \texttt{DifferentialEquations.jl} dan pemecah adaptif \texttt{Tsit5()}) untuk memodelkan respon transien pengisian-pengosongan kapasitor, menghitung selisih galat mutlak analitik-numerik, dan memvisualisasikan medan arah (\textit{slope field}).
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.3cm}
 \tableofcontents
+\vspace{0.5cm}
+
 \newpage
 
-\section{Pendahuluan}
-Persamaan Diferensial Biasa (PDB) Orde 1 merupakan fondasi dalam mempelajari persamaan diferensial. Pada minggu ini, kita akan membahas berbagai teknik analitik, yang meliputi metode persamaan separabel, persamaan eksak, dan penggunaan faktor integrasi.
+\section{Peta Konsep dan Posisi Modul dalam Kurikulum Persamaan Diferensial}
 
-\section{Materi Utama}
+Pada Minggu 1, kita telah mempelajari taksonomi dasar persamaan diferensial, Masalah Nilai Awal (IVP), serta prinsip kontinuitas energi. Pada Modul Minggu 2 ini, fokus pembelajaran diarahkan pada penguasaan metode analitik eksak untuk menyelesaikan Persamaan Diferensial Biasa (PDB) Orde 1, yang menjadi landasan matematis mutlak dalam menganalisis fenomena transien rangkaian resistif-kapasitif (RC) dan pemodelan medan elektrostatika skalar.
 
-\subsection{Persamaan Diferensial Separabel}
-Sebuah PDB orde 1 dikatakan \textit{separabel} (dapat dipisahkan) jika dapat ditulis dalam bentuk:
-$$ \frac{dy}{dx} = g(x)h(y) $$
-Pisahkan variabel $x$ dengan $dx$ dan variabel $y$ dengan $dy$, kemudian integralkan kedua ruas:
-$$ \int \frac{1}{h(y)} dy = \int g(x) dx + C $$
+Posisi strategis Modul Minggu 2 di dalam keseluruhan kurikulum 16 minggu disajikan pada Gambar~\ref{fig:peta_jalan_pd_w2}.
 
-\subsection{Persamaan Diferensial Eksak}
-Bentuk $M(x,y)dx + N(x,y)dy = 0$ disebut \textbf{eksak} jika:
-$$ \frac{\partial M}{\partial y} = \frac{\partial N}{\partial x} $$
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.45cm,
+    block/.style={rectangle, draw=headercolor, fill=blue!8, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    doneblock/.style={rectangle, draw=green!60!black, fill=green!10, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize},
+    highlight/.style={rectangle, draw=red!80!black, fill=red!15, very thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    midblock/.style={rectangle, draw=orange!80!black, fill=orange!15, thick, rounded corners=3pt, align=center, text width=3.35cm, minimum height=1.05cm, font=\scriptsize\bfseries},
+    arrow/.style={->, >=stealth, line width=1.1pt, headercolor}
+]
+    % Paruh 1: PDB & Rangkaian Listrik
+    \node[doneblock] (w1) {Minggu 1: Klasifikasi PD, IVP\\\& Pemodelan Fisis RL};
+    \node[highlight, right=of w1] (w2) {Minggu 2: PDB Orde 1\\(Separabel \& Faktor Integrasi)};
+    \node[block, right=of w2] (w3) {Minggu 3: Aplikasi Rekayasa\\(Transien RC, RL, Termal)};
+    \node[block, right=of w3] (w4) {Minggu 4: PDB Orde 2 Homogen\\(Wronskian \& Tangki LC)};
+    
+    \node[block, below=of w4] (w5) {Minggu 5: PDB Orde 2 Non-Homogen\\\& Transien RLC Seri AC};
+    \node[block, left=of w5] (w6) {Minggu 6: Transformasi Laplace\\Dasar \& Teorema Geser};
+    \node[block, left=of w6] (w7) {Minggu 7: Invers Laplace \&\\Solusi PDB Domain $s$};
+    \node[midblock, left=of w7] (w8) {Minggu 8: Evaluasi Capaian\\Ujian Tengah Semester (UTS)};
+    
+    % Paruh 2: PDP & Medan Elektromagnetika
+    \node[block, below=of w8] (w9) {Minggu 9: Pengantar PDP \&\\Analisis Deret Fourier};
+    \node[block, right=of w9] (w10) {Minggu 10: Solusi PDP Metode\\Pemisahan Variabel};
+    \node[block, right=of w10] (w11) {Minggu 11: Persamaan Gelombang\\1D (Telegrafer Transmisi)};
+    \node[block, right=of w11] (w12) {Minggu 12: Persamaan Panas 1D\\\& Manajemen Termal Kabel};
+    
+    \node[block, below=of w12] (w13) {Minggu 13: Persamaan Laplace 2D\\Potensial Elektrostatik};
+    \node[block, left=of w13] (w14) {Minggu 14: Fungsi Bessel \&\\Efek Kulit (\textit{Skin Effect})};
+    \node[block, left=of w14] (w15) {Minggu 15: 4 Persamaan Maxwell\\Diferensial \& Sintesis PDP};
+    \node[midblock, left=of w15] (w16) {Minggu 16: Evaluasi Akhir\\Ujian Akhir Semester (UAS)};
+    
+    \draw[arrow] (w1) -- (w2);
+    \draw[arrow] (w2) -- (w3);
+    \draw[arrow] (w3) -- (w4);
+    \draw[arrow] (w4) -- (w5);
+    \draw[arrow] (w5) -- (w6);
+    \draw[arrow] (w6) -- (w7);
+    \draw[arrow] (w7) -- (w8);
+    \draw[arrow] (w8) -- (w9);
+    \draw[arrow] (w9) -- (w10);
+    \draw[arrow] (w10) -- (w11);
+    \draw[arrow] (w11) -- (w12);
+    \draw[arrow] (w12) -- (w13);
+    \draw[arrow] (w13) -- (w14);
+    \draw[arrow] (w14) -- (w15);
+    \draw[arrow] (w15) -- (w16);
+\end{tikzpicture}%
+}
+\caption{Peta jalan kurikulum perkuliahan dengan penekanan pada Modul Minggu 2.}
+\label{fig:peta_jalan_pd_w2}
+\end{figure}
 
-\begin{example}[Penyelesaian PD Eksak Langkah-demi-Langkah]
-Selesaikan: $(2xy)dx + (x^2 - 1)dy = 0$
-\\ \textbf{Langkah 1: Uji Eksak} 
-$M = 2xy \implies \frac{\partial M}{\partial y} = 2x$. 
-$N = x^2 - 1 \implies \frac{\partial N}{\partial x} = 2x$. 
-Karena sama, maka persamaannya Eksak.
-\\ \textbf{Langkah 2: Cari fungsi Potensial $F(x,y)$}
-$F(x,y) = \int M \, dx = \int 2xy \, dx = x^2 y + g(y)$.
-\\ \textbf{Langkah 3: Turunkan terhadap $y$ dan samakan dengan $N$}
-$\frac{\partial F}{\partial y} = x^2 + g'(y)$. Samakan: $x^2 + g'(y) = x^2 - 1 \implies g'(y) = -1$.
-Maka $g(y) = \int -1 \, dy = -y$.
-\\ \textbf{Langkah 4: Tulis Solusi Umum}
-Solusi: $F(x,y) = C \implies x^2 y - y = C$.
+Setelah menguasai teknik analitik dasar pada modul ini, mahasiswa akan mampu menyelesaikan masalah rekayasa transien multivariabel dan sistem orde tinggi yang disajikan pada minggu-minggu berikutnya.
+
+\section{Pendahuluan \& Filosofi Fisika Medan Elektrostatik dan Kapasitansi}
+
+Dalam teori rangkaian terpusat, kapasitor merupakan pasangan dualitas dari induktor. Jika induktor menyimpan energi di dalam medan magnetik akibat pergerakan muatan (arus listrik $i$), maka kapasitor menyimpan energi di dalam \textbf{medan elektrostatik} yang dibentuk oleh pemisahan muatan listrik statik ($q$).
+
+Hubungan mendasar antara muatan yang tersimpan $q(t)$ pada pelat-pelat konduktor dan beda potensial elektrostatik $v_C(t)$ dinyatakan oleh hubungan konstitutif linear:
+\begin{equation}
+    q(t) = C \cdot v_C(t)
+    \label{eq:charge_voltage}
+\end{equation}
+di mana $C$ adalah kapasitansi dalam satuan Farad ($\text{F} = \text{Coulomb}/\text{Volt}$).
+
+Ketika beda potensial melintasi pelat kapasitor berubah terhadap waktu, laju aliran muatan masuk atau keluar pelat menghasilkan arus listrik yang dinamakan \textbf{arus perpindahan} (\textit{displacement current}):
+\begin{equation}
+    i(t) = \frac{dq(t)}{dt} = \frac{d}{dt}\left[ C \cdot v_C(t) \right] = C \frac{dv_C(t)}{dt}
+    \label{eq:capacitor_current}
+\end{equation}
+Persamaan konstitutif~\eqref{eq:capacitor_current} adalah persamaan diferensial orde satu. Persamaan ini menyatakan bahwa arus tidak bergantung pada besarnya tegangan mutlak pada suatu saat, melainkan berbanding lurus dengan \textbf{kecepatan perubahan tegangan} ($\frac{dv_C}{dt}$). Jika tegangan bernilai konstan (kondisi tunak DC), maka $\frac{dv_C}{dt} = 0$, sehingga kapasitor memblokir arus DC secara sempurna (berlaku sebagai rangkaian terbuka). Sebaliknya, apabila terjadi perubahan tegangan yang sangat cepat ($dv/dt \to \infty$), kapasitor menarik arus yang sangat besar untuk mengisi medan elektrostatiknya.
+
+Energi potensial elektrostatik yang tersimpan di dalam medan dielektrik kapasitor merupakan akumulasi kerja integral dari waktu awal hingga waktu $t$:
+\begin{equation}
+    E_C(t) = \int_{-\infty}^t p_C(\tau) d\tau = \int_{-\infty}^t v_C(\tau) \left( C \frac{dv_C}{d\tau} \right) d\tau = C \int_0^{v_C} v' dv' = \frac{1}{2} C \left[ v_C(t) \right]^2 \quad \text{[Joule]}
+    \label{eq:energy_capacitor}
+\end{equation}
+
+Perumusan analitis respon pengisian dan pengosongan energi elektrostatik ini secara langsung diatur oleh Persamaan Diferensial Biasa Orde 1. Oleh karena itu, penguasaan metodologi analitik PDB orde 1 merupakan syarat mutlak bagi setiap insinyur elektro.
+
+\section{Metodologi Analitik PDB Orde 1}
+
+Persamaan Diferensial Biasa orde satu dapat dituliskan dalam bentuk eksplisit $\frac{dy}{dx} = f(x,y)$ atau dalam bentuk diferensial simetris:
+\begin{equation}
+    M(x,y) dx + N(x,y) dy = 0
+    \label{eq:differential_form}
+\end{equation}
+Terdapat tiga metode analitik utama yang sistematis dan eksak untuk menyelesaikan persamaan pada bentuk ini.
+
+\subsection{Metode Persamaan Separabel (Pemisahan Variabel)}
+
+\begin{definition}[Persamaan Diferensial Separabel]
+Suatu PDB orde satu $\frac{dy}{dx} = f(x,y)$ dinamakan \textbf{separabel} (dapat dipisahkan) jika fungsi dua variabel $f(x,y)$ dapat difaktorkan menjadi perkalian dua fungsi satu variabel independen, yaitu $f(x,y) = g(x) \cdot h(y)$.
+\end{definition}
+
+Prosedur penyelesaian analitis metode separabel dilakukan melalui tahapan berikut:
+\begin{enumerate}[leftmargin=*]
+    \item Tuliskan persamaan dalam bentuk aljabar terpisah:
+    \begin{equation}
+        \frac{dy}{dx} = g(x) h(y) \implies \frac{1}{h(y)} dy = g(x) dx \quad (\text{dengan syarat } h(y) \neq 0)
+    \end{equation}
+    \item Integralkan kedua ruas secara langsung terhadap variabel masing-masing:
+    \begin{equation}
+        \int \frac{1}{h(y)} dy = \int g(x) dx + C
+        \label{eq:separable_integral}
+    \end{equation}
+    di mana $C$ adalah konstanta integrasi sembarang.
+    \item Selesaikan hubungan implisit Persamaan~\eqref{eq:separable_integral} untuk memperoleh bentuk eksplisit $y = \phi(x, C)$, jika memungkinkan secara aljabar.
+    \item \textbf{Uji Solusi Singular:} Periksa titik nol dari fungsi pembagi $h(y) = 0$. Jika $y = k$ menghasilkan $h(k) = 0$, maka fungsi konstan $y(x) = k$ adalah solusi konstan dari PDB awal. Jika solusi konstan ini tidak dapat diperoleh dari solusi umum dengan memilih nilai $C$ tertentu, maka $y(x) = k$ disebut sebagai \textbf{Solusi Singular}.
+\end{enumerate}
+
+\subsection{Persamaan Diferensial Eksak \& Teorema Euler-Clairaut}
+
+\begin{definition}[Diferensial Total dan Persamaan Eksak]
+Suatu bentuk diferensial orde satu:
+\begin{equation*}
+    M(x,y)\,dx + N(x,y)\,dy
+\end{equation*}
+dinamakan \textbf{diferensial eksak} jika terdapat fungsi potensial skalar $F(x,y)$ dengan turunan parsial kontinu sedemikian rupa sehingga diferensial totalnya memenuhi:
+\begin{equation}
+    dF(x,y) = \frac{\partial F}{\partial x} dx + \frac{\partial F}{\partial y} dy = M(x,y) dx + N(x,y) dy
+    \label{eq:total_differential}
+\end{equation}
+Persamaan diferensial $M(x,y)dx + N(x,y)dy = 0$ dinamakan \textbf{PDB Eksak}, dan solusi umumnya diberikan langsung oleh kurva ketinggian fungsi potensial:
+\begin{equation}
+    F(x,y) = C
+    \label{eq:exact_sol}
+\end{equation}
+\end{definition}
+
+Bagaimana seorang insinyur menguji apakah suatu PDB bersifat eksak tanpa harus menebak bentuk fungsi $F(x,y)$ terlebih dahulu? Jawabannya dijamin oleh Teorema Keeksakan Euler-Clairaut.
+
+\begin{theorem}[Teorema Keeksakan Euler-Clairaut]
+Misalkan fungsi $M(x,y)$ dan $N(x,y)$ beserta turunan-turunan parsial pertamanya $\frac{\partial M}{\partial y}$ dan $\frac{\partial N}{\partial x}$ kontinu pada suatu daerah tersambung sederhana (\textit{simply-connected domain}) $\mathcal{D}$ pada bidang koordinat $\mathbb{R}^2$. Maka syarat perlu dan cukup agar $M(x,y)dx + N(x,y)dy = 0$ menjadi persamaan diferensial eksak adalah:
+\begin{equation}
+    \frac{\partial M(x,y)}{\partial y} = \frac{\partial N(x,y)}{\partial x} \quad \forall (x,y) \in \mathcal{D}
+    \label{eq:euler_clairaut}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$(\implies)$ Jika persamaan eksak, maka berdasarkan Persamaan~\eqref{eq:total_differential} berlaku $M = \frac{\partial F}{\partial x}$ dan $N = \frac{\partial F}{\partial y}$. Berdasarkan Teorema Schwarz tentang kesamaan turunan parsial campuran tingkat dua fungsi kontinu:
+\begin{equation}
+    \frac{\partial M}{\partial y} = \frac{\partial}{\partial y}\left( \frac{\partial F}{\partial x} \right) = \frac{\partial^2 F}{\partial y \partial x} = \frac{\partial^2 F}{\partial x \partial y} = \frac{\partial}{\partial x}\left( \frac{\partial F}{\partial y} \right) = \frac{\partial N}{\partial x}
+\end{equation}
+$(\impliedby)$ Bukti kecukupan ditunjukkan secara konstruktif melalui algoritma penentuan fungsi potensial $F(x,y)$ pada subbab berikut.
+\end{proof}
+
+\begin{tcolorbox}[colback=yellow!8!white,colframe=orange!80!black,title=\textbf{Makna Fisik Rekayasa: Hubungan dengan Medan Konservatif \& Hukum Faraday}]
+Dalam medan elektromagnetika, kondisi eksak $\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}$ adalah padanan 2D dari hukum medan vektor tanpa pusaran (\textit{irrotational field}):
+\begin{equation}
+    \nabla \times \mathbf{E} = 0 \iff \oint \mathbf{E} \cdot d\mathbf{l} = 0 \iff \mathbf{E} = -\nabla V
+\end{equation}
+Kondisi eksak menjamin bahwa integral garis tidak bergantung pada lintasan melainkan hanya bergantung pada titik awal dan titik akhir. Fungsi potensial $F(x,y)$ dalam matematika analitik berkorespondensi langsung dengan \textbf{potensial elektrostatika} $V(x,y)$ di dalam fisika medan listrik!
+\end{tcolorbox}
+
+\subsubsection{Algoritma Konstruksi Solusi PDB Eksak}
+Jika suatu PDB telah terbukti eksak melalui pengujian Persamaan~\eqref{eq:euler_clairaut}, fungsi potensial $F(x,y)$ dikonstruksi melalui 4 langkah baku:
+\begin{enumerate}[leftmargin=*]
+    \item Integralkan $M(x,y)$ terhadap variabel $x$, dengan memperlakukan $y$ sebagai konstanta semu. Konstanta integrasi harus berupa fungsi sembarang dari $y$, kita sebut $g(y)$:
+    \begin{equation}
+        F(x,y) = \int M(x,y) dx + g(y)
+        \label{eq:step1_exact}
+    \end{equation}
+    \item Turunkan parsial hasil Persamaan~\eqref{eq:step1_exact} terhadap variabel $y$:
+    \begin{equation}
+        \frac{\partial F}{\partial y} = \frac{\partial}{\partial y}\left( \int M(x,y) dx \right) + g'(y)
+    \end{equation}
+    \item Samakan hasil turunan parsial tersebut dengan fungsi $N(x,y)$ yang diberikan oleh soal, mengingat bahwa $\frac{\partial F}{\partial y} = N(x,y)$:
+    \begin{equation}
+        \frac{\partial}{\partial y}\left( \int M(x,y) dx \right) + g'(y) = N(x,y) \implies g'(y) = N(x,y) - \frac{\partial}{\partial y}\left( \int M(x,y) dx \right)
+    \end{equation}
+    Karena persamaan berstatus eksak, seluruh suku yang memuat variabel $x$ pada ruas kanan dijamin saling meniadakan secara aljabar, menyisakan $g'(y)$ murni sebagai fungsi variabel $y$ saja!
+    \item Integralkan $g'(y)$ terhadap $y$ untuk memperoleh $g(y) = \int g'(y) dy$. Tuliskan solusi umum final:
+    \begin{equation}
+        F(x,y) = \int M(x,y) dx + g(y) = C
+    \end{equation}
+\end{enumerate}
+
+\subsection{Teori Faktor Pengintegrasi (\textit{Integrating Factor})}
+
+Bagaimana jika PDB $M(x,y)dx + N(x,y)dy = 0$ setelah diuji ternyata \textbf{tidak eksak} ($\frac{\partial M}{\partial y} \neq \frac{\partial N}{\partial x}$)?
+
+Kita dapat mengalikan seluruh persamaan dengan suatu fungsi pengali non-nol $\mu(x,y)$ yang dinamakan \textbf{Faktor Pengintegrasi} (\textit{Integrating Factor}), sedemikian hingga persamaan hasil kalinya:
+\begin{equation}
+    \mu(x,y) M(x,y) dx + \mu(x,y) N(x,y) dy = 0
+    \label{eq:mu_eq}
+\end{equation}
+berubah menjadi persamaan diferensial yang berstatus eksak!
+
+Syarat keeksakan untuk Persamaan~\eqref{eq:mu_eq} adalah:
+\begin{equation}
+    \frac{\partial}{\partial y} \left( \mu M \right) = \frac{\partial}{\partial x} \left( \mu N \right)
+    \implies \mu \frac{\partial M}{\partial y} + M \frac{\partial \mu}{\partial y} = \mu \frac{\partial N}{\partial x} + N \frac{\partial \mu}{\partial x}
+\end{equation}
+Kumpulkan suku-suku yang memuat $\mu$:
+\begin{equation}
+    N \frac{\partial \mu}{\partial x} - M \frac{\partial \mu}{\partial y} = \mu \left( \frac{\partial M}{\partial y} - \frac{\partial N}{\partial x} \right)
+    \label{eq:pde_for_mu}
+\end{equation}
+Persamaan~\eqref{eq:pde_for_mu} adalah PDP orde 1 untuk mencari $\mu$. Namun dalam praktiknya, kita mencari faktor integrasi yang hanya bergantung pada satu variabel tunggal:
+
+\subsubsection{Kasus 1: Faktor Integrasi Variabel Tunggal \texorpdfstring{$\mu(x)$}{mu(x)}}
+Jika $\mu$ hanya fungsi dari $x$, maka $\frac{\partial \mu}{\partial y} = 0$ dan $\frac{\partial \mu}{\partial x} = \frac{d\mu}{dx}$. Persamaan~\eqref{eq:pde_for_mu} tereduksi menjadi PDB separabel:
+\begin{equation}
+    N \frac{d\mu}{dx} = \mu \left( \frac{\partial M}{\partial y} - \frac{\partial N}{\partial x} \right) \implies \frac{1}{\mu} \frac{d\mu}{dx} = \frac{\frac{\partial M}{\partial y} - \frac{\partial N}{\partial x}}{N}
+\end{equation}
+Agar $\mu$ murni fungsi dari $x$, maka ruas kanan harus berupa fungsi dari $x$ saja, kita definisikan sebagai $f(x)$:
+\begin{equation}
+    f(x) \equiv \frac{\frac{\partial M}{\partial y} - \frac{\partial N}{\partial x}}{N} \implies \mu(x) = \exp\left( \int f(x) dx \right)
+    \label{eq:mu_x}
+\end{equation}
+
+\subsubsection{Kasus 2: Faktor Integrasi Variabel Tunggal \texorpdfstring{$\mu(y)$}{mu(y)}}
+Jika $\mu$ hanya fungsi dari $y$, maka $\frac{\partial \mu}{\partial x} = 0$ dan $\frac{\partial \mu}{\partial y} = \frac{d\mu}{dy}$. Persamaan~\eqref{eq:pde_for_mu} tereduksi menjadi:
+\begin{equation}
+    -M \frac{d\mu}{dy} = \mu \left( \frac{\partial M}{\partial y} - \frac{\partial N}{\partial x} \right) \implies \frac{1}{\mu} \frac{d\mu}{dy} = \frac{\frac{\partial N}{\partial x} - \frac{\partial M}{\partial y}}{M}
+\end{equation}
+Jika ruas kanan murni fungsi dari $y$ saja, kita sebut $h(y)$:
+\begin{equation}
+    h(y) \equiv \frac{\frac{\partial N}{\partial x} - \frac{\partial M}{\partial y}}{M} \implies \mu(y) = \exp\left( \int h(y) dy \right)
+    \label{eq:mu_y}
+\end{equation}
+
+\subsection{PDB Linier Orde 1: Penurunan Formula Solusi Leibniz}
+
+Bentuk standar PDB linier orde 1 adalah:
+\begin{equation}
+    \frac{dy}{dt} + P(t) y = Q(t)
+    \label{eq:standard_linear}
+\end{equation}
+Ubah ke bentuk diferensial:
+\begin{equation}
+    \left[ P(t) y - Q(t) \right] dt + 1 \cdot dy = 0
+\end{equation}
+Di sini $M(t,y) = P(t)y - Q(t)$ dan $N(t,y) = 1$. Evaluasi kriteria keeksakan:
+\begin{equation}
+    \frac{\partial M}{\partial y} = P(t), \quad \frac{\partial N}{\partial t} = 0 \implies \frac{\frac{\partial M}{\partial y} - \frac{\partial N}{\partial t}}{N} = \frac{P(t) - 0}{1} = P(t)
+\end{equation}
+Ruas kanan murni fungsi dari $t$ saja! Berdasarkan Persamaan~\eqref{eq:mu_x}, faktor pengintegrasi untuk seluruh PDB linier orde 1 adalah:
+\begin{equation}
+    \mu(t) = e^{\int P(t) dt}
+    \label{eq:linear_if}
+\end{equation}
+Kalikan Persamaan~\eqref{eq:standard_linear} dengan $\mu(t)$:
+\begin{equation}
+    e^{\int P(t) dt} \frac{dy}{dt} + P(t) e^{\int P(t) dt} y = Q(t) e^{\int P(t) dt}
+\end{equation}
+Berdasarkan aturan turunan perkalian kalkulus, ruas kiri adalah diferensial eksak:
+\begin{equation}
+    \frac{d}{dt}\left[ y(t) \cdot \mu(t) \right] = Q(t) \cdot \mu(t)
+\end{equation}
+Integralkan kedua ruas terhadap $t$:
+\begin{equation}
+    y(t) \cdot \mu(t) = \int Q(t) \cdot \mu(t) dt + C
+\end{equation}
+Bagi kedua ruas dengan $\mu(t)$ untuk mendapatkan formula solusi umum analitis Leibniz:
+\begin{equation}
+    y(t) = \frac{1}{\mu(t)} \left[ \int \mu(t) Q(t) dt + C \right] = e^{-\int P(t) dt} \left[ \int Q(t) e^{\int P(t) dt} dt + C \right]
+    \label{eq:leibniz_formula}
+\end{equation}
+
+\section{Masalah Nilai Awal (IVP) \& Prinsip Kontinuitas Muatan Kapasitor}
+
+\subsection{Prinsip Kontinuitas Muatan \& Tegangan Kapasitor}
+
+Dalam analisis transien pensaklaran listrik, kita harus menentukan nilai tegangan kapasitor pada saat sakelar tepat baru ditutup ($t = 0^+$).
+
+Tinjau kembali hubungan arus dan tegangan kapasitor:
+\begin{equation}
+    i_C(t) = C \frac{dv_C(t)}{dt}
+\end{equation}
+Integralkan kedua ruas dari saat sesaat sebelum pensaklaran ($t = 0^-$) hingga saat sesaat setelah pensaklaran ($t = 0^+$):
+\begin{equation}
+    \int_{0^-}^{0^+} i_C(t) dt = C \int_{v_C(0^-)}^{v_C(0^+)} dv_C = C \left[ v_C(0^+) - v_C(0^-) \right]
+\end{equation}
+Besaran $\int_{0^-}^{0^+} i_C(t) dt$ merepresentasikan jumlah muatan listrik netto $\Delta q$ yang ditransfer menembus kapasitor dalam durasi interval waktu mendekati nol ($\Delta t = 0^+ - 0^- \to 0$).
+
+\begin{theorem}[Kontinuitas Tegangan Kapasitor]
+Selama arus yang mengalir menembus kapasitor bernilai hingga ($i_C(t) < \infty$), integral muatan dalam selang waktu berdurasi nol adalah nol:
+\begin{equation}
+    \lim_{\Delta t \to 0} \int_{0^-}^{0^+} i_C(t) dt = 0 \implies C \left[ v_C(0^+) - v_C(0^-) \right] = 0
+\end{equation}
+Karena kapasitansi $C > 0$, maka disimpulkan secara mutlak:
+\begin{equation}
+    v_C(0^+) = v_C(0^-)
+    \label{eq:continuity_vc}
+\end{equation}
+\end{theorem}
+
+\textbf{Konsekuensi Fisik:} Tegangan pada terminal kapasitor tidak pernah dapat berubah secara diskontinu atau melompat seketika, kecuali jika dipasok oleh sumber arus impuls Dirac tak hingga ($\delta(t)$) yang membutuhkan daya sesaat tak hingga ($\infty$ Watt). Pada seluruh rangkaian fisik nyata, kapasitor yang awalnya kosong ($v_C(0^-) = 0$) akan tetap memiliki tegangan nol sesaat setelah sakelar ditutup ($v_C(0^+) = 0$). Sifat ini menjadikan kapasitor berlaku persis sebagai \textbf{hubung singkat} (\textit{short circuit}) pada saat transien awal $t = 0^+$.
+
+\section{Pemodelan Fisis Rangkaian RC dari Prinsip Dasar (\textit{First-Principles})}
+
+\subsection{Proses Pengisian Kapasitor (\textit{Charging Transient})}
+Tinjau rangkaian loop tunggal yang terdiri atas sumber tegangan searah DC $V_0$, sakelar mekanis $S$ yang ditutup pada $t = 0$, resistor pembatas arus $R$, dan kapasitor ideal $C$, sebagaimana diilustrasikan pada Gambar~\ref{fig:circuit_rc_charge}.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1.1]
+    \draw (0,0) to[battery2, l=$V_0$, invert] (0,3)
+          to[normal open switch, l={$S (t=0)$}] (2,3)
+          to[R, l=$R$, v={$v_R(t)$}] (4.5,3)
+          to[C, l=$C$, v={$v_C(t)$}] (7,3)
+          -- (7,0) -- (0,0);
+    \draw[->, >=stealth, line width=1.1pt, headercolor] (3.5,1.5) arc (160:-160:0.6) node[midway, right=3pt, font=\small]{$i(t)$};
+\end{circuitikz}
+\caption{Skematik rangkaian pengisian transien RC seri eksitasi tegangan DC.}
+\label{fig:circuit_rc_charge}
+\end{figure}
+
+Terapkan Hukum Tegangan Kirchhoff (KVL) searah jarum jam:
+\begin{equation}
+    -V_0 + v_R(t) + v_C(t) = 0 \implies v_R(t) + v_C(t) = V_0
+    \label{eq:kvl_rc}
+\end{equation}
+Substitusikan hukum Ohm untuk resistor ($v_R = R \cdot i$) dan arus kapasitor ($i = C \frac{dv_C}{dt}$):
+\begin{equation}
+    R \left( C \frac{dv_C(t)}{dt} \right) + v_C(t) = V_0 \implies R C \frac{dv_C(t)}{dt} + v_C(t) = V_0
+    \label{eq:rc_ode_charge}
+\end{equation}
+Bagi kedua ruas dengan konstanta waktu $\tau = RC$:
+\begin{equation}
+    \frac{dv_C}{dt} + \frac{1}{RC} v_C = \frac{V_0}{RC}
+    \label{eq:rc_standard_form}
+\end{equation}
+Persamaan~\eqref{eq:rc_standard_form} adalah PDB linier orde 1 non-homogen. Menggunakan metode pemisahan variabel:
+\begin{equation}
+    \frac{dv_C}{dt} = \frac{V_0 - v_C}{RC} \implies \frac{dv_C}{V_0 - v_C} = \frac{1}{RC} dt
+\end{equation}
+Integralkan kedua ruas:
+\begin{equation}
+    -\ln|V_0 - v_C| = \frac{t}{RC} + K_1 \implies V_0 - v_C(t) = A e^{-\frac{t}{RC}} \implies v_C(t) = V_0 - A e^{-\frac{t}{RC}}
+\end{equation}
+Terapkan kondisi awal Masalah Nilai Awal (IVP) di mana kapasitor mula-mula kosong: $v_C(0) = 0$:
+\begin{equation}
+    0 = V_0 - A e^0 \implies A = V_0
+\end{equation}
+Maka solusi khusus tegangan pengisian kapasitor adalah:
+\begin{equation}
+    v_C(t) = V_0 \left( 1 - e^{-\frac{t}{RC}} \right) = V_0 \left( 1 - e^{-\frac{t}{\tau}} \right)
+    \label{eq:vc_charge_solution}
+\end{equation}
+Arus pengisian kapasitor diperoleh dengan menerapkan diferensiasi langsung terhadap waktu:
+\begin{equation}
+    i(t) = C \frac{dv_C}{dt} = C \cdot V_0 \left( 0 - \left(-\frac{1}{RC}\right) e^{-\frac{t}{RC}} \right) = \frac{V_0}{R} e^{-\frac{t}{\tau}} = I_0 e^{-\frac{t}{\tau}}
+    \label{eq:ic_charge_solution}
+\end{equation}
+di mana $I_0 = \frac{V_0}{R}$ adalah arus pemula transien pada saat $t = 0^+$.
+
+\subsection{Proses Pengosongan Kapasitor (\textit{Discharging Transient})}
+Jika kapasitor yang telah bermuatan penuh hingga tegangan $V_0$ dilepaskan dari catu daya lalu dihubung-singkatkan melalui resistor $R$ pada $t = 0$, persamaan KVL loop menjadi:
+\begin{equation}
+    v_R(t) + v_C(t) = 0 \implies R C \frac{dv_C}{dt} + v_C(t) = 0
+    \label{eq:rc_ode_discharge}
+\end{equation}
+Persamaan~\eqref{eq:rc_ode_discharge} adalah PDB linier homogen. Solusi umumnya adalah:
+\begin{equation}
+    \frac{dv_C}{v_C} = -\frac{1}{RC} dt \implies \ln|v_C| = -\frac{t}{RC} + K_2 \implies v_C(t) = B e^{-\frac{t}{RC}}
+\end{equation}
+Dengan kondisi awal $v_C(0) = V_0$, konstanta $B = V_0$, sehingga solusi khusus pengosongan kapasitor adalah peluruhan eksponensial murni:
+\begin{equation}
+    v_C(t) = V_0 e^{-\frac{t}{\tau}}
+    \label{eq:vc_discharge_solution}
+\end{equation}
+Arus pengosongan mengalir berlawanan arah dengan arah pengisian:
+\begin{equation}
+    i(t) = C \frac{dv_C}{dt} = C \left( -\frac{V_0}{RC} e^{-\frac{t}{RC}} \right) = -\frac{V_0}{R} e^{-\frac{t}{\tau}}
+    \label{eq:ic_discharge_solution}
+\end{equation}
+
+\section{Dinamika Transien, Skala Waktu Alami \& Paradoks Efisiensi Energi}
+
+\subsection{Evaluasi Skala Waktu Kelipatan \texorpdfstring{$\tau = RC$}{tau = RC}}
+Konstanta waktu kapasitif $\tau = RC$ memiliki dimensi waktu [detik]:
+\begin{equation}
+    [\tau] = [R][C] = \left( \frac{\text{Volt}}{\text{Ampere}} \right) \left( \frac{\text{Coulomb}}{\text{Volt}} \right) = \frac{\text{Coulomb}}{\text{Ampere}} = \frac{\text{Coulomb}}{\text{Coulomb/detik}} = \text{detik}
+\end{equation}
+
+Perjalanan transien pengisian dan pengosongan kapasitor dirangkum pada Tabel~\ref{tab:transient_rc_evolution}.
+
+\begin{table}[htbp]
+\centering
+\caption{Dinamika evolusi tegangan dan arus transien rangkaian RC terhadap kelipatan $\tau$.}
+\label{tab:transient_rc_evolution}
+\begin{tabularx}{\textwidth}{cccc>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Waktu ($t$)} & \textbf{Faktor $e^{-t/\tau}$} & \textbf{Tegangan $v_C(t)$} & \textbf{Arus $i(t)$} & \textbf{Status Operasional Kapasitor} \\ \midrule
+$0$ & $1{,}0000$ & $0{,}000 \times V_0$ & $1{,}0000 \times I_0$ & Hubung singkat transien; penyerapan arus maksimum. \\
+$1\tau$ & $0{,}3679$ & $0{,}6321 \times V_0$ & $0{,}3679 \times I_0$ & Kapasitor telah terisi $63{,}2\%$ tegangan sumber. \\
+$2\tau$ & $0{,}1353$ & $0{,}8647 \times V_0$ & $0{,}1353 \times I_0$ & Laju pengisian melambat; arus drop drastis. \\
+$3\tau$ & $0{,}0498$ & $0{,}9502 \times V_0$ & $0{,}0498 \times I_0$ & Tegangan mencapai $95\%$ kondisi tunak. \\
+$4\tau$ & $0{,}0183$ & $0{,}9817 \times V_0$ & $0{,}0183 \times I_0$ & Sistem mencapai $98{,}2\%$ kondisi tunak. \\
+$5\tau$ & $0{,}0067$ & $0{,}9933 \times V_0$ & $0{,}0067 \times I_0$ & Transien dianggap selesai ($>99{,}3\%$); sirkuit terbuka. \\ \bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Paradoks Efisiensi Pengisian Kapasitor (Disipasi Termal 50\%)}
+
+Salah satu hasil derivasi analitis paling mengejutkan dalam fisika rekayasa elektro adalah neraca energi pengisian kapasitor. Tinjau proses pengisian kapasitor dari keadaan kosong hingga keadaan mantap penuh ($t \to \infty$):
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Energi Total yang Dipasok oleh Sumber Tegangan DC ($E_{\text{sumber}}$):}
+    \begin{equation}
+        E_{\text{sumber}} = \int_0^\infty p_{\text{sumber}}(t) dt = \int_0^\infty V_0 \cdot i(t) dt = V_0 \int_0^\infty \left( \frac{V_0}{R} e^{-\frac{t}{RC}} \right) dt
+    \end{equation}
+    Selesaikan integral definit:
+    \begin{equation}
+        E_{\text{sumber}} = \frac{V_0^2}{R} \left[ -RC e^{-\frac{t}{RC}} \right]_0^\infty = \frac{V_0^2}{R} \left( 0 - (-RC) \right) = C V_0^2 \quad \text{[Joule]}
+        \label{eq:energy_source_proof}
+    \end{equation}
+    \item \textbf{Energi yang Tersimpan pada Medan Elektrostatik Kapasitor ($E_C$):}
+    Berdasarkan Persamaan~\eqref{eq:energy_capacitor}, saat $t \to \infty$ di mana $v_C(\infty) = V_0$:
+    \begin{equation}
+        E_C = \frac{1}{2} C V_0^2 \quad \text{[Joule]}
+        \label{eq:energy_cap_proof}
+    \end{equation}
+    \item \textbf{Energi yang Terdisipasi Menjadi Kalor pada Resistor ($E_R$):}
+    Berdasarkan hukum disipasi Joule $p_R(t) = i(t)^2 R$:
+    \begin{equation}
+        E_R = \int_0^\infty i(t)^2 R \, dt = R \int_0^\infty \left( \frac{V_0}{R} e^{-\frac{t}{RC}} \right)^2 dt = \frac{V_0^2}{R} \int_0^\infty e^{-\frac{2t}{RC}} dt
+    \end{equation}
+    Hitung nilai integral eksponensial kuadrat:
+    \begin{equation}
+        E_R = \frac{V_0^2}{R} \left[ -\frac{RC}{2} e^{-\frac{2t}{RC}} \right]_0^\infty = \frac{V_0^2}{R} \left( 0 - \left( -\frac{RC}{2} \right) \right) = \frac{1}{2} C V_0^2 \quad \text{[Joule]}
+        \label{eq:energy_resistor_proof}
+    \end{equation}
+\end{enumerate}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!80!black,title=\textbf{Kesimpulan Hukum Konservasi Energi \& Efisiensi 50\%}]
+Perhatikan Persamaan~\eqref{eq:energy_source_proof}, \eqref{eq:energy_cap_proof}, dan \eqref{eq:energy_resistor_proof}:
+\begin{equation}
+    E_{\text{sumber}} = E_C + E_R = \frac{1}{2} C V_0^2 + \frac{1}{2} C V_0^2 = C V_0^2
+\end{equation}
+Efisiensi pengisian kapasitor dari sumber tegangan DC konstan adalah:
+\begin{equation}
+    \eta = \frac{E_C}{E_{\text{sumber}}} \times 100\% = \frac{\frac{1}{2} C V_0^2}{C V_0^2} \times 100\% = 50\%
+\end{equation}
+Nilai efisiensi ini \textbf{persis 50\%}, sepenuhnya \textbf{independen dari nilai resistansi} $R$! Baik resistor bernilai $0{,}001\ \Omega$ maupun $1\ \text{M}\Omega$, tepat separuh energi sumber pasti hilang menjadi disipasi termal kalor atau radiasi gelombang elektromagnetik.
+\end{tcolorbox}
+
+\section{Studi Kasus Nyata: Rangkaian Snubber RC Proteksi Sakelar Daya IGBT}
+
+Dalam konverter daya modern seperti inverter Pembangkit Listrik Tenaga Surya (PLTS) atau gardu traksi listrik, sakelar semikonduktor daya tinggi (\textit{Insulated Gate Bipolar Transistor} / IGBT) memutus arus listrik beban induktif secara berulang dengan frekuensi pensaklaran tinggi (puluhan kiloHertz).
+
+Ketika IGBT memutus arus induktor transformator secara mendadak ($t = 0$), induktor membangkitkan tegangan lebih pemulihan transien (\textit{transient recovery voltage} / TRV) dengan laju kenaikan tegangan ekstrem:
+\begin{equation}
+    \frac{dv}{dt} \to \infty
+\end{equation}
+Jika laju kenaikan tegangan ini melampaui batas ketahanan kritis transistor $\left(\frac{dv}{dt}\right)_{\text{max}}$, IGBT akan mengalami kegagalan tembus isolasi dielektrik (\textit{avalanche breakdown}) dan hancur seketika.
+
+Untuk melindungi transistor, insinyur memasang rangkaian \textbf{Snubber RC} secara paralel dengan terminal kolektor-emitor IGBT, sebagaimana dimodelkan pada Gambar~\ref{fig:circuit_snubber}.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1.05]
+    \draw (0,0) to[battery2, l=$V_{\text{bus}}$, invert] (0,3)
+          to[L, l=$L_{\text{load}}$] (3,3)
+          -- (5,3);
+    
+    % IGBT Path
+    \draw (5,3) to[normal open switch, l={IGBT}] (5,0) -- (0,0);
+    
+    % Snubber Path
+    \draw (5,3) -- (7.5,3)
+          to[R, l=$R_s$] (7.5,1.5)
+          to[C, l=$C_s$] (7.5,0)
+          -- (5,0);
+\end{circuitikz}
+\caption{Rangkaian peredam transien (\textit{RC Snubber Circuit}) untuk proteksi sakelar daya semikonduktor.}
+\label{fig:circuit_snubber}
+\end{figure}
+
+Pada saat IGBT mati (\textit{turn-off}), arus yang awalnya mengalir menembus IGBT dialihkan seketika menembus kapasitor snubber $C_s$. Persamaan diferensial transien tegangan kapasitor snubber adalah:
+\begin{equation}
+    R_s C_s \frac{dv_C}{dt} + v_C(t) = V_{\text{bus}}
+\end{equation}
+Laju kenaikan tegangan maksimum pada saat pensaklaran awal ($t = 0^+$) ditekan menjadi:
+\begin{equation}
+    \left. \frac{dv_C}{dt} \right|_{t=0^+} = \frac{I_{\text{peak}}}{C_s}
+\end{equation}
+Dengan memilih nilai kapasitansi $C_s$ yang cukup besar, insinyur proteksi PLN dan industri elektronika daya dapat menjamin bahwa laju kenaikan tegangan riil selalu berada di bawah batas aman standar industri IEEE Std C37:
+\begin{equation}
+    \frac{I_{\text{peak}}}{C_s} \le \left( \frac{dv}{dt} \right)_{\text{rated}}
+\end{equation}
+
+\section{Contoh Soal Terhitung Langkah demi Langkah (\textit{Worked Numerical Examples})}
+
+\begin{example}[Pengujian Keeksakan \& Rekonstruksi Fungsi Potensial]
+Diberikan persamaan diferensial orde satu:
+\begin{equation}
+    (3x^2 + 2y^2) dx + (4xy + 6y^2) dy = 0
+\end{equation}
+Tentukan apakah persamaan diferensial di atas eksak. Jika eksak, temukan solusi umumnya!
+
+\textbf{Solusi Langkah demi Langkah:}
+
+\textbf{Langkah 1: Identifikasi Fungsi $M$ dan $N$}
+\begin{align}
+    M(x,y) &= 3x^2 + 2y^2 \\
+    N(x,y) &= 4xy + 6y^2
+\end{align}
+
+\textbf{Langkah 2: Uji Kriteria Keeksakan Euler-Clairaut}
+Turunkan $M$ terhadap $y$ dan $N$ terhadap $x$:
+\begin{align}
+    \frac{\partial M}{\partial y} &= \frac{\partial}{\partial y}(3x^2 + 2y^2) = 0 + 4y = 4y \\
+    \frac{\partial N}{\partial x} &= \frac{\partial}{\partial x}(4xy + 6y^2) = 4y + 0 = 4y
+\end{align}
+Karena $\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x} = 4y$, maka persamaan terbukti \textbf{Eksak}.
+
+\textbf{Langkah 3: Tentukan Fungsi Potensial $F(x,y)$}
+Integralkan $M(x,y)$ terhadap variabel $x$:
+\begin{equation}
+    F(x,y) = \int (3x^2 + 2y^2) dx + g(y) = x^3 + 2x y^2 + g(y)
+\end{equation}
+
+\textbf{Langkah 4: Diferensiasi terhadap $y$ dan Samakan dengan $N(x,y)$}
+\begin{equation}
+    \frac{\partial F}{\partial y} = \frac{\partial}{\partial y}(x^3 + 2x y^2 + g(y)) = 0 + 4xy + g'(y) = 4xy + g'(y)
+\end{equation}
+Samakan dengan fungsi $N(x,y)$:
+\begin{equation}
+    4xy + g'(y) = 4xy + 6y^2 \implies g'(y) = 6y^2
+\end{equation}
+Suku $4xy$ saling meniadakan secara presisi, menyisakan $g'(y)$ murni fungsi variabel $y$. Integralkan $g'(y)$:
+\begin{equation}
+    g(y) = \int 6y^2 dy = 2y^3
+\end{equation}
+
+\textbf{Langkah 5: Tuliskan Solusi Umum}
+Substitusikan $g(y)$ ke dalam fungsi potensial $F(x,y)$:
+\begin{equation}
+    x^3 + 2xy^2 + 2y^3 = C
+\end{equation}
 \end{example}
 
-\subsection{Persamaan Linear dan Faktor Integrasi}
-Bentuk umum: $\frac{dy}{dx} + P(x)y = Q(x)$. Faktor integrasi adalah $\mu(x) = e^{\int P(x) dx}$.
+\begin{example}[Penyelesaian PDB Tak Eksak Menggunakan Faktor Pengintegrasi]
+Selesaikan persamaan diferensial berikut:
+\begin{equation}
+    (2y^2 + 3x) dx + 2xy \, dy = 0
+\end{equation}
 
-\begin{example}[Penyelesaian dengan Faktor Integrasi]
-Selesaikan PDB Rangkaian RL: $L\frac{di}{dt} + Ri = V_0$.
-Ubah ke bentuk standar: $\frac{di}{dt} + \frac{R}{L}i = \frac{V_0}{L}$.
-\\ \textbf{Langkah 1: Tentukan Faktor Integrasi}
-$P(t) = \frac{R}{L} \implies \mu(t) = e^{\int \frac{R}{L} dt} = e^{\frac{R}{L}t}$.
-\\ \textbf{Langkah 2: Kalikan ruas dengan $\mu(t)$}
-$e^{\frac{R}{L}t} \frac{di}{dt} + \frac{R}{L} e^{\frac{R}{L}t} i = \frac{V_0}{L} e^{\frac{R}{L}t}$.
-Bagian kiri adalah turunan dari $i \cdot e^{\frac{R}{L}t}$.
-\\ \textbf{Langkah 3: Integrasikan}
-$i \cdot e^{\frac{R}{L}t} = \int \frac{V_0}{L} e^{\frac{R}{L}t} dt = \frac{V_0}{L} \frac{L}{R} e^{\frac{R}{L}t} + C = \frac{V_0}{R} e^{\frac{R}{L}t} + C$.
-Maka $i(t) = \frac{V_0}{R} + C e^{-\frac{R}{L}t}$. 
-*(Bandingkan hasil analitik ini dengan output komputasi di \texttt{Simulasi\_Transien\_RC\_RL.ipynb}!)*
+\textbf{Solusi Langkah demi Langkah:}
+
+\textbf{Langkah 1: Uji Keeksakan Awal}
+$M = 2y^2 + 3x \implies \frac{\partial M}{\partial y} = 4y$. \\
+$N = 2xy \implies \frac{\partial N}{\partial x} = 2y$. \\
+Karena $\frac{\partial M}{\partial y} \neq \frac{\partial N}{\partial x}$ ($4y \neq 2y$), persamaan ini \textbf{Tidak Eksak}.
+
+\textbf{Langkah 2: Evaluasi Kriteria Faktor Pengintegrasi}
+Evaluasi bentuk pembagian dengan $N$:
+\begin{equation}
+    \frac{\frac{\partial M}{\partial y} - \frac{\partial N}{\partial x}}{N} = \frac{4y - 2y}{2xy} = \frac{2y}{2xy} = \frac{1}{x} \equiv f(x)
+\end{equation}
+Hasil pembagian murni fungsi dari $x$ saja!
+
+\textbf{Langkah 3: Hitung Faktor Pengintegrasi $\mu(x)$}
+\begin{equation}
+    \mu(x) = \exp\left( \int f(x) dx \right) = \exp\left( \int \frac{1}{x} dx \right) = \exp(\ln|x|) = x
+\end{equation}
+
+\textbf{Langkah 4: Kalikan Persamaan Semula dengan $\mu(x) = x$}
+\begin{equation}
+    x(2y^2 + 3x) dx + x(2xy) dy = 0 \implies (2xy^2 + 3x^2) dx + (2x^2 y) dy = 0
+\end{equation}
+Periksa ulang keeksakan bentuk baru:
+\begin{equation}
+    M_{\text{baru}} = 2xy^2 + 3x^2 \implies \frac{\partial M_{\text{baru}}}{\partial y} = 4xy
+\end{equation}
+\begin{equation}
+    N_{\text{baru}} = 2x^2 y \implies \frac{\partial N_{\text{baru}}}{\partial x} = 4xy
+\end{equation}
+Persamaan kini telah menjadi \textbf{Eksak sempurna}!
+
+\textbf{Langkah 5: Selesaikan Persamaan Eksak}
+\begin{equation}
+    F(x,y) = \int (2xy^2 + 3x^2) dx + g(y) = x^2 y^2 + x^3 + g(y)
+\end{equation}
+Turunkan terhadap $y$:
+\begin{equation}
+    \frac{\partial F}{\partial y} = 2x^2 y + g'(y) = N_{\text{baru}} = 2x^2 y \implies g'(y) = 0 \implies g(y) = C_0
+\end{equation}
+Maka solusi umum final adalah:
+\begin{equation}
+    x^2 y^2 + x^3 = C
+\end{equation}
 \end{example}
 
-\section{Ringkasan}
-Persamaan eksak diselesaikan menggunakan fungsi potensial $F(x,y)$. Persamaan linear diselesaikan dengan faktor integrasi $\mu(x) = e^{\int P(x) dx}$. 
+\begin{example}[Analisis Transien Pengisian Kapasitor Bank Gardu Induk]
+Sebuah kapasitor bank kompensasi daya reaktif $C = 200\ \mu\text{F}$ dihubungkan ke bus stasiun baterai gardu induk $V_0 = 250\text{ V}$ melalui resistor pembatas arus pemula $R = 50\ \Omega$. Kapasitor memiliki tegangan sisa mula-mula dari operasi sebelumnya sebesar $v_C(0) = 50\text{ V}$.
 
-\section{Referensi}
+Tentukan:
+\begin{enumerate}
+    \item Konstanta waktu transien rangkaian $\tau$.
+    \item Persamaan analitik lengkap untuk tegangan sesaat $v_C(t)$ dan arus pengisian $i(t)$.
+    \item Tegangan kapasitor dan arus pada saat $t = 10\text{ ms}$ dan $t = 50\text{ ms}$.
+    \item Energi tambahan yang diserap oleh kapasitor dari keadaan mula-mula hingga kondisi tunak penuh.
+\end{enumerate}
+
+\textbf{Solusi Langkah demi Langkah:}
+
+\textbf{Langkah 1: Menghitung Konstanta Waktu $\tau$}
+\begin{equation}
+    \tau = R C = 50\ \Omega \times (200 \times 10^{-6}\text{ F}) = 0{,}010\text{ detik} = 10\text{ ms}
+\end{equation}
+
+\textbf{Langkah 2: Menentukan Persamaan Solusi Khusus IVP}
+Model diferensial KVL pengisian kapasitor adalah:
+\begin{equation}
+    \frac{dv_C}{dt} + \frac{1}{\tau} v_C = \frac{V_0}{\tau} \implies \frac{dv_C}{dt} + 100 v_C = 25000
+\end{equation}
+Solusi umum PDB ini adalah:
+\begin{equation}
+    v_C(t) = V_0 + K e^{-t/\tau} = 250 + K e^{-100t}
+\end{equation}
+Substitusikan syarat awal $t = 0$ dan $v_C(0) = 50\text{ V}$:
+\begin{equation}
+    50 = 250 + K \cdot e^0 \implies K = 50 - 250 = -200\text{ V}
+\end{equation}
+Maka solusi khusus unik untuk tegangan kapasitor adalah:
+\begin{equation}
+    v_C(t) = 250 - 200 e^{-100t} = 250 - 200 e^{-\frac{t}{0{,}01}}\quad [\text{Volt}]
+\end{equation}
+Arus pengisian kapasitor sesaat adalah:
+\begin{equation}
+    i(t) = C \frac{dv_C}{dt} = (200 \times 10^{-6}) \times \left( -200 \times (-100) e^{-100t} \right) = 4 e^{-100t}\quad [\text{Ampere}]
+\end{equation}
+Perhatikan bahwa pada $t = 0^+$, arus pemula adalah $I(0^+) = \frac{V_0 - v_C(0)}{R} = \frac{250 - 50}{50} = 4\text{ A}$.
+
+\textbf{Langkah 3: Evaluasi pada $t = 10\text{ ms}$ ($1\tau$) dan $t = 50\text{ ms}$ ($5\tau$)}
 \begin{itemize}
-    \item Erwin Kreyszig, \textit{Advanced Engineering Mathematics}.
-    \item \texttt{Simulasi\_Transien\_RC\_RL.ipynb} (Praktikum Komputasi).
+    \item Pada $t = 10\text{ ms} = 1\tau$:
+    \begin{equation}
+        v_C(10\text{ ms}) = 250 - 200 e^{-1} = 250 - 200(0{,}36788) = 250 - 73{,}58 = 176{,}42\text{ Volt}
+    \end{equation}
+    \begin{equation}
+        i(10\text{ ms}) = 4 e^{-1} = 4 \times 0{,}36788 = 1{,}47\text{ Ampere}
+    \end{equation}
+    \item Pada $t = 50\text{ ms} = 5\tau$:
+    \begin{equation}
+        v_C(50\text{ ms}) = 250 - 200 e^{-5} = 250 - 200(0{,}00674) = 250 - 1{,}35 = 248{,}65\text{ Volt} \approx 250\text{ V}
+    \end{equation}
+    \begin{equation}
+        i(50\text{ ms}) = 4 e^{-5} = 4 \times 0{,}00674 = 0{,}027\text{ A} \approx 0\text{ A}
+    \end{equation}
 \end{itemize}
+
+\textbf{Langkah 4: Energi Tambahan yang Disimpan Kapasitor}
+\begin{align}
+    \Delta E_C &= E_C(\text{akhir}) - E_C(\text{awal}) = \frac{1}{2} C [V_{\text{akhir}}]^2 - \frac{1}{2} C [v_C(0)]^2 \nonumber \\
+    &= \frac{1}{2} (200 \times 10^{-6}) \left[ 250^2 - 50^2 \right] = 10^{-4} \left[ 62500 - 2500 \right] = 10^{-4} \times 60000 = 6{,}0\text{ Joule}
+\end{align}
+\end{example}
+
+\section{Praktikum Komputasi Terbuka Berbasis Julia}
+
+Bahasa pemrograman ilmiah \textbf{Julia} menyediakan kerangka kerja modern berkecepatan tinggi untuk simulasi transien dan pemecahan persamaan diferensial. Mahasiswa wajib menjalankan skrip Julia modular berikut untuk memverifikasi respon transien pengisian-pengosongan kapasitor dan memvalidasi galat presisi integrasi numerik terhadap solusi analitik.
+
+\begin{lstlisting}[style=juliastyle, caption={Skrip Julia: Simulasi Transien Pengisian dan Pengosongan Rangkaian RC Berbasis DifferentialEquations.jl.}]
+# =========================================================================
+# MODUL AJAR PERSAMAAN DIFERENSIAL - TEKNIK ELEKTRO UNIVERSITAS BENGKULU
+# Skrip Praktikum Minggu 2: Respon Transien Rangkaian RC (Analitik vs Numerik)
+# Dosen: Ir. Novalio Daratha, S.T., M.Sc., Ph.D. & Muhammad Arfan, S.T., M.T.
+# Bahasa Pemrograman: Julia 1.12+ (DifferentialEquations.jl & Plots.jl)
+# =========================================================================
+
+using DifferentialEquations
+using Plots
+
+# 1. Parameter Fisis Rangkaian RC
+const V0     = 250.0        # Tegangan Catu Daya DC [Volt]
+const V_init = 50.0         # Tegangan Mula Kapasitor [Volt]
+const R      = 50.0         # Resistansi Rangkaian [Ohm]
+const C      = 200.0e-6     # Kapasitansi [Farad] (200 uF)
+const tau    = R * C        # Konstanta Waktu [detik] (10 ms)
+
+println("="^65)
+println("  SIMULASI TRANSIEN PENGISIAN RANGKAIAN RC BERBASIS JULIA")
+println("="^65)
+println("Tegangan Sumber (V0)     : $V0 Volt")
+println("Tegangan Awal (V_init)   : $V_init Volt")
+println("Resistansi (R)           : $R Ohm")
+println("Kapasitansi (C)          : $(C*1e6) uF")
+println("Konstanta Waktu (tau)    : $tau detik ($(tau*1000) ms)")
+println("-"^65)
+
+# 2. Formulasi Masalah Nilai Awal (IVP) untuk DifferentialEquations.jl
+# PDB Pengisian: dvc/dt = (V0 - vc) / (R * C)
+function rc_charging!(dvc, vc, p, t)
+    V0_val, R_val, C_val = p
+    dvc[1] = (V0_val - vc[1]) / (R_val * C_val)
+end
+
+p = (V0, R, C)
+vc0 = [V_init]                  # Kondisi batas awal: vc(0) = 50 V
+tspan = (0.0, 6.0 * tau)        # Durasi simulasi: 0 s.d. 6 tau (60 ms)
+
+# Selesaikan PDB dengan Algoritma Tsit5 (Runge-Kutta adaptif orde 5/4)
+prob = ODEProblem(rc_charging!, vc0, tspan, p)
+sol = solve(prob, Tsit5(), reltol=1e-8, abstol=1e-8)
+
+# 3. Solusi Eksak Analitik untuk Validasi Galat Numerik
+t_eval = range(0.0, 6.0 * tau, length=600)
+vc_exact = [V0 - (V0 - V_init) * exp(-t / tau) for t in t_eval]
+ic_exact = [((V0 - V_init) / R) * exp(-t / tau) for t in t_eval]
+
+# Interpolasi numerik dan perhitungan galat mutlak
+vc_num = [sol(t)[1] for t in t_eval]
+max_error = maximum(abs.(vc_exact .- vc_num))
+println("Maksimum Galat Mutlak Numerik vs Analitik: $max_error Volt")
+println("-"^65)
+
+# 4. Visualisasi Grafik Kualitas Tinggi (2 Subplot Respons Waktu)
+p1 = plot(t_eval .* 1000, vc_exact, label="Solusi Analitik Eksak",
+          lw=2.5, color=:blue, legend=:bottomright)
+scatter!(p1, sol.t .* 1000, [u[1] for u in sol.u],
+         label="Simulasi Tsit5() Numerik", ms=3.0, color=:red, shape=:circle)
+hline!(p1, [V0], label="Tegangan Tunak (V0 = 250 V)",
+       ls=:dash, lw=1.2, color=:black)
+vline!(p1, [tau * 1000], label="1 tau = 10 ms (63.2%)",
+       ls=:dash, lw=1.2, color=:green)
+vline!(p1, [5 * tau * 1000], label="5 tau = 50 ms (99.3%)",
+       ls=:dash, lw=1.2, color=:purple)
+plot!(p1, title="Respon Transien Tegangan Kapasitor: v_C(t) vs Waktu",
+      xlabel="Waktu (milidetik)", ylabel="Tegangan v_C [Volt]", grid=true)
+
+p2 = plot(t_eval .* 1000, ic_exact, label="Arus Pengisian i(t)",
+          lw=2.0, color=:crimson, legend=:topright)
+plot!(p2, t_eval .* 1000, (ic_exact.^2 .* R),
+      label="Daya Disipasi Resistor P_R(t) [W]", lw=1.8, color=:darkgreen)
+plot!(p2, title="Dinamika Arus Pengisian dan Daya Disipasi Termal",
+      xlabel="Waktu (milidetik)", ylabel="Arus [A] / Daya [Watt]", grid=true)
+
+final_plot = plot(p1, p2, layout=(2, 1), size=(850, 650))
+savefig(final_plot, "simulasi_transien_rc_julia.png")
+println("Simulasi Julia selesai! File grafik disimpan sebagai 'simulasi_transien_rc_julia.png'.")
+\end{lstlisting}
+
+\section{Evaluasi \& Bank Soal Terstruktur (Taksonomi Bloom C1 s.d. C6)}
+
+Untuk mengevaluasi capaian pembelajaran secara menyeluruh, selesaikan soal-soal berjenjang kognitif berikut:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{C1 (Mengingat):} 
+    Tuliskan syarat perlu dan cukup agar bentuk diferensial $M(x,y)dx + N(x,y)dy = 0$ bersifat eksak. Jelaskan apa yang dimaksud dengan fungsi potensial $F(x,y)$!
+    
+    \item \textbf{C2 (Memahami):}
+    Mengapa tegangan pada kapasitor tidak dapat berubah secara instan dari satu nilai ke nilai lain dalam selang waktu nol ($\Delta t = 0$)? Tunjukkan hubungan matematisnya dengan konsep daya listrik sesaat $p(t) = v(t) \cdot i(t)$.
+    
+    \item \textbf{C3 (Menerapkan):}
+    Tentukan solusi khusus dari Masalah Nilai Awal (IVP) berikut:
+    \begin{equation}
+        \frac{dy}{dx} - 2x y = 4x, \quad y(0) = 3
+    \end{equation}
+    
+    \item \textbf{C4 (Menganalisis):}
+    Tinjau persamaan diferensial non-eksak:
+    \begin{equation}
+        (y + x^4) dx - x dy = 0
+    \end{equation}
+    \begin{enumerate}
+        \item Buktikan bahwa persamaan di atas tidak eksak.
+        \item Tentukan faktor pengintegrasi $\mu(x)$ yang sesuai.
+        \item Selesaikan persamaan tersebut hingga diperoleh solusi implisit $F(x,y) = C$.
+    \end{enumerate}
+    
+    \item \textbf{C5 (Mengevaluasi):}
+    Buktikan secara analitik bahwa efisiensi energi proses pengisian kapasitor ideal $C$ dari sumber tegangan DC konstan $V_0$ melalui resistor $R$ selalu tepat $50\%$, berapapun nilai resistansi $R$ yang digunakan! Evaluasi konsekuensi fisis dari fenomena ini pada perancangan sistem pengisian cepat kendaraan listrik (\textit{EV fast-charging}).
+    
+    \item \textbf{C6 (Menciptakan/Perancangan Komputasi):}
+    Rancanglah suatu fungsi modular di bahasa pemrograman \textbf{Julia} bernama \texttt{simulasi\_snubber\_rc(Vbus, Ipeak, dvdt\_max)} yang secara otomatis:
+    \begin{enumerate}
+        \item Menghitung nilai kapasitansi snubber minimum $C_s$ agar $\left. \frac{dv_C}{dt} \right|_{t=0} \le \left(\frac{dv}{dt}\right)_{\text{max}}$.
+        \item Menghitung nilai resistansi snubber $R_s$ untuk mencegah osilasi liar dengan induktansi parasitik loop.
+        \item Menyelesaikan IVP menggunakan pustaka \texttt{DifferentialEquations.jl} dan memplot kurva peredaman tegangan transien pada saat sakelar dimatikan!
+    \end{enumerate}
+\end{enumerate}
+
+\section{Rangkuman \& Glosarium Istilah Teknis Persamaan Diferensial}
+
+\subsection{Rangkuman Konseptual}
+\begin{itemize}
+    \item \textbf{Persamaan Separabel} diselesaikan dengan mengelompokkan variabel $x$ dan $dx$ pada satu ruas serta $y$ dan $dy$ pada ruas lainnya sebelum melakukan integrasi langsung.
+    \item \textbf{PDB Eksak} merepresentasikan diferensial total dari suatu medan potensial skalar $dF = 0 \implies F(x,y) = C$, diuji dengan kesamaan turunan parsial silang Euler-Clairaut $\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}$.
+    \item \textbf{Faktor Pengintegrasi} $\mu(x,y)$ mengonversi bentuk diferensial non-konservatif menjadi bentuk diferensial eksak. Untuk PDB linier bentuk standar $\frac{dy}{dt} + P(t)y = Q(t)$, faktor pengintegrasi selalu berbentuk $\mu(t) = e^{\int P(t) dt}$.
+    \item \textbf{Kontinuitas Tegangan Kapasitor ($v_C(0^-) = v_C(0^+)$)} adalah hukum kontinuitas energi medan elektrostatik yang menentukan syarat awal Masalah Nilai Awal (IVP).
+    \item \textbf{Konstanta Waktu $\tau = RC$} menentukan skala waktu pengisian kapasitor, di mana pada $t = 5\tau$, tegangan telah mencapai $>99{,}3\%$ nilai mantap tunak DC.
+    \item \textbf{Paradoks Efisiensi 50\%} membuktikan bahwa tepat separuh energi yang disuplai oleh sumber DC pasti terdisipasi menjadi kalor pada resistor saat pengisian kapasitor, terlepas dari besar kecilnya hambatan $R$.
+\end{itemize}
+
+\subsection{Glosarium Istilah Teknis}
+\begin{description}[leftmargin=3.5cm, style=nextline]
+    \item[Separabel:] Bentuk PDB di mana variabel bebas dan terikat dapat dipisahkan secara aljabar ke masing-masing ruas persamaan.
+    \item[Eksak:] Bentuk diferensial yang bersesuaian dengan diferensial total suatu fungsi potensial skalar $F(x,y)$.
+    \item[Euler-Clairaut:] Teorema yang menetapkan syarat kesamaan turunan parsial silang untuk keeksakan diferensial.
+    \item[Fungsi Potensial:] Fungsi skalar dua variabel $F(x,y)$ yang kurva konturnya $F(x,y) = C$ merupakan solusi umum PDB eksak.
+    \item[Faktor Integrasi:] Fungsi pengali $\mu(x,y)$ yang membuat persamaan diferensial non-eksak menjadi eksak.
+    \item[Kapasitansi ($C$):] Kemampuan elemen rangkaian untuk menyimpan muatan dan energi elektrostatik per satuan beda potensial.
+    \item[Arus Perpindahan:] Arus yang mengalir menembus dielektrik kapasitor akibat laju perubahan tegangan ($i = C \frac{dv}{dt}$).
+    \item[Konstanta Waktu ($RC$):] Waktu yang dibutuhkan sistem transien orde satu untuk mencapai $63{,}2\%$ dari nilai perubahan totalnya.
+    \item[Snubber RC:] Rangkaian proteksi sakelar semikonduktor daya untuk membatasi laju kenaikan tegangan transien ($dv/dt$).
+\end{description}
+
+\section{Referensi Standar Industri \& Pustaka Rujukan}
+
+\begin{enumerate}[leftmargin=*]
+    \item Erwin Kreyszig, \textit{Advanced Engineering Mathematics}, 10th Edition, John Wiley \& Sons, 2020.
+    \item Dennis G. Zill, \textit{A First Course in Differential Equations with Modeling Applications}, 11th Edition, Cengage Learning, 2018.
+    \item William H. Hayt, Jack E. Kemmerly, Jamie D. Phillips, dan Steven M. Durbin, \textit{Engineering Circuit Analysis}, 9th Edition, McGraw-Hill Education, 2019.
+    \item Ned Mohan, Tore M. Undeland, dan William P. Robbins, \textit{Power Electronics: Converters, Applications, and Design}, 3rd Edition, John Wiley \& Sons, 2021.
+    \item Muhammad H. Rashid, \textit{Power Electronics: Devices, Circuits, and Applications}, 4th Edition, Pearson Education, 2018.
+    \item IEEE Std C37.010-2016, \textit{IEEE Application Guide for AC High-Voltage Circuit Breakers Rated on a Symmetrical Current Basis}.
+    \item Chris Rackauckas dan Qing Nie, \textit{DifferentialEquations.jl -- A Performant and Feature-Rich Ecosystem for Solving Differential Equations in Julia}, Journal of Open Research Software, 2017.
+\end{enumerate}
 
 \end{document}

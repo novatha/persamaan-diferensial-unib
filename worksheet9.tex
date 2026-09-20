@@ -1,57 +1,173 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
+\usepackage[top=1.5cm, bottom=1.5cm, left=1.6cm, right=1.6cm, headheight=14pt, footskip=18pt]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsfonts,amssymb}
-\usepackage{geometry}
-\geometry{margin=1in}
-\usepackage{hyperref}
-\usepackage[many]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{calc,patterns}
+\usepackage[most]{tcolorbox}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{hyperref}
 
+% --- Palet Warna Resmi UNIB ---
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{boxbg}{RGB}{248, 250, 253}
+\definecolor{linegray}{RGB}{210, 215, 225}
+
+% --- Pengaturan Header & Footer ---
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[L]{Universitas Bengkulu - Teknik Elektro}
-\fancyfoot[C]{\scriptsize\textit{Kompilasi: \today}}
-\fancyfoot[R]{\thepage}
-\def\footrule{{\color{gray}\hrule}}
+\lhead{\footnotesize\textbf{\color{unibblue}Universitas Bengkulu} \textbar\ Program Studi S1 Teknik Elektro}
+\rhead{\footnotesize\color{gray}Persamaan Diferensial (Genap 2026)}
+\lfoot{\footnotesize\color{gray}Lembar Kerja Mahasiswa (LKM) Berbasis OBE}
+\cfoot{\footnotesize\color{gray}Hal. \thepage\ dari 2}
+\rfoot{\footnotesize\color{unibblue}\textbf{Minggu 9: Deret Fourier Trigonometrik \& An...}}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\footrulewidth}{0.4pt}
 
-\title{\vspace{-2cm}\textbf{Lembar Kerja Mahasiswa (Belajar Mandiri)\\Persamaan Diferensial - Minggu 9: Latihan PDP \& Deret Fourier}}
-\author{Novalio Daratha \& Muhammad Arfan\\Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% --- Custom Box untuk Lembar Jawab ---
+\newtcolorbox{answerbox}[1]{%
+  colback=white,
+  colframe=unibblue!70!black,
+  coltitle=white,
+  fonttitle=\bfseries\scriptsize,
+  colbacktitle=unibblue,
+  title={#1},
+  arc=2pt,
+  left=5pt,right=5pt,top=3pt,bottom=3pt,
+  boxrule=0.6pt
+}
 
 \begin{document}
 
-\maketitle
+% ==================== HALAMAN 1 ====================
+\noindent\begin{minipage}[c]{0.68\textwidth}%
+  {\large\textbf{\color{unibblue}LEMBAR KERJA MAHASISWA (LKM)}}\\[1mm]
+  {\normalsize\textbf{Mata Kuliah: Persamaan Diferensial (2 SKS)}}\\[0.5mm]
+  {\small\textbf{Topik Minggu 9:} Deret Fourier Trigonometrik \& Analisis Harmonisa Beban}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[c]{0.30\textwidth}%
+  \begin{tcolorbox}[colback=unibblue!5,colframe=unibblue,boxrule=0.6pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt]
+    \scriptsize
+    \textbf{Nama:} \dotfill\\[1.2mm]
+    \textbf{NPM:} \dotfill\\[1.2mm]
+    \textbf{Kelas/Klp:} \dotfill\\[1.2mm]
+    \textbf{Nilai Final:} \hfill \textbf{/ 100}
+  \end{tcolorbox}%
+\end{minipage}\par
 
-\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Instruksi LKM]
-Kerjakan soal-soal berikut secara mandiri atau dalam kelompok diskusi kecil. Soal disusun berdasarkan tingkat kesulitan Taksonomi Bloom (C1--C6) untuk melatih pemahaman Anda terkait Pengantar PDP dan Deret Fourier. Alokasikan waktu sekitar 45--60 menit untuk berdiskusi.
+\vspace{1.5mm}
+
+% Kotak Sub-CPMK & Pedoman
+\begin{tcolorbox}[colback=boxbg,colframe=unibgold!90!black,boxrule=0.6pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,title=\textbf{\scriptsize Capaian Pembelajaran (Sub-CPMK 5) \& Pedoman Evaluasi OBE}]
+  \scriptsize
+  \textbf{Sub-CPMK 5:} Mahasiswa mampu merepresentasikan gelombang periodik tak-sinusoidal ke dalam Deret Fourier trigonometrik dan menganalisis distorsi harmonisa (THD) pada sistem kelistrikan sesuai IEEE Std 519.\\
+  \textbf{Alokasi Waktu:} 50--60 Menit \quad\textbar\quad \textbf{Model:} Kolaboratif / Mandiri Terstruktur \quad\textbar\quad \textbf{Bahasa Komputasi:} Julia 1.12+
 \end{tcolorbox}
 
-\section*{Soal-Soal Latihan}
+\vspace{1mm}
 
-\begin{enumerate}[label=\textbf{\arabic*.}]
-    \item \textbf{(C1 - Mengingat)} Tuliskan persamaan matematis umum untuk menemukan koefisien $a_0$, $a_n$, dan $b_n$ dalam deret Fourier.
-    \vspace{2.5cm}
+% Soal C1
+\noindent\textbf{1. (C1 - Mengingat \textbar\ Bobot: 10 Poin)}\par\vspace{0.5mm}
+{\footnotesize Tuliskan bentuk umum Deret Fourier trigonometrik untuk fungsi periodik $f(t)$ dengan periode $T = 2\pi/\omega_0$, dan tuliskan rumus integral penentuan koefisien $a_0$, $a_n$, dan $b_n$.}
+\begin{answerbox}{Ruang Pengerjaan C1 (Definisi Deret Fourier \& Integral Euler-Fourier)}
+  \vspace{2.0cm}
+\end{answerbox}
 
-    \item \textbf{(C2 - Memahami)} Diberikan sebuah string kawat listrik yang memiliki persamaan perambatan gelombang: $\frac{\partial^2 u}{\partial t^2} = 9 \frac{\partial^2 u}{\partial x^2}$. Tentukan berapakah nilai kecepatan perambatan gelombang ($c$) tersebut dan jelaskan satuan fisisnya.
-    \vspace{3cm}
+\vspace{1mm}
 
-    \item \textbf{(C3 - Mengaplikasikan)} Tentukan nilai konstanta $a_0$ (komponen DC rata-rata) dari fungsi: $f(t) = |t|$ untuk selang interval $-2 < t < 2$.
-    \vspace{4.5cm}
+% Soal C2
+\noindent\textbf{2. (C2 - Memahami \textbar\ Bobot: 15 Poin)}\par\vspace{0.5mm}
+{\footnotesize Jelaskan sifat kesimetrian fungsi genap ($f(-t) = f(t)$), fungsi ganjil ($f(-t) = -f(t)$), dan kesimetrian setengah gelombang (*half-wave symmetry*). Bagaimana kesimetrian ini menyederhanakan perhitungan koefisien Fourier?}
+\begin{answerbox}{Ruang Pengerjaan C2 (Pemanfaatan Sifat Kesimetrian Sinyal Listrik)}
+  \vspace{2.1cm}
+\end{answerbox}
 
-    \item \textbf{(C4 - Menganalisis)} Buktikan menggunakan definisi $f(-t) = -f(t)$ atau $f(-t) = f(t)$ bahwa perkalian antara sebuah fungsi genap dan fungsi ganjil akan selalu menghasilkan sebuah fungsi ganjil yang baru. (Petunjuk: misalkan $g(t)$ ganjil dan $h(t)$ genap, maka $y(t) = g(t)h(t)$).
-    \vspace{4.5cm}
+\vspace{1mm}
 
-    \item \textbf{(C5 - Mengevaluasi)} Seorang desainer merancang representasi Deret Fourier untuk sinyal sinusoidal murni $f(t) = 3\sin(2\pi t)$. Karena dia menganggap sinyal itu periodik, ia mencoba menghitung ulang nilai integral untuk semua harmonik ke-$n$. Evaluasi pemborosan langkah kerjanya; berapakah nilai langsung (tanpa menghitung integral panjang) untuk $b_1$, dan $b_n$ untuk $n \neq 1$? Mengapa demikian?
-    \vspace{5cm}
+% Soal C3
+\noindent\textbf{3. (C3 - Menerapkan \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+\noindent\begin{minipage}[t]{0.60\textwidth}%
+  {\footnotesize Tegangan keluaran inverter fotovoltaik satu fasa berbentuk gelombang persegi simetris ganjil: $v(t) = +V_d$ untuk $0 < t < T/2$ dan $-V_d$ untuk $T/2 < t < T$. Turunkan deret Fourier trigonometrik analitis dari tegangan tersebut.}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.37\textwidth}%
+  \centering
+  \resizebox{0.95\linewidth}{!}{%
+  \begin{circuitikz}[scale=0.65, transform shape]
+    \draw[->, >=stealth] (-0.2,0) -- (3.5,0) node[right, font=\tiny] {$t$};
+    \draw[->, >=stealth] (0,-1.3) -- (0,1.5) node[above, font=\tiny] {$v(t)$};
+    \draw[very thick, unibblue] (0,1) -- (1.5,1) -- (1.5,-1) -- (3,-1) -- (3,1) -- (3.3,1);
+    \draw[dashed, gray] (1.5,0) node[below, font=\tiny] {$T/2$} -- (1.5,1);
+    \draw[dashed, gray] (3,0) node[below, font=\tiny] {$T$} -- (3,-1);
+    \node at (-0.4,1) [font=\tiny\bfseries] {$+V_d$};
+    \node at (-0.4,-1) [font=\tiny\bfseries] {$-V_d$};
+  \end{circuitikz}%
+  }%
+\end{minipage}\par\vspace{1mm}
+\begin{answerbox}{Ruang Pengerjaan C3 (Penurunan Koefisien Fourier Gelombang Inverter)}
+  \vspace{2.8cm}
+\end{answerbox}
 
-    \item \textbf{(C6 - Mencipta)} Ciptakan sebuah sketsa gambar fungsi ganjil sembarang yang periode gelombangnya adalah $T = 4$ dan bernilai konstanta di tiap segmen waktunya. Lalu tunjukkan kerangka integrasi untuk mencari $b_n$ dari gambar ciptaan Anda (tanpa perlu dihitung hasil akhirnya).
-    \vspace{5cm}
-\end{enumerate}
+\newpage
+% ==================== HALAMAN 2 ====================
 
-\vfill
-\begin{center}
-\textbf{Semoga berhasil!}
-\end{center}
+% Soal C4
+\noindent\textbf{4. (C4 - Menganalisis \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+{\footnotesize Analisis Distorsi Harmonisa Total (\textit{Total Harmonic Distortion} / THD) tegangan yang didefinisikan oleh \textbf{IEEE Std 519}: $\text{THD}_v = \frac{\sqrt{\sum_{n=2}^\infty V_n^2}}{V_1} \times 100\%$. Berdasarkan deret Fourier Soal 3, buktikan bahwa $\text{THD}_v$ gelombang persegi murni bernilai $\approx 48{,}34\%$!}
+\begin{answerbox}{Ruang Pengerjaan C4 (Pembuktian Analitis THD Tegangan Standar IEEE 519)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Soal C5
+\noindent\textbf{5. (C5 - Mengevaluasi \textbar\ Bobot: 20 Poin)}\par\vspace{0.5mm}
+{\footnotesize Evaluasi Fenomena Gibbs: Saat merekonstruksi diskontinuitas loncatan gelombang persegi dengan jumlah harmonisa berhingga ($N \to \infty$), lonjakan (*overshoot*) tidak lenyap melainkan konvergen ke $8{,}95\%$. Jelaskan mengapa penambahan suku harmonisa tinggi tidak dapat menghilangkan lonjakan ini!}
+\begin{answerbox}{Ruang Pengerjaan C5 (Evaluasi Fenomena Gibbs \& Konvergensi Titik Diskontinu)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Soal C6
+\noindent\textbf{6. (C6 - Merancang \& Komputasi Julia \textbar\ Bobot: 15 Poin)}\par\vspace{0.5mm}
+{\footnotesize Rancang skrip program \textbf{Julia} untuk merekonstruksi deret Fourier gelombang persegi hingga harmonisa ke-$N$ ($N=1, 3, 5, 25$) dan memplot perbandingan kurvanya untuk memvisualisasikan fenomena Gibbs.}
+\begin{answerbox}{Ruang Pengerjaan C6 (Skrip Rekonstruksi Parsial Deret Fourier Julia)}
+  \vspace{3.8cm}
+\end{answerbox}
+
+\vspace{1.5mm}
+
+% Tabel Rekapitulasi Skor OBE & Tanda Tangan
+\noindent\begin{minipage}[b]{0.65\textwidth}%
+  \centering
+  \scriptsize
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \rowcolor{unibblue}
+    \textbf{\color{white}C1} & \textbf{\color{white}C2} & \textbf{\color{white}C3} & \textbf{\color{white}C4} & \textbf{\color{white}C5} & \textbf{\color{white}C6} & \textbf{\color{white}Total} \\
+    \rowcolor{unibblue!10}
+    10 Pts & 15 Pts & 20 Pts & 20 Pts & 20 Pts & 15 Pts & 100 Pts \\
+    \hline
+    & & & & & & \\[2.5mm]
+    \hline
+  \end{tabular}%
+\end{minipage}%
+\hfill%
+\begin{minipage}[b]{0.32\textwidth}%
+  \centering
+  \scriptsize
+  \textbf{Verifikasi Dosen / Asisten:}\\[5mm]
+  (\dotfill)
+\end{minipage}\par
 
 \end{document}

@@ -4,122 +4,548 @@
 
 \usepackage{hyperref}
 \usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc}
+\usepackage{circuitikz}
 \usepackage{amsmath,amssymb}
+\usepackage{listings}
+\lstdefinestyle{juliastyle}{language=Julia,basicstyle=\ttfamily\tiny,keywordstyle=\bfseries\color{unibblue},commentstyle=\color{gray}\itshape,stringstyle=\color{unibgreen},backgroundcolor=\color{softgray},frame=single,rulecolor=\color{unibblue!30},breaklines=true,breakatwhitespace=true,showstringspaces=false,tabsize=2,numbers=none}
+\usepackage{booktabs}
 
 % --- Custom Colors ---
-\definecolor{unibblue}{RGB}{0,51,102}
-\definecolor{unibgold}{RGB}{212,175,55}
-\definecolor{unibgreen}{RGB}{0,128,0}
+\definecolor{unibblue}{RGB}{0, 32, 96}
+\definecolor{unibgold}{RGB}{197, 160, 89}
+\definecolor{unibgreen}{RGB}{34, 112, 60}
+\definecolor{softgray}{RGB}{245, 247, 250}
 
 \setbeamercolor{palette primary}{bg=unibblue,fg=white}
 \setbeamercolor{palette secondary}{bg=unibblue!85,fg=white}
 \setbeamercolor{palette tertiary}{bg=unibblue!70,fg=white}
 \setbeamercolor{structure}{fg=unibblue}
-\setbeamercolor{block title}{bg=unibblue!85,fg=white}
-\setbeamercolor{block body}{bg=unibblue!10,fg=black}
-\setbeamercolor{alertblock title}{bg=unibgold!90,fg=black}
+\setbeamercolor{titlelike}{parent=structure,bg=unibblue,fg=white}
+\setbeamercolor{block title}{bg=unibblue!90,fg=white}
+\setbeamercolor{block body}{bg=unibblue!8,fg=black}
+\setbeamercolor{alertblock title}{bg=unibgold!95,fg=black}
 \setbeamercolor{alertblock body}{bg=unibgold!15,fg=black}
+\setbeamercolor{exampleblock title}{bg=unibgreen!90,fg=white}
+\setbeamercolor{exampleblock body}{bg=unibgreen!10,fg=black}
 
-\title{Persamaan Diferensial}
-\subtitle{Minggu 10: Metode Pemisahan Variabel (*Separation of Variables*) pada PDP}
-\author{Novalio Daratha \& Muhammad Arfan}
-\institute{Program Studi Teknik Elektro\\Universitas Bengkulu}
-\date[\today]{2026 \\ \vspace{2mm}\small\textit{Tanggal Kompilasi: \today}}
+% Listings setup for Julia
+\lstdefinelanguage{Julia}{
+  keywords={abstract,break,case,catch,const,continue,do,else,elseif,end,export,false,for,function,global,if,import,let,local,macro,module,mutable,primitive,quote,return,struct,true,try,type,using,var,while},
+  sensitive=true,
+  comment=[l]{\#},
+  string=[b]"
+}
+\lstset{
+  language=Julia,
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{blue!80!black}\bfseries,
+  commentstyle=\color{green!50!black}\itshape,
+  stringstyle=\color{red!80!black},
+  breaklines=true,
+  numbers=none,
+  frame=single,
+  backgroundcolor=\color{gray!5},
+  aboveskip=2pt,
+  belowskip=2pt
+}
+
+\title[Persamaan Diferensial (Minggu 10)]{Persamaan Diferensial}
+\subtitle{Minggu 10: Metode Pemisahan Variabel (*Separation of Variables*): Masalah Nilai Batas BVP, Nilai Eigen, Dirichlet/Neumann, dan Rekonstruksi Superposisi}
+\author[Novalio \& Arfan (UNIB)]{Ir. Novalio Daratha, S.T., M.Sc., Ph.D. \& Muhammad Arfan, S.T., M.T.}
+\institute[Teknik Elektro UNIB]{Program Studi S1 Teknik Elektro, Jurusan Teknik Elektro \& Informatika\\Fakultas Teknik, Universitas Bengkulu}
+\date[2026]{Semester Genap 2026}
 
 \begin{document}
 
-\begin{frame}
+% -------------------------------------------------------------
+% FRAME 1: Title Frame
+% -------------------------------------------------------------
+\begin{frame}[plain]
   \titlepage
 \end{frame}
 
-\begin{frame}{Capaian Pembelajaran (CPMK 4)}
-  \begin{itemize}
-    \item \textbf{CPMK 4.1:} Memahami prinsip dasar pemisahan variabel: memecah PDP multi-variabel menjadi 2 atau lebih PDB independen.
-    \item \textbf{CPMK 4.2:} Memahami peran konstanta pemisahan (*separation constant* $k$ atau $-\lambda^2$) dan justifikasi fisiknya.
-    \item \textbf{CPMK 4.3:} Menerapkan syarat batas (*Boundary Conditions*) Dirichlet dan Neumann pada PDB spasial (Masalah Nilai Eigen).
-    \item \textbf{CPMK 4.4:} Menggabungkan solusi eigen menggunakan prinsip superposisi dan koefisien Fourier.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Daftar Isi}
-  \tableofcontents
-\end{frame}
-
-\section{Prinsip Dasar Pemisahan Variabel}
-\begin{frame}{Konsep Pemisahan Produk Fungsi}
-  Misalkan kita ingin mencari solusi $u(x,t)$ dari PDP linear:
-  \begin{block}{Asumsi Pemisahan Produk}
-    $$ {\color{unibblue} u(x,t) = X(x) \cdot T(t)} $$
-    Fungsi multi-variabel $u(x,t)$ diasumsikan merupakan perkalian antara fungsi murni spasial $X(x)$ dan fungsi murni temporal $T(t)$.
+% -------------------------------------------------------------
+% FRAME 2: Sub-CPMK OBE Bloom Taxonomy C1-C6
+% -------------------------------------------------------------
+\begin{frame}{Sub-CPMK Taksonomi Bloom (Minggu 10)}
+  \begin{block}{Sub-Capaian Pembelajaran Mata Kuliah (Sub-CPMK 5)}
+    Setelah menyelesaikan pembelajaran pada modul Minggu 10 ini, mahasiswa mampu:
+    \begin{itemize}
+      \item \textbf{C1 (Mengingat):} Menyatakan postulat dasar pemisahan variabel produk ($u = X \cdot T$) dan masalah Sturm-Liouville.
+      \item \textbf{C2 (Memahami):} Menjelaskan alasan fisis pemilihan konstanta pemisahan negatif ($-\lambda^2$) untuk kestabilan energi sistem.
+      \item \textbf{C3 (Menerapkan):} Menurunkan nilai eigen ($\lambda_n$) dan fungsi eigen ortogonal ($X_n$) di bawah syarat batas homogen.
+      \item \textbf{C4 (Menganalisis):} Mengonstruksi solusi analitis ruang-waktu kontinu melalui deret superposisi ortogonal Fourier.
+      \item \textbf{C5 (Mengevaluasi):} Mengevaluasi laju disipasi termal konduktor busbar gardu induk sesuai \textbf{IEEE Std 738} \& \textbf{IEC 60865-1}.
+      \item \textbf{C6 (Menciptakan/Komputasi):} Mengembangkan skrip komputasi ilmiah berbasis \textbf{Julia} untuk visualisasi difusi multiragam.
+    \end{itemize}
   \end{block}
-  \pause
-  Turunan parsial menjadi turunan total biasa:
-  $$ \frac{\partial u}{\partial t} = X(x) \frac{dT}{dt} = X T', \quad \frac{\partial^2 u}{\partial x^2} = \frac{d^2X}{dx^2} T(t) = X'' T $$
 \end{frame}
 
-\section{Studi Kasus: Pemisahan pada Persamaan Panas 1D}
-\begin{frame}{Penurunan Dua PDB Terpisah}
-  Tinjau: $\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}$.
-  \pause
-  Substitusi $u(x,t) = X(x)T(t)$:
-  $$ X T' = \alpha X'' T \implies \frac{T'}{\alpha T} = \frac{X''}{X} $$
-  \pause
-  \begin{alertblock}{Argumen Konstanta Pemisahan}
-    Ruas kiri hanya bergantung pada $t$, ruas kanan hanya bergantung pada $x$. Agar persamaan ini bernilai sama untuk setiap $x$ dan $t$ sembarang, kedua ruas harus bernilai konstan yang sama ($-\lambda^2$):
-    $$ \frac{X''}{X} = -\lambda^2 \implies {\color{unibblue} X'' + \lambda^2 X = 0} \quad \text{(PDB Spasial)} $$
-    $$ \frac{T'}{\alpha T} = -\lambda^2 \implies {\color{unibblue} T' + \alpha\lambda^2 T = 0} \quad \text{(PDB Waktu)} $$
+% -------------------------------------------------------------
+% FRAME 3: Peta Kurikulum & Filosofi Pemisahan Variabel
+% -------------------------------------------------------------
+\begin{frame}{Peta Kurikulum: Jembatan PDP Menuju PDB Independen}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Tantangan Matematis PDP}
+        \small
+        \begin{itemize}
+          \item Menghubungkan turunan ruang $x$ dan waktu $t$ simultan ($u_t = \alpha u_{xx}$).
+          \item Tidak dapat diselesaikan dengan faktor integrasi PDB biasa.
+          \item Membutuhkan pemisahan dependensi ruang dari waktu!
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Strategi Pemisahan Variabel (Fourier)}
+        \small
+        \begin{itemize}
+          \item \textbf{1. Ansatz:} $u(x,t) = X(x) \cdot T(t)$.
+          \item \textbf{2. Separasi:} $\frac{T'}{\alpha T} = \frac{X''}{X} = -\lambda$.
+          \item \textbf{3. BVP Spasial:} Nilai \& fungsi eigen.
+          \item \textbf{4. Superposisi:} Jumlahan deret tak hingga untuk memenuhi syarat awal $u(x,0)$.
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+  \vspace{0.05cm}
+  \begin{exampleblock}{Prinsip Superposisi Linier}
+    \small
+    Untuk operator linier homogen $\mathcal{L}(u) = 0$, kombinasi linier solusi eigen $u(x,t) = \sum_{n=1}^\infty C_n X_n(x) T_n(t)$ adalah solusi analitis eksak.
+  \end{exampleblock}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 4: Postulat Produk Fungsi & Reduksi ke Dua PDB
+% -------------------------------------------------------------
+\begin{frame}{Postulat Produk Fungsi (\textit{Product Ansatz}) \& Reduksi PDP}
+  Tinjau persamaan difusi panas atau tegangan saluran transmisi teredam:
+  \begin{equation*}
+    \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}, \quad 0 < x < L, \quad t > 0
+  \end{equation*}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{1. Substitusi Produk Fungsi}
+        Asumsikan $u(x, t) = X(x) \cdot T(t)$.\\
+        Turunan parsial berubah menjadi turunan total:
+        \begin{equation*}
+          \frac{\partial u}{\partial t} = X(x) \frac{dT}{dt} = X T', \quad \frac{\partial^2 u}{\partial x^2} = X'' T
+        \end{equation*}
+        Substitusi ke persamaan asal:
+        \begin{equation*}
+          X(x) T'(t) = \alpha X''(x) T(t)
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{2. Pemisahan Variabel Mandiri}
+        Bagi kedua ruas dengan $\alpha X(x) T(t)$:
+        \begin{equation*}
+          \frac{T'(t)}{\alpha T(t)} = \frac{X''(x)}{X(x)} = -\lambda
+        \end{equation*}
+        \small
+        Ruas kiri murni fungsi waktu $t$, ruas kanan murni fungsi posisi $x$.
+        Kesamaan ini hanya berlaku jika keduanya bernilai \textbf{konstan} ($-\lambda$).
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 5: Pemilihan Tanda Konstanta Pemisahan & Stabilitas Energi
+% -------------------------------------------------------------
+\begin{frame}{Pemilihan Tanda Konstanta Pemisahan: Justifikasi Fisika}
+  Mengapa kita memilih konstanta separasi negatif ($-\lambda = -k^2 < 0$)?
+  \vspace{0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.31\textwidth}
+      \begin{exampleblock}{Kasus 1: Positif ($+k^2 > 0$)}
+        \small
+        $T'(t) = \alpha k^2 T(t)$\\
+        $T(t) = C e^{+\alpha k^2 t}$\\
+        \textbf{Fisika:} Temperatur/energi meledak tak hingga saat $t \to \infty$ ($e^{\infty} = \infty$).\\
+        \textbf{Status:} \color{red}\textbf{Ditolak (Non-fisik!)}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{block}{Kasus 2: Nol ($k = 0$)}
+        \small
+        $T'(t) = 0 \implies T(t) = C_0$\\
+        $X''(x) = 0 \implies X(x) = Ax + B$\\
+        \textbf{Fisika:} Distribusi temperatur linier keadaan tunak (\textit{steady-state}) tanpa redaman.\\
+        \textbf{Status:} Hanya relevan pada Neumann ($n=0$).
+      \end{block}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{alertblock}{Kasus 3: Negatif ($-k^2 < 0$)}
+        \small
+        $T'(t) = -\alpha k^2 T(t)$\\
+        $T(t) = C e^{-\alpha k^2 t}$\\
+        $X''(x) + k^2 X(x) = 0$\\
+        $X(x) = A\cos(kx) + B\sin(kx)$\\
+        \textbf{Fisika:} Energi disipatif stabil meluruh seiring waktu.\\
+        \textbf{Status:} \color{unibgreen}\textbf{Diterima Secara Fisis!}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 6: Tiga Tipe Syarat Batas Kanonik
+% -------------------------------------------------------------
+\begin{frame}{Klasifikasi Fisis Syarat Batas (\textit{Boundary Conditions})}
+  Syarat batas mendikte bagaimana sistem berinteraksi dengan lingkungan sekitarnya pada $x = 0$ dan $x = L$:
+  \vspace{0.1cm}
+  \begin{columns}[t]
+    \begin{column}{0.31\textwidth}
+      \begin{block}{Dirichlet (Nilai Terikat)}
+        \small
+        \textbf{Definisi:} $u(0, t) = U_1, \; u(L, t) = U_2$.\\
+        \textbf{Elektro:} Potensial pelat ditanahkan ($V = 0$) atau dicatu sumber konstan ($V = V_0$).\\
+        \textbf{Termal:} Ujung konduktor dijaga pada temperatur konstan oleh \textit{heat sink masif}.
+      \end{block}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{alertblock}{Neumann (Fluks Terisolasi)}
+        \small
+        \textbf{Definisi:} $\left.\frac{\partial u}{\partial x}\right|_0 = 0, \; \left.\frac{\partial u}{\partial x}\right|_L = 0$.\\
+        \textbf{Elektro:} Saluran transmisi ujung terbuka ($i = 0$), atau medan listrik ortogonal batas isolator sempurna.\\
+        \textbf{Termal:} Insulasi termal adiabatik sempurna (tanpa kebocoran fluks kalor).
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{exampleblock}{Robin (Campuran / Disipatif)}
+        \small
+        \textbf{Definisi:} $\alpha u + \beta \frac{\partial u}{\partial x} = 0$.\\
+        \textbf{Elektro:} Saluran transmisi ditutup beban impedansi terminasi ($Z_L$).\\
+        \textbf{Termal:} Pendinginan konveksi udara Newton pada permukaan kabel ($\dot{q} = h(T - T_\infty)$).
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 7: Nilai Eigen & Fungsi Eigen Ortogonal
+% -------------------------------------------------------------
+\begin{frame}{Masalah Nilai Eigen Spasial Sturm-Liouville}
+  \begin{block}{Persamaan Diferensial Spasial Homogen}
+    Untuk batas Dirichlet homogen: $X''(x) + k^2 X(x) = 0$ dengan $X(0) = 0$ dan $X(L) = 0$.
+  \end{block}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Penentuan Nilai Eigen $\lambda_n$}
+        \small
+        Solusi sinusoidal: $X(x) = A \cos(kx) + B \sin(kx)$.\\[2pt]
+        Terapkan syarat batas:
+        \begin{itemize}
+          \item $X(0) = A(1) = 0 \implies \mathbf{A = 0}$
+          \item $X(L) = B \sin(kL) = 0 \implies \mathbf{k_n = \frac{n\pi}{L}}$
+        \end{itemize}
+        Nilai eigen kuadratik: $\lambda_n = (n\pi/L)^2, \; n = 1, 2, \dots$
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Fungsi Eigen Ortogonal $X_n(x)$}
+        \small
+        Setiap nilai eigen $k_n$ menghasilkan fungsi eigen:
+        \begin{equation*}
+          \mathbf{X_n(x) = \sin\left(\frac{n\pi x}{L}\right)}
+        \end{equation*}
+        \textbf{Sifat Fisik Ragam Harmonis:}
+        \begin{itemize}
+          \item $n = 1$: Ragam fundamental (setengah gelombang).
+          \item $n = 2$: Nada atas pertama (satu gelombang penuh).
+          \item Saling ortogonal pada selang $[0, L]$.
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 8: Diagram Fisik Busbar & Profil Spasial
+% -------------------------------------------------------------
+\begin{frame}{Diagram Fisik: Difusi Termal Konduktor Busbar GITET 500 kV}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Pemodelan Fisis Konduktor Busbar}
+        \centering
+        \resizebox{\linewidth}{!}{%
+        \begin{tikzpicture}[>=stealth, scale=0.9]
+          % Busbar rod
+          \draw[fill=orange!30, thick] (0, 0.5) rectangle (5, 1.2);
+          \node at (2.5, 0.85) {\textbf{Konduktor Busbar Tembaga} ($L = 2\text{ m}$)};
+          % Heat sinks at ends
+          \draw[fill=blue!40, thick] (-0.6, 0) rectangle (0, 1.7);
+          \node[rotate=90, font=\tiny] at (-0.3, 0.85) {Klem Tanah ($0^\circ\text{C}$)};
+          \draw[fill=blue!40, thick] (5, 0) rectangle (5.6, 1.7);
+          \node[rotate=-90, font=\tiny] at (5.3, 0.85) {Klem Tanah ($0^\circ\text{C}$)};
+          % Ground symbols
+          \draw (-0.3, 0) -- (-0.3, -0.4);
+          \draw (-0.5, -0.4) -- (-0.1, -0.4);
+          \draw (-0.4, -0.5) -- (-0.2, -0.5);
+          \draw (5.3, 0) -- (5.3, -0.4);
+          \draw (5.1, -0.4) -- (5.5, -0.4);
+          \draw (5.2, -0.5) -- (5.4, -0.5);
+          % Heat source
+          \draw[->, very thick, red!80!black] (2.5, 2.2) -- (2.5, 1.3);
+          \node[above, red!80!black, font=\scriptsize] at (2.5, 2.2) {Hubung Singkat $I_{\text{sc}} = 40\text{ kA}$};
+        \end{tikzpicture}
+        }
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Profil Temperatur Transien $u(x, t)$}
+        \centering
+        \resizebox{\linewidth}{!}{%
+        \begin{tikzpicture}[>=stealth, scale=0.85]
+          \draw[->, thick] (0, 0) -- (4.5, 0) node[right] {$x$};
+          \draw[->, thick] (0, 0) -- (0, 2.8) node[above] {$u(x,t)$ [$^\circ\text{C}$]};
+          % Initial triangle profile
+          \draw[line width=1.5pt, red!80!black] (0, 0) -- (2, 2.2) -- (4, 0);
+          \node[red!80!black, font=\scriptsize] at (2, 2.4) {$t = 0$ (Segitiga $200^\circ\text{C}$)};
+          % Transient curves
+          \draw[thick, orange, domain=0:4, samples=80] plot (\x, {1.6*sin(\x*45)});
+          \node[orange, font=\scriptsize] at (3.1, 1.4) {$t = 10\text{ s}$};
+          \draw[thick, unibblue, domain=0:4, samples=80] plot (\x, {0.8*sin(\x*45)});
+          \node[unibblue, font=\scriptsize] at (3.1, 0.6) {$t = 60\text{ s}$};
+          \node[below, font=\scriptsize] at (4, 0) {$x = L$};
+        \end{tikzpicture}
+        }
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 9: Contoh Soal Terhitung Langkah demi Langkah
+% -------------------------------------------------------------
+\begin{frame}{Contoh Terhitung: Masalah Nilai Batas Dirichlet}
+  \begin{exampleblock}{Masalah Difusi 1D: $u_t = 4 u_{xx}$ pada $0 < x < \pi$, $t > 0$}
+    Syarat batas: $u(0, t) = u(\pi, t) = 0$. Syarat awal: $u(x, 0) = 3\sin(x) - 7\sin(3x) + 2\sin(5x)$.
+  \end{exampleblock}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Penurunan Fungsi Eigen}
+        \small
+        \textbf{1. Nilai Eigen Spasial ($L = \pi$):}
+        $k_n = n, \quad X_n(x) = \sin(nx)$.\\[2pt]
+        \textbf{2. Solusi Temporal ($\alpha = 4$):}
+        $T_n'(t) = -4n^2 T_n(t) \implies T_n(t) = e^{-4n^2 t}$.\\[2pt]
+        \textbf{3. Superposisi Solusi Umum:}
+        \begin{equation*}
+          u(x, t) = \sum_{n=1}^{\infty} C_n \sin(nx) e^{-4n^2 t}
+        \end{equation*}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pencocokan Koefisien \& Solusi}
+        \small
+        \textbf{4. Syarat Awal ($t = 0$):}
+        \begin{align*}
+          u(x, 0) &= \sum_{n=1}^{\infty} C_n \sin(nx) \\
+                  &= 3\sin(x) - 7\sin(3x) + 2\sin(5x)
+        \end{align*}
+        Inspeksi: $C_1 = 3, \; C_3 = -7, \; C_5 = 2, \; C_{\text{lain}} = 0$.\\[2pt]
+        \textbf{5. Solusi Analitis Eksak:}
+        \begin{align*}
+          u(x, t) &= 3\sin(x)e^{-4t} - 7\sin(3x)e^{-36t} \\
+                  &\quad + 2\sin(5x)e^{-100t}
+        \end{align*}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 10: Kasus Batas Neumann (Ujung Terisolasi)
+% -------------------------------------------------------------
+\begin{frame}{Kasus Batas Neumann: Ujung Batang Terisolasi}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Syarat Batas Fluks Nol ($u_x = 0$)}
+        \small
+        Batas terisolasi: $X'(0) = 0$ dan $X'(L) = 0$.\\
+        Turunan fungsi umum $X(x) = A\cos(kx) + B\sin(kx)$:
+        \begin{equation*}
+          X'(x) = -k A \sin(kx) + k B \cos(kx)
+        \end{equation*}
+        \begin{itemize}
+          \item $X'(0) = k B (1) = 0 \implies \mathbf{B = 0}$
+          \item $X'(L) = -k A \sin(kL) = 0 \implies \mathbf{k_n = \frac{n\pi}{L}}$
+        \end{itemize}
+        Untuk $n = 0$: $k_0 = 0 \implies \mathbf{X_0(x) = 1}$ (\textbf{Ragam Nol}).
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Deret Superposisi Kosinus Neumann}
+        \small
+        Solusi lengkap memuat konstanta nilai rata-rata:
+        \begin{equation*}
+          u(x, t) = A_0 + \sum_{n=1}^{\infty} A_n \cos\left(\frac{n\pi x}{L}\right) e^{-\alpha (n\pi/L)^2 t}
+        \end{equation*}
+        \textbf{Makna Fisis Kestabilan Termal:}
+        \begin{itemize}
+          \item Saat $t \to \infty$, seluruh suku $e^{-\dots t} \to 0$.
+          \item Solusi tunak: $u(x, \infty) = A_0$ (temperatur merata sempurna di seluruh batang akibat isolasi sempurna tanpa energi keluar).
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 11: Aplikasi 2D Elektrostatika: Persamaan Laplace
+% -------------------------------------------------------------
+\begin{frame}{Ekspansi Pemisahan Variabel 2D: Persamaan Laplace}
+  \begin{columns}[t]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{BVP Elektrostatik dalam Rongga Pelat}
+        \small
+        Cari potensial $\Phi(x,y)$ di dalam daerah persegi $0 < x < a, \, 0 < y < b$:
+        \begin{equation*}
+          \frac{\partial^2 \Phi}{\partial x^2} + \frac{\partial^2 \Phi}{\partial y^2} = 0
+        \end{equation*}
+        Syarat batas: 3 dinding ditanahkan ($\Phi(0,y) = \Phi(a,y) = \Phi(x,0) = 0$) dan atap diberi tegangan $\Phi(x,b) = V_0$.
+      \end{block}
+      \begin{alertblock}{Pemisahan $\Phi(x,y) = X(x) Y(y)$}
+        \small
+        $\frac{X''}{X} = -\frac{Y''}{Y} = -k_n^2 \implies X_n(x) = \sin\left(\frac{n\pi x}{a}\right)$\\
+        $Y_n(y) = \sinh\left(\frac{n\pi y}{a}\right)$ (karena $Y(0) = 0$).
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{exampleblock}{Solusi Superposisi Analitis}
+        \small
+        Penerapan syarat atap dengan deret Fourier:
+        \begin{equation*}
+          \Phi(x, y) = \frac{4V_0}{\pi} \sum_{k=1}^{\infty} \frac{\sin\left(\frac{(2k-1)\pi x}{a}\right) \sinh\left(\frac{(2k-1)\pi y}{a}\right)}{(2k-1) \sinh\left(\frac{(2k-1)\pi b}{a}\right)}
+        \end{equation*}
+        \textbf{Wawasan Rekayasa:}
+        Bentuk fungsi hiperbolik $\sinh(y)$ mencerminkan konsentrasi medan listrik di dekat pelat tegangan tinggi.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% FRAME 12: Standar Industri: Transien Termal Busbar
+% -------------------------------------------------------------
+\begin{frame}{Standar Industri: Manajemen Termal Busbar GITET 500 kV}
+  \begin{block}{Ketahanan Termo-Mekanis Busbar Hubung Singkat}
+    Standar \textbf{IEEE Std 738} dan \textbf{IEC 60865-1} (\textit{Short-circuit currents -- Calculation of effects}) menetapkan batas kenaikan temperatur konduktor gardu induk akibat arus gangguan:
+  \end{block}
+  \vspace{0.1cm}
+  \begin{table}[h]
+    \centering
+    \scriptsize
+    \begin{tabular}{lccc}
+      \toprule
+      \textbf{Material Konduktor} & \textbf{Temp. Operasi Normal} & \textbf{Batas Kritis Hubung Singkat} & \textbf{Waktu Relaksasi Termal $\tau_1$} \\
+      \midrule
+      Tembaga Elektrolitik (Cu) & $75^\circ\text{C}$ & $200^\circ\text{C}$ & $\tau_1 = L^2 / (\alpha \pi^2) \approx 90\text{ s}$ \\
+      Aluminium Paduan (AAAC) & $80^\circ\text{C}$ & $200^\circ\text{C}$ & $\tau_1 = L^2 / (\alpha \pi^2) \approx 48\text{ s}$ \\
+      Pipa Aluminium Berongga & $90^\circ\text{C}$ & $250^\circ\text{C}$ & Tergantung ketebalan dinding pipa \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{alertblock}{Implikasi Desain Rekayasa Proteksi}
+    Waktu pemutusan relai proteksi ($\le 100\text{ ms}$) harus membatasi disipasi adiabatik sebelum panas terdifusi secara konduktif, guna mencegah deformasi mekanis permanen pada busbar.
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{Penyelesaian Masalah Nilai Eigen Spasial ($X(x)$)}
-  Untuk konduktor panjang $L$ dengan ujung digroundkan $u(0,t) = 0$ dan $u(L,t) = 0$:
-  $$ X(0) = 0, \quad X(L) = 0 $$
-  \pause
-  Solusi umum PDB spasial $X'' + \lambda^2 X = 0$:
-  $$ X(x) = C_1 \cos(\lambda x) + C_2 \sin(\lambda x) $$
-  \pause
-  \begin{itemize}
-    \item $X(0) = 0 \implies C_1 \cos(0) + C_2 \sin(0) = 0 \implies C_1 = 0$. \pause
-    \item $X(L) = 0 \implies C_2 \sin(\lambda L) = 0$. Agar solusi non-trivial ($C_2 \neq 0$):
-    $$ \sin(\lambda L) = 0 \implies \lambda L = n\pi \implies {\color{unibblue} \lambda_n = \frac{n\pi}{L}}, \quad n = 1, 2, 3, \dots $$
-  \end{itemize}
-  \pause
-  \begin{block}{Fungsi Eigen (*Eigenfunctions*)}
-    $$ X_n(x) = \sin\left(\frac{n\pi x}{L}\right) $$
-  \end{block}
+% -------------------------------------------------------------
+% FRAME 13: Simulasi Komputasi Julia
+% -------------------------------------------------------------
+% FRAME 13: Praktikum Komputasi Julia
+\begin{frame}[fragile]{Praktikum Komputasi Julia: Distribusi Suhu Busbar}
+  \begin{columns}[t]
+    \column{0.50\textwidth}
+    \begin{block}{Skrip Julia: Solusi Termal 1D}
+\begin{lstlisting}[style=juliastyle]
+using Plots
+
+x = range(0, 10.0, length=200) # L = 10 m
+T0, q_joule = 50.0, 25.0
+T_bus = @. T0 + (q_joule / 2.0) * x * (10.0 - x)
+
+plot(x, T_bus, lw=2.5, color=:red, label="T(x)")
+scatter!([5.0], [maximum(T_bus)], color=:blue, label="Puncak Tengah")
+hline!([50.0], ls=:dash, color=:gray, label="Ujung Rel 50 C")
+\end{lstlisting}
+    \end{block}
+
+    \column{0.48\textwidth}
+    \begin{alertblock}{Visualisasi Suhu Busbar IEEE 738}
+      \centering
+      \includegraphics[width=\linewidth, height=0.38\textheight, keepaspectratio]{figures/slides/plot_ch10.png}
+    \end{alertblock}
+    \vspace{-0.1cm}
+    \begin{exampleblock}{Intisari Termal Spasial}
+      \tiny
+      Pemanasan Joule internal menghasilkan profil suhu parabolik simetris. Suhu maksimum terjadi di tengah bentang busbar ($x = L/2$), wajib dibatasi di bawah batas penuaan material tembaga/aluminium.
+    \end{exampleblock}
+  \end{columns}
 \end{frame}
 
-\begin{frame}{Penyelesaian Bagian Waktu ($T_n(t)$) \& Superposisi}
-  PDB Waktu: $T_n' + \alpha \left(\frac{n\pi}{L}\right)^2 T_n = 0$.
-  \pause
-  Solusi eksponensial meluruh:
-  $$ T_n(t) = B_n e^{-\alpha \left(\frac{n\pi}{L}\right)^2 t} $$
-  \pause
-  \begin{alertblock}{Solusi Total Superposisi}
-    $$ {\color{unibblue} u(x,t) = \sum_{n=1}^{\infty} B_n \sin\left(\frac{n\pi x}{L}\right) e^{-\alpha \left(\frac{n\pi}{L}\right)^2 t}} $$
-    dengan $B_n = \frac{2}{L} \int_{0}^{L} f(x) \sin\left(\frac{n\pi x}{L}\right) dx$ diperoleh dari syarat awal $u(x,0) = f(x)$.
-  \end{alertblock}
+% -------------------------------------------------------------
+% FRAME 14: Kuis Tantangan Bloom Berjenjang
+% -------------------------------------------------------------
+% FRAME 14: Kuis & Tantangan Bloom C1-C6
+\begin{frame}{Kuis Konseptual Interaktif \& Evaluasi Bloom (C1--C6)}
+  \begin{columns}[t]
+    \column{0.52\textwidth}
+    \begin{alertblock}{Peer Instruction: Uji Miskonsepsi Fisik}
+      \footnotesize
+      \textbf{Kasus Rekayasa:} Pada pemisahan variabel $u(x,t) = X(x)T(t)$ untuk persamaan termal, mengapa konstanta pemisah $k$ wajib dipilih bernilai negatif ($-\lambda^2$)?
+      \vspace{0.05cm}
+      \begin{itemize}\setlength{\itemsep}{1pt}
+        \item \textbf{[A]} Konstanta positif dilarang dalam kalkulus diferensial.
+        \item \textbf{[B]} Konstanta positif menghasilkan solusi $T(t) = C e^{+\lambda^2 t} \to \infty$, yang melanggar hukum termodinamika bahwa panas harus meluruh stabil!
+        \item \textbf{[C]} Konstanta negatif mempercepat perhitungan determinan.
+        \item \textbf{[D]} Nilai positif hanya berlaku untuk gelombang suara.
+      \end{itemize}
+    \end{alertblock}
+
+    \column{0.46\textwidth}
+    \begin{block}{Tantangan Analisis \& Desain (C4--C6)}
+      \footnotesize
+      \begin{itemize}\setlength{\itemsep}{2pt}
+        \item \textbf{C4 (Analisis):} Turunkan fungsi eigen spasial untuk syarat batas terisolasi adiabatic Neumann ($X'(0)=X'(L)=0$).
+        \item \textbf{C5 (Evaluasi):} Evaluasi konvergensi deret Fourier solusi transien terhadap kondisi awal tak rata.
+        \item \textbf{C6 (Desain):} Rancang panjang busbar gardu induk agar kenaikan suhu akibat arus nominal $3000\text{ A}$ tidak melampaui $90^\circ\text{C}$!
+      \end{itemize}
+    \end{block}
+  \end{columns}
 \end{frame}
 
-\section{Kuis \& Rangkuman}
-\begin{frame}{Kuis Interaktif 10}
-  \textbf{Pertanyaan:} Mengapa konstanta pemisahan harus dipilih bernilai negatif ($-\lambda^2$) dan bukan positif ($+\lambda^2$)?
-  \pause
-  \begin{block}{Jawaban:}
-    Secara fisik:
-    \begin{enumerate}
-      \item Jika konstanta positif ($+\lambda^2$), solusi spasial menjadi fungsi hiperbolik $\sinh(\lambda x), \cosh(\lambda x)$ yang tidak dapat memenuhi syarat batas nol di kedua ujung.
-      \item Solusi waktu akan menjadi $T(t) \propto e^{+\lambda^2 \alpha t}$, yang berarti suhu atau energi membesar tanpa batas menuju tak terhingga (tidak stabil dan melanggar hukum termodinamika/konservasi energi).
-    \end{enumerate}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Rangkuman Materi Minggu 10}
-  \begin{enumerate}
-    \item Pemisahan variabel mentransformasikan 1 PDP menjadi kumpulan PDB yang dapat diselesaikan secara independen.
-    \item Syarat batas menghasilkan nilai eigen diskrit ($\lambda_n$) dan fungsi harmonik eigen ($X_n(x)$).
-    \item Superposisi tak hingga menyatukan seluruh modus gelombang untuk mencocokkan kondisi awal sembarang.
-  \end{enumerate}
+% -------------------------------------------------------------
+% FRAME 15: Rangkuman Eksekutif & Jembatan ke Minggu 11
+% -------------------------------------------------------------
+\begin{frame}{Rangkuman Eksekutif \& Jembatan ke Minggu 11}
+  \begin{columns}[t]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Rangkuman Inti Minggu 10}
+        \begin{itemize}
+          \item \textbf{Pemisahan Variabel:} Mengubah 1 PDP menjadi 2 PDB berpasangan melalui konstanta $-\lambda^2$.
+          \item \textbf{Nilai \& Fungsi Eigen:} Didikte oleh geometri dan syarat batas (Dirichlet, Neumann, Robin).
+          \item \textbf{Superposisi Deret:} Menyusun solusi analitis lengkap dari kombinasi linier ragam harmonis.
+          \item \textbf{Aplikasi:} Difusi termal busbar gardu induk dan elektrostatika 2D Laplace.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Pratinjau Minggu 11: Persamaan Gelombang}
+        \begin{itemize}
+          \item Masuk ke PDP hiperbolik: $\frac{\partial^2 u}{\partial t^2} = v^2 \frac{\partial^2 u}{\partial x^2}$.
+          \item \textbf{Saluran Transmisi Terdistribusi:} Penurunan Persamaan Telegrafer dari elemen $\Delta x$.
+          \item Perambatan gelombang berjalan d'Alembert ($x - vt$ dan $x + vt$).
+          \item Fenomena pantulan gelombang, impedansi karakteristik $Z_0$, dan rasio tegangan berdiri (VSWR).
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \end{document}
